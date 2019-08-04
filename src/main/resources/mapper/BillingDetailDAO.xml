@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoze.cctower.dao.BillingDetailDAO">
+  <resultMap id="BaseResultMap" type="com.nuoze.cctower.pojo.entity.BillingDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="unit_type" jdbcType="TINYINT" property="unitType" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="one" jdbcType="DECIMAL" property="one" />
+    <result column="two" jdbcType="DECIMAL" property="two" />
+    <result column="three" jdbcType="DECIMAL" property="three" />
+    <result column="four" jdbcType="DECIMAL" property="four" />
+    <result column="five" jdbcType="DECIMAL" property="five" />
+    <result column="six" jdbcType="DECIMAL" property="six" />
+    <result column="seven" jdbcType="DECIMAL" property="seven" />
+    <result column="eight" jdbcType="DECIMAL" property="eight" />
+    <result column="nine" jdbcType="DECIMAL" property="nine" />
+    <result column="ten" jdbcType="DECIMAL" property="ten" />
+    <result column="eleven" jdbcType="DECIMAL" property="eleven" />
+    <result column="twelve" jdbcType="DECIMAL" property="twelve" />
+    <result column="thirteen" jdbcType="DECIMAL" property="thirteen" />
+    <result column="fourteen" jdbcType="DECIMAL" property="fourteen" />
+    <result column="fifteen" jdbcType="DECIMAL" property="fifteen" />
+    <result column="sixteen" jdbcType="DECIMAL" property="sixteen" />
+    <result column="seventeen" jdbcType="DECIMAL" property="seventeen" />
+    <result column="eighteen" jdbcType="DECIMAL" property="eighteen" />
+    <result column="nineteen" jdbcType="DECIMAL" property="nineteen" />
+    <result column="twenty" jdbcType="DECIMAL" property="twenty" />
+    <result column="twenty_one" jdbcType="DECIMAL" property="twentyOne" />
+    <result column="twenty_two" jdbcType="DECIMAL" property="twentyTwo" />
+    <result column="twenty_three" jdbcType="DECIMAL" property="twentyThree" />
+    <result column="twenty_four" jdbcType="DECIMAL" property="twentyFour" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parking_id, `type`, unit_type, unit_price, one, two, three, four, five, six, 
+    seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen,
+    eighteen, nineteen, twenty, twenty_one, twenty_two, twenty_three, twenty_four, create_time,
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from billing_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from billing_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.BillingDetail">
+    insert into billing_detail (id, parking_id, `type`, 
+      unit_type, unit_price, one, 
+      two, three, four, five, 
+      six, seven, eight, 
+      nine, ten, eleven, twelve,
+      thirteen, fourteen, fifteen, 
+      sixteen, seventeen, eighteen,
+      nineteen, twenty, twenty_one,
+      twenty_two, twenty_three, twenty_four,
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
+      #{unitType,jdbcType=TINYINT}, #{unitPrice,jdbcType=DECIMAL}, #{one,jdbcType=DECIMAL}, 
+      #{two,jdbcType=DECIMAL}, #{three,jdbcType=DECIMAL}, #{four,jdbcType=DECIMAL}, #{five,jdbcType=DECIMAL}, 
+      #{six,jdbcType=DECIMAL}, #{seven,jdbcType=DECIMAL}, #{eight,jdbcType=DECIMAL}, 
+      #{nine,jdbcType=DECIMAL}, #{ten,jdbcType=DECIMAL}, #{eleven,jdbcType=DECIMAL}, #{twelve,jdbcType=DECIMAL},
+      #{thirteen,jdbcType=DECIMAL}, #{fourteen,jdbcType=DECIMAL}, #{fifteen,jdbcType=DECIMAL}, 
+      #{sixteen,jdbcType=DECIMAL}, #{seventeen,jdbcType=DECIMAL}, #{eighteen,jdbcType=DECIMAL},
+      #{nineteen,jdbcType=DECIMAL}, #{twenty,jdbcType=DECIMAL}, #{twentyOne,jdbcType=DECIMAL}, 
+      #{twentyTwo,jdbcType=DECIMAL}, #{twentyThree,jdbcType=DECIMAL}, #{twentyFour,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.BillingDetail">
+    insert into billing_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parkingId != null">
+        parking_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="unitType != null">
+        unit_type,
+      </if>
+      <if test="unitPrice != null">
+        unit_price,
+      </if>
+      <if test="one != null">
+        one,
+      </if>
+      <if test="two != null">
+        two,
+      </if>
+      <if test="three != null">
+        three,
+      </if>
+      <if test="four != null">
+        four,
+      </if>
+      <if test="five != null">
+        five,
+      </if>
+      <if test="six != null">
+        six,
+      </if>
+      <if test="seven != null">
+        seven,
+      </if>
+      <if test="eight != null">
+        eight,
+      </if>
+      <if test="nine != null">
+        nine,
+      </if>
+      <if test="ten != null">
+        ten,
+      </if>
+      <if test="eleven != null">
+        eleven,
+      </if>
+      <if test="twelve != null">
+        twelve,
+      </if>
+      <if test="thirteen != null">
+        thirteen,
+      </if>
+      <if test="fourteen != null">
+        fourteen,
+      </if>
+      <if test="fifteen != null">
+        fifteen,
+      </if>
+      <if test="sixteen != null">
+        sixteen,
+      </if>
+      <if test="seventeen != null">
+        seventeen,
+      </if>
+      <if test="eighteen != null">
+        eighteen,
+      </if>
+      <if test="nineteen != null">
+        nineteen,
+      </if>
+      <if test="twenty != null">
+        twenty,
+      </if>
+      <if test="twentyOne != null">
+        twenty_one,
+      </if>
+      <if test="twentyTwo != null">
+        twenty_two,
+      </if>
+      <if test="twentyThree != null">
+        twenty_three,
+      </if>
+      <if test="twentyFour != null">
+        twenty_four,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="unitType != null">
+        #{unitType,jdbcType=TINYINT},
+      </if>
+      <if test="unitPrice != null">
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="one != null">
+        #{one,jdbcType=DECIMAL},
+      </if>
+      <if test="two != null">
+        #{two,jdbcType=DECIMAL},
+      </if>
+      <if test="three != null">
+        #{three,jdbcType=DECIMAL},
+      </if>
+      <if test="four != null">
+        #{four,jdbcType=DECIMAL},
+      </if>
+      <if test="five != null">
+        #{five,jdbcType=DECIMAL},
+      </if>
+      <if test="six != null">
+        #{six,jdbcType=DECIMAL},
+      </if>
+      <if test="seven != null">
+        #{seven,jdbcType=DECIMAL},
+      </if>
+      <if test="eight != null">
+        #{eight,jdbcType=DECIMAL},
+      </if>
+      <if test="nine != null">
+        #{nine,jdbcType=DECIMAL},
+      </if>
+      <if test="ten != null">
+        #{ten,jdbcType=DECIMAL},
+      </if>
+      <if test="eleven != null">
+        #{eleven,jdbcType=DECIMAL},
+      </if>
+      <if test="twelve != null">
+        #{twelve,jdbcType=DECIMAL},
+      </if>
+      <if test="thirteen != null">
+        #{thirteen,jdbcType=DECIMAL},
+      </if>
+      <if test="fourteen != null">
+        #{fourteen,jdbcType=DECIMAL},
+      </if>
+      <if test="fifteen != null">
+        #{fifteen,jdbcType=DECIMAL},
+      </if>
+      <if test="sixteen != null">
+        #{sixteen,jdbcType=DECIMAL},
+      </if>
+      <if test="seventeen != null">
+        #{seventeen,jdbcType=DECIMAL},
+      </if>
+      <if test="eighteen != null">
+        #{eighteen,jdbcType=DECIMAL},
+      </if>
+      <if test="nineteen != null">
+        #{nineteen,jdbcType=DECIMAL},
+      </if>
+      <if test="twenty != null">
+        #{twenty,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyOne != null">
+        #{twentyOne,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyTwo != null">
+        #{twentyTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyThree != null">
+        #{twentyThree,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyFour != null">
+        #{twentyFour,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nuoze.cctower.pojo.entity.BillingDetail">
+    update billing_detail
+    <set>
+      <if test="parkingId != null">
+        parking_id = #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="unitType != null">
+        unit_type = #{unitType,jdbcType=TINYINT},
+      </if>
+      <if test="unitPrice != null">
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="one != null">
+        one = #{one,jdbcType=DECIMAL},
+      </if>
+      <if test="two != null">
+        two = #{two,jdbcType=DECIMAL},
+      </if>
+      <if test="three != null">
+        three = #{three,jdbcType=DECIMAL},
+      </if>
+      <if test="four != null">
+        four = #{four,jdbcType=DECIMAL},
+      </if>
+      <if test="five != null">
+        five = #{five,jdbcType=DECIMAL},
+      </if>
+      <if test="six != null">
+        six = #{six,jdbcType=DECIMAL},
+      </if>
+      <if test="seven != null">
+        seven = #{seven,jdbcType=DECIMAL},
+      </if>
+      <if test="eight != null">
+        eight = #{eight,jdbcType=DECIMAL},
+      </if>
+      <if test="nine != null">
+        nine = #{nine,jdbcType=DECIMAL},
+      </if>
+      <if test="ten != null">
+        ten = #{ten,jdbcType=DECIMAL},
+      </if>
+      <if test="eleven != null">
+        eleven = #{eleven,jdbcType=DECIMAL},
+      </if>
+      <if test="twelve != null">
+        twelve = #{twelve,jdbcType=DECIMAL},
+      </if>
+      <if test="thirteen != null">
+        thirteen = #{thirteen,jdbcType=DECIMAL},
+      </if>
+      <if test="fourteen != null">
+        fourteen = #{fourteen,jdbcType=DECIMAL},
+      </if>
+      <if test="fifteen != null">
+        fifteen = #{fifteen,jdbcType=DECIMAL},
+      </if>
+      <if test="sixteen != null">
+        sixteen = #{sixteen,jdbcType=DECIMAL},
+      </if>
+      <if test="seventeen != null">
+        seventeen = #{seventeen,jdbcType=DECIMAL},
+      </if>
+      <if test="eighteen != null">
+        eighteen = #{eighteen,jdbcType=DECIMAL},
+      </if>
+      <if test="nineteen != null">
+        nineteen = #{nineteen,jdbcType=DECIMAL},
+      </if>
+      <if test="twenty != null">
+        twenty = #{twenty,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyOne != null">
+        twenty_one = #{twentyOne,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyTwo != null">
+        twenty_two = #{twentyTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyThree != null">
+        twenty_three = #{twentyThree,jdbcType=DECIMAL},
+      </if>
+      <if test="twentyFour != null">
+        twenty_four = #{twentyFour,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nuoze.cctower.pojo.entity.BillingDetail">
+    update billing_detail
+    set parking_id = #{parkingId,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=TINYINT},
+      unit_type = #{unitType,jdbcType=TINYINT},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      one = #{one,jdbcType=DECIMAL},
+      two = #{two,jdbcType=DECIMAL},
+      three = #{three,jdbcType=DECIMAL},
+      four = #{four,jdbcType=DECIMAL},
+      five = #{five,jdbcType=DECIMAL},
+      six = #{six,jdbcType=DECIMAL},
+      seven = #{seven,jdbcType=DECIMAL},
+      eight = #{eight,jdbcType=DECIMAL},
+      nine = #{nine,jdbcType=DECIMAL},
+      ten = #{ten,jdbcType=DECIMAL},
+      eleven = #{eleven,jdbcType=DECIMAL},
+      twelve = #{twelve,jdbcType=DECIMAL},
+      thirteen = #{thirteen,jdbcType=DECIMAL},
+      fourteen = #{fourteen,jdbcType=DECIMAL},
+      fifteen = #{fifteen,jdbcType=DECIMAL},
+      sixteen = #{sixteen,jdbcType=DECIMAL},
+      seventeen = #{seventeen,jdbcType=DECIMAL},
+      eighteen = #{eighteen,jdbcType=DECIMAL},
+      nineteen = #{nineteen,jdbcType=DECIMAL},
+      twenty = #{twenty,jdbcType=DECIMAL},
+      twenty_one = #{twentyOne,jdbcType=DECIMAL},
+      twenty_two = #{twentyTwo,jdbcType=DECIMAL},
+      twenty_three = #{twentyThree,jdbcType=DECIMAL},
+      twenty_four = #{twentyFour,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from billing_detail
+    <where>
+      <if test="id != null and id != ''">and id = #{id}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="type != null and type != ''">and type = #{type}</if>
+      <if test="unitType != null and unitType != ''">and parking_id = #{unitType}</if>
+      <if test="unitPrice != null and unitPrice != ''">and unit_type = #{unitPrice}</if>
+      <if test="one != null and one != ''">and one = #{one}</if>
+      <if test="two != null and two != ''">and two = #{two}</if>
+      <if test="three != null and three != ''">and three = #{three}</if>
+      <if test="four != null and four != ''">and four = #{four}</if>
+      <if test="five != null and five != ''">and five = #{five}</if>
+      <if test="six != null and six != ''">and six = #{six}</if>
+      <if test="seven != null and seven != ''">and seven = #{seven}</if>
+      <if test="eight != null and eight != ''">and eight = #{eight}</if>
+      <if test="nine != null and nine != ''">and nine = #{nine}</if>
+      <if test="ten != null and ten != ''">and ten = #{ten}</if>
+      <if test="eleven != null and eleven != ''">and eleven = #{eleven}</if>
+      <if test="twelve != null and twelve != ''">and twelve = #{twelve}</if>
+      <if test="thirteen != null and thirteen != ''">and thirteen = #{thirteen}</if>
+      <if test="fourteen != null and fourteen != ''">and fourteen = #{fourteen}</if>
+      <if test="fifteen != null and fifteen != ''">and fifteen = #{fifteen}</if>
+      <if test="sixteen != null and sixteen != ''">and sixteen = #{sixteen}</if>
+      <if test="seventeen != null and seventeen != ''">and seventeen = #{seventeen}</if>
+      <if test="eighteen != null and eighteen != ''">and eighteen = #{eighteen}</if>
+      <if test="nineteen != null and nineteen != ''">and nineteen = #{nineteen}</if>
+      <if test="twenty != null and twenty != ''">and twenty_one = #{twenty}</if>
+      <if test="twentyOne != null and twentyOne != ''">and twenty_one = #{twentyOne}</if>
+      <if test="twentyTwo != null and twentyTwo != ''">and twenty_two = #{twentyTwo}</if>
+      <if test="twentyThree != null and twentyThree != ''">and twenty_three = #{twentyThree}</if>
+      <if test="twentyFour != null and twentyFour != ''">and twenty_four = #{twentyFour}</if>
+      <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+    </where>
+    <choose>
+      <when test="sort != null and sort.trim() != ''">
+        order by ${sort} ${order}
+      </when>
+      <otherwise>
+        order by id desc
+      </otherwise>
+    </choose>
+    <if test="offset != null and limit != null">
+      limit #{offset}, #{limit}
+    </if>
+  </select>
+
+  <select id="selectByParkingId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from billing_detail
+    where parking_id = #{parkingId,jdbcType=BIGINT}
+  </select>
+
+  <select id="count" resultType="int">
+    select count(id) from billing_detail
+    <where>
+      <if test="id != null and id != ''">and id = #{id}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="type != null and type != ''">and type = #{type}</if>
+      <if test="unitType != null and unitType != ''">and parking_id = #{unitType}</if>
+      <if test="unitPrice != null and unitPrice != ''">and unit_type = #{unitPrice}</if>
+      <if test="one != null and one != ''">and one = #{one}</if>
+      <if test="two != null and two != ''">and two = #{two}</if>
+      <if test="three != null and three != ''">and three = #{three}</if>
+      <if test="four != null and four != ''">and four = #{four}</if>
+      <if test="five != null and five != ''">and five = #{five}</if>
+      <if test="six != null and six != ''">and six = #{six}</if>
+      <if test="seven != null and seven != ''">and seven = #{seven}</if>
+      <if test="eight != null and eight != ''">and eight = #{eight}</if>
+      <if test="nine != null and nine != ''">and nine = #{nine}</if>
+      <if test="ten != null and ten != ''">and ten = #{ten}</if>
+      <if test="eleven != null and eleven != ''">and eleven = #{eleven}</if>
+      <if test="twelve != null and twelve != ''">and twelve = #{twelve}</if>
+      <if test="thirteen != null and thirteen != ''">and thirteen = #{thirteen}</if>
+      <if test="fourteen != null and fourteen != ''">and fourteen = #{fourteen}</if>
+      <if test="fifteen != null and fifteen != ''">and fifteen = #{fifteen}</if>
+      <if test="sixteen != null and sixteen != ''">and sixteen = #{sixteen}</if>
+      <if test="seventeen != null and seventeen != ''">and seventeen = #{seventeen}</if>
+      <if test="eighteen != null and eighteen != ''">and eighteen = #{eighteen}</if>
+      <if test="nineteen != null and nineteen != ''">and nineteen = #{nineteen}</if>
+      <if test="twenty != null and twenty != ''">and twenty = #{twenty}</if>
+      <if test="twentyOne != null and twentyOne != ''">and twenty_one = #{twentyOne}</if>
+      <if test="twentyTwo != null and twentyTwo != ''">and twenty_two = #{twentyTwo}</if>
+      <if test="twentyThree != null and twentyThree != ''">and twenty_three = #{twentyThree}</if>
+      <if test="twentyFour != null and twentyFour != ''">and twenty_four = #{twentyFour}</if>
+      <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+    </where>
+  </select>
+
+  <delete id="batchRemove">
+    delete
+    from billing_detail
+    where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>

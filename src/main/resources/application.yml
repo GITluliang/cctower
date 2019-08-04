@@ -1,0 +1,51 @@
+# 打印sql
+logging:
+  level:
+    com.nuoze.cctower: debug
+  file: ./data/log/cctower.log
+
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: cctower
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:config/ehcache.xml
+
+#  整合mybatis
+mybatis:
+  mapper-locations: classpath*:mapper/*DAO.xml
+  type-aliases-package: com.nuoze.cctower.pojo.entity
+
+# wx相关信息
+wx:
+  app-id: wx84582d8d20ac4deb
+  app-secret: b25600a51d090381e02dd4b543955641
+  mch-id: 1527166311
+  mch-key: MQF82fY2pbWJOvGutpa7yHaK5pSgbAPK
+  notify-url: https://www.cctower.cn/applet/wx-pay/pay-notify
+  key-path: /usr/local/cctower/1527166311_20190406_cert/
+
+auth:
+  token: f29e01b41e049e6b9064041ee83d0d7a

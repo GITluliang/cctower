@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoze.cctower.dao.ParkingTradingRecordDAO">
+  <resultMap id="BaseResultMap" type="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="income_type" jdbcType="VARCHAR" property="incomeType" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parking_id, amount, `type`, income_type, pay_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from parking_trading_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from parking_trading_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
+    insert into parking_trading_record (id, parking_id, amount, 
+      `type`, income_type, pay_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
+      #{type,jdbcType=TINYINT}, #{incomeType,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
+    insert into parking_trading_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parkingId != null">
+        parking_id,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="incomeType != null">
+        income_type,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="incomeType != null">
+        #{incomeType,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
+    update parking_trading_record
+    <set>
+      <if test="parkingId != null">
+        parking_id = #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="incomeType != null">
+        income_type = #{incomeType,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
+    update parking_trading_record
+    set parking_id = #{parkingId,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      `type` = #{type,jdbcType=TINYINT},
+      income_type = #{incomeType,jdbcType=VARCHAR},
+      pay_time = #{payTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="listByParkingId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from parking_trading_record
+    <where>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
+    </where>
+    order by pay_time desc
+    <if test="offset != null and limit != null">
+      limit #{offset}, #{limit}
+    </if>
+  </select>
+
+  <select id="countByParkingId" resultType="int">
+    select count(id) from parking_trading_record
+    <where>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
+    </where>
+  </select>
+</mapper>

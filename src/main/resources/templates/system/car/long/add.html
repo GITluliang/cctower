@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<input id="parkingType" name="parkingType" value="1" type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">车牌号：</label>
+								<div class="col-sm-8">
+									<input id="number" name="number" class="form-control" type="text">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生效日期：</label>
+								<div class="col-sm-8">
+									<input name="beginDate" type="text" class="demo-input" placeholder="请选择生效日期" id="beginDate">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">失效日期：</label>
+								<div class="col-sm-8">
+									<input name="endDate" type="text" class="demo-input" placeholder="请选择失效日期" id="endDate">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">停车场</label>
+								<div class="col-sm-8">
+									<label th:each="parking:${parkingList}" class="radio-inline">
+										<input name="parkingId" type="radio" th:value="${parking.id}"
+											   th:text="${parking.name}">
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">状态:</label>
+								<div class="col-sm-8">
+									<label class="radio-inline"> <input type="radio" name="status" value="1" /> 正常 </label>
+									<label class="radio-inline"> <input type="radio" name="status" value="0" /> 禁用 </label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">内场权限:</label>
+								<div class="col-sm-8">
+									<label class="radio-inline"> <input type="radio" name="infieldPermission" value="1" /> 有 </label>
+									<label class="radio-inline"> <input type="radio" name="infieldPermission" value="0" /> 无 </label>
+								</div>
+							</div>
+								<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/sys/car/long/add.js">
+	</script>
+	<script src="/js/appjs/common/laydate/laydate.js"></script>
+	<script>
+		lay('#version').html('-v'+ laydate.v);
+
+		//执行一个laydate实例
+		laydate.render({
+			elem: '#beginDate'
+			,theme: 'molv'
+		});
+		laydate.render({
+			elem: '#endDate'
+			,theme: 'molv'
+		});
+	</script>
+</body>
+</html>

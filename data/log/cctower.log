@@ -1,0 +1,422 @@
+2019-08-04 00:23:18.623  INFO 30753 --- [main] com.nuoze.cctower.CctowerApplication     : Starting CctowerApplication on jiashun-2.local with PID 30753 (/Users/jiashun/java/shichuang/cctower/target/classes started by jiashun in /Users/jiashun/java/shichuang/cctower)
+2019-08-04 00:23:18.632 DEBUG 30753 --- [main] com.nuoze.cctower.CctowerApplication     : Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-08-04 00:23:18.648  INFO 30753 --- [main] com.nuoze.cctower.CctowerApplication     : The following profiles are active: dev
+2019-08-04 00:23:20.274  INFO 30753 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-04 00:23:20.278  INFO 30753 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-08-04 00:23:20.349  INFO 30753 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49ms. Found 0 repository interfaces.
+2019-08-04 00:23:20.873  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.amqp.rabbit.annotation.RabbitBootstrapConfiguration' of type [org.springframework.amqp.rabbit.annotation.RabbitBootstrapConfiguration$$EnhancerBySpringCGLIB$$62907789] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:20.919  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'shiroConfig' of type [com.nuoze.cctower.config.ShiroConfig$$EnhancerBySpringCGLIB$$92c7a754] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:20.934  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9c24b95b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.123  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'mybatis-org.mybatis.spring.boot.autoconfigure.MybatisProperties' of type [org.mybatis.spring.boot.autoconfigure.MybatisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.135  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration' of type [org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$cef90a8b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.141  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure' of type [com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure$$EnhancerBySpringCGLIB$$b5d0aecd] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.145  INFO 30753 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2019-08-04 00:23:21.237  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.245  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.alibaba.druid.spring.boot.autoconfigure.stat.DruidFilterConfiguration' of type [com.alibaba.druid.spring.boot.autoconfigure.stat.DruidFilterConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.283  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'statFilter' of type [com.alibaba.druid.filter.stat.StatFilter] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.962  INFO 30753 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2019-08-04 00:23:21.962  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'dataSource' of type [com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceWrapper] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:21.992  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.640  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sqlSessionFactory' of type [org.apache.ibatis.session.defaults.DefaultSqlSessionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.649  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sqlSessionTemplate' of type [org.mybatis.spring.SqlSessionTemplate] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.651  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'userDAO' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.654  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'userDAO' of type [com.sun.proxy.$Proxy59] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.668  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'menuDAO' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.670  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'menuDAO' of type [com.sun.proxy.$Proxy62] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.677  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'roleMenuDAO' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.679  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'roleMenuDAO' of type [com.sun.proxy.$Proxy64] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.685  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'menuServiceImpl' of type [com.nuoze.cctower.service.impl.MenuServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:22.712  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'userRealm' of type [com.nuoze.cctower.common.shiro.UserRealm] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:27.904  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'cacheManager2' of type [net.sf.ehcache.CacheManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:27.906  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'ehCacheManager' of type [org.apache.shiro.cache.ehcache.EhCacheManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:27.907  INFO 30753 --- [main] o.a.shiro.cache.ehcache.EhCacheManager   : Cache with name 'com.nuoze.cctower.common.shiro.UserRealm.authorizationCache' does not yet exist.  Creating now.
+2019-08-04 00:23:27.918  INFO 30753 --- [main] o.a.shiro.cache.ehcache.EhCacheManager   : Added EhCache named [com.nuoze.cctower.common.shiro.UserRealm.authorizationCache]
+2019-08-04 00:23:27.921  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sessionDAO' of type [org.apache.shiro.session.mgt.eis.MemorySessionDAO] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:27.928  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sessionManager' of type [org.apache.shiro.web.session.mgt.DefaultWebSessionManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:27.933  INFO 30753 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'securityManager' of type [org.apache.shiro.web.mgt.DefaultWebSecurityManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:23:28.496  INFO 30753 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-08-04 00:23:28.542  INFO 30753 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-08-04 00:23:28.542  INFO 30753 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.16]
+2019-08-04 00:23:28.554  INFO 30753 --- [main] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/jiashun/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2019-08-04 00:23:28.758  INFO 30753 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-08-04 00:23:28.759  INFO 30753 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 10028 ms
+2019-08-04 00:23:29.797  INFO 30753 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-08-04 00:23:30.928  INFO 30753 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-08-04 00:23:30.937  INFO 30753 --- [main] com.nuoze.cctower.CctowerApplication     : Started CctowerApplication in 13.069 seconds (JVM running for 20.278)
+2019-08-04 00:23:38.830  INFO 30753 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-04 00:23:38.831  INFO 30753 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-08-04 00:23:38.850  INFO 30753 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 18 ms
+2019-08-04 00:23:38.890  INFO 30753 --- [http-nio-8080-exec-1] a.s.s.m.AbstractValidatingSessionManager : Enabling session validation scheduler...
+2019-08-04 00:23:45.512 DEBUG 30753 --- [http-nio-8080-exec-9] c.n.cctower.dao.UserDAO.findByUsername   : ==>  Preparing: select id, balance, username, `password`, `name`, province, city, district, address, principal, phone, type, parking_id, status, create_time, update_time from user where username = ? 
+2019-08-04 00:23:45.553 DEBUG 30753 --- [http-nio-8080-exec-9] c.n.cctower.dao.UserDAO.findByUsername   : ==> Parameters: admin(String)
+2019-08-04 00:23:45.629 DEBUG 30753 --- [http-nio-8080-exec-9] c.n.cctower.dao.UserDAO.findByUsername   : <==      Total: 1
+2019-08-04 00:23:45.786 DEBUG 30753 --- [http-nio-8080-exec-8] c.n.c.dao.MenuDAO.listMenuByUserId       : ==>  Preparing: select m.id, m.parent_id as parentId, m.name, m.url, m.perms, m.type, m.icon, m.order_num as orderNum, m.create_time as createTime, m.update_time as updateTime from menu m left join role_menu rm on m.id = rm.menu_id left join user_role ur on rm.role_id = ur.role_id where ur.user_id = ? and m.type in(0,1) order by m.order_num 
+2019-08-04 00:23:45.789 DEBUG 30753 --- [http-nio-8080-exec-8] c.n.c.dao.MenuDAO.listMenuByUserId       : ==> Parameters: 2(Long)
+2019-08-04 00:23:45.827 DEBUG 30753 --- [http-nio-8080-exec-8] c.n.c.dao.MenuDAO.listMenuByUserId       : <==      Total: 22
+2019-08-04 00:24:11.388  INFO 30753 --- [Thread-4] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-08-04 00:24:11.396  INFO 30753 --- [Thread-4] a.s.s.m.AbstractValidatingSessionManager : Disabled session validation scheduler.
+2019-08-04 00:24:11.429  INFO 30753 --- [Thread-4] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2019-08-04 00:24:24.510  INFO 30812 --- [main] com.nuoze.cctower.CctowerApplication     : Starting CctowerApplication on jiashun-2.local with PID 30812 (/Users/jiashun/java/shichuang/cctower/target/classes started by jiashun in /Users/jiashun/java/shichuang/cctower)
+2019-08-04 00:24:24.513 DEBUG 30812 --- [main] com.nuoze.cctower.CctowerApplication     : Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-08-04 00:24:24.514  INFO 30812 --- [main] com.nuoze.cctower.CctowerApplication     : The following profiles are active: dev
+2019-08-04 00:24:25.938  INFO 30812 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-04 00:24:25.942  INFO 30812 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-08-04 00:24:26.002  INFO 30812 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 40ms. Found 0 repository interfaces.
+2019-08-04 00:24:26.443  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.amqp.rabbit.annotation.RabbitBootstrapConfiguration' of type [org.springframework.amqp.rabbit.annotation.RabbitBootstrapConfiguration$$EnhancerBySpringCGLIB$$d767e9eb] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.492  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'shiroConfig' of type [com.nuoze.cctower.config.ShiroConfig$$EnhancerBySpringCGLIB$$79f19b6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.510  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$10fc2bbd] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.678  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'mybatis-org.mybatis.spring.boot.autoconfigure.MybatisProperties' of type [org.mybatis.spring.boot.autoconfigure.MybatisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.689  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration' of type [org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$43d07ced] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.695  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure' of type [com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure$$EnhancerBySpringCGLIB$$2aa8212f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.699  INFO 30812 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2019-08-04 00:24:26.823  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.829  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.alibaba.druid.spring.boot.autoconfigure.stat.DruidFilterConfiguration' of type [com.alibaba.druid.spring.boot.autoconfigure.stat.DruidFilterConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:26.863  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'statFilter' of type [com.alibaba.druid.filter.stat.StatFilter] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:27.386  INFO 30812 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2019-08-04 00:24:27.387  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'dataSource' of type [com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceWrapper] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:27.426  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:27.993  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sqlSessionFactory' of type [org.apache.ibatis.session.defaults.DefaultSqlSessionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.000  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sqlSessionTemplate' of type [org.mybatis.spring.SqlSessionTemplate] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.003  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'userDAO' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.005  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'userDAO' of type [com.sun.proxy.$Proxy59] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.018  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'menuDAO' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.020  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'menuDAO' of type [com.sun.proxy.$Proxy62] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.026  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'roleMenuDAO' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.027  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'roleMenuDAO' of type [com.sun.proxy.$Proxy64] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.031  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'menuServiceImpl' of type [com.nuoze.cctower.service.impl.MenuServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.053  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'userRealm' of type [com.nuoze.cctower.common.shiro.UserRealm] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.222  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'cacheManager2' of type [net.sf.ehcache.CacheManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.228  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'ehCacheManager' of type [org.apache.shiro.cache.ehcache.EhCacheManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.230  INFO 30812 --- [main] o.a.shiro.cache.ehcache.EhCacheManager   : Cache with name 'com.nuoze.cctower.common.shiro.UserRealm.authorizationCache' does not yet exist.  Creating now.
+2019-08-04 00:24:28.248  INFO 30812 --- [main] o.a.shiro.cache.ehcache.EhCacheManager   : Added EhCache named [com.nuoze.cctower.common.shiro.UserRealm.authorizationCache]
+2019-08-04 00:24:28.254  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sessionDAO' of type [org.apache.shiro.session.mgt.eis.MemorySessionDAO] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.265  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'sessionManager' of type [org.apache.shiro.web.session.mgt.DefaultWebSessionManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.272  INFO 30812 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'securityManager' of type [org.apache.shiro.web.mgt.DefaultWebSecurityManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-04 00:24:28.780  INFO 30812 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-08-04 00:24:28.828  INFO 30812 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-08-04 00:24:28.829  INFO 30812 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.16]
+2019-08-04 00:24:28.843  INFO 30812 --- [main] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/jiashun/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2019-08-04 00:24:29.054  INFO 30812 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-08-04 00:24:29.054  INFO 30812 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4471 ms
+2019-08-04 00:24:35.100  INFO 30812 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-08-04 00:24:36.240  INFO 30812 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-08-04 00:24:36.247  INFO 30812 --- [main] com.nuoze.cctower.CctowerApplication     : Started CctowerApplication in 12.25 seconds (JVM running for 18.652)
+2019-08-04 00:25:01.487  INFO 30812 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-04 00:25:01.489  INFO 30812 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-08-04 00:25:01.509  INFO 30812 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 20 ms
+2019-08-04 00:25:01.546  INFO 30812 --- [http-nio-8080-exec-1] a.s.s.m.AbstractValidatingSessionManager : Enabling session validation scheduler...
+2019-08-04 00:25:08.767 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.UserDAO.findByUsername   : ==>  Preparing: select id, balance, username, `password`, `name`, province, city, district, address, principal, phone, type, parking_id, status, create_time, update_time from user where username = ? 
+2019-08-04 00:25:08.813 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.UserDAO.findByUsername   : ==> Parameters: admin(String)
+2019-08-04 00:25:08.847 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.UserDAO.findByUsername   : <==      Total: 1
+2019-08-04 00:25:08.965 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.MenuDAO.listMenuByUserId       : ==>  Preparing: select m.id, m.parent_id as parentId, m.name, m.url, m.perms, m.type, m.icon, m.order_num as orderNum, m.create_time as createTime, m.update_time as updateTime from menu m left join role_menu rm on m.id = rm.menu_id left join user_role ur on rm.role_id = ur.role_id where ur.user_id = ? and m.type in(0,1) order by m.order_num 
+2019-08-04 00:25:08.967 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.MenuDAO.listMenuByUserId       : ==> Parameters: 2(Long)
+2019-08-04 00:25:08.998 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.MenuDAO.listMenuByUserId       : <==      Total: 22
+2019-08-04 00:25:11.443 DEBUG 30812 --- [http-nio-8080-exec-6] c.n.cctower.dao.MenuDAO.listUserPerms    : ==>  Preparing: select distinct m.perms from menu m left join role_menu rm on m.id = rm.menu_id left join user_role ur on rm.role_id = ur.role_id where ur.user_id = ? 
+2019-08-04 00:25:11.445 DEBUG 30812 --- [http-nio-8080-exec-6] c.n.cctower.dao.MenuDAO.listUserPerms    : ==> Parameters: 2(Long)
+2019-08-04 00:25:11.457 DEBUG 30812 --- [http-nio-8080-exec-6] c.n.cctower.dao.MenuDAO.listUserPerms    : <==      Total: 59
+2019-08-04 00:25:11.843 DEBUG 30812 --- [http-nio-8080-exec-5] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:11.843 DEBUG 30812 --- [http-nio-8080-exec-5] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:11.847 DEBUG 30812 --- [http-nio-8080-exec-5] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:11.884 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.ParkingDAO.list    : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking order by id desc limit ?, ? 
+2019-08-04 00:25:11.887 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.ParkingDAO.list    : ==> Parameters: 0(Integer), 10(Integer)
+2019-08-04 00:25:11.900 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.ParkingDAO.list    : <==      Total: 1
+2019-08-04 00:25:11.906 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.ParkingDAO.count   : ==>  Preparing: select count(id) from parking 
+2019-08-04 00:25:11.906 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.ParkingDAO.count   : ==> Parameters: 
+2019-08-04 00:25:11.917 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.ParkingDAO.count   : <==      Total: 1
+2019-08-04 00:25:13.493 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:13.493 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:13.497 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:13.500 DEBUG 30812 --- [http-nio-8080-exec-8] c.nuoze.cctower.dao.PassagewayDAO.list   : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway order by id desc limit ?, ? 
+2019-08-04 00:25:13.500 DEBUG 30812 --- [http-nio-8080-exec-8] c.nuoze.cctower.dao.PassagewayDAO.list   : ==> Parameters: 0(Integer), 10(Integer)
+2019-08-04 00:25:13.511 DEBUG 30812 --- [http-nio-8080-exec-8] c.nuoze.cctower.dao.PassagewayDAO.list   : <==      Total: 4
+2019-08-04 00:25:13.513 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:13.513 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:13.516 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:13.530 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:13.531 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:13.534 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:13.536 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:13.536 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 1(Long)
+2019-08-04 00:25:13.538 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 0
+2019-08-04 00:25:13.551 ERROR 30812 --- [http-nio-8080-exec-8] c.n.c.c.e.CctowerExceptionHandler        : [EXCEPTION HANDLER] cctower service unexpected exception
+
+java.lang.NullPointerException: null
+	at com.nuoze.cctower.service.impl.PassagewayServiceImpl.list(PassagewayServiceImpl.java:42) ~[classes/:na]
+	at com.nuoze.cctower.rest.PassagewayController.list(PassagewayController.java:61) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:189) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:800) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1038) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:942) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1005) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:897) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:882) ~[spring-webmvc-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.shiro.web.servlet.ProxiedFilterChain.doFilter(ProxiedFilterChain.java:61) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.AdviceFilter.executeChain(AdviceFilter.java:108) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.AdviceFilter.doFilterInternal(AdviceFilter.java:137) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:125) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.ProxiedFilterChain.doFilter(ProxiedFilterChain.java:66) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.AbstractShiroFilter.executeChain(AbstractShiroFilter.java:449) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.AbstractShiroFilter$1.call(AbstractShiroFilter.java:365) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.subject.support.SubjectCallable.doCall(SubjectCallable.java:90) ~[shiro-core-1.3.2.jar:1.3.2]
+	at org.apache.shiro.subject.support.SubjectCallable.call(SubjectCallable.java:83) ~[shiro-core-1.3.2.jar:1.3.2]
+	at org.apache.shiro.subject.support.DelegatingSubject.execute(DelegatingSubject.java:383) ~[shiro-core-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.AbstractShiroFilter.doFilterInternal(AbstractShiroFilter.java:362) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.shiro.web.servlet.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:125) ~[shiro-web-1.3.2.jar:1.3.2]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123) ~[druid-1.1.10.jar:1.1.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:490) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:834) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1415) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.16.jar:9.0.16]
+	at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]
+
+2019-08-04 00:25:14.564  INFO 30812 --- [http-nio-8080-exec-7] c.nuoze.cctower.rest.LongCarController   : [LONG CAR CONTROLLER] check long car list
+2019-08-04 00:25:14.565 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:14.565 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.567 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:14.569 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:14.570 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.572 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:14.573 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:14.574 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: null
+2019-08-04 00:25:14.578 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 0
+2019-08-04 00:25:14.582 DEBUG 30812 --- [http-nio-8080-exec-7] com.nuoze.cctower.dao.CarDAO.list        : ==>  Preparing: select id, `number`, parking_id, parking_type, monthly_parking_start, monthly_parking_end, status, infield_permission, create_id, open_id, free_time, cost, create_time, update_time from car WHERE parking_type = ? order by create_time desc limit ?, ? 
+2019-08-04 00:25:14.583 DEBUG 30812 --- [http-nio-8080-exec-7] com.nuoze.cctower.dao.CarDAO.list        : ==> Parameters: 1(Integer), 0(Integer), 10(Integer)
+2019-08-04 00:25:14.607 DEBUG 30812 --- [http-nio-8080-exec-7] com.nuoze.cctower.dao.CarDAO.list        : <==      Total: 10
+2019-08-04 00:25:14.623 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.625 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.632 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.634 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.635 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.637 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.638 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.639 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.641 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.642 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.643 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.646 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.648 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.648 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.650 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.651 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.652 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.653 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.654 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.655 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.656 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.658 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.659 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.663 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.664 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.665 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.667 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.668 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:14.668 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:14.670 DEBUG 30812 --- [http-nio-8080-exec-7] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:14.672 DEBUG 30812 --- [http-nio-8080-exec-7] com.nuoze.cctower.dao.CarDAO.count       : ==>  Preparing: select count(id) from car WHERE parking_type = ? 
+2019-08-04 00:25:14.673 DEBUG 30812 --- [http-nio-8080-exec-7] com.nuoze.cctower.dao.CarDAO.count       : ==> Parameters: 1(Integer)
+2019-08-04 00:25:14.679 DEBUG 30812 --- [http-nio-8080-exec-7] com.nuoze.cctower.dao.CarDAO.count       : <==      Total: 1
+2019-08-04 00:25:16.001 DEBUG 30812 --- [http-nio-8080-exec-5] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:16.002 DEBUG 30812 --- [http-nio-8080-exec-5] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:16.007 DEBUG 30812 --- [http-nio-8080-exec-5] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:16.012 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.UserDAO.list       : ==>  Preparing: select id, balance, username, `password`, `name`, province, city, district, address, principal, phone, type, parking_id, status, create_time, update_time from user WHERE id != 1 and type = ? order by id desc limit ?, ? 
+2019-08-04 00:25:16.013 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.UserDAO.list       : ==> Parameters: 1(Integer), 0(Integer), 10(Integer)
+2019-08-04 00:25:16.018 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.UserDAO.list       : <==      Total: 0
+2019-08-04 00:25:16.020 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.UserDAO.count      : ==>  Preparing: select count(id) from user WHERE id != 1 and type = ? 
+2019-08-04 00:25:16.020 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.UserDAO.count      : ==> Parameters: 1(Integer)
+2019-08-04 00:25:16.022 DEBUG 30812 --- [http-nio-8080-exec-5] com.nuoze.cctower.dao.UserDAO.count      : <==      Total: 1
+2019-08-04 00:25:17.739 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:17.740 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:17.742 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:17.746 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.d.B.list                           : ==>  Preparing: select id, user_id, `type`, car_number, amount, balance, create_time from business_transaction_record order by create_time desc limit ?, ? 
+2019-08-04 00:25:17.747 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.d.B.list                           : ==> Parameters: 0(Integer), 10(Integer)
+2019-08-04 00:25:17.756 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.d.B.list                           : <==      Total: 0
+2019-08-04 00:25:17.757 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.d.B.count                          : ==>  Preparing: select count(id) from business_transaction_record 
+2019-08-04 00:25:17.757 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.d.B.count                          : ==> Parameters: 
+2019-08-04 00:25:17.760 DEBUG 30812 --- [http-nio-8080-exec-8] c.n.c.d.B.count                          : <==      Total: 1
+2019-08-04 00:25:18.541 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:18.541 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:18.543 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:18.545 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:18.545 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: null
+2019-08-04 00:25:18.547 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 0
+2019-08-04 00:25:18.548 DEBUG 30812 --- [http-nio-8080-exec-4] com.nuoze.cctower.dao.CarDAO.list        : ==>  Preparing: select id, `number`, parking_id, parking_type, monthly_parking_start, monthly_parking_end, status, infield_permission, create_id, open_id, free_time, cost, create_time, update_time from car WHERE parking_type = ? order by create_time desc limit ?, ? 
+2019-08-04 00:25:18.549 DEBUG 30812 --- [http-nio-8080-exec-4] com.nuoze.cctower.dao.CarDAO.list        : ==> Parameters: 3(Integer), 0(Integer), 10(Integer)
+2019-08-04 00:25:18.552 DEBUG 30812 --- [http-nio-8080-exec-4] com.nuoze.cctower.dao.CarDAO.list        : <==      Total: 0
+2019-08-04 00:25:18.553 DEBUG 30812 --- [http-nio-8080-exec-4] com.nuoze.cctower.dao.CarDAO.count       : ==>  Preparing: select count(id) from car WHERE parking_type = ? 
+2019-08-04 00:25:18.554 DEBUG 30812 --- [http-nio-8080-exec-4] com.nuoze.cctower.dao.CarDAO.count       : ==> Parameters: 3(Integer)
+2019-08-04 00:25:18.556 DEBUG 30812 --- [http-nio-8080-exec-4] com.nuoze.cctower.dao.CarDAO.count       : <==      Total: 1
+2019-08-04 00:25:21.620 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:21.620 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:21.622 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:21.627 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.BillingDetailDAO.list    : ==>  Preparing: select id, parking_id, `type`, unit_type, unit_price, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twenty_one, twenty_two, twenty_three, twenty_four, create_time, update_time from billing_detail WHERE type = ? order by id desc limit ?, ? 
+2019-08-04 00:25:21.628 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.BillingDetailDAO.list    : ==> Parameters: 1(Integer), 0(Integer), 10(Integer)
+2019-08-04 00:25:21.644 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.BillingDetailDAO.list    : <==      Total: 0
+2019-08-04 00:25:21.650 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.BillingDetailDAO.count   : ==>  Preparing: select count(id) from billing_detail WHERE type = ? 
+2019-08-04 00:25:21.651 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.BillingDetailDAO.count   : ==> Parameters: 1(Integer)
+2019-08-04 00:25:21.655 DEBUG 30812 --- [http-nio-8080-exec-10] c.n.cctower.dao.BillingDetailDAO.count   : <==      Total: 1
+2019-08-04 00:25:22.938 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:22.938 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:22.940 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:22.946 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.cctower.dao.BillingDetailDAO.list    : ==>  Preparing: select id, parking_id, `type`, unit_type, unit_price, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, twenty_one, twenty_two, twenty_three, twenty_four, create_time, update_time from billing_detail WHERE type = ? order by id desc limit ?, ? 
+2019-08-04 00:25:22.949 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.cctower.dao.BillingDetailDAO.list    : ==> Parameters: 2(Integer), 0(Integer), 10(Integer)
+2019-08-04 00:25:22.957 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.cctower.dao.BillingDetailDAO.list    : <==      Total: 1
+2019-08-04 00:25:22.973 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:22.977 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:22.989 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:22.991 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.cctower.dao.BillingDetailDAO.count   : ==>  Preparing: select count(id) from billing_detail WHERE type = ? 
+2019-08-04 00:25:22.996 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.cctower.dao.BillingDetailDAO.count   : ==> Parameters: 2(Integer)
+2019-08-04 00:25:23.007 DEBUG 30812 --- [http-nio-8080-exec-3] c.n.cctower.dao.BillingDetailDAO.count   : <==      Total: 1
+2019-08-04 00:25:25.763 DEBUG 30812 --- [http-nio-8080-exec-2] com.nuoze.cctower.dao.ParkingDAO.list    : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking order by id desc 
+2019-08-04 00:25:25.763 DEBUG 30812 --- [http-nio-8080-exec-2] com.nuoze.cctower.dao.ParkingDAO.list    : ==> Parameters: 
+2019-08-04 00:25:25.766 DEBUG 30812 --- [http-nio-8080-exec-2] com.nuoze.cctower.dao.ParkingDAO.list    : <==      Total: 1
+2019-08-04 00:25:25.767 DEBUG 30812 --- [http-nio-8080-exec-2] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:25.768 DEBUG 30812 --- [http-nio-8080-exec-2] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:25.771 DEBUG 30812 --- [http-nio-8080-exec-2] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:25.959 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==>  Preparing: select role_id from user_role where user_id = ? 
+2019-08-04 00:25:25.959 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : ==> Parameters: 2(Long)
+2019-08-04 00:25:25.961 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.UserRoleDAO.listRoleByUserId   : <==      Total: 1
+2019-08-04 00:25:25.962 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.listByParkingId                : ==>  Preparing: select id, uuid, open_id, order_sn, prepay_id, pay_id, pay_type, car_number, parking_id, entrance_id, exit_id, unit_price, cost_time, cost, pay_status, `status`, in_time, pay_time, out_time from parking_record order by pay_time desc limit ?, ? 
+2019-08-04 00:25:25.963 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.listByParkingId                : ==> Parameters: 0(Integer), 10(Integer)
+2019-08-04 00:25:25.995 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.listByParkingId                : <==      Total: 10
+2019-08-04 00:25:26.006 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.countByParkingId               : ==>  Preparing: select count(id) from parking_record 
+2019-08-04 00:25:26.007 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.countByParkingId               : ==> Parameters: 
+2019-08-04 00:25:26.010 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.countByParkingId               : <==      Total: 1
+2019-08-04 00:25:26.020 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.020 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.030 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.032 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.033 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.036 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.037 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.038 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.040 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.042 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.043 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.045 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.047 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.048 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.050 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.051 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.051 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.053 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.057 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.058 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.060 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.063 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.064 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.066 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.067 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.067 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.070 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.072 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.072 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.075 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.078 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.078 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.082 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.083 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.084 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.086 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.088 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.088 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.092 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.096 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.097 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.099 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.100 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.100 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.103 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.104 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.104 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.117 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.119 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.121 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.122 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.123 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.123 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.133 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.134 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.134 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.136 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.137 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.137 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.139 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.139 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.140 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.146 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.147 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.147 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.149 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.150 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.150 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.153 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.153 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.154 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.155 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.156 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.156 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.158 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.159 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.159 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.164 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.165 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.165 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.167 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.168 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==>  Preparing: select id, `name`, user_id, `location`, phone, create_time, update_time from parking where id = ? 
+2019-08-04 00:25:26.168 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : ==> Parameters: 2(Long)
+2019-08-04 00:25:26.169 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.dao.ParkingDAO.selectByPrimaryKey  : <==      Total: 1
+2019-08-04 00:25:26.170 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.170 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 3(Long)
+2019-08-04 00:25:26.172 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:26.173 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==>  Preparing: select id, `name`, ip, parking_id, `type`, create_time, update_time from passageway where id = ? 
+2019-08-04 00:25:26.173 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : ==> Parameters: 4(Long)
+2019-08-04 00:25:26.175 DEBUG 30812 --- [http-nio-8080-exec-4] c.n.c.d.P.selectByPrimaryKey             : <==      Total: 1
+2019-08-04 00:25:35.400  INFO 30812 --- [Thread-4] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-08-04 00:25:35.407  INFO 30812 --- [Thread-4] a.s.s.m.AbstractValidatingSessionManager : Disabled session validation scheduler.
+2019-08-04 00:25:35.429  INFO 30812 --- [Thread-4] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed

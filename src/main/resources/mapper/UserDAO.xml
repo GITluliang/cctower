@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoze.cctower.dao.UserDAO">
+  <resultMap id="BaseResultMap" type="com.nuoze.cctower.pojo.entity.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="principal" jdbcType="VARCHAR" property="principal" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, balance, username, `password`, `name`, province, city, district, address, principal, phone, type, parking_id, status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.User">
+    insert into user (id, balance, username, `password`,
+      `name`, province, city, district, address, principal,
+      phone, type, parking_id, status, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{principal,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{parkingId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="principal != null">
+        principal,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="parkingId != null">
+        parking_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null">
+        #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nuoze.cctower.pojo.entity.User">
+    update user
+    <set>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null">
+        principal = #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="parkingId != null">
+        parking_id = #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nuoze.cctower.pojo.entity.User">
+    update user
+    set balance = #{balance, jdbcType=DECIMAL},
+      username = #{username,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      principal = #{principal,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      parking_id = #{parkingId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findByUsername" parameterType="string" resultType="com.nuoze.cctower.pojo.entity.User">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where username = #{username}
+  </select>
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      id != 1
+      <if test="username != null and username != ''">and username = #{username}</if>
+      <if test="password != null and password != ''">and password = #{password}</if>
+      <if test="name != null and name != ''">and name = #{name}</if>
+      <if test="province != null and province != ''">and province = #{province}</if>
+      <if test="city != null and city != ''">and city = #{city}</if>
+      <if test="district != null and district != ''">and district = #{district}</if>
+      <if test="address != null and address != ''">and address = #{address}</if>
+      <if test="principal != null and principal != ''">and principal = #{principal}</if>
+      <if test="status != null and status != ''">and status = #{status}</if>
+      <if test="phone != null and phone != ''">and phone = #{phone}</if>
+      <if test="type != null and type != ''">and type = #{type}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="status != null and status != ''">and status = #{status}</if>
+      <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="keyword != null and keyword != ''">
+        AND (username LIKE CONCAT('%',#{keyword},'%')
+        OR name LIKE CONCAT('%',#{keyword},'%')
+        OR address LIKE CONCAT('%',#{keyword},'%')
+        OR principal LIKE CONCAT('%',#{keyword},'%'))
+      </if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
+    </where>
+    <choose>
+      <when test="sort != null and sort.trim() != ''">
+        order by ${sort} ${order}
+      </when>
+      <otherwise>
+        order by id desc
+      </otherwise>
+    </choose>
+    <if test="offset != null and limit != null">
+      limit #{offset}, #{limit}
+    </if>
+  </select>
+
+  <select id="count" resultType="int">
+    select count(id) from user
+    <where>
+      id != 1
+      <if test="username != null and username != ''">and username = #{username}</if>
+      <if test="password != null and password != ''">and password = #{password}</if>
+      <if test="name != null and name != ''">and name = #{name}</if>
+      <if test="province != null and province != ''">and province = #{province}</if>
+      <if test="city != null and city != ''">and city = #{city}</if>
+      <if test="district != null and district != ''">and district = #{district}</if>
+      <if test="address != null and address != ''">and address = #{address}</if>
+      <if test="principal != null and principal != ''">and principal = #{principal}</if>
+      <if test="phone != null and phone != ''">and phone = #{phone}</if>
+      <if test="type != null and type != ''">and type = #{type}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="status != null and status != ''">and status = #{status}</if>
+      <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="keyword != null and keyword != ''">
+        AND (username LIKE CONCAT('%',#{keyword},'%')
+        OR name LIKE CONCAT('%',#{keyword},'%')
+        OR address LIKE CONCAT('%',#{keyword},'%')
+        OR principal LIKE CONCAT('%',#{keyword},'%'))
+      </if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <delete id="batchRemove">
+    delete
+    from user
+    where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>
