@@ -1,0 +1,15 @@
+stages:
+  - build
+  - publish
+
+build:
+  stage: build
+  script:
+    - echo "go go go"
+
+publish:
+  stage: publish
+  script:
+    - echo "pub pub pub"
+  only:
+    - master

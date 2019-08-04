@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoze.cctower.dao.TopUpRecordDAO">
+  <resultMap id="BaseResultMap" type="com.nuoze.cctower.pojo.entity.TopUpRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="prepay_id" jdbcType="VARCHAR" property="prepayId" />
+    <result column="pay_id" jdbcType="VARCHAR" property="payId" />
+    <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
+    <result column="billing_type" jdbcType="TINYINT" property="billingType" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, open_id, order_sn, prepay_id, pay_id, parking_id, billing_type, amount, balance, pay_status,
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from top_up_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from top_up_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.TopUpRecord">
+    insert into top_up_record (id, open_id, order_sn, 
+      prepay_id, pay_id, parking_id, billing_type,
+      amount, balance, pay_status, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{orderSn,jdbcType=VARCHAR}, 
+      #{prepayId,jdbcType=VARCHAR}, #{payId,jdbcType=VARCHAR}, #{parkingId,jdbcType=BIGINT}, #{billingType,jdbcType=TINYINT},
+      #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{payStatus,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.TopUpRecord">
+    insert into top_up_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="orderSn != null">
+        order_sn,
+      </if>
+      <if test="prepayId != null">
+        prepay_id,
+      </if>
+      <if test="payId != null">
+        pay_id,
+      </if>
+      <if test="parkingId != null">
+        parking_id,
+      </if>
+      <if test="billingType != null">
+        billing_type,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="payStatus != null">
+        pay_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSn != null">
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="prepayId != null">
+        #{prepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="payId != null">
+        #{payId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="billingType != null">
+        #{billingType,jdbcType=TINYINT},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="payStatus != null">
+        #{payStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nuoze.cctower.pojo.entity.TopUpRecord">
+    update top_up_record
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSn != null">
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="prepayId != null">
+        prepay_id = #{prepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="payId != null">
+        pay_id = #{payId,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingId != null">
+        parking_id = #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="billingType != null">
+        billing_type = #{billingType,jdbcType=TINYINT},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="payStatus != null">
+        pay_status = #{payStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nuoze.cctower.pojo.entity.TopUpRecord">
+    update top_up_record
+    set open_id = #{openId,jdbcType=VARCHAR},
+      order_sn = #{orderSn,jdbcType=VARCHAR},
+      prepay_id = #{prepayId,jdbcType=VARCHAR},
+      pay_id = #{payId,jdbcType=VARCHAR},
+      parking_id = #{parkingId,jdbcType=BIGINT},
+      billing_type = #{billingType,jdbcType=TINYINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      balance = #{balance,jdbcType=DECIMAL},
+      pay_status = #{payStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findByOrderSn" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from top_up_record
+    where order_sn = #{orderSn}
+  </select>
+
+  <select id="findByOpenId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from top_up_record
+    <where>
+      <if test="openId != null and openId != ''">and open_id = #{openId}</if>
+    </where>
+    <choose>
+      <when test="sort != null and sort.trim() != ''">
+        order by ${sort} ${order}
+      </when>
+    </choose>
+    order by create_time desc
+    <if test="offset != null and limit != null">
+      limit #{offset}, #{limit}
+    </if>
+  </select>
+</mapper>

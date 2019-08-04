@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoze.cctower.dao.ParkingDAO">
+  <resultMap id="BaseResultMap" type="com.nuoze.cctower.pojo.entity.Parking">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`, user_id, `location`, phone, create_time,
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from parking
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from parking
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Parking">
+    insert into parking (id, `name`, user_id, 
+      `location`,
+      phone, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{location,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Parking">
+    insert into parking
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="location != null">
+        `location`,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nuoze.cctower.pojo.entity.Parking">
+    update parking
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="location != null">
+        `location` = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nuoze.cctower.pojo.entity.Parking">
+    update parking
+    set `name` = #{name,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      `location` = #{location,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from parking
+    <where>
+      <if test="id != null and id != ''">and id = #{id}</if>
+      <if test="name != null and name != ''">and name = #{name}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+      <if test="location != null and location != ''">and location = #{location}</if>
+      <if test="phone != null and phone != ''">and phone = #{phone}</if>
+      <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="keyword != null and keyword != ''">
+        AND (location LIKE CONCAT('%',#{keyword},'%')
+        OR name LIKE CONCAT('%',#{keyword},'%')
+        OR phone LIKE CONCAT('%',#{keyword},'%'))
+      </if>
+    </where>
+    <choose>
+      <when test="sort != null and sort.trim() != ''">
+        order by ${sort} ${order}
+      </when>
+      <otherwise>
+        order by id desc
+      </otherwise>
+    </choose>
+    <if test="offset != null and limit != null">
+      limit #{offset}, #{limit}
+    </if>
+  </select>
+
+  <select id="count" resultType="int">
+    select count(id) from parking
+    <where>
+      <if test="id != null and id != ''">and id = #{id}</if>
+      <if test="name != null and name != ''">and name = #{name}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+      <if test="location != null and location != ''">and location = #{location}</if>
+      <if test="phone != null and phone != ''">and phone = #{phone}</if>
+      <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="keyword != null and keyword != ''">
+        AND (location LIKE CONCAT('%',#{keyword},'%')
+        OR name LIKE CONCAT('%',#{keyword},'%')
+        OR phone LIKE CONCAT('%',#{keyword},'%'))
+      </if>
+    </where>
+  </select>
+
+  <select id="findByUserId" resultType="long">
+    select id
+    from parking
+    where user_id = #{userId}
+  </select>
+
+  <select id="findParkingByUser" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from parking
+    where user_id = #{userId}
+  </select>
+
+  <delete id="batchRemove">
+    delete
+    from parking
+    where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="findByUserIdAndParkingName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from parking
+    where user_id = #{userId}
+    and name = #{parkingName}
+  </select>
+</mapper>
