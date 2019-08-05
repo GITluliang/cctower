@@ -5,6 +5,7 @@ import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.nuoze.cctower.common.enums.ApiDataEnum;
+import com.nuoze.cctower.common.enums.IncomeType;
 import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.common.util.IpUtil;
 import com.nuoze.cctower.component.BillingComponent;
@@ -106,9 +107,11 @@ public class ApiServiceImpl implements ApiService {
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
             if (car != null) {
                 if (MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
+                    record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                 }
                 if (VIP_CAR == car.getParkingType()) {
+                    record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                 }
                 if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
@@ -116,6 +119,7 @@ public class ApiServiceImpl implements ApiService {
                         car.setStatus(BUSINESS_FORBIDDEN_CAR);
                         car.setUpdateTime(new Date());
                         carDAO.updateByPrimaryKeySelective(car);
+                        record.setPayType(PAYMENT_VIP);
                         return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                     }
                 }
@@ -125,6 +129,7 @@ public class ApiServiceImpl implements ApiService {
             if (freeTime != null) {
                 //如果在停车场免费停车时间内，paid=1， status: LEAVE_YET
                 if (freeTime >= costTime) {
+                    record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? EMPTY_MONEY.toString() : cost.toString());
                 }
             }
@@ -154,6 +159,9 @@ public class ApiServiceImpl implements ApiService {
                     member.setBalance(balance);
                     member.setUpdateTime(new Date());
                     memberDAO.updateByPrimaryKeySelective(member);
+                    record.setPayType(PAYMENT_WECHAT);
+                    billingComponent.addTradingRecord(cost, parkingId, IncomeType.PARKING_CHARGE);
+                    billingComponent.addAccountBalance(cost, parkingId);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, cost.toString());
                 }
             }

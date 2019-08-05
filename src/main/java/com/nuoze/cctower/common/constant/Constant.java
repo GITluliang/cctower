@@ -76,4 +76,5 @@ public class Constant {
     public static final Integer PAYMENT_OFFLINE = 0;
     public static final Integer PAYMENT_WECHAT = 1;
     public static final Integer PAYMENT_ZHIFUBAO = 2;
+    public static final Integer PAYMENT_VIP = 3;
 }

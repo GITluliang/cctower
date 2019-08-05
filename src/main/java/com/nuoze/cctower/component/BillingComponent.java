@@ -1,17 +1,15 @@
 package com.nuoze.cctower.component;
 
+import com.nuoze.cctower.common.enums.IncomeType;
 import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.common.util.R;
-import com.nuoze.cctower.dao.BillingDAO;
-import com.nuoze.cctower.dao.BillingDetailDAO;
-import com.nuoze.cctower.dao.CarDAO;
-import com.nuoze.cctower.pojo.entity.Billing;
-import com.nuoze.cctower.pojo.entity.BillingDetail;
-import com.nuoze.cctower.pojo.entity.Car;
+import com.nuoze.cctower.dao.*;
+import com.nuoze.cctower.pojo.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import static com.nuoze.cctower.common.constant.Constant.*;
 
@@ -30,6 +28,38 @@ public class BillingComponent {
     private BillingDetailDAO billingDetailDAO;
     @Autowired
     private CarDAO carDAO;
+    @Autowired
+    private AccountDAO accountDAO;
+    @Autowired
+    private ParkingTradingRecordDAO tradingRecordDAO;
+
+    /**
+     * 增加交易流水
+     * @param money 流水金额
+     * @param parkingId 停车场ID
+     * @param type 收入类型
+     */
+    public void addTradingRecord(BigDecimal money, Long parkingId, IncomeType type) {
+        ParkingTradingRecord tradingRecord = new ParkingTradingRecord();
+        tradingRecord.setAmount(money);
+        tradingRecord.setType(PARKING_TRADING_RECORD_INCOME_TYPE);
+        tradingRecord.setParkingId(parkingId);
+        tradingRecord.setPayTime(new Date());
+        tradingRecord.setIncomeType(type.name());
+        tradingRecordDAO.insert(tradingRecord);
+
+    }
+
+    /**
+     * 更新停车场余额
+     * @param money 金额
+     * @param parkingId 停车场ID
+     */
+    public void addAccountBalance(BigDecimal money, Long parkingId) {
+        Account account = accountDAO.selectByParkingId(parkingId);
+        account.setBalance(account.getBalance().add(money));
+        accountDAO.updateByPrimaryKeySelective(account);
+    }
 
     public R billingParkingIdCheck(Long parkingId, Boolean isBasicBilling) {
         if (isBasicBilling && billingDAO.selectByParkingId(parkingId) != null) {
