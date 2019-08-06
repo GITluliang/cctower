@@ -67,7 +67,7 @@ function load() {
 										} else if (value == '2') {
 											return '<span class="label label-primary">支付宝支付</span>';
 										} else if (value == '3') {
-											return '<span class="label label-primary">无需支付</span>';
+											return '<span class="label label-blue">无需支付</span>';
 										}
 									}
 								},

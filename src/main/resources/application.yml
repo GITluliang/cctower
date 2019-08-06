@@ -6,7 +6,7 @@ logging:
 
 spring:
   profiles:
-    active: pro
+    active: dev
 
   application:
     name: cctower
