@@ -35,6 +35,7 @@ public class Constant {
 
     /**
      * 车辆类型
+     *  0:临时车 1:包月 2:VIP 3:商户车辆
      */
     public static final int TEMPORARY_CAR = 0;
     public static final int MONTHLY_CAR = 1;
@@ -71,10 +72,13 @@ public class Constant {
     public static final Integer PARKING_TRADING_RECORD_EXPEND_TYPE = 0;
 
     /**
-     * pay type 0：线下 1：微信 2：支付宝
+     * pay type 0：线下 1：微信 2：支付宝 3:vip
+     *      4：月租车、5：商户车辆
      */
     public static final Integer PAYMENT_OFFLINE = 0;
     public static final Integer PAYMENT_WECHAT = 1;
     public static final Integer PAYMENT_ZHIFUBAO = 2;
     public static final Integer PAYMENT_VIP = 3;
+    public static final Integer PAYMENT_MONTHLY = 4;
+    public static final Integer PAYMENT_VBUSINESS = 5;
 }

@@ -106,20 +106,23 @@ public class ApiServiceImpl implements ApiService {
             int costTime = DateUtils.diffMin(record.getInTime());
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
             if (car != null) {
+                //MONTHLY_CAR:包月
                 if (MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
-                    record.setPayType(PAYMENT_VIP);
+                    record.setPayType(PAYMENT_MONTHLY);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                 }
+                //VIP_CAR：VIP车辆
                 if (VIP_CAR == car.getParkingType()) {
                     record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                 }
+                //BUSINESS_CAR：商户车辆
                 if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
                     if (car.getFreeTime() > costTime) {
                         car.setStatus(BUSINESS_FORBIDDEN_CAR);
                         car.setUpdateTime(new Date());
                         carDAO.updateByPrimaryKeySelective(car);
-                        record.setPayType(PAYMENT_VIP);
+                        record.setPayType(PAYMENT_VBUSINESS);
                         return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                     }
                 }
