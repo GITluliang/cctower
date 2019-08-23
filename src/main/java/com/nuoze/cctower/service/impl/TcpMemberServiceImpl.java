@@ -16,43 +16,49 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * ToC用户表
+ *
+ * @author luliang
+ * @date 219-8-23 01:57
+ */
 @Service
 public class TcpMemberServiceImpl implements TcpMemberService {
-	@Autowired
-	private MemberDAO memberDao;
+    @Autowired
+    private MemberDAO memberDao;
 
-	@Override
-	public Pair<Integer, List<MemberVO>> list(Map<String, Object> map){
-		if(map.get("nickName") != null) {
-			map.put("nickName", "%" +map.get("nickName") + "%") ;
-		}
-		List<MemberVO> memberVOS = new ArrayList<>();
-		int count = memberDao.count(map) ;
-		List<Member> list = memberDao.list(map);
-		if (!CollectionUtils.isEmpty(list)) {
-			for (Member member : list) {
-				MemberVO memberVO = new MemberVO();
-				memberVO.setAvatarUrl(member.getAvatarUrl());
-				memberVO.setBalance(member.getBalance());
-				memberVO.setCity(member.getCity());
-				memberVO.setId(member.getId());
-				memberVO.setNickName(member.getNickName());
-				memberVO.setOpenId(member.getOpenId());
-				memberVO.setPhone(member.getPhone());
-				memberVO.setProvince(member.getProvince());
+    @Override
+    public Pair<Integer, List<MemberVO>> list(Map<String, Object> map) {
+        if (map.get("nickName") != null) {
+            map.put("nickName", "%" + map.get("nickName") + "%");
+        }
+        List<MemberVO> memberVOS = new ArrayList<>();
+        int count = memberDao.count(map);
+        List<Member> list = memberDao.list(map);
+        if (!CollectionUtils.isEmpty(list)) {
+            for (Member member : list) {
+                MemberVO memberVO = new MemberVO();
+                memberVO.setAvatarUrl(member.getAvatarUrl());
+                memberVO.setBalance(member.getBalance());
+                memberVO.setCity(member.getCity());
+                memberVO.setId(member.getId());
+                memberVO.setNickName(member.getNickName());
+                memberVO.setOpenId(member.getOpenId());
+                memberVO.setPhone(member.getPhone());
+                memberVO.setProvince(member.getProvince());
 
-				Date createTime = member.getCreateTime();
-				if ( createTime!= null) {
-					memberVO.setCreateTime(DateUtils.formatDateTime(createTime));
-				}
-				Date updateTime = member.getUpdateTime();
-				if(updateTime != null) {
-					memberVO.setUpdateTime(DateUtils.formatDateTime(updateTime));
-				}
-				memberVOS.add(memberVO) ;
-			}
-		}
-		return new MutablePair<>(count,memberVOS);
-	}
+                Date createTime = member.getCreateTime();
+                if (createTime != null) {
+                    memberVO.setCreateTime(DateUtils.formatDateTime(createTime));
+                }
+                Date updateTime = member.getUpdateTime();
+                if (updateTime != null) {
+                    memberVO.setUpdateTime(DateUtils.formatDateTime(updateTime));
+                }
+                memberVOS.add(memberVO);
+            }
+        }
+        return new MutablePair<>(count, memberVOS);
+    }
 
 }

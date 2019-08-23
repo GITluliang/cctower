@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -88,8 +89,8 @@ public class UserController {
 
     @GetMapping("/personal")
     String personal(Model model) {
-        User user  = userService.findById(getUserId());
-        model.addAttribute("user",user);
+        User user = userService.findById(getUserId());
+        model.addAttribute("user", user);
         return prefix + "personal";
     }
 
@@ -134,22 +135,23 @@ public class UserController {
     @PostMapping("/resetPwd")
     @ResponseBody
     R resetPwd(UserVO vo) {
-        try{
+        try {
             userService.resetPwd(vo);
             return R.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             return R.error(1, e.getMessage());
         }
 
     }
+
     @RequiresPermissions("sys:user:resetPwd")
     @PostMapping("/adminResetPwd")
     @ResponseBody
     R adminResetPwd(UserVO vo) {
-        try{
+        try {
             userService.adminResetPwd(vo);
             return R.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             return R.error(1, e.getMessage());
         }
 

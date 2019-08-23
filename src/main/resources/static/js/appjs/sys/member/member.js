@@ -55,11 +55,15 @@ function load() {
 																{
 									field : 'openId', 
 									title : 'openId' 
-								},
+								},*/
 								{
 									field : 'avatarUrl',
-									title : '头像地址'
-								},*/
+									title : '头像' ,
+									align : 'center',
+									formatter : function(value) {
+										return '<img style="width: 35px" src="' + value + '" />' ;
+									}
+								},
 								{
 									field : 'nickName',
 									title : '用户名'
