@@ -78,7 +78,8 @@ public class WxOrderServiceImpl implements WxOrderService {
             String prepayId = result.getPackageValue();
             prepayId = prepayId.replace("prepay_id=", "");
             ParkingRecord parkingRecord = parkingRecordService.findById(dto.getRecordId());
-            parkingRecord.setOrderSn(orderRequest.getOutTradeNo());
+            //*** 保存小程序支付订单号 ***
+            parkingRecord.setAppletOrderSn(orderRequest.getOutTradeNo());
             parkingRecord.setPrepayId(prepayId);
             parkingRecord.setOpenId(openId);
             parkingRecordService.update(parkingRecord);
@@ -89,13 +90,17 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public void payNotify(WxPayOrderNotifyResult result, HttpServletResponse response) {
+        public void payNotify(WxPayOrderNotifyResult result, HttpServletResponse response) {
         try {
+            //orderSn：获取订单号、payId：支付id、money：支付费用
             String orderSn = result.getOutTradeNo();
             String payId = result.getTransactionId();
             BigDecimal money = new BigDecimal(BaseWxPayResult.fenToYuan(result.getTotalFee()));
+            //根据订单，查询停车记录
             ParkingRecord parkingRecord = parkingRecordService.findByOrderSn(orderSn);
+            //根据订单，查询账单记录
             TopUpRecord topUpRecord = topUpRecordService.findByOrderSn(orderSn);
+            //根据订单，查询小程序续费记录
             RenewRecord renewRecord = renewRecordDAO.findByOrderSn(orderSn);
             if (parkingRecord == null && topUpRecord == null && renewRecord == null) {
                 log.error("[PAY NOTIFY PARKING-RECORD] 订单不存在 orderSn: {}", orderSn);

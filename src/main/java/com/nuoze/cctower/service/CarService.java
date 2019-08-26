@@ -35,6 +35,11 @@ public interface CarService {
 
     ParkingRecordVO parkingRecordDetail(String carNumber);
 
+    /**
+     * 根据车牌查询费用
+     * @param carNumber
+     * @return
+     */
     Result costByNumber(String carNumber);
 
     String[] wxCarList(String openId);

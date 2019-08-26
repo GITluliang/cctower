@@ -264,9 +264,9 @@
   </select>
 
   <select id="findByOrderSn" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from parking_record
-    where order_sn = #{orderSn}
+    SELECT <include refid="Base_Column_List" />
+    FROM parking_record
+    WHERE order_sn = #{orderSn} OR applet_order_sn= #{orderSn} OR qr_code_order_sn= #{orderSn}
   </select>
 
   <select id="findByParkingId" resultMap="BaseResultMap">

@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 /**
  * @author JiaShun
  * @date 2019-01-22 23:48
+ * 微信支付
  */
 @Slf4j
 @Controller
@@ -35,12 +36,26 @@ public class WxPayController {
     @Autowired
     private WxPayService wxPayService;
 
+    /**
+     * 微信支付預付款
+     * @param dto
+     * @param request
+     * @return WX付款订单结果
+     */
     @PostMapping("prepay")
     @ResponseBody
     public WxPayMpOrderResult wxPrePay(@RequestBody WxPayDTO dto, HttpServletRequest request) {
         return wxOrderService.wxPrePay(dto, request);
     }
 
+    /**
+     * 支付通知
+     * WxPayOrderNotifyResult：微信支付订单通知结果
+     * orderSn：订单编号
+     * payId：付款id
+     * @param request
+     * @param response
+     */
     @PostMapping("pay-notify")
     public void payNotify(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -57,6 +72,12 @@ public class WxPayController {
         }
     }
 
+    /**
+     * 微信支付回调
+     * @param response
+     * @param xml
+     * @throws IOException
+     */
     private void wxpayCallbackResult(HttpServletResponse response, String xml) throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/xml; charset=utf-8");

@@ -334,6 +334,8 @@ CREATE TABLE `parking_record` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `open_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `applet_order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '小程序支付订单号',
+  `qr_code_order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL '付款码支付订单',
   `prepay_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `pay_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `car_number` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '车牌号',

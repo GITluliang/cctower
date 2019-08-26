@@ -23,6 +23,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.INVALID_PARAM;
 /**
  * @author JiaShun
  * @date 2019-03-15 01:23
+ * 小程序车辆
  */
 @Slf4j
 @RestController
@@ -34,28 +35,52 @@ public class AppletCarController {
     @Autowired
     private PaymentComponent paymentComponent;
 
-
+    /**
+     * 根据车牌查询费用
+     * @param carNumber
+     * @return
+     */
     @GetMapping("cost-by-number")
     public Result costByNumber(@RequestParam("carNumber") String carNumber) {
         log.info("[Applet Car Controller] cost-by-number receive car number: {}", carNumber);
         return carService.costByNumber(carNumber);
     }
 
+    /**
+     * 停车场信息
+     * @param carNumber
+     * @return
+     */
     @GetMapping("parking-record/detail")
     public Result parkingRecordDetail(@RequestParam("carNumber") String carNumber) {
         return ResponseResult.success(carService.parkingRecordDetail(carNumber));
     }
 
+    /**
+     * 更新车辆
+     * @param carNumber
+     * @return
+     */
     @GetMapping("renew-by-number")
     public Result renewCar(@RequestParam("carNumber") String carNumber) {
         return carService.renewByNumber(carNumber);
     }
 
+    /**
+     * 更新车辆详细信息
+     * @param renewCarNumber
+     * @return
+     */
     @GetMapping("renew-car/detail")
     public Result renewCarDetail(@RequestParam("renewCarNumber") String renewCarNumber) {
         return ResponseResult.success(carService.renewCarDetail(renewCarNumber));
     }
 
+    /**
+     * 价格信息
+     * @param parkingId
+     * @return
+     */
     @GetMapping("renew-car/price-info")
     public Result priceInfo(@RequestParam("parkingId") Long parkingId) {
         RenewCarVO renewCarVO = carService.findMonthlyPriceByParkingId(parkingId);
@@ -65,6 +90,11 @@ public class AppletCarController {
         return ResponseResult.success(renewCarVO);
     }
 
+    /**
+     * 计算
+     * @param json
+     * @return
+     */
     @PostMapping("renew-car/calculate")
     public Result calculate(@RequestBody JSONObject json) {
         Integer monthCount = null;
@@ -80,11 +110,22 @@ public class AppletCarController {
         return ResponseResult.success(cost);
     }
 
+    /**
+     * 更新车辆预付款
+     * @param dto
+     * @param request
+     * @return
+     */
     @PostMapping("renew-car/prepay")
     public WxPayMpOrderResult renewCarPrePay(@RequestBody RenewCarPayDTO dto, HttpServletRequest request) {
         return carService.renewCarPrePay(dto, request);
     }
 
+    /**
+     * 更新车辆记录
+     * @param json
+     * @return
+     */
     @PostMapping("renew-car/record")
     public Result renewCarRecord(@RequestBody JSONObject json) {
         Map<String, Object> map = paymentComponent.paymentRecord(json);

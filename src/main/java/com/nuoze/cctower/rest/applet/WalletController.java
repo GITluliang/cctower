@@ -23,6 +23,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.PERMISSION_DENIED;
 /**
  * @author JiaShun
  * @date 2019-01-15 23:21
+ * 微信钱包
  */
 @RestController
 @RequestMapping("applet/wallet")

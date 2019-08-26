@@ -86,10 +86,12 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public ApiOutVO out(ApiDTO apiDTO) {
         log.info("[API CAR OUT] carNumber: {}, exit ip: {}, exit parking id: {} ", apiDTO.getCarNumber(), apiDTO.getIp(), apiDTO.getParkingId());
+        //parkingId：停车场id、carNumber：车牌号、record：停车记录
         Long parkingId = apiDTO.getParkingId();
         String carNumber = apiDTO.getCarNumber();
         ParkingRecord record = recordDAO.findByParkingIdAndCarNumberAndStatus(parkingId, carNumber);
         if (record != null) {
+            //cost：车费、passageway：车场通道、Car：车辆表
             BigDecimal cost = record.getCost();
             Passageway passageway = passagewayDAO.findByParkingIdAndIp(apiDTO.getParkingId(), apiDTO.getIp());
             Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
@@ -175,6 +177,12 @@ public class ApiServiceImpl implements ApiService {
         return null;
     }
 
+    /**
+     * 获得付款码url
+     * @param record
+     * @param cost
+     * @return
+     */
     private String getCodeUrl(ParkingRecord record, BigDecimal cost) {
         WxPayUnifiedOrderRequest orderRequest = this.paymentComponent.buildWxPayReq(null, cost, null, IpUtil.getLocalHostIp());
         orderRequest.setBody("CCTower: 停车费");
@@ -188,7 +196,8 @@ public class ApiServiceImpl implements ApiService {
             if (!StringUtils.isEmpty(prepayId)) {
                 record.setPrepayId(prepayId);
             }
-            record.setOrderSn(orderRequest.getOutTradeNo());
+            //*** 付款码支付订单 ***
+            record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
             codeUrl = result.getCodeURL();
         } catch (WxPayException e) {
             log.error("pre pay has exception: {}", e.getMessage());
@@ -200,6 +209,7 @@ public class ApiServiceImpl implements ApiService {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         record.setStatus(status);
         record.setUuid(uuid);
+        //更新订单
         recordDAO.updateByPrimaryKeySelective(record);
         apiVO.setPaid(paid);
         apiVO.setCarNumber(carNumber);

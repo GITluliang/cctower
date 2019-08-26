@@ -222,6 +222,7 @@ public class CarServiceImpl implements CarService {
                     break;
             }
         }
+        //付款时间不等于空并且支付成功    支付状态：0：未支付 1：支付成功
         if (parkingRecord.getPayTime() != null && parkingRecord.getPayStatus() == 1) {
             Long parkingId = parkingRecord.getParkingId();
             Billing billing = billingService.findByParkingId(parkingId);

@@ -21,6 +21,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.PERMISSION_DENIED;
 /**
  * @author JiaShun
  * @date 2019-04-13 16:32
+ * 微信车辆
  */
 @Slf4j
 @RestController
