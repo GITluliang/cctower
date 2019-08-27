@@ -59,6 +59,11 @@ public class WalletController {
         return walletService.walletPrepay(dto, request);
     }
 
+    /**
+     * 消费记录
+     * @param json
+     * @return
+     */
     @PostMapping("record")
     public Result recordList(@RequestBody JSONObject json) {
         Map<String, Object> map = paymentComponent.paymentRecord(json);

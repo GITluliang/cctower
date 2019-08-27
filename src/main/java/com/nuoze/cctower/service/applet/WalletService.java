@@ -15,5 +15,10 @@ import java.util.Map;
 public interface WalletService {
     WxPayMpOrderResult walletPrepay(WalletDTO dto, HttpServletRequest request);
 
+    /**
+     * 消费记录
+     * @param map
+     * @return
+     */
     List<TopUpRecordVO> recordList(Map<String, Object> map);
 }
