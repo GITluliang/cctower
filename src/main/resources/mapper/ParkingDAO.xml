@@ -7,12 +7,13 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="location" jdbcType="VARCHAR" property="location" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="contacts" jdbcType="VARCHAR" property="contacts" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, user_id, `location`, phone, create_time,
-    update_time
+    id, `name`, user_id, `location`, phone, create_time,update_time, contacts, email
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -25,13 +26,12 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Parking">
-    insert into parking (id, `name`, user_id, 
-      `location`,
-      phone, create_time, update_time
+    insert into parking (id, `name`, user_id, `location`, phone, create_time, update_time, contacts, email
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
       #{location,jdbcType=VARCHAR},
-      #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{contacts,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Parking">
@@ -58,6 +58,12 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="contacts != null">
+        contacts,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -80,6 +86,12 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contacts != null">
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -104,6 +116,12 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="contacts != null">
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -114,7 +132,9 @@
       `location` = #{location,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP} ,
+      contacts = #{contacts,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -130,6 +150,8 @@
       <if test="phone != null and phone != ''">and phone = #{phone}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="contacts != null and contacts != ''">and contacts = #{contacts}</if>
+      <if test="email != null and email != ''">and email = #{email}</if>
       <if test="keyword != null and keyword != ''">
         AND (location LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')
@@ -159,6 +181,8 @@
       <if test="phone != null and phone != ''">and phone = #{phone}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="contacts != null and contacts != ''">and contacts = #{contacts}</if>
+      <if test="email != null and email != ''">and email = #{email}</if>
       <if test="keyword != null and keyword != ''">
         AND (location LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')
