@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * passageway
+ * passageway：车场通道
  * @author JiaShun
  */
 @Data

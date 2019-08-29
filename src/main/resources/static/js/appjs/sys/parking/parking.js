@@ -52,11 +52,19 @@ function load() {
 								},
 																{
 									field : 'location', 
-									title : '位置' 
+									title : '停车场地址'
+								},
+								{
+									field : 'contacts',
+									title : '项目联系人'
 								},
 																{
 									field : 'phone', 
-									title : '负责人联系方式' 
+									title : '联系电话'
+								},
+								{
+									field : 'email',
+									title : '联系邮箱'
 								},
 																{
 									title : '操作',

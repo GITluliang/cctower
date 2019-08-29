@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * renew_record
+ * renew_record:小程序续费记录
  * @author JiaShun
  */
 @Data

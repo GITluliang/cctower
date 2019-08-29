@@ -23,6 +23,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.PERMISSION_DENIED;
 /**
  * @author JiaShun
  * @date 2019-01-15 23:21
+ * 微信钱包
  */
 @RestController
 @RequestMapping("applet/wallet")
@@ -58,6 +59,11 @@ public class WalletController {
         return walletService.walletPrepay(dto, request);
     }
 
+    /**
+     * 消费记录
+     * @param json
+     * @return
+     */
     @PostMapping("record")
     public Result recordList(@RequestBody JSONObject json) {
         Map<String, Object> map = paymentComponent.paymentRecord(json);

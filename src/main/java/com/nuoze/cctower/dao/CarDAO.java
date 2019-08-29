@@ -18,6 +18,12 @@ public interface CarDAO extends BaseDAO<Car> {
 
     int count(Map<String, Object> map);
 
+    /**
+     * 根据车场id和车牌号，查询车辆
+     * @param parkingId
+     * @param carNumber
+     * @return
+     */
     Car findByParkingIdAndCarNumber(@Param("parkingId") Long parkingId, @Param("carNumber") String carNumber);
 
     int batchRemove(Long[] ids);

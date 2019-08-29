@@ -22,6 +22,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.WX_SERVER_ERROR;
 /**
  * @author JiaShun
  * @date 2019-01-13 23:48
+ * 微信用户
  */
 @Slf4j
 @RestController

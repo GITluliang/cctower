@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * parking_record
+ * parking_record   停车记录
  * @author JiaShun
  */
 @Data
@@ -106,6 +106,16 @@ public class ParkingRecord implements Serializable {
      * 出厂时间
      */
     private Date outTime;
+
+    /**
+     * 小程序支付订单号（后加字段）
+     */
+    private String appletOrderSn ;
+
+    /**
+     * 付款码支付订单（后加字段）
+     */
+    private String qrCodeOrderSn ;
 
     private static final long serialVersionUID = 1L;
 
