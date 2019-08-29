@@ -1,6 +1,8 @@
 package com.nuoze.cctower.service.impl;
 
 import com.nuoze.cctower.common.util.Query;
+import com.nuoze.cctower.common.util.ShiroUtils;
+import com.nuoze.cctower.component.IdComponent;
 import com.nuoze.cctower.dao.BillingDAO;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.pojo.dto.BillingDTO;
@@ -11,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +28,15 @@ public class BillingServiceImpl implements BillingService {
     private BillingDAO billingDAO;
     @Autowired
     private ParkingDAO parkingDAO;
+    @Autowired
+    private IdComponent idComponent;
 
     @Override
     public List<BillingDTO> list(Query query) {
+        Long userId = idComponent.getUserId();
+        if (userId != null) {
+            query.put("userId", userId);
+        }
         List<Billing> list = billingDAO.list(query);
         List<BillingDTO> dtoList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
@@ -54,6 +63,7 @@ public class BillingServiceImpl implements BillingService {
 
     @Override
     public int save(Billing billing) {
+        billing.setUserId(ShiroUtils.getUser().getId());
         return billingDAO.insert(billing);
     }
 

@@ -39,6 +39,7 @@ CREATE TABLE `billing` (
   `wechat_discount` int(5) DEFAULT NULL COMMENT '微信折扣百分比',
   `alipay_discount` int(5) DEFAULT NULL COMMENT '支付宝折扣百分比',
   `day_cost` decimal(10,2) DEFAULT NULL COMMENT '24小时最高收费',
+  `user_id` bigint(20) NOT NULL COMMENT '所属物业公司ID',
   PRIMARY KEY (`id`),
   KEY `idx_parking_id` (`parking_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='停车计费逻辑表';

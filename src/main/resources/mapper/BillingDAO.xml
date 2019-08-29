@@ -10,10 +10,10 @@
     <result column="wechat_discount" jdbcType="INTEGER" property="wechatDiscount" />
     <result column="alipay_discount" jdbcType="INTEGER" property="alipayDiscount" />
     <result column="day_cost" jdbcType="DECIMAL" property="dayCost" />
+    <result column="user_id" jdbcType="DECIMAL" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parking_id, monthly_price, free_time, paid_free_time, `wechat_discount`, `alipay_discount`,
-    day_cost
+    id, parking_id, monthly_price, free_time, paid_free_time, `wechat_discount`, `alipay_discount`, day_cost, user_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,10 +28,10 @@
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Billing">
     insert into billing (id, parking_id, monthly_price,
       free_time, paid_free_time, `wechat_discount`, `alipay_discount`,
-      day_cost)
+      day_cost, user_id)
     values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{monthlyPrice,jdbcType=DECIMAL},
       #{freeTime,jdbcType=INTEGER}, #{paidFreeTime,jdbcType=INTEGER}, #{wechatDiscount,jdbcType=INTEGER}, #{alipayDiscount,jdbcType=INTEGER},
-      #{dayCost,jdbcType=DECIMAL})
+      #{dayCost,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Billing">
     insert into billing
@@ -60,6 +60,9 @@
       <if test="dayCost != null">
         day_cost,
       </if>
+      <if test="userId != null">
+        user_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -85,6 +88,9 @@
       </if>
       <if test="dayCost != null">
         #{dayCost,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -112,6 +118,9 @@
       <if test="dayCost != null">
         day_cost = #{dayCost,jdbcType=DECIMAL},
       </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -123,7 +132,8 @@
       paid_free_time = #{paidFreeTime,jdbcType=INTEGER},
       `wechat_discount` = #{wechatDiscount,jdbcType=INTEGER},
       `alipay_discount` = #{alipayDiscount,jdbcType=INTEGER},
-      day_cost = #{dayCost,jdbcType=DECIMAL}
+      day_cost = #{dayCost,jdbcType=DECIMAL},
+      user_id = #{userId,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -139,6 +149,7 @@
       <if test="wechatDiscount != null and wechatDiscount != ''">and wechat_discount = #{wechatDiscount}</if>
       <if test="alipayDiscount != null and alipayDiscount != ''">and alipay_discount = #{alipayDiscount}</if>
       <if test="dayCost != null and dayCost != ''">and day_cost = #{dayCost}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -170,6 +181,7 @@
       <if test="wechatDiscount != null and wechatDiscount != ''">and wechat_discount = #{wechatDiscount}</if>
       <if test="alipayDiscount != null and alipayDiscount != ''">and alipay_discount = #{alipayDiscount}</if>
       <if test="dayCost != null and dayCost != ''">and day_cost = #{dayCost}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
     </where>
   </select>
 

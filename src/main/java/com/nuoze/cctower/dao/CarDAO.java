@@ -3,7 +3,6 @@ package com.nuoze.cctower.dao;
 import com.nuoze.cctower.pojo.entity.Car;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +19,9 @@ public interface CarDAO extends BaseDAO<Car> {
 
     /**
      * 根据车场id和车牌号，查询车辆
-     * @param parkingId
-     * @param carNumber
-     * @return
+     * @param parkingId 车场id
+     * @param carNumber 车牌号
+     * @return Car
      */
     Car findByParkingIdAndCarNumber(@Param("parkingId") Long parkingId, @Param("carNumber") String carNumber);
 
