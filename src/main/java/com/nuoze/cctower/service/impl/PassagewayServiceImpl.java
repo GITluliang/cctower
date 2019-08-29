@@ -38,11 +38,11 @@ public class PassagewayServiceImpl implements PassagewayService {
         List<PassagewayDTO> passagewayDTOS = new ArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
             for (Passageway vo : list) {
-                Long parkingId = vo.getParkingId();
-                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
                 PassagewayDTO dto = new PassagewayDTO();
+                if(vo.getParkingId() != null) {
+                    dto.setParkingName(parkingDAO.selectByPrimaryKey(vo.getParkingId()).getName());
+                }
                 BeanUtils.copyProperties(vo, dto);
-                dto.setParkingName(parkingName);
                 passagewayDTOS.add(dto);
             }
         }

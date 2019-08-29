@@ -88,8 +88,10 @@ public class PassagewayController {
     @PostMapping("/save")
     @RequiresPermissions("sys:passageway:add")
     public R save(Passageway passageway){
-        if(passagewayService.save(passageway)>0){
-            return R.ok();
+        if(!(passageway.getParkingId() == null || "".equals(passageway.getParkingId()))) {
+            if(passagewayService.save(passageway)>0){
+                return R.ok();
+            }
         }
         return R.error();
     }
