@@ -116,10 +116,7 @@ public class BillingTypeAController {
     @ResponseBody
     @RequiresPermissions("sys:billingDetail:remove")
     public R remove( Long id){
-        if(billingService.remove(id)>0){
-            return R.ok();
-        }
-        return R.error();
+        return billingService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**

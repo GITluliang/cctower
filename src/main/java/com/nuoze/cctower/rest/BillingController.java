@@ -99,10 +99,7 @@ public class BillingController {
 		if (r != null) {
 			return r;
 		}
-		if(billingService.save(billing)>0){
-			return R.ok();
-		}
-		return R.error();
+		return billingService.save(billing) > 0 ? R.ok() : R.error();
 	}
 	/**
 	 * 修改
@@ -111,8 +108,7 @@ public class BillingController {
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:billing:edit")
 	public R update(Billing billing){
-		billingService.update(billing);
-		return R.ok();
+		return billingService.update(billing) > 0 ? R.ok() : R.error();
 	}
 	
 	/**
@@ -126,10 +122,7 @@ public class BillingController {
 		if (detail != null) {
 			return R.error(201, "此停车场已有计费方式详情信息，请先删除计费方式，再删除计费基础信息");
 		}
-		if(billingService.remove(id)>0){
-		return R.ok();
-		}
-		return R.error();
+		return billingService.remove(id) > 0 ? R.ok() : R.error();
 	}
 	
 	/**

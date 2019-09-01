@@ -84,10 +84,7 @@ public class BusinessCarController {
         Long userId = ShiroUtils.getUserId();
         Long parkingId = userDAO.selectByPrimaryKey(userId).getParkingId();
         dto.setParkingId(parkingId);
-        if(carService.saveBusinessCar(dto) > 0) {
-            return R.ok();
-        }
-        return R.error();
+        return carService.saveBusinessCar(dto) > 0 ? R.ok() : R.error();
     }
     /**
      * 修改
@@ -107,10 +104,7 @@ public class BusinessCarController {
     @ResponseBody
     @RequiresPermissions("sys:car:remove")
     public R remove( Long id){
-        if(carService.remove(id)>0){
-            return R.ok();
-        }
-        return R.error();
+        return carService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**

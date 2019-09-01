@@ -29,6 +29,7 @@ public class TestTcpMemberService {
     public void testMemberDao() {
         Assert.assertNotNull(memberDAO.list(null)) ;
     }
+
     @Test
     public void testList() {
         Map<String, Object> map = new HashMap<>();

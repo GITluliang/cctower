@@ -73,10 +73,7 @@ public class TenantTopUpController {
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:edit")
     public R update(TenantTopUpVO vo){
-        if(userService.updateBalance(vo) > 0){
-            return R.ok();
-        }
-        return R.error();
+        return userService.updateBalance(vo) > 0 ? R.ok() : R.error();
     }
 
 

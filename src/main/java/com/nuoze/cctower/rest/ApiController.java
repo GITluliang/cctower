@@ -136,10 +136,7 @@ public class ApiController {
     @PostMapping("is-free-car")
     public Result isFreeCar(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
         Result result = checkParam(apiDTO, auth, API_CHECK_IS_FREE_CAR);
-        if (result != null) {
-            return result;
-        }
-        return ResponseResult.success(apiService.isRentFreeCar(apiDTO));
+        return result != null ? result : ResponseResult.success(apiService.isRentFreeCar(apiDTO));
     }
 
     /**
@@ -154,12 +151,7 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        boolean flag = apiService.initData(apiDTO, Constant.RENT_CAR_TYPE);
-        if (flag) {
-            return ResponseResult.success();
-        } else {
-            return ResponseResult.fail(203, "初始化Rent Car失败");
-        }
+        return apiService.initData(apiDTO, Constant.RENT_CAR_TYPE) ? ResponseResult.success() : ResponseResult.fail(203, "初始化Rent Car失败");
     }
 
     /**
@@ -174,12 +166,7 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        boolean flag = apiService.initData(apiDTO, Constant.BILLING_CAR_TYPE);
-        if (flag) {
-            return ResponseResult.success();
-        } else {
-            return ResponseResult.fail(203, "初始化Billing失败");
-        }
+        return apiService.initData(apiDTO, Constant.BILLING_CAR_TYPE) ? ResponseResult.success() : ResponseResult.fail(203, "初始化Billing失败");
     }
 
     /**
@@ -254,9 +241,6 @@ public class ApiController {
             default:
                 break;
         }
-        if (!flag) {
-            return ResponseResult.fail(ResultEnum.INVALID_PARAM);
-        }
-        return null;
+        return flag ? null : ResponseResult.fail(ResultEnum.INVALID_PARAM);
     }
 }

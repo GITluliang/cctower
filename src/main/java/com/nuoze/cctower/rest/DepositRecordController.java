@@ -117,10 +117,7 @@ public class DepositRecordController {
 		if (amount.compareTo(balance) > 0) {
 			return R.error(203, "提现金额不能超过当前余额");
 		}
-		if(depositRecordService.save(depositRecordDTO) > 0){
-			return R.ok();
-		}
-		return R.error();
+		return depositRecordService.save(depositRecordDTO) > 0 ? R.ok() : R.error();
 	}
 	/**
 	 * 修改
@@ -140,10 +137,7 @@ public class DepositRecordController {
 	@ResponseBody
 	@RequiresPermissions("sys:depositRecord:remove")
 	public R remove( Long id){
-		if(depositRecordService.remove(id)>0){
-		return R.ok();
-		}
-		return R.error();
+		return depositRecordService.remove(id) > 0 ? R.ok() : R.error();
 	}
 	
 	/**

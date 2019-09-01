@@ -110,10 +110,7 @@ public class AccountController {
 		if (accountService.findByParkingId(parkingId) != null) {
 			return R.error(201, "此停车场已有绑定账户");
 		}
-		if(accountService.save(account) > 0){
-			return R.ok();
-		}
-		return R.error();
+		return accountService.save(account) > 0 ? R.ok() : R.error();
 	}
 	/**
 	 * 修改

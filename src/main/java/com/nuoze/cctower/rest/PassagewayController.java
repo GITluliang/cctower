@@ -88,10 +88,7 @@ public class PassagewayController {
     @PostMapping("/save")
     @RequiresPermissions("sys:passageway:add")
     public R save(Passageway passageway){
-        if(passagewayService.save(passageway)>0){
-            return R.ok();
-        }
-        return R.error();
+        return passagewayService.save(passageway) > 0 ? R.ok() : R.error();
     }
     /**
      * 修改
@@ -111,10 +108,7 @@ public class PassagewayController {
     @ResponseBody
     @RequiresPermissions("sys:passageway:remove")
     public R remove( Long id){
-        if(passagewayService.remove(id)>0){
-            return R.ok();
-        }
-        return R.error();
+        return passagewayService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**
