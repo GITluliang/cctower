@@ -33,12 +33,13 @@
     <result column="twenty_four" jdbcType="DECIMAL" property="twentyFour" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, parking_id, `type`, unit_type, unit_price, one, two, three, four, five, six, 
     seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen,
     eighteen, nineteen, twenty, twenty_one, twenty_two, twenty_three, twenty_four, create_time,
-    update_time
+    update_time, user_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -60,7 +61,7 @@
       sixteen, seventeen, eighteen,
       nineteen, twenty, twenty_one,
       twenty_two, twenty_three, twenty_four,
-      create_time, update_time)
+      create_time, update_time, user_id)
     values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
       #{unitType,jdbcType=TINYINT}, #{unitPrice,jdbcType=DECIMAL}, #{one,jdbcType=DECIMAL}, 
       #{two,jdbcType=DECIMAL}, #{three,jdbcType=DECIMAL}, #{four,jdbcType=DECIMAL}, #{five,jdbcType=DECIMAL}, 
@@ -70,7 +71,7 @@
       #{sixteen,jdbcType=DECIMAL}, #{seventeen,jdbcType=DECIMAL}, #{eighteen,jdbcType=DECIMAL},
       #{nineteen,jdbcType=DECIMAL}, #{twenty,jdbcType=DECIMAL}, #{twentyOne,jdbcType=DECIMAL}, 
       #{twentyTwo,jdbcType=DECIMAL}, #{twentyThree,jdbcType=DECIMAL}, #{twentyFour,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.BillingDetail">
     insert into billing_detail
@@ -168,6 +169,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -262,6 +266,9 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -358,6 +365,9 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -392,7 +402,8 @@
       twenty_three = #{twentyThree,jdbcType=DECIMAL},
       twenty_four = #{twentyFour,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -432,6 +443,7 @@
       <if test="twentyFour != null and twentyFour != ''">and twenty_four = #{twentyFour}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -487,6 +499,7 @@
       <if test="twentyFour != null and twentyFour != ''">and twenty_four = #{twentyFour}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
     </where>
   </select>
 

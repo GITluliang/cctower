@@ -39,7 +39,7 @@ public class PassagewayServiceImpl implements PassagewayService {
         if (!CollectionUtils.isEmpty(list)) {
             for (Passageway vo : list) {
                 PassagewayDTO dto = new PassagewayDTO();
-                if(vo.getParkingId() != null) {
+                if(! (vo.getParkingId() == null && "".equals(vo.getParkingId()))) {
                     dto.setParkingName(parkingDAO.selectByPrimaryKey(vo.getParkingId()).getName());
                 }
                 BeanUtils.copyProperties(vo, dto);

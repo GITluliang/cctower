@@ -80,6 +80,7 @@ CREATE TABLE `billing_detail` (
   `twenty_four` decimal(10,2) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL COMMENT '所属物业公司ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 

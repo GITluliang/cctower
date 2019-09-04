@@ -10,7 +10,7 @@
     <result column="wechat_discount" jdbcType="INTEGER" property="wechatDiscount" />
     <result column="alipay_discount" jdbcType="INTEGER" property="alipayDiscount" />
     <result column="day_cost" jdbcType="DECIMAL" property="dayCost" />
-    <result column="user_id" jdbcType="DECIMAL" property="userId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, parking_id, monthly_price, free_time, paid_free_time, `wechat_discount`, `alipay_discount`, day_cost, user_id
@@ -31,7 +31,7 @@
       day_cost, user_id)
     values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{monthlyPrice,jdbcType=DECIMAL},
       #{freeTime,jdbcType=INTEGER}, #{paidFreeTime,jdbcType=INTEGER}, #{wechatDiscount,jdbcType=INTEGER}, #{alipayDiscount,jdbcType=INTEGER},
-      #{dayCost,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL})
+      #{dayCost,jdbcType=DECIMAL}, #{userId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Billing">
     insert into billing
@@ -90,7 +90,7 @@
         #{dayCost,jdbcType=DECIMAL},
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=DECIMAL},
+        #{userId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -119,7 +119,7 @@
         day_cost = #{dayCost,jdbcType=DECIMAL},
       </if>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=DECIMAL},
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -133,7 +133,7 @@
       `wechat_discount` = #{wechatDiscount,jdbcType=INTEGER},
       `alipay_discount` = #{alipayDiscount,jdbcType=INTEGER},
       day_cost = #{dayCost,jdbcType=DECIMAL},
-      user_id = #{userId,jdbcType=DECIMAL}
+      user_id = #{userId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
