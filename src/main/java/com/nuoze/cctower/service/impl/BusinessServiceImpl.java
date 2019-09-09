@@ -74,7 +74,7 @@ public class BusinessServiceImpl implements BusinessService {
     public int save(User user) {
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
-        int count = userDAO.insert(user);
+        int count = userDAO.insertSelective(user);
         UserVO vo = new UserVO();
         BeanUtils.copyProperties(user, vo);
         vo.setId(userDAO.findByUsername(user.getUsername()).getId());
