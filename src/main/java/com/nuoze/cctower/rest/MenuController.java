@@ -60,11 +60,7 @@ public class MenuController {
     @PostMapping("/save")
     @ResponseBody
     R save(Menu menu) {
-        if (menuService.save(menu) > 0) {
-            return R.ok();
-        } else {
-            return R.error(1, "保存失败");
-        }
+        return menuService.save(menu) > 0 ? R.ok() : R.error(1, "保存失败");
     }
 
     private void addParentName(Model model, Long pId) {
@@ -80,22 +76,14 @@ public class MenuController {
     @PostMapping("/update")
     @ResponseBody
     R update(Menu menu) {
-        if (menuService.update(menu) > 0) {
-            return R.ok();
-        } else {
-            return R.error(1, "更新失败");
-        }
+        return menuService.update(menu) > 0 ? R.ok() : R.error(1, "更新失败");
     }
 
     @RequiresPermissions("sys:menu:remove")
     @PostMapping("/remove")
     @ResponseBody
     R remove(Long id) {
-        if (menuService.remove(id) > 0) {
-            return R.ok();
-        } else {
-            return R.error(1, "删除失败");
-        }
+        return menuService.remove(id) > 0 ? R.ok() : R.error(1, "删除失败");
     }
 
     @GetMapping("/tree")

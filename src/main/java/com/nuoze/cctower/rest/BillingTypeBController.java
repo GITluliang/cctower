@@ -89,13 +89,7 @@ public class BillingTypeBController {
         if (r == null) {
             r = checkComponent.billingParamsCheck(billing);
         }
-        if (r != null) {
-            return r;
-        }
-        if(billingService.save(billing) > 0){
-            return R.ok();
-        }
-        return R.error();
+        return r != null ? r : billingService.save(billing) > 0 ? R.ok() : R.error();
     }
     /**
      * 修改

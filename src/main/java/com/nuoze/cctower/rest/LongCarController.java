@@ -101,10 +101,7 @@ public class LongCarController {
         if (car != null) {
             return R.error(201, "此停车场已有此车牌号，不能重复添加");
         }
-        if(carService.save(dto) > 0){
-            return R.ok();
-        }
-        return R.error();
+        return carService.save(dto) > 0 ? R.ok() : R.error();
     }
     /**
      * 修改
@@ -124,10 +121,7 @@ public class LongCarController {
     @ResponseBody
     @RequiresPermissions("sys:car:remove")
     public R remove( Long id){
-        if(carService.remove(id)>0){
-            return R.ok();
-        }
-        return R.error();
+        return carService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**

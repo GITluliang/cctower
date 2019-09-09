@@ -11,6 +11,8 @@ import com.nuoze.cctower.pojo.dto.PassagewayDTO;
 import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.service.PassagewayService;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -88,10 +90,8 @@ public class PassagewayController {
     @PostMapping("/save")
     @RequiresPermissions("sys:passageway:add")
     public R save(Passageway passageway){
-        if(!(passageway.getParkingId() == null || "".equals(passageway.getParkingId()))) {
-            if(passagewayService.save(passageway)>0){
-                return R.ok();
-            }
+        if(passageway.getParkingId() != 0) {
+            return passagewayService.save(passageway) > 0 ? R.ok() : R.error();
         }
         return R.error();
     }
@@ -113,10 +113,7 @@ public class PassagewayController {
     @ResponseBody
     @RequiresPermissions("sys:passageway:remove")
     public R remove( Long id){
-        if(passagewayService.remove(id)>0){
-            return R.ok();
-        }
-        return R.error();
+        return passagewayService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**

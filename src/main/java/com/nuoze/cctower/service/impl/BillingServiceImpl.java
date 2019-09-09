@@ -43,12 +43,9 @@ public class BillingServiceImpl implements BillingService {
             for (Billing billing : list) {
                 BillingDTO dto = new BillingDTO();
                 BeanUtils.copyProperties(billing, dto);
-                String parkingName = "" ;
-                if(! (billing.getParkingId() == null && "".equals(billing.getParkingId()))) {
-                    parkingName = parkingDAO.selectByPrimaryKey(dto.getParkingId()).getName();
+                if(! (billing.getParkingId() == 0 || billing.getParkingId() == null)) {
+                    dto.setParkingName(parkingDAO.selectByPrimaryKey(dto.getParkingId()).getName());
                 }
-
-                dto.setParkingName(parkingName);
                 dtoList.add(dto);
             }
         }
