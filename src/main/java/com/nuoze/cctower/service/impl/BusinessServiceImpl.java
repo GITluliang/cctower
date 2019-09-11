@@ -56,8 +56,9 @@ public class BusinessServiceImpl implements BusinessService {
                 UserVO userVO = new UserVO();
                 BeanUtils.copyProperties(user, userVO);
                 Long parkingId = user.getParkingId();
-                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-                userVO.setParkingName(parkingName);
+                if(parkingId != 0) {
+                    userVO.setParkingName(parkingDAO.selectByPrimaryKey(parkingId).getName());
+                }
                 userVOS.add(userVO);
             }
         }

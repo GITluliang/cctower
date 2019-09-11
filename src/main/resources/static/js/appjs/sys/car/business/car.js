@@ -46,6 +46,17 @@ function load() {
 								{
 									checkbox : true
 								},
+								{
+									field : 'parkingName',
+									title : '停车场名称'
+								},
+								{
+									field : 'name',
+									title : '客户姓名'
+								},								{
+									field : 'phone',
+									title : '客户电话'
+								},
 																{
 									field : 'number', 
 									title : '车牌号' 

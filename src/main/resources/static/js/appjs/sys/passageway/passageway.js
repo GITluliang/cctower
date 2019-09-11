@@ -46,22 +46,17 @@ function load() {
 								{
 									checkbox : true
 								},
-																{
-									field : 'name', 
-									title : '名字' 
-								},
-																{
-									field : 'ip', 
-									title : '摄像头IP'
-								},
-																{
+								{
 									field : 'parkingName',
-									title : '停车场'
+									title : '停车场名称'
 								},
-
+								{
+									field : 'name', 
+									title : '出入口名字'
+								},
 								{
 									field : 'type',
-									title : '出入口',
+									title : '出入口类别',
 									align : 'center',
 									formatter : function(value, row, index) {
 										if (value == '0') {
@@ -71,7 +66,11 @@ function load() {
 										}
 									}
 								},
-																{
+								{
+									field : 'ip', 
+									title : '摄像头IP'
+								},
+								{
 									title : '操作',
 									field : 'id',
 									align : 'center',

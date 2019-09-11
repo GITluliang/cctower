@@ -16,10 +16,12 @@
     <result column="cost" jdbcType="DECIMAL" property="cost" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
   </resultMap>
   <sql id="Base_Column_List">
     id, `number`, parking_id, parking_type, monthly_parking_start, monthly_parking_end, status,
-    infield_permission, create_id, open_id, free_time, cost, create_time, update_time
+    infield_permission, create_id, open_id, free_time, cost, create_time, update_time, name, phone
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -34,11 +36,11 @@
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Car">
     insert into car (id, `number`, parking_id, 
       parking_type, monthly_parking_start, monthly_parking_end, status, infield_permission, create_id,
-      open_id, free_time, cost, create_time, update_time)
+      open_id, free_time, cost, create_time, update_time, name, phone)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{parkingId,jdbcType=BIGINT}, 
       #{parkingType,jdbcType=TINYINT}, #{monthlyParkingStart,jdbcType=TIMESTAMP}, #{monthlyParkingEnd,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT}, #{infieldPermission,jdbcType=TINYINT}, #{createId,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR},
-      #{freeTime,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{freeTime,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Car">
     insert into car
@@ -85,6 +87,12 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -128,6 +136,12 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -173,6 +187,12 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -190,7 +210,9 @@
       free_time = #{freeTime,jdbcType=INTEGER},
       cost = #{cost,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -210,6 +232,8 @@
       <if test="createId != null and createId != ''">and create_id = #{createId}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="name != null and name != ''">and name = #{name}</if>
+      <if test="phone != null and phone != ''">and phone = #{phone}</if>
       <if test="keyword != null and keyword != ''">
         AND (number LIKE CONCAT('%',#{keyword},'%'))
       </if>
@@ -247,6 +271,8 @@
       <if test="createId != null and createId != ''">and create_id = #{createId}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="name != null and name != ''">and name = #{name}</if>
+      <if test="phone != null and phone != ''">and phone = #{phone}</if>
       <if test="keyword != null and keyword != ''">
         AND (number LIKE CONCAT('%',#{keyword},'%'))
       </if>
