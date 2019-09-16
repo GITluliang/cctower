@@ -47,6 +47,9 @@ function save() {
 function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
+		errorPlacement: function(error, element) {
+			error.appendTo(element.parent().parent());
+		},
 		rules : {
 			name : {
 				required : true
@@ -78,6 +81,9 @@ function validateRule() {
 				required : "#newsletter:checked",
 				minlength : 2
 			},
+			parkingId : {
+				required : true,
+			},
 			agree : "required"
 		},
 		messages : {
@@ -98,6 +104,9 @@ function validateRule() {
 				required : icon + "请再次输入密码",
 				minlength : icon + "密码必须6个字符以上",
 				equalTo : icon + "两次输入的密码不一致"
+			},
+			parkingId : {
+				required : icon + "请选择停车场",
 			},
 		}
 	})

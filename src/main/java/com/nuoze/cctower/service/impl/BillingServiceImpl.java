@@ -72,6 +72,7 @@ public class BillingServiceImpl implements BillingService {
 
     @Override
     public int update(Billing billing) {
+        billing.setUserId(ShiroUtils.getUser().getId());
         return billingDAO.updateByPrimaryKey(billing);
     }
 

@@ -52,7 +52,7 @@ function load() {
 					},
 					{
 						field : 'username',
-						title : '用户名'
+						title : '登录用户名'
 					},
 					{
 						field : 'name',
