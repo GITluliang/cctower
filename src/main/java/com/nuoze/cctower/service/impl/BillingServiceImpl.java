@@ -7,6 +7,7 @@ import com.nuoze.cctower.dao.BillingDAO;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.pojo.dto.BillingDTO;
 import com.nuoze.cctower.pojo.entity.Billing;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.service.BillingService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -43,8 +44,9 @@ public class BillingServiceImpl implements BillingService {
             for (Billing billing : list) {
                 BillingDTO dto = new BillingDTO();
                 BeanUtils.copyProperties(billing, dto);
-                if(! (billing.getParkingId() == 0 || billing.getParkingId() == null)) {
-                    dto.setParkingName(parkingDAO.selectByPrimaryKey(dto.getParkingId()).getName());
+                Parking parking = parkingDAO.selectByPrimaryKey(dto.getParkingId());
+                if(parking != null) {
+                    dto.setParkingName(parking.getName());
                 }
                 dtoList.add(dto);
             }

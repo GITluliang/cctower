@@ -6,6 +6,7 @@ import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.RoleDAO;
 import com.nuoze.cctower.dao.UserDAO;
 import com.nuoze.cctower.dao.UserRoleDAO;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.Role;
 import com.nuoze.cctower.pojo.entity.User;
 import com.nuoze.cctower.pojo.entity.UserRole;
@@ -56,8 +57,9 @@ public class BusinessServiceImpl implements BusinessService {
                 UserVO userVO = new UserVO();
                 BeanUtils.copyProperties(user, userVO);
                 Long parkingId = user.getParkingId();
-                if(parkingId != 0) {
-                    userVO.setParkingName(parkingDAO.selectByPrimaryKey(parkingId).getName());
+                Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
+                if(parking != null) {
+                    userVO.setParkingName(parking.getName());
                 }
                 userVOS.add(userVO);
             }
