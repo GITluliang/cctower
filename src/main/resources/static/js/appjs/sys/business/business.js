@@ -47,29 +47,33 @@ function load() {
 						checkbox : true
 					},
 					{
+						field : 'parkingName',
+						title : '停车场名称'
+					},
+					{
 						field : 'username',
-						title : '姓名'
+						title : '用户名'
 					},
 					{
 						field : 'name',
-						title : '商户名字'
+						title : '商户名称'
 					},
-                    {
-                        field : 'balance',
-                        title : '余额'
-                    },
 					{
 						field : 'address',
 						title : '商户地址'
 					},
 					{
 						field : 'principal',
-						title : '负责人'
+						title : '商户负责人'
 					},
 					{
 						field : 'phone',
 						title : '联系方式'
 					},
+                    {
+                        field : 'balance',
+                        title : '余额'
+                    },
 					{
 						field : 'status',
 						title : '状态',

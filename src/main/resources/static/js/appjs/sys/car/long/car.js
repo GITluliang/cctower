@@ -33,7 +33,7 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-                                keyword:$('#searchName').val()
+								keyword:$('#searchName').val()
 					           // name:$('#searchName').val(),
 					           // username:$('#searchName').val()
 							};
@@ -48,14 +48,23 @@ function load() {
 								{
 									checkbox : true
 								},
+								{
+									field : 'parkingName',
+									title : '停车场名称'
+								},
+								{
+									field : 'name',
+									title : '车主姓名'
+								},
+								{
+									field : 'phone',
+									title : '联系方式'
+								},
 																{
 									field : 'number', 
-									title : '车牌号' 
+									title : '车牌号'
 								},
-																{
-									field : 'parkingName',
-									title : '停车场'
-								},
+
 																{
 									field : 'beginDate',
 									title : '生效日期'
@@ -78,7 +87,7 @@ function load() {
 								},
 								{
 									field : 'infieldPermission',
-									title : '内场权限',
+									title : '权限',
 									align : 'center',
 									formatter : function(value, row, index) {
 										if (value == '0') {

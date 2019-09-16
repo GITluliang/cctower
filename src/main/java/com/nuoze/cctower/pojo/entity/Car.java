@@ -73,6 +73,16 @@ public class Car implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 车主姓名（新增）
+     */
+    private String name;
+
+    /**
+     * 联系方式（新增）
+     */
+    private String phone;
+
     private static final long serialVersionUID = 1L;
 
 }

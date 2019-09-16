@@ -2,6 +2,8 @@ package com.nuoze.cctower.service.impl;
 
 import com.nuoze.cctower.common.enums.ApiDataEnum;
 import com.nuoze.cctower.common.util.Query;
+import com.nuoze.cctower.common.util.ShiroUtils;
+import com.nuoze.cctower.component.IdComponent;
 import com.nuoze.cctower.component.MqSendComponent;
 import com.nuoze.cctower.dao.BillingDAO;
 import com.nuoze.cctower.dao.BillingDetailDAO;
@@ -34,9 +36,14 @@ public class BillingDetailServiceImpl implements BillingDetailService {
     private ParkingDAO parkingDAO;
     @Autowired
     private MqSendComponent mqSendComponent;
-
+    @Autowired
+    private IdComponent idComponent;
     @Override
     public List<BillingDetailDTO> list(Query query) {
+        Long userId = idComponent.getUserId();
+        if (userId != null) {
+            query.put("userId", userId);
+        }
         List<BillingDetail> list = billingDetailDAO.list(query);
         List<BillingDetailDTO> dtoList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
@@ -66,6 +73,7 @@ public class BillingDetailServiceImpl implements BillingDetailService {
         mqSendComponent.sendBilling(ApiDataEnum.ADD, findBillingByDetail(detail), detail);
         detail.setCreateTime(new Date());
         detail.setUpdateTime(new Date());
+        detail.setUserId(ShiroUtils.getUser().getId());
         return billingDetailDAO.insert(detail);
     }
 

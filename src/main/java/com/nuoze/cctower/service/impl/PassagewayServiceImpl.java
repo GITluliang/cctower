@@ -3,6 +3,7 @@ package com.nuoze.cctower.service.impl;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.PassagewayDAO;
 import com.nuoze.cctower.pojo.dto.PassagewayDTO;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.service.PassagewayService;
 import org.apache.shiro.util.CollectionUtils;
@@ -38,11 +39,12 @@ public class PassagewayServiceImpl implements PassagewayService {
         List<PassagewayDTO> passagewayDTOS = new ArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
             for (Passageway vo : list) {
-                Long parkingId = vo.getParkingId();
-                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
                 PassagewayDTO dto = new PassagewayDTO();
+                Parking parking = parkingDAO.selectByPrimaryKey(vo.getParkingId());
+                if(parking != null) {
+                    dto.setParkingName(parking.getName());
+                }
                 BeanUtils.copyProperties(vo, dto);
-                dto.setParkingName(parkingName);
                 passagewayDTOS.add(dto);
             }
         }
