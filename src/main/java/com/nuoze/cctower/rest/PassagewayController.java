@@ -11,8 +11,6 @@ import com.nuoze.cctower.pojo.dto.PassagewayDTO;
 import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.service.PassagewayService;
-import io.netty.util.internal.StringUtil;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -90,10 +88,7 @@ public class PassagewayController {
     @PostMapping("/save")
     @RequiresPermissions("sys:passageway:add")
     public R save(Passageway passageway){
-        if(passageway.getParkingId() != 0) {
-            return passagewayService.save(passageway) > 0 ? R.ok() : R.error();
-        }
-        return R.error();
+        return passagewayService.save(passageway) > 0 ? R.ok() : R.error();
     }
     /**
      * 修改
