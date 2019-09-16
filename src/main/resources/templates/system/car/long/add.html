@@ -14,7 +14,7 @@
 								<label class="col-sm-3 control-label">停车场</label>
 								<div class="col-sm-8">
 									<label th:each="parking:${parkingList}" class="radio-inline">
-										<input name="parkingId" type="radio" th:value="${parking.id}"
+										<input id="parkingId" name="parkingId" type="radio" th:value="${parking.id}"
 											   th:text="${parking.name}">
 									</label>
 								</div>
@@ -35,34 +35,34 @@
 							<div class="form-group">	
 								<label class="col-sm-3 control-label">车牌号：</label>
 								<div class="col-sm-8">
-									<input id="number" name="number" class="form-control" type="text">
+									<label><input id="number" name="number" class="form-control" type="text"></label>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">生效日期：</label>
 								<div class="col-sm-8">
-									<input name="beginDate" type="text" class="demo-input" placeholder="请选择生效日期" id="beginDate">
+									<label><input id="beginDate" name="beginDate" type="text" class="demo-input" placeholder="请选择生效日期"></label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">失效日期：</label>
 								<div class="col-sm-8">
-									<input name="endDate" type="text" class="demo-input" placeholder="请选择失效日期" id="endDate">
+									<label><input id="endDate" name="endDate" type="text" class="demo-input" placeholder="请选择失效日期"></label>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">状态:</label>
 								<div class="col-sm-8">
-									<label class="radio-inline"> <input type="radio" name="status" value="1" /> 正常 </label>
+									<label class="radio-inline"> <input type="radio" name="status" value="1" checked /> 正常 </label>
 									<label class="radio-inline"> <input type="radio" name="status" value="0" /> 禁用 </label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">内场权限:</label>
 								<div class="col-sm-8">
-									<label class="radio-inline"> <input type="radio" name="infieldPermission" value="1" /> 有 </label>
+									<label class="radio-inline"> <input type="radio" name="infieldPermission" value="1" checked /> 有 </label>
 									<label class="radio-inline"> <input type="radio" name="infieldPermission" value="0" /> 无 </label>
 								</div>
 							</div>

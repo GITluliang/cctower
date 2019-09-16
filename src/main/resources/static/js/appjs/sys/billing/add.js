@@ -35,14 +35,53 @@ function save() {
 function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
+		errorPlacement: function(error, element) {
+			error.appendTo(element.parent().parent());
+		},
 		rules : {
-			name : {
+			parkingId : {
+				required : true
+			} ,
+			monthlyPrice : {
+				required : true
+			} ,
+			freeTime : {
+				required : true
+			} ,
+			paidFreeTime : {
+				required : true
+			} ,
+			wechatDiscount : {
+				required : true
+			} ,
+			alipayDiscount : {
+				required : true
+			} ,
+			dayCost : {
 				required : true
 			}
 		},
 		messages : {
-			name : {
-				required : icon + "请输入姓名"
+			parkingId : {
+				required : icon + "请选择停车场"
+			} ,
+			monthlyPrice : {
+				required : icon + "请输入月租费用"
+			} ,
+			freeTime : {
+				required : icon + "请输入免费停车时间"
+			} ,
+			paidFreeTime : {
+				required : icon + "请输入出厂预留时间"
+			} ,
+			wechatDiscount : {
+				required : icon + "请输入微信折扣百分比"
+			} ,
+			alipayDiscount : {
+				required : icon + "请输入支付宝折扣百分比"
+			} ,
+			dayCost : {
+				required : icon + "请输入24小时最高收费"
 			}
 		}
 	})
