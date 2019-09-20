@@ -18,10 +18,13 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="corporate_name" jdbcType="VARCHAR" property="corporateName" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="sort" jdbcType="VARCHAR" property="sort" />
   </resultMap>
   <sql id="Base_Column_List">
     id, `number`, parking_id, parking_type, monthly_parking_start, monthly_parking_end, status,
-    infield_permission, create_id, open_id, free_time, cost, create_time, update_time, name, phone
+    infield_permission, create_id, open_id, free_time, cost, create_time, update_time, name, phone,corporate_name,remarks,sort
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -36,11 +39,12 @@
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Car">
     insert into car (id, `number`, parking_id, 
       parking_type, monthly_parking_start, monthly_parking_end, status, infield_permission, create_id,
-      open_id, free_time, cost, create_time, update_time, name, phone)
+      open_id, free_time, cost, create_time, update_time, name, phone,corporate_name,remarks,sort)
     values (#{id,jdbcType=BIGINT}, #{number,jdbcType=VARCHAR}, #{parkingId,jdbcType=BIGINT}, 
       #{parkingType,jdbcType=TINYINT}, #{monthlyParkingStart,jdbcType=TIMESTAMP}, #{monthlyParkingEnd,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT}, #{infieldPermission,jdbcType=TINYINT}, #{createId,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR},
-      #{freeTime,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
+      #{freeTime,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{corporateName,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Car">
     insert into car
@@ -93,6 +97,15 @@
       <if test="phone != null">
         phone,
       </if>
+      <if test="corporateName != null">
+        corporate_name,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -117,16 +130,16 @@
         #{status,jdbcType=TINYINT},
       </if>
       <if test="infieldPermission != null">
-        #{infield_permission,jdbcType=TINYINT},
+        #{infieldPermission,jdbcType=TINYINT},
       </if>
       <if test="createId != null">
-        #{create_id,jdbcType=BIGINT},
+        #{createId,jdbcType=BIGINT},
       </if>
       <if test="openId != null">
-        #{open_id,jdbcType=VARCHAR},
+        #{openId,jdbcType=VARCHAR},
       </if>
       <if test="freeTime != null">
-        #{free_time,jdbcType=INTEGER},
+        #{freeTime,jdbcType=INTEGER},
       </if>
       <if test="cost != null">
         #{cost,jdbcType=DECIMAL},
@@ -142,6 +155,15 @@
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="corporateName != null">
+        #{corporate_name,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -193,6 +215,15 @@
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="corporateName != null">
+        corporate_name = #{corporateName,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -213,6 +244,9 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       name = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
+      corporate_name = #{corporateName,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -234,6 +268,9 @@
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
       <if test="name != null and name != ''">and name = #{name}</if>
       <if test="phone != null and phone != ''">and phone = #{phone}</if>
+      <if test="corporateName != null and corporateName != ''">and corporate_name = #{corporateName}</if>
+      <if test="remarks != null and remarks != ''">and remarks = #{remarks}</if>
+      <if test="sort != null and sort != ''">and sort = #{sort}</if>
       <if test="keyword != null and keyword != ''">
         AND (number LIKE CONCAT('%',#{keyword},'%'))
       </if>
@@ -245,8 +282,8 @@
       </if>
     </where>
     <choose>
-      <when test="sort != null and sort.trim() != ''">
-        order by ${sort} ${order}
+      <when test="sorts != null and sorts.trim() != ''">
+        order by ${sorts} ${order}
       </when>
       <otherwise>
         order by create_time desc
@@ -273,6 +310,9 @@
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
       <if test="name != null and name != ''">and name = #{name}</if>
       <if test="phone != null and phone != ''">and phone = #{phone}</if>
+      <if test="corporateName != null and corporateName != ''">and corporate_name = #{corporateName}</if>
+      <if test="remarks != null and remarks != ''">and remarks = #{remarks}</if>
+      <if test="sort != null and sort != ''">and sort = #{sort}</if>
       <if test="keyword != null and keyword != ''">
         AND (number LIKE CONCAT('%',#{keyword},'%'))
       </if>

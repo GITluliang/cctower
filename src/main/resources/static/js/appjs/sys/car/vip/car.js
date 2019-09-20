@@ -1,5 +1,5 @@
 
-var prefix = "/sys/car/long"
+var prefix = "/sys/car/vip"
 $(function() {
 	load();
 });
@@ -58,15 +58,6 @@ function load() {
 									field : 'number', 
 									title : '车牌号'
 								},
-
-																{
-									field : 'beginDate',
-									title : '生效日期'
-								},
-																{
-									field : 'endDate',
-									title : '失效日期'
-								},
 								{
 									field : 'name',
 									title : '车主姓名'
@@ -76,23 +67,8 @@ function load() {
 									title : '联系方式'
 								},
 								{
-									field : 'corporateName',
-									title : '公司名称'
-								},
-								{
 									field : 'remarks',
 									title : '备注'
-								},
-								{
-									field : 'sort',
-									title : '月租车分类',
-									align : 'center',
-									formatter : function(value, row, index) {
-										if(value == null) {
-											return '<span class="label label-danger">-</span>';
-										}
-										return '<span class="label label-danger">' + value + '</span>';
-									}
 								},
 								{
 									field : 'status',
@@ -103,18 +79,6 @@ function load() {
 											return '<span class="label label-danger">禁用</span>';
 										} else if (value == '1') {
 											return '<span class="label label-primary">正常</span>';
-										}
-									}
-								},
-								{
-									field : 'infieldPermission',
-									title : '权限',
-									align : 'center',
-									formatter : function(value, row, index) {
-										if (value == '0') {
-											return '<span class="label label-danger">无</span>';
-										} else if (value == '1') {
-											return '<span class="label label-primary">有</span>';
 										}
 									}
 								},

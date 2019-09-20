@@ -59,4 +59,6 @@ public interface CarService {
     WxPayMpOrderResult renewCarPrePay(RenewCarPayDTO dto, HttpServletRequest request);
 
     List<RenewCarRecordVO> renewCarRecord(Map<String, Object> map);
+
+    int saveVipCar(Car car);
 }

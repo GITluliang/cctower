@@ -405,4 +405,14 @@ public class CarServiceImpl implements CarService {
         }
         return car;
     }
+
+    @Override
+    public int saveVipCar(Car car) {
+        car.setParkingType(2);
+        car.setStatus(1);
+        car.setInfieldPermission(1);
+        car.setCreateTime(new Date());
+        car.setUpdateTime(new Date());
+        return carDAO.insert(car) ;
+    }
 }

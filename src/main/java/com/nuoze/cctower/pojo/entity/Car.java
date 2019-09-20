@@ -83,6 +83,21 @@ public class Car implements Serializable {
      */
     private String phone;
 
+    /**
+     * 公司名称（新增）
+     */
+    private String corporateName;
+
+    /**
+     * 备注（新增）
+     */
+    private String remarks;
+
+    /**
+     * 月租车自定义分类（新增）
+     */
+    private String sort;
+
     private static final long serialVersionUID = 1L;
 
 }

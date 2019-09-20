@@ -43,14 +43,14 @@ public class BusinessCarController {
     private UserDAO userDAO;
 	
 	@GetMapping()
-	@RequiresPermissions("sys:car:car")
+	@RequiresPermissions("sys:car:business")
 	String car(){
 	    return "system/car/business/car";
 	}
 
     @ResponseBody
     @GetMapping("/list")
-    @RequiresPermissions("sys:car:car")
+    @RequiresPermissions("sys:car:business")
     public PageUtils list(@RequestParam Map<String, Object> params){
         //查询列表数据
         params.put("parkingType", 3);
@@ -61,7 +61,7 @@ public class BusinessCarController {
     }
 
     @GetMapping("/add")
-    @RequiresPermissions("sys:car:add")
+    @RequiresPermissions("sys:car:business:add")
     String add(){
         return prefix + "add";
     }
@@ -79,7 +79,7 @@ public class BusinessCarController {
      */
     @ResponseBody
     @PostMapping("/save")
-    @RequiresPermissions("sys:car:add")
+    @RequiresPermissions("sys:car:business:add")
     public R save(CarDTO dto){
         Long userId = ShiroUtils.getUserId();
         Long parkingId = userDAO.selectByPrimaryKey(userId).getParkingId();
@@ -91,7 +91,7 @@ public class BusinessCarController {
      */
     @ResponseBody
     @RequestMapping("/update")
-    @RequiresPermissions("sys:car:edit")
+    @RequiresPermissions("sys:car:business:edit")
     public R update( CarDTO dto){
         carService.update(dto);
         return R.ok();
@@ -102,7 +102,7 @@ public class BusinessCarController {
      */
     @PostMapping( "/remove")
     @ResponseBody
-    @RequiresPermissions("sys:car:remove")
+    @RequiresPermissions("sys:car:business:remove")
     public R remove( Long id){
         return carService.remove(id) > 0 ? R.ok() : R.error();
     }
@@ -112,7 +112,7 @@ public class BusinessCarController {
      */
     @PostMapping( "/batchRemove")
     @ResponseBody
-    @RequiresPermissions("sys:car:batchRemove")
+    @RequiresPermissions("sys:car:business:batchRemove")
     public R remove(@RequestParam("ids[]") Long[] ids){
         carService.batchRemove(ids);
         return R.ok();
