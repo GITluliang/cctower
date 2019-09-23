@@ -364,4 +364,74 @@
     where parking_id = #{parkingId}
     and parking_type = #{parkingType}
   </select>
+
+  <select id="countLike" resultType="int">
+    select count(id) from car
+    <where>
+      <if test="id != null and id != ''">and id LIKE #{id}</if>
+      <if test="number != null and number != ''">and number LIKE #{number}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id LIKE #{parkingId}</if>
+      <if test="parkingType != null and parkingType != ''">and parking_type LIKE #{parkingType}</if>
+      <if test="monthlyParkingStart != null and monthlyParkingStart != ''">and monthly_parking_start LIKE #{monthlyParkingStart}</if>
+      <if test="monthlyParkingEnd != null and monthlyParkingEnd != ''">and monthly_parking_end LIKE #{monthlyParkingEnd}</if>
+      <if test="status != null and status != ''">and status LIKE #{status}</if>
+      <if test="infieldPermission != null and infieldPermission != ''">and infield_permission LIKE #{infieldPermission}</if>
+      <if test="createId != null and createId != ''">and create_id LIKE #{createId}</if>
+      <if test="createTime != null and createTime != ''">and create_time LIKE #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time LIKE #{updateTime}</if>
+      <if test="name != null and name != ''">and name LIKE #{name}</if>
+      <if test="phone != null and phone != ''">and phone LIKE #{phone}</if>
+      <if test="corporateName != null and corporateName != ''">and corporate_name LIKE #{corporateName}</if>
+      <if test="remarks != null and remarks != ''">and remarks LIKE #{remarks}</if>
+      <if test="sort != null and sort != ''">and sort LIKE #{sort}</if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <select id="listLike" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from car
+    <where>
+      <if test="id != null and id != ''">and id LIKE #{id}</if>
+      <if test="number != null and number != ''">and number LIKE #{number}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id LIKE #{parkingId}</if>
+      <if test="parkingType != null and parkingType != ''">and parking_type LIKE #{parkingType}</if>
+      <if test="monthlyParkingStart != null and monthlyParkingStart != ''">and monthly_parking_start LIKE #{monthlyParkingStart}</if>
+      <if test="monthlyParkingEnd != null and monthlyParkingEnd != ''">and monthly_parking_end LIKE #{monthlyParkingEnd}</if>
+      <if test="status != null and status != ''">and status LIKE #{status}</if>
+      <if test="infieldPermission != null and infieldPermission != ''">and infield_permission LIKE #{infieldPermission}</if>
+      <if test="createId != null and createId != ''">and create_id LIKE #{createId}</if>
+      <if test="createTime != null and createTime != ''">and create_time LIKE #{createTime}</if>
+      <if test="updateTime != null and updateTime != ''">and update_time LIKE #{updateTime}</if>
+      <if test="name != null and name != ''">and name LIKE #{name}</if>
+      <if test="phone != null and phone != ''">and phone LIKE #{phone}</if>
+      <if test="corporateName != null and corporateName != ''">and corporate_name LIKE #{corporateName}</if>
+      <if test="remarks != null and remarks != ''">and remarks LIKE #{remarks}</if>
+      <if test="sort != null and sort != ''">and sort LIKE #{sort}</if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
+    </where>
+    <choose>
+      <when test="sorts != null and sorts.trim() != ''">
+        order by ${sorts} ${order}
+      </when>
+      <otherwise>
+        order by create_time desc
+      </otherwise>
+    </choose>
+    <if test="offset != null and limit != null">
+      limit #{offset}, #{limit}
+    </if>
+  </select>
+
 </mapper>

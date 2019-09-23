@@ -21,6 +21,10 @@ import java.util.Map;
 public interface CarService {
     List<CarDTO> list(Map<String, Object> map);
 
+    List<CarDTO> listLike(Map<String, Object> map);
+
+    int countLike(Map<String, Object> map);
+
     int count(Map<String, Object> map);
 
     Car findById(Long id);

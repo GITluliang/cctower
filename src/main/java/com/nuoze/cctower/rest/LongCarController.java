@@ -57,6 +57,9 @@ public class LongCarController {
     @GetMapping("/list")
     @RequiresPermissions("sys:car:car")
     public PageUtils list(@RequestParam Map<String, Object> params) {
+        System.out.println(params.get("query").toString());
+        System.out.println(params.get("value"));
+        params.put(params.get("query").toString(),params.get("value")) ;
         log.info("[LONG CAR CONTROLLER] check long car list");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
@@ -65,8 +68,8 @@ public class LongCarController {
         //查询列表数据
         params.put("parkingType", 1);
         Query query = new Query(params);
-        List<CarDTO> carList = carService.list(query);
-        int total = carService.count(query);
+        List<CarDTO> carList = carService.listLike(query);
+        int total = carService.countLike(query);
         return new PageUtils(carList, total);
     }
 

@@ -7,26 +7,36 @@
 		<div class="col-sm-12">
 			<div class="ibox">
 				<div class="ibox-body">
-					<div class="fixed-table-toolbar">
-						<div class="columns pull-left">
-							<button shiro:hasPermission="sys:car:add" type="button" class="btn  btn-primary" onclick="add()">
-								<i class="fa fa-plus" aria-hidden="true"></i>添加
-							</button>
-							<button shiro:hasPermission="sys:car:batchRemove" type="button" class="btn  btn-danger"
-								onclick="batchRemove()">
-								<i class="fa fa-trash" aria-hidden="true"></i>删除
-							</button>
-						</div>
-						<div class="columns pull-right">
-							<button class="btn btn-success" onclick="reLoad()">查询</button>
-						</div>
-						<div class="columns pull-right col-md-2 nopadding">
-							<input id="searchName" type="text" class="form-control"
-								placeholder="请输入车牌号">
-						</div>
-					<table id="exampleTable" data-mobile-responsive="true">
-					</table>
-				</div>
+						<div class="fixed-table-toolbar">
+							<div class="columns pull-left">
+								<button shiro:hasPermission="sys:car:add" type="button" class="btn  btn-primary" onclick="add()">
+									<i class="fa fa-plus" aria-hidden="true"></i>添加
+								</button>
+								<button shiro:hasPermission="sys:car:batchRemove" type="button" class="btn  btn-danger"
+									onclick="batchRemove()">
+									<i class="fa fa-trash" aria-hidden="true"></i>删除
+								</button>
+							</div>
+							<div class="columns pull-right">
+								<button class="btn btn-success" onclick="reLoad()">查询</button>
+							</div>
+							<div class="columns pull-right col-md-2 nopadding">
+								<input id="searchName" type="text" class="form-control"
+									placeholder="请输入">
+							</div>
+							<div class="pull-right search col-md-2 nopadding">
+								<select id="query" name="query" class="form-control">
+									<option value="">请选择查询</option>
+									<option value="number">车牌号</option>
+									<option value="name">车主姓名</option>
+									<option value="phone">联系方式</option>
+									<option value="corporateName">公司名称</option>
+									<option value="sort">月租车分类</option>
+								</select>
+							</div>
+						<table id="exampleTable" data-mobile-responsive="true">
+						</table>
+					</div>
 			</div>
 		</div>
 	</div>
