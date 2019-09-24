@@ -14,6 +14,7 @@ public interface RoleMenuDAO extends BaseDAO<RoleMenu> {
 
     /**
      * 根据roleId查询菜单权限
+     *
      * @param roleId 角色ID
      * @return List<MenuId>
      */
@@ -21,12 +22,14 @@ public interface RoleMenuDAO extends BaseDAO<RoleMenu> {
 
     /**
      * 根据roleId删除RoleMenu
+     *
      * @param roleId roleId
      */
     void removeByRoleId(Long roleId);
 
     /**
      * 批量添加RoleMenu
+     *
      * @param rms List<RoleMenu>
      */
     void batchSave(List<RoleMenu> rms);

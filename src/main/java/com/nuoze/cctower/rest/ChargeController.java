@@ -33,7 +33,7 @@ public class ChargeController {
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:account:edit")
-    String edit(@PathVariable Long id, Model model){
+    String edit(@PathVariable Long id, Model model) {
         Account account = accountService.get(id);
         AccountVO vo = new AccountVO();
         BeanUtils.copyProperties(account, vo);

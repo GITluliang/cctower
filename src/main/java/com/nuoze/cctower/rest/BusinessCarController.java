@@ -25,33 +25,33 @@ import com.nuoze.cctower.service.CarService;
 
 /**
  * 车辆表
- * 
+ *
  * @author JiaShun
  * @date 2019-03-15 00:19:28
  */
- 
+
 @Controller
 @RequestMapping("/sys/car/business")
 public class BusinessCarController {
 
     private String prefix = "system/car/business/";
 
-	@Autowired
-	private CarService carService;
+    @Autowired
+    private CarService carService;
 
-	@Autowired
+    @Autowired
     private UserDAO userDAO;
-	
-	@GetMapping()
-	@RequiresPermissions("sys:car:business")
-	String car(){
-	    return "system/car/business/car";
-	}
+
+    @GetMapping()
+    @RequiresPermissions("sys:car:business")
+    String car() {
+        return "system/car/business/car";
+    }
 
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("sys:car:business")
-    public PageUtils list(@RequestParam Map<String, Object> params){
+    public PageUtils list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         params.put("parkingType", 3);
         Query query = new Query(params);
@@ -62,13 +62,13 @@ public class BusinessCarController {
 
     @GetMapping("/add")
     @RequiresPermissions("sys:car:business:add")
-    String add(){
+    String add() {
         return prefix + "add";
     }
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:car:edit")
-    String edit(@PathVariable Long id, Model model){
+    String edit(@PathVariable Long id, Model model) {
         Car car = carService.findById(id);
         model.addAttribute("car", car);
         return prefix + "edit";
@@ -80,19 +80,20 @@ public class BusinessCarController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("sys:car:business:add")
-    public R save(CarDTO dto){
+    public R save(CarDTO dto) {
         Long userId = ShiroUtils.getUserId();
         Long parkingId = userDAO.selectByPrimaryKey(userId).getParkingId();
         dto.setParkingId(parkingId);
         return carService.saveBusinessCar(dto) > 0 ? R.ok() : R.error();
     }
+
     /**
      * 修改
      */
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:business:edit")
-    public R update( CarDTO dto){
+    public R update(CarDTO dto) {
         carService.update(dto);
         return R.ok();
     }
@@ -100,22 +101,22 @@ public class BusinessCarController {
     /**
      * 删除
      */
-    @PostMapping( "/remove")
+    @PostMapping("/remove")
     @ResponseBody
     @RequiresPermissions("sys:car:business:remove")
-    public R remove( Long id){
+    public R remove(Long id) {
         return carService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**
      * 删除
      */
-    @PostMapping( "/batchRemove")
+    @PostMapping("/batchRemove")
     @ResponseBody
     @RequiresPermissions("sys:car:business:batchRemove")
-    public R remove(@RequestParam("ids[]") Long[] ids){
+    public R remove(@RequestParam("ids[]") Long[] ids) {
         carService.batchRemove(ids);
         return R.ok();
     }
-	
+
 }

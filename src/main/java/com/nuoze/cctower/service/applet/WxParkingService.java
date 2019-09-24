@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface WxParkingService {
 
-    List<Parking> findParkingByUser(Long userId) ;
+    List<Parking> findParkingByUser(Long userId);
 }

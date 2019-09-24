@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class WxParkingServiceImpl implements WxParkingService {
     @Autowired
-    private ParkingDAO parkingDAO ;
+    private ParkingDAO parkingDAO;
 
     @Override
     public List<Parking> findParkingByUser(Long userId) {

@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  ToC用户表
+ * ToC用户表
+ *
  * @author JiaShun
  * @date 2019-03-01 01:57
  */
@@ -17,6 +18,7 @@ public interface MemberDAO extends BaseDAO<Member> {
 
     /**
      * 通过id进行查询
+     *
      * @param id
      * @return
      */
@@ -24,15 +26,17 @@ public interface MemberDAO extends BaseDAO<Member> {
 
     /**
      * 查询所有
+     *
      * @param map
      * @return
      */
-    List<Member> list(Map<String,Object> map);
+    List<Member> list(Map<String, Object> map);
 
     /**
      * 统计个数
+     *
      * @param map
      * @return
      */
-    int count(Map<String,Object> map);
+    int count(Map<String, Object> map);
 }

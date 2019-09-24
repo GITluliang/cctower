@@ -16,6 +16,7 @@ public interface MenuService {
 
     /**
      * 根据ID获取对应的
+     *
      * @param id
      * @return
      */
@@ -23,6 +24,7 @@ public interface MenuService {
 
     /**
      * 根据ID获取对应的页面
+     *
      * @param userId userId
      * @return Tree: Menu
      */
@@ -30,6 +32,7 @@ public interface MenuService {
 
     /**
      * 获取菜单列表
+     *
      * @param params 条件
      * @return List<Menu>
      */
@@ -37,6 +40,7 @@ public interface MenuService {
 
     /**
      * 根据pid获取Menu
+     *
      * @param id id
      * @return menu
      */
@@ -44,6 +48,7 @@ public interface MenuService {
 
     /**
      * 保存Menu
+     *
      * @param menu entity
      * @return size
      */
@@ -51,6 +56,7 @@ public interface MenuService {
 
     /**
      * 更新menu
+     *
      * @param menu entity
      * @return size
      */
@@ -58,6 +64,7 @@ public interface MenuService {
 
     /**
      * 删除Menu
+     *
      * @param id id
      * @return size
      */
@@ -65,6 +72,7 @@ public interface MenuService {
 
     /**
      * menu tree
+     *
      * @param roleId roleId
      * @return Tree<Menu>
      */

@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 微信订单
+ *
  * @author JiaShun
  * @date 2019-04-07 18:27
  */
 public interface WxOrderService {
     /**
      * WX付款订单结果
+     *
      * @param dto
      * @param request
      * @return
@@ -23,6 +25,7 @@ public interface WxOrderService {
 
     /**
      * 支付通知
+     *
      * @param result
      * @param response
      */

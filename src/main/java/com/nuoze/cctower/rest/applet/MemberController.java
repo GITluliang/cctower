@@ -36,7 +36,7 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("login")
-    public Result login (@RequestBody MemberDTO dto) {
+    public Result login(@RequestBody MemberDTO dto) {
         String openId = dto.getOpenId();
         String code = dto.getCode();
         if (StringUtils.isEmpty(code)) {

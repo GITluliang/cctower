@@ -23,6 +23,7 @@ import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 /**
  * VIP车辆
+ *
  * @Authror luliang
  * @Date 2019-09-18 16:22
  */
@@ -43,15 +44,15 @@ public class VipCarController {
 
     @GetMapping()
     @RequiresPermissions("sys:car:vip")
-    String car(){
+    String car() {
         return "system/car/vip/car";
     }
 
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("sys:car:vip")
-    public PageUtils list(@RequestParam Map<String, Object> params){
-        log.info("[LONG CAR CONTROLLER] check long car list");
+    public PageUtils list(@RequestParam Map<String, Object> params) {
+        log.info("[LONG CAR CONTROLLER] check long car list, the params: {}", params.toString());
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
@@ -66,7 +67,7 @@ public class VipCarController {
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:car:vip:edit")
-    String edit(@PathVariable Long id, Model model){
+    String edit(@PathVariable Long id, Model model) {
         Car car = carService.findById(id);
         model.addAttribute("car", car);
         List<Parking> parkingList = idComponent.getParkingList();
@@ -76,7 +77,7 @@ public class VipCarController {
 
     @GetMapping("/add")
     @RequiresPermissions("sys:car:vip:add")
-    String add(Model model){
+    String add(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
         return prefix + "add";
@@ -88,16 +89,16 @@ public class VipCarController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("sys:car:vip:add")
-    public R save(CarDTO dto){
+    public R save(CarDTO dto) {
         Long parkingId = dto.getParkingId();
         String carNumber = dto.getNumber();
         Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
         if (car != null) {
-            if(car.getParkingType() == 1) {
+            if (1 == car.getParkingType()) {
                 return R.error(201, "此车牌号月租车中已存在");
-            }else if(car.getParkingType() == 2) {
+            } else if (2 == car.getParkingType()) {
                 return R.error(201, "此车牌号VIP车中已存在");
-            }else {
+            } else {
                 return R.error(201, "此停车场已有此车牌号，不能重复添加");
             }
         }
@@ -110,7 +111,7 @@ public class VipCarController {
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:vip:edit")
-    public R update(CarDTO dto){
+    public R update(CarDTO dto) {
         carService.update(dto);
         return R.ok();
     }
@@ -118,20 +119,20 @@ public class VipCarController {
     /**
      * 删除
      */
-    @PostMapping( "/remove")
+    @PostMapping("/remove")
     @ResponseBody
     @RequiresPermissions("sys:car:vip:remove")
-    public R remove( Long id){
+    public R remove(Long id) {
         return carService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**
      * 删除
      */
-    @PostMapping( "/batchRemove")
+    @PostMapping("/batchRemove")
     @ResponseBody
     @RequiresPermissions("sys:car:vip:batchRemove")
-    public R remove(@RequestParam("ids[]") Long[] ids){
+    public R remove(@RequestParam("ids[]") Long[] ids) {
         carService.batchRemove(ids);
         return R.ok();
     }

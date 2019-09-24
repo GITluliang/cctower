@@ -33,7 +33,7 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								sorts: 'sort',
+								sort: 'classification',
 								order: 'desc',
 								query: $('#query').val() ,	   //查询列
 								value:'%' + $('#searchName').val() + '%',  //查询值
@@ -85,7 +85,7 @@ function load() {
 									title : '备注'
 								},
 								{
-									field : 'sort',
+									field : 'classification',
 									title : '月租车分类',
 									align : 'center',
 									formatter : function(value, row, index) {

@@ -1,6 +1,7 @@
 package com.nuoze.cctower.rest;
 
 import com.nuoze.cctower.component.IdComponent;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.nuoze.cctower.service.CarService;
+
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 
@@ -49,7 +51,7 @@ public class LongCarController {
 
     @GetMapping()
     @RequiresPermissions("sys:car:car")
-    String car(){
+    String car() {
         return "system/car/long/car";
     }
 
@@ -57,10 +59,8 @@ public class LongCarController {
     @GetMapping("/list")
     @RequiresPermissions("sys:car:car")
     public PageUtils list(@RequestParam Map<String, Object> params) {
-        System.out.println(params.get("query").toString());
-        System.out.println(params.get("value"));
-        params.put(params.get("query").toString(),params.get("value")) ;
-        log.info("[LONG CAR CONTROLLER] check long car list");
+        log.info("[LONG CAR CONTROLLER] check long car list, the params: {}", params.toString());
+        params.put(params.get("query").toString(), params.get("value"));
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
@@ -75,7 +75,7 @@ public class LongCarController {
 
     @GetMapping("/add")
     @RequiresPermissions("sys:car:add")
-    String add(Model model){
+    String add(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
         return prefix + "add";
@@ -83,7 +83,7 @@ public class LongCarController {
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:car:edit")
-    String edit(@PathVariable Long id, Model model){
+    String edit(@PathVariable Long id, Model model) {
         Car car = carService.findById(id);
         model.addAttribute("car", car);
         List<Parking> parkingList = idComponent.getParkingList();
@@ -97,7 +97,7 @@ public class LongCarController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("sys:car:add")
-    public R save(CarDTO dto){
+    public R save(CarDTO dto) {
         Long parkingId = dto.getParkingId();
         String carNumber = dto.getNumber();
         Integer parkingType = dto.getParkingType();
@@ -107,13 +107,14 @@ public class LongCarController {
         }
         return carService.save(dto) > 0 ? R.ok() : R.error();
     }
+
     /**
      * 修改
      */
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:edit")
-    public R update(CarDTO dto){
+    public R update(CarDTO dto) {
         carService.update(dto);
         return R.ok();
     }
@@ -121,20 +122,20 @@ public class LongCarController {
     /**
      * 删除
      */
-    @PostMapping( "/remove")
+    @PostMapping("/remove")
     @ResponseBody
     @RequiresPermissions("sys:car:remove")
-    public R remove( Long id){
+    public R remove(Long id) {
         return carService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**
      * 删除
      */
-    @PostMapping( "/batchRemove")
+    @PostMapping("/batchRemove")
     @ResponseBody
     @RequiresPermissions("sys:car:batchRemove")
-    public R remove(@RequestParam("ids[]") Long[] ids){
+    public R remove(@RequestParam("ids[]") Long[] ids) {
         carService.batchRemove(ids);
         return R.ok();
     }

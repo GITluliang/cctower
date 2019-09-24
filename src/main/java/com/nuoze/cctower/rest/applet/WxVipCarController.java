@@ -17,6 +17,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.INVALID_PARAM;
 
 /**
  * 微信VIP车辆
+ *
  * @Author luliang
  * @Date 2019-09-20 11:11
  */
@@ -27,23 +28,23 @@ public class WxVipCarController {
     private CarDAO carDAO;
 
     @Autowired
-    private CarService carService ;
+    private CarService carService;
 
     @PostMapping("add")
     public Result add(@RequestBody Car car) {
-        if(StringUtils.isEmpty(car.getNumber()) || car.getParkingId() == 0 || car.getCreateId() == 0) {
+        if (StringUtils.isEmpty(car.getNumber()) || car.getParkingId() == 0 || car.getCreateId() == 0) {
             return ResponseResult.fail(INVALID_PARAM);
         }
         Car carOld = carDAO.findByParkingIdAndCarNumber(car.getParkingId(), car.getNumber());
         if (carOld != null) {
-            if(carOld.getParkingType() == 1) {
+            if (carOld.getParkingType() == 1) {
                 return ResponseResult.fail(201, "此车牌号月租车中已存在");
-            }else if(carOld.getParkingType() == 2) {
+            } else if (carOld.getParkingType() == 2) {
                 return ResponseResult.fail(201, "此车牌号VIP车中已存在");
-            }else {
+            } else {
                 return ResponseResult.fail(201, "此车牌号已存在");
             }
         }
-        return carService.saveVipCar(car) > 0 ? ResponseResult.success() : ResponseResult.fail(201,"添加失败");
+        return carService.saveVipCar(car) > 0 ? ResponseResult.success() : ResponseResult.fail(201, "添加失败");
     }
 }

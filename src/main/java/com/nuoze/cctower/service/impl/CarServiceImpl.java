@@ -130,6 +130,7 @@ public class CarServiceImpl implements CarService {
         }
         return carDTOList;
     }
+
     @Override
     public int countLike(Map<String, Object> map) {
         return carDAO.countLike(map);
@@ -152,7 +153,7 @@ public class CarServiceImpl implements CarService {
         car.setCreateId(userId);
         car.setCreateTime(new Date());
         car.setUpdateTime(new Date());
-        int i =  carDAO.insert(car);
+        int i = carDAO.insert(car);
         if (1 == car.getParkingType()) {
             Car vo = carDAO.findByParkingIdAndCarNumber(car.getParkingId(), car.getNumber());
             mqSendComponent.sendRentCar(ApiDataEnum.ADD, vo);
@@ -289,7 +290,7 @@ public class CarServiceImpl implements CarService {
         car.setUpdateTime(new Date());
         carDAO.insert(car);
         Long carId = carDAO.selectByNumberAndOpenId(car.getNumber(), car.getOpenId());
-        Long memberId =member.getId();
+        Long memberId = member.getId();
         MemberCar memberCar = new MemberCar();
         memberCar.setCarId(carId);
         memberCar.setMemberId(memberId);
@@ -430,7 +431,7 @@ public class CarServiceImpl implements CarService {
                 Date monthlyParkingEnd = DateUtils.toDateTime(dto.getEndDate());
                 car.setMonthlyParkingStart(monthlyParkingStart);
                 car.setMonthlyParkingEnd(monthlyParkingEnd);
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.error("Time format error: {}", e.getMessage());
             }
         }
@@ -444,6 +445,6 @@ public class CarServiceImpl implements CarService {
         car.setInfieldPermission(1);
         car.setCreateTime(new Date());
         car.setUpdateTime(new Date());
-        return carDAO.insert(car) ;
+        return carDAO.insert(car);
     }
 }

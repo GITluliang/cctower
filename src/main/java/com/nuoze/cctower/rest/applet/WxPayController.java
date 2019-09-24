@@ -38,6 +38,7 @@ public class WxPayController {
 
     /**
      * 微信支付預付款
+     *
      * @param dto
      * @param request
      * @return WX付款订单结果
@@ -53,6 +54,7 @@ public class WxPayController {
      * WxPayOrderNotifyResult：微信支付订单通知结果
      * orderSn：订单编号
      * payId：付款id
+     *
      * @param request
      * @param response
      */
@@ -67,13 +69,14 @@ public class WxPayController {
             wxOrderService.payNotify(result, response);
             String xml = "<xml>\n  <return_code><![CDATA[SUCCESS]]></return_code>\n  <return_msg><![CDATA[OK]]></return_msg>\n</xml>";
             wxpayCallbackResult(response, xml);
-        } catch (Exception  e) {
+        } catch (Exception e) {
             log.error("pay notify has exception: {}", e.getMessage());
         }
     }
 
     /**
      * 微信支付回调
+     *
      * @param response
      * @param xml
      * @throws IOException

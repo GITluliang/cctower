@@ -15,6 +15,7 @@ public interface UserDAO extends BaseDAO<User> {
 
     /**
      * 根据用户名查找用户
+     *
      * @param username 用户名
      * @return User
      */
@@ -22,6 +23,7 @@ public interface UserDAO extends BaseDAO<User> {
 
     /**
      * 用户列表
+     *
      * @param map 条件
      * @return List<User>
      */
@@ -29,6 +31,7 @@ public interface UserDAO extends BaseDAO<User> {
 
     /**
      * 用户总个数
+     *
      * @param map 条件
      * @return int
      */
@@ -36,6 +39,7 @@ public interface UserDAO extends BaseDAO<User> {
 
     /**
      * 批量删除
+     *
      * @param ids [ids]
      * @return size
      */

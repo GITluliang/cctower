@@ -90,7 +90,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-        public void payNotify(WxPayOrderNotifyResult result, HttpServletResponse response) {
+    public void payNotify(WxPayOrderNotifyResult result, HttpServletResponse response) {
         try {
             //orderSn：获取订单号、payId：支付id、money：支付费用
             String orderSn = result.getOutTradeNo();

@@ -45,8 +45,9 @@ public class ApiController {
 
     /**
      * 车辆入场
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("in")
@@ -66,8 +67,9 @@ public class ApiController {
 
     /**
      * 车辆出场
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("out")
@@ -87,8 +89,9 @@ public class ApiController {
 
     /**
      * 线下支付
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("paid")
@@ -113,8 +116,9 @@ public class ApiController {
 
     /**
      * 由于线下车牌识别识别不正确 改变carNumber
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("change-car-number")
@@ -129,8 +133,9 @@ public class ApiController {
 
     /**
      * 判断是否是月租车
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("is-free-car")
@@ -141,8 +146,9 @@ public class ApiController {
 
     /**
      * 初始化月租车
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("init-rent-car")
@@ -156,8 +162,9 @@ public class ApiController {
 
     /**
      * 初始化计费标准
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("init-billing")
@@ -171,8 +178,9 @@ public class ApiController {
 
     /**
      * 添加通道配置
+     *
      * @param passageway passageway
-     * @param auth token
+     * @param auth       token
      * @return Result
      */
     @PostMapping("add-passageway")
@@ -194,8 +202,9 @@ public class ApiController {
 
     /**
      * 删除通道配置
+     *
      * @param passageway passageway
-     * @param auth token
+     * @param auth       token
      * @return Result
      */
     @PostMapping("delete-passageway")

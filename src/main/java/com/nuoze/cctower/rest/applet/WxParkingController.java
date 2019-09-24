@@ -13,6 +13,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.INVALID_PARAM;
 
 /**
  * 小程序停车场
+ *
  * @Authror luliang
  * @Date 2019-09-19 20:57
  */
@@ -21,7 +22,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.INVALID_PARAM;
 public class WxParkingController {
 
     @Autowired
-    private WxParkingService parkingService ;
+    private WxParkingService parkingService;
 
     @PostMapping("list")
     public Result listByUser(@RequestBody Parking parking) {
@@ -29,6 +30,6 @@ public class WxParkingController {
         if (userId == 0) {
             return ResponseResult.fail(INVALID_PARAM);
         }
-        return ResponseResult.success(parkingService.findParkingByUser(  userId));
+        return ResponseResult.success(parkingService.findParkingByUser(userId));
     }
 }

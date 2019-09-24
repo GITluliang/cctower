@@ -37,6 +37,7 @@ public class AppletCarController {
 
     /**
      * 根据车牌查询费用
+     *
      * @param carNumber
      * @return
      */
@@ -48,6 +49,7 @@ public class AppletCarController {
 
     /**
      * 停车场信息
+     *
      * @param carNumber
      * @return
      */
@@ -58,6 +60,7 @@ public class AppletCarController {
 
     /**
      * 更新车辆
+     *
      * @param carNumber
      * @return
      */
@@ -68,6 +71,7 @@ public class AppletCarController {
 
     /**
      * 更新车辆详细信息
+     *
      * @param renewCarNumber
      * @return
      */
@@ -78,6 +82,7 @@ public class AppletCarController {
 
     /**
      * 价格信息
+     *
      * @param parkingId
      * @return
      */
@@ -92,6 +97,7 @@ public class AppletCarController {
 
     /**
      * 计算
+     *
      * @param json
      * @return
      */
@@ -112,6 +118,7 @@ public class AppletCarController {
 
     /**
      * 更新车辆预付款
+     *
      * @param dto
      * @param request
      * @return
@@ -123,6 +130,7 @@ public class AppletCarController {
 
     /**
      * 更新车辆记录
+     *
      * @param json
      * @return
      */

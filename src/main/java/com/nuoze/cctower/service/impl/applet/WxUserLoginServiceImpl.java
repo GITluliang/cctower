@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class WxUserLoginServiceImpl implements WxUserLoginService {
 
     @Autowired
-    private UserDAO userDAO ;
+    private UserDAO userDAO;
 
     @Override
     public User findByUsername(String username) {

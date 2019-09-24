@@ -28,7 +28,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     public List<Map<String, Object>> list() {
         List<Map<String, Object>> list = generatorDAO.list();
         for (Map<String, Object> map : list) {
-            Date date = (Date)map.get("createTime");
+            Date date = (Date) map.get("createTime");
             String createTime = DateUtils.formatDateTime(date);
             map.put("createTime", createTime);
         }

@@ -112,7 +112,7 @@ CREATE TABLE `car` (
   `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '联系方式',
   `corporate_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '公司名称',
   `remarks` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '备注',
-  `sort` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '月租车自定义分类',
+  `classification` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '月租车自定义分类',
   `parking_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0:临时车 1:包月 2:VIP 3:商户车辆\n',
   `monthly_parking_start` datetime DEFAULT NULL COMMENT '包月车辆开始时间',
   `monthly_parking_end` datetime DEFAULT NULL COMMENT '包月车辆结束时间',

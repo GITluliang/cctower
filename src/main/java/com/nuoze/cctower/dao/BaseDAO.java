@@ -11,6 +11,7 @@ public interface BaseDAO<T> {
 
     /**
      * 根据主键删除
+     *
      * @param id 主键
      * @return int
      */
@@ -18,6 +19,7 @@ public interface BaseDAO<T> {
 
     /**
      * 添加数据
+     *
      * @param record 实体
      * @return int
      */
@@ -25,6 +27,7 @@ public interface BaseDAO<T> {
 
     /**
      * 添加数据
+     *
      * @param record 实体
      * @return int
      */
@@ -32,6 +35,7 @@ public interface BaseDAO<T> {
 
     /**
      * 通过主键查找
+     *
      * @param id 主键
      * @return T
      */
@@ -39,6 +43,7 @@ public interface BaseDAO<T> {
 
     /**
      * 更新数据
+     *
      * @param record 实体
      * @return 个数
      */
@@ -46,6 +51,7 @@ public interface BaseDAO<T> {
 
     /**
      * 更新数据
+     *
      * @param record 实体
      * @return 个数
      */
