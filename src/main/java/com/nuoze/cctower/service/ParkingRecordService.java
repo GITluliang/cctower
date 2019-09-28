@@ -4,12 +4,14 @@ import com.nuoze.cctower.pojo.entity.ParkingRecord;
 
 /**
  * 停车记录表
+ *
  * @author JiaShun
  * @date 2019-04-06 12:58
  */
 public interface ParkingRecordService {
     /**
      * 根据车牌查询
+     *
      * @param carNumber
      * @return
      */
@@ -17,6 +19,7 @@ public interface ParkingRecordService {
 
     /**
      * 根据id查询
+     *
      * @param recordId
      * @return
      */
@@ -24,6 +27,7 @@ public interface ParkingRecordService {
 
     /**
      * 更新停车记录
+     *
      * @param parkingRecord
      * @return
      */
@@ -31,6 +35,7 @@ public interface ParkingRecordService {
 
     /**
      * 根据订单号查询
+     *
      * @param orderSn
      * @return
      */

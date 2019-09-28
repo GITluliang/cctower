@@ -64,7 +64,7 @@ $(document).ready(function(){
 		rules:{
 			name:{
 				required:true,
-				isName:true
+				//isName:true
 			},
 			sex:"required",
 			birth:"required",
@@ -80,7 +80,7 @@ $(document).ready(function(){
 		messages:{
 			name:{
 				required:"请输入中文姓名",
-				isName:"姓名只能为汉字"
+				//isName:"姓名只能为汉字"
 			},
 			sex:{
 				required:"请输入性别"

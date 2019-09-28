@@ -45,7 +45,7 @@ public class BillingServiceImpl implements BillingService {
                 BillingDTO dto = new BillingDTO();
                 BeanUtils.copyProperties(billing, dto);
                 Parking parking = parkingDAO.selectByPrimaryKey(dto.getParkingId());
-                if(parking != null) {
+                if (parking != null) {
                     dto.setParkingName(parking.getName());
                 }
                 dtoList.add(dto);

@@ -15,6 +15,7 @@ public interface MenuDAO extends BaseDAO<Menu> {
 
     /**
      * 获取对应的shiro权限perms
+     *
      * @param userId userId
      * @return perms
      */
@@ -22,6 +23,7 @@ public interface MenuDAO extends BaseDAO<Menu> {
 
     /**
      * 获取对应的菜单
+     *
      * @param userId userId
      * @return menus
      */
@@ -29,6 +31,7 @@ public interface MenuDAO extends BaseDAO<Menu> {
 
     /**
      * 获取MENU列表
+     *
      * @param params 条件
      * @return List<Menu>
      */

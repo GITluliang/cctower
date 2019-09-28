@@ -33,7 +33,10 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								keyword:$('#searchName').val()
+								sort: 'classification',
+								order: 'desc',
+								query: $('#query').val() ,	   //查询列
+								value:'%' + $('#searchName').val() + '%',  //查询值
 					           // name:$('#searchName').val(),
 					           // username:$('#searchName').val()
 							};
@@ -52,14 +55,6 @@ function load() {
 									field : 'parkingName',
 									title : '停车场名称'
 								},
-								{
-									field : 'name',
-									title : '车主姓名'
-								},
-								{
-									field : 'phone',
-									title : '联系方式'
-								},
 																{
 									field : 'number', 
 									title : '车牌号'
@@ -72,6 +67,33 @@ function load() {
 																{
 									field : 'endDate',
 									title : '失效日期'
+								},
+								{
+									field : 'name',
+									title : '车主姓名'
+								},
+								{
+									field : 'phone',
+									title : '联系方式'
+								},
+								{
+									field : 'corporateName',
+									title : '公司名称'
+								},
+								{
+									field : 'remarks',
+									title : '备注'
+								},
+								{
+									field : 'classification',
+									title : '月租车分类',
+									align : 'center',
+									formatter : function(value, row, index) {
+										if(value == null) {
+											return '<span class="label label-danger">-</span>';
+										}
+										return '<span class="label label-danger">' + value + '</span>';
+									}
 								},
 								{
 									field : 'status',

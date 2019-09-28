@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(vo, user);
         user.setUpdateTime(new Date());
         int count = userDAO.updateByPrimaryKeySelective(user);
-        if(vo.getRoleIds() != null) {
+        if (vo.getRoleIds() != null) {
             insertUserRole(vo);
         }
         return count;

@@ -33,7 +33,7 @@ public class BusinessTransactionRecordController {
 
     @GetMapping()
     @RequiresPermissions("sys:businessTransaction:businessTransaction")
-    String businessTransaction(){
+    String businessTransaction() {
         return "system/businessTransaction/businessTransaction";
     }
 

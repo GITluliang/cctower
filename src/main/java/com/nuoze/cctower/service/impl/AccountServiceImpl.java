@@ -28,82 +28,82 @@ import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
  */
 @Service
 public class AccountServiceImpl implements AccountService {
-	@Autowired
-	private AccountDAO accountDAO;
-	@Autowired
-	private ParkingRecordDAO parkingRecordDAO;
-	@Autowired
-	private ParkingDAO parkingDAO;
-	@Autowired
-	private PaymentComponent paymentComponent;
+    @Autowired
+    private AccountDAO accountDAO;
+    @Autowired
+    private ParkingRecordDAO parkingRecordDAO;
+    @Autowired
+    private ParkingDAO parkingDAO;
+    @Autowired
+    private PaymentComponent paymentComponent;
 
-	@Override
-	public Account findByParkingId(Long parkingId) {
-		return accountDAO.selectByParkingId(parkingId);
-	}
+    @Override
+    public Account findByParkingId(Long parkingId) {
+        return accountDAO.selectByParkingId(parkingId);
+    }
 
-	@Override
-	public Account get(Long id){
-		return accountDAO.selectByPrimaryKey(id);
-	}
-	
-	@Override
-	public List<AccountVO> list(Map<String, Object> map) {
-		List<Account> list = accountDAO.list(map);
-		List<AccountVO> vos = new ArrayList<>();
-		if (!CollectionUtils.isEmpty(list)) {
-			for (Account account : list) {
-				AccountVO vo = new AccountVO();
-				BeanUtils.copyProperties(account, vo);
-				Long parkingId = account.getParkingId();
-				String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-				if (StringUtils.isNotBlank(parkingName)) {
-					vo.setParkingName(parkingName);
-				}
-				BigDecimal withdrawalAmount = paymentComponent.balanceToWithdrawalAmount(account.getBalance(), account.getServiceCharge());
-				vo.setWithdrawalAmount(withdrawalAmount);
-				vos.add(vo);
-			}
-		}
-		return vos;
-	}
-	
-	@Override
-	public int count(Map<String, Object> map){
-		return accountDAO.count(map);
-	}
-	
-	@Override
-	public int save(Account account) {
-		Long parkingId = account.getParkingId();
-		List<ParkingRecord> list = parkingRecordDAO.findByParkingId(parkingId);
-		BigDecimal balance = EMPTY_MONEY;
-		if (!CollectionUtils.isEmpty(list)) {
-			for (ParkingRecord record : list) {
-				BigDecimal cost = record.getCost();
-				if (cost != null) {
-					balance = balance.add(cost);
-				}
-			}
-		}
-		account.setBalance(balance);
-		account.setCreateTime(new Date());
-		return accountDAO.insert(account);
-	}
-	
-	@Override
-	public int update(Account account){
-		return accountDAO.updateByPrimaryKeySelective(account);
-	}
-	
-	@Override
-	public int remove(Long id){
-		return accountDAO.deleteByPrimaryKey(id);
-	}
-	
-	@Override
-	public int batchRemove(Long[] ids){
-		return accountDAO.batchRemove(ids);
-	}
-	
+    @Override
+    public Account get(Long id) {
+        return accountDAO.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<AccountVO> list(Map<String, Object> map) {
+        List<Account> list = accountDAO.list(map);
+        List<AccountVO> vos = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(list)) {
+            for (Account account : list) {
+                AccountVO vo = new AccountVO();
+                BeanUtils.copyProperties(account, vo);
+                Long parkingId = account.getParkingId();
+                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
+                if (StringUtils.isNotBlank(parkingName)) {
+                    vo.setParkingName(parkingName);
+                }
+                BigDecimal withdrawalAmount = paymentComponent.balanceToWithdrawalAmount(account.getBalance(), account.getServiceCharge());
+                vo.setWithdrawalAmount(withdrawalAmount);
+                vos.add(vo);
+            }
+        }
+        return vos;
+    }
+
+    @Override
+    public int count(Map<String, Object> map) {
+        return accountDAO.count(map);
+    }
+
+    @Override
+    public int save(Account account) {
+        Long parkingId = account.getParkingId();
+        List<ParkingRecord> list = parkingRecordDAO.findByParkingId(parkingId);
+        BigDecimal balance = EMPTY_MONEY;
+        if (!CollectionUtils.isEmpty(list)) {
+            for (ParkingRecord record : list) {
+                BigDecimal cost = record.getCost();
+                if (cost != null) {
+                    balance = balance.add(cost);
+                }
+            }
+        }
+        account.setBalance(balance);
+        account.setCreateTime(new Date());
+        return accountDAO.insert(account);
+    }
+
+    @Override
+    public int update(Account account) {
+        return accountDAO.updateByPrimaryKeySelective(account);
+    }
+
+    @Override
+    public int remove(Long id) {
+        return accountDAO.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int batchRemove(Long[] ids) {
+        return accountDAO.batchRemove(ids);
+    }
+
 }

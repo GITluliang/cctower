@@ -46,13 +46,13 @@ public class GeneratorController {
 
     @GetMapping("code/{tableName}")
     public void code(HttpServletResponse response, @PathVariable String tableName) throws IOException {
-        String[] tableNames = new String[] {tableName};
+        String[] tableNames = new String[]{tableName};
         generatorCode(response, tableNames);
     }
 
     @GetMapping("batchCode")
     public void batchCode(HttpServletResponse response, String tables) throws IOException {
-        String[] tableNames = (String[])JSON.parseArray(tables).toArray();
+        String[] tableNames = (String[]) JSON.parseArray(tables).toArray();
         generatorCode(response, tableNames);
     }
 

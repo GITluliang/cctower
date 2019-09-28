@@ -1,6 +1,7 @@
 package com.nuoze.cctower.rest;
 
 import com.nuoze.cctower.component.IdComponent;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 
@@ -44,14 +46,14 @@ public class PassagewayController {
 
     @GetMapping()
     @RequiresPermissions("sys:passageway:passageway")
-    String passageway(){
+    String passageway() {
         return prefix + "passageway";
     }
 
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("sys:passageway:passageway")
-    public PageUtils list(@RequestParam Map<String, Object> params){
+    public PageUtils list(@RequestParam Map<String, Object> params) {
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
@@ -65,7 +67,7 @@ public class PassagewayController {
 
     @GetMapping("/add")
     @RequiresPermissions("sys:passageway:add")
-    String add(Model model){
+    String add(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
         return prefix + "add";
@@ -73,7 +75,7 @@ public class PassagewayController {
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:passageway:edit")
-    String edit(@PathVariable Long id,Model model){
+    String edit(@PathVariable Long id, Model model) {
         Passageway passageway = passagewayService.findById(id);
         model.addAttribute("passageway", passageway);
         List<Parking> parkingList = idComponent.getParkingList();
@@ -87,16 +89,17 @@ public class PassagewayController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("sys:passageway:add")
-    public R save(Passageway passageway){
+    public R save(Passageway passageway) {
         return passagewayService.save(passageway) > 0 ? R.ok() : R.error();
     }
+
     /**
      * 修改
      */
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("sys:passageway:edit")
-    public R update( Passageway passageway){
+    public R update(Passageway passageway) {
         passagewayService.update(passageway);
         return R.ok();
     }
@@ -104,20 +107,20 @@ public class PassagewayController {
     /**
      * 删除
      */
-    @PostMapping( "/remove")
+    @PostMapping("/remove")
     @ResponseBody
     @RequiresPermissions("sys:passageway:remove")
-    public R remove( Long id){
+    public R remove(Long id) {
         return passagewayService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**
      * 删除
      */
-    @PostMapping( "/batchRemove")
+    @PostMapping("/batchRemove")
     @ResponseBody
     @RequiresPermissions("sys:passageway:batchRemove")
-    public R remove(@RequestParam("ids[]") Long[] ids){
+    public R remove(@RequestParam("ids[]") Long[] ids) {
         passagewayService.batchRemove(ids);
         return R.ok();
     }

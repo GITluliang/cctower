@@ -179,6 +179,7 @@ public class ApiServiceImpl implements ApiService {
 
     /**
      * 获得付款码url
+     *
      * @param record
      * @param cost
      * @return

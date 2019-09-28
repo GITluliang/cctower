@@ -105,8 +105,40 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public List<CarDTO> listLike(Map<String, Object> map) {
+        Long userId = idComponent.getUserId();
+        List<Long> roleIds = userRoleDAO.listRoleByUserId(userId);
+        if (roleIds.contains(BUSINESS_ROLE_ID)) {
+            map.put("createId", userId);
+        }
+        List<Car> list = carDAO.listLike(map);
+        List<CarDTO> carDTOList = new ArrayList<>();
+        for (Car car : list) {
+            CarDTO carDTO = new CarDTO();
+            BeanUtils.copyProperties(car, carDTO);
+            if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
+                String beginDate = DateUtils.toTimeString(car.getMonthlyParkingStart());
+                String endDate = DateUtils.toTimeString(car.getMonthlyParkingEnd());
+                carDTO.setBeginDate(beginDate);
+                carDTO.setEndDate(endDate);
+            }
+            if (car.getParkingId() != null) {
+                String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
+                carDTO.setParkingName(parkingName);
+            }
+            carDTOList.add(carDTO);
+        }
+        return carDTOList;
+    }
+
+    @Override
+    public int countLike(Map<String, Object> map) {
+        return carDAO.countLike(map);
+    }
+
+    @Override
     public int count(Map<String, Object> map) {
-        return carDAO.count(map);
+        return carDAO.countLike(map);
     }
 
     @Override
@@ -121,7 +153,7 @@ public class CarServiceImpl implements CarService {
         car.setCreateId(userId);
         car.setCreateTime(new Date());
         car.setUpdateTime(new Date());
-        int i =  carDAO.insert(car);
+        int i = carDAO.insert(car);
         if (1 == car.getParkingType()) {
             Car vo = carDAO.findByParkingIdAndCarNumber(car.getParkingId(), car.getNumber());
             mqSendComponent.sendRentCar(ApiDataEnum.ADD, vo);
@@ -258,7 +290,7 @@ public class CarServiceImpl implements CarService {
         car.setUpdateTime(new Date());
         carDAO.insert(car);
         Long carId = carDAO.selectByNumberAndOpenId(car.getNumber(), car.getOpenId());
-        Long memberId =member.getId();
+        Long memberId = member.getId();
         MemberCar memberCar = new MemberCar();
         memberCar.setCarId(carId);
         memberCar.setMemberId(memberId);
@@ -399,10 +431,20 @@ public class CarServiceImpl implements CarService {
                 Date monthlyParkingEnd = DateUtils.toDateTime(dto.getEndDate());
                 car.setMonthlyParkingStart(monthlyParkingStart);
                 car.setMonthlyParkingEnd(monthlyParkingEnd);
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.error("Time format error: {}", e.getMessage());
             }
         }
         return car;
+    }
+
+    @Override
+    public int saveVipCar(Car car) {
+        car.setParkingType(2);
+        car.setStatus(1);
+        car.setInfieldPermission(1);
+        car.setCreateTime(new Date());
+        car.setUpdateTime(new Date());
+        return carDAO.insert(car);
     }
 }

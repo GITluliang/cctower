@@ -83,6 +83,22 @@ public class Car implements Serializable {
      */
     private String phone;
 
+    /**
+     * 公司名称（新增）
+     */
+    private String corporateName;
+
+    /**
+     * 备注（新增）
+     */
+    private String remarks;
+
+    /**
+     * 月租车自定义分类（新增）:
+     *  起个标识作用，用户自已输入的，没什么实质性作用
+     */
+    private String classification;
+
     private static final long serialVersionUID = 1L;
 
 }

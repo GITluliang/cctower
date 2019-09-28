@@ -38,6 +38,7 @@ public class BillingDetailServiceImpl implements BillingDetailService {
     private MqSendComponent mqSendComponent;
     @Autowired
     private IdComponent idComponent;
+
     @Override
     public List<BillingDetailDTO> list(Query query) {
         Long userId = idComponent.getUserId();

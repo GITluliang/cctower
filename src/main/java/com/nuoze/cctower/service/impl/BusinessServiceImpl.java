@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 /**
@@ -58,7 +59,7 @@ public class BusinessServiceImpl implements BusinessService {
                 BeanUtils.copyProperties(user, userVO);
                 Long parkingId = user.getParkingId();
                 Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
-                if(parking != null) {
+                if (parking != null) {
                     userVO.setParkingName(parking.getName());
                 }
                 userVOS.add(userVO);
