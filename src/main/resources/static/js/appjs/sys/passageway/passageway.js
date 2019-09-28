@@ -33,7 +33,7 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								keyword:$('#searchName').val()
+								name:$('#searchName').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -46,22 +46,17 @@ function load() {
 								{
 									checkbox : true
 								},
-																{
-									field : 'name', 
-									title : '名字' 
-								},
-																{
-									field : 'ip', 
-									title : '摄像头IP'
-								},
-																{
+								{
 									field : 'parkingName',
-									title : '停车场'
+									title : '停车场名称'
 								},
-
+								{
+									field : 'name', 
+									title : '出入口名字'
+								},
 								{
 									field : 'type',
-									title : '出入口',
+									title : '出入口类别',
 									align : 'center',
 									formatter : function(value, row, index) {
 										if (value == '0') {
@@ -71,7 +66,11 @@ function load() {
 										}
 									}
 								},
-																{
+								{
+									field : 'ip', 
+									title : '摄像头IP'
+								},
+								{
 									title : '操作',
 									field : 'id',
 									align : 'center',

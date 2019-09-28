@@ -9,6 +9,7 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import com.nuoze.cctower.common.enums.IncomeType;
 import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.common.util.WxUtils;
+import com.nuoze.cctower.component.BillingComponent;
 import com.nuoze.cctower.component.MqSendComponent;
 import com.nuoze.cctower.component.PaymentComponent;
 import com.nuoze.cctower.dao.*;
@@ -63,9 +64,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Autowired
     private PaymentComponent paymentComponent;
     @Autowired
-    private AccountDAO accountDAO;
-    @Autowired
-    private ParkingTradingRecordDAO tradingRecordDAO;
+    private BillingComponent billingComponent;
 
     @Override
     public WxPayMpOrderResult wxPrePay(WxPayDTO dto, HttpServletRequest request) {
@@ -79,7 +78,8 @@ public class WxOrderServiceImpl implements WxOrderService {
             String prepayId = result.getPackageValue();
             prepayId = prepayId.replace("prepay_id=", "");
             ParkingRecord parkingRecord = parkingRecordService.findById(dto.getRecordId());
-            parkingRecord.setOrderSn(orderRequest.getOutTradeNo());
+            //*** 保存小程序支付订单号 ***
+            parkingRecord.setAppletOrderSn(orderRequest.getOutTradeNo());
             parkingRecord.setPrepayId(prepayId);
             parkingRecord.setOpenId(openId);
             parkingRecordService.update(parkingRecord);
@@ -92,11 +92,15 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Override
     public void payNotify(WxPayOrderNotifyResult result, HttpServletResponse response) {
         try {
+            //orderSn：获取订单号、payId：支付id、money：支付费用
             String orderSn = result.getOutTradeNo();
             String payId = result.getTransactionId();
             BigDecimal money = new BigDecimal(BaseWxPayResult.fenToYuan(result.getTotalFee()));
+            //根据订单，查询停车记录
             ParkingRecord parkingRecord = parkingRecordService.findByOrderSn(orderSn);
+            //根据订单，查询账单记录
             TopUpRecord topUpRecord = topUpRecordService.findByOrderSn(orderSn);
+            //根据订单，查询小程序续费记录
             RenewRecord renewRecord = renewRecordDAO.findByOrderSn(orderSn);
             if (parkingRecord == null && topUpRecord == null && renewRecord == null) {
                 log.error("[PAY NOTIFY PARKING-RECORD] 订单不存在 orderSn: {}", orderSn);
@@ -138,8 +142,8 @@ public class WxOrderServiceImpl implements WxOrderService {
                     car.setUpdateTime(new Date());
                     carDAO.updateByPrimaryKeySelective(car);
                 }
-                addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE);
-                addAccountBalance(money, parkingId);
+                billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE);
+                billingComponent.addAccountBalance(money, parkingId);
                 parkingRecordService.update(parkingRecord);
             }
             if (topUpRecord != null) {
@@ -164,39 +168,12 @@ public class WxOrderServiceImpl implements WxOrderService {
                 car.setMonthlyParkingEnd(monthlyParkingEnd);
                 car.setUpdateTime(new Date());
                 carDAO.updateByPrimaryKeySelective(car);
-                addTradingRecord(money, renewRecord.getParkingId(), IncomeType.RENT_RENEW);
-                addAccountBalance(money, renewRecord.getParkingId());
+                billingComponent.addTradingRecord(money, renewRecord.getParkingId(), IncomeType.PARKING_CHARGE);
+                billingComponent.addAccountBalance(money, renewRecord.getParkingId());
             }
         } catch (Exception e) {
             log.error("pay notify has exception: {}", e.getMessage());
         }
     }
 
-    /**
-     * 增加交易流水
-     * @param money 流水金额
-     * @param parkingId 停车场ID
-     * @param type 收入类型
-     */
-    private void addTradingRecord(BigDecimal money, Long parkingId, IncomeType type) {
-        ParkingTradingRecord tradingRecord = new ParkingTradingRecord();
-        tradingRecord.setAmount(money);
-        tradingRecord.setType(PARKING_TRADING_RECORD_INCOME_TYPE);
-        tradingRecord.setParkingId(parkingId);
-        tradingRecord.setPayTime(new Date());
-        tradingRecord.setIncomeType(type.name());
-        tradingRecordDAO.insert(tradingRecord);
-
-    }
-
-    /**
-     * 更新停车场余额
-     * @param money 金额
-     * @param parkingId 停车场ID
-     */
-    private void addAccountBalance(BigDecimal money, Long parkingId) {
-        Account account = accountDAO.selectByParkingId(parkingId);
-        account.setBalance(account.getBalance().add(money));
-        accountDAO.updateByPrimaryKeySelective(account);
-    }
 }

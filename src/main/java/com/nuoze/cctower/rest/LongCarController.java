@@ -1,6 +1,7 @@
 package com.nuoze.cctower.rest;
 
 import com.nuoze.cctower.component.IdComponent;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.nuoze.cctower.service.CarService;
+
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 
 /**
- * 车辆表
+ * 长租车
  *
  * @author JiaShun
  * @date 2019-03-15 00:19:28
@@ -49,7 +51,7 @@ public class LongCarController {
 
     @GetMapping()
     @RequiresPermissions("sys:car:car")
-    String car(){
+    String car() {
         return "system/car/long/car";
     }
 
@@ -57,7 +59,8 @@ public class LongCarController {
     @GetMapping("/list")
     @RequiresPermissions("sys:car:car")
     public PageUtils list(@RequestParam Map<String, Object> params) {
-        log.info("[LONG CAR CONTROLLER] check long car list");
+        log.info("[LONG CAR CONTROLLER] check long car list, the params: {}", params.toString());
+        params.put(params.get("query").toString(), params.get("value"));
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
@@ -65,14 +68,14 @@ public class LongCarController {
         //查询列表数据
         params.put("parkingType", 1);
         Query query = new Query(params);
-        List<CarDTO> carList = carService.list(query);
-        int total = carService.count(query);
+        List<CarDTO> carList = carService.listLike(query);
+        int total = carService.countLike(query);
         return new PageUtils(carList, total);
     }
 
     @GetMapping("/add")
     @RequiresPermissions("sys:car:add")
-    String add(Model model){
+    String add(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
         return prefix + "add";
@@ -80,7 +83,7 @@ public class LongCarController {
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:car:edit")
-    String edit(@PathVariable Long id, Model model){
+    String edit(@PathVariable Long id, Model model) {
         Car car = carService.findById(id);
         model.addAttribute("car", car);
         List<Parking> parkingList = idComponent.getParkingList();
@@ -94,25 +97,24 @@ public class LongCarController {
     @ResponseBody
     @PostMapping("/save")
     @RequiresPermissions("sys:car:add")
-    public R save(CarDTO dto){
+    public R save(CarDTO dto) {
         Long parkingId = dto.getParkingId();
         String carNumber = dto.getNumber();
+        Integer parkingType = dto.getParkingType();
         Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
         if (car != null) {
             return R.error(201, "此停车场已有此车牌号，不能重复添加");
         }
-        if(carService.save(dto) > 0){
-            return R.ok();
-        }
-        return R.error();
+        return carService.save(dto) > 0 ? R.ok() : R.error();
     }
+
     /**
      * 修改
      */
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:edit")
-    public R update(CarDTO dto){
+    public R update(CarDTO dto) {
         carService.update(dto);
         return R.ok();
     }
@@ -120,23 +122,20 @@ public class LongCarController {
     /**
      * 删除
      */
-    @PostMapping( "/remove")
+    @PostMapping("/remove")
     @ResponseBody
     @RequiresPermissions("sys:car:remove")
-    public R remove( Long id){
-        if(carService.remove(id)>0){
-            return R.ok();
-        }
-        return R.error();
+    public R remove(Long id) {
+        return carService.remove(id) > 0 ? R.ok() : R.error();
     }
 
     /**
      * 删除
      */
-    @PostMapping( "/batchRemove")
+    @PostMapping("/batchRemove")
     @ResponseBody
     @RequiresPermissions("sys:car:batchRemove")
-    public R remove(@RequestParam("ids[]") Long[] ids){
+    public R remove(@RequestParam("ids[]") Long[] ids) {
         carService.batchRemove(ids);
         return R.ok();
     }

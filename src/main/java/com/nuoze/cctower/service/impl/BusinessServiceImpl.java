@@ -6,6 +6,7 @@ import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.RoleDAO;
 import com.nuoze.cctower.dao.UserDAO;
 import com.nuoze.cctower.dao.UserRoleDAO;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.Role;
 import com.nuoze.cctower.pojo.entity.User;
 import com.nuoze.cctower.pojo.entity.UserRole;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 /**
@@ -56,8 +58,10 @@ public class BusinessServiceImpl implements BusinessService {
                 UserVO userVO = new UserVO();
                 BeanUtils.copyProperties(user, userVO);
                 Long parkingId = user.getParkingId();
-                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-                userVO.setParkingName(parkingName);
+                Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
+                if (parking != null) {
+                    userVO.setParkingName(parking.getName());
+                }
                 userVOS.add(userVO);
             }
         }
@@ -74,7 +78,7 @@ public class BusinessServiceImpl implements BusinessService {
     public int save(User user) {
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
-        int count = userDAO.insert(user);
+        int count = userDAO.insertSelective(user);
         UserVO vo = new UserVO();
         BeanUtils.copyProperties(user, vo);
         vo.setId(userDAO.findByUsername(user.getUsername()).getId());

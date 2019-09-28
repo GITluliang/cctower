@@ -35,14 +35,35 @@ function save() {
 function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
+		errorPlacement: function(error, element) {
+			error.appendTo(element.parent().parent());
+		},
 		rules : {
 			name : {
+				required : true
+			} ,
+			ip : {
+				required : true
+			} ,
+			parkingId : {
+				required : true
+			} ,
+			type : {
 				required : true
 			}
 		},
 		messages : {
 			name : {
 				required : icon + "请输入姓名"
+			} ,
+			ip : {
+				required : icon + "请输入摄像头ip"
+			} ,
+			parkingId : {
+				required : icon + "请选择停车场"
+			} ,
+			type : {
+				required : icon + "请选择出入口"
 			}
 		}
 	})

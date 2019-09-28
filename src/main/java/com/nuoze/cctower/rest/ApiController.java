@@ -45,8 +45,9 @@ public class ApiController {
 
     /**
      * 车辆入场
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("in")
@@ -66,8 +67,9 @@ public class ApiController {
 
     /**
      * 车辆出场
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("out")
@@ -87,8 +89,9 @@ public class ApiController {
 
     /**
      * 线下支付
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("paid")
@@ -113,8 +116,9 @@ public class ApiController {
 
     /**
      * 由于线下车牌识别识别不正确 改变carNumber
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("change-car-number")
@@ -129,23 +133,22 @@ public class ApiController {
 
     /**
      * 判断是否是月租车
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("is-free-car")
     public Result isFreeCar(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
         Result result = checkParam(apiDTO, auth, API_CHECK_IS_FREE_CAR);
-        if (result != null) {
-            return result;
-        }
-        return ResponseResult.success(apiService.isRentFreeCar(apiDTO));
+        return result != null ? result : ResponseResult.success(apiService.isRentFreeCar(apiDTO));
     }
 
     /**
      * 初始化月租车
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("init-rent-car")
@@ -154,18 +157,14 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        boolean flag = apiService.initData(apiDTO, Constant.RENT_CAR_TYPE);
-        if (flag) {
-            return ResponseResult.success();
-        } else {
-            return ResponseResult.fail(203, "初始化Rent Car失败");
-        }
+        return apiService.initData(apiDTO, Constant.RENT_CAR_TYPE) ? ResponseResult.success() : ResponseResult.fail(203, "初始化Rent Car失败");
     }
 
     /**
      * 初始化计费标准
+     *
      * @param apiDTO apiDTO
-     * @param auth token
+     * @param auth   token
      * @return Result
      */
     @PostMapping("init-billing")
@@ -174,18 +173,14 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        boolean flag = apiService.initData(apiDTO, Constant.BILLING_CAR_TYPE);
-        if (flag) {
-            return ResponseResult.success();
-        } else {
-            return ResponseResult.fail(203, "初始化Billing失败");
-        }
+        return apiService.initData(apiDTO, Constant.BILLING_CAR_TYPE) ? ResponseResult.success() : ResponseResult.fail(203, "初始化Billing失败");
     }
 
     /**
      * 添加通道配置
+     *
      * @param passageway passageway
-     * @param auth token
+     * @param auth       token
      * @return Result
      */
     @PostMapping("add-passageway")
@@ -207,8 +202,9 @@ public class ApiController {
 
     /**
      * 删除通道配置
+     *
      * @param passageway passageway
-     * @param auth token
+     * @param auth       token
      * @return Result
      */
     @PostMapping("delete-passageway")
@@ -254,9 +250,6 @@ public class ApiController {
             default:
                 break;
         }
-        if (!flag) {
-            return ResponseResult.fail(ResultEnum.INVALID_PARAM);
-        }
-        return null;
+        return flag ? null : ResponseResult.fail(ResultEnum.INVALID_PARAM);
     }
 }

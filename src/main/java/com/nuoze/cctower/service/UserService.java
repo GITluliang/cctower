@@ -7,6 +7,7 @@ import com.nuoze.cctower.pojo.vo.UserVO;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
@@ -17,6 +18,7 @@ public interface UserService {
 
     /**
      * 用户列表
+     *
      * @param map 条件
      * @return list
      */
@@ -24,6 +26,7 @@ public interface UserService {
 
     /**
      * 总个数
+     *
      * @param map 条件
      * @return int
      */
@@ -31,6 +34,7 @@ public interface UserService {
 
     /**
      * 根据ID查询
+     *
      * @param id 主键
      * @return User
      */
@@ -38,6 +42,7 @@ public interface UserService {
 
     /**
      * 保存
+     *
      * @param vo user
      * @return int
      */
@@ -45,6 +50,7 @@ public interface UserService {
 
     /**
      * 更新
+     *
      * @param vo user
      * @return int
      */
@@ -52,6 +58,7 @@ public interface UserService {
 
     /**
      * 删除
+     *
      * @param id userId
      * @return int
      */
@@ -59,6 +66,7 @@ public interface UserService {
 
     /**
      * 批量删除
+     *
      * @param userIds [id]
      * @return size
      */
@@ -66,6 +74,7 @@ public interface UserService {
 
     /**
      * 更新
+     *
      * @param user user
      * @return int
      */
@@ -73,6 +82,7 @@ public interface UserService {
 
     /**
      * 检验是否重复user
+     *
      * @param params 条件
      * @return boolean
      */
@@ -80,6 +90,7 @@ public interface UserService {
 
     /**
      * 用户自主修改密码
+     *
      * @param vo user
      * @return count
      * @throws Exception exception
@@ -88,6 +99,7 @@ public interface UserService {
 
     /**
      * 管理员修改密码
+     *
      * @param vo user
      * @return count
      * @throws Exception exception

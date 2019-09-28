@@ -10,7 +10,9 @@ import lombok.Data;
 public class WxPayDTO {
 
     private String code;
-
+    /**
+     * 停车记录主键id
+     */
     private Long recordId;
 
     private String money;

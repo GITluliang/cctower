@@ -14,12 +14,14 @@ public interface RoleService {
 
     /**
      * 获取角色列表
+     *
      * @return List<Role>
      */
     List<Role> list();
 
     /**
      * 根据userId获取List<Role>
+     *
      * @param userId userId
      * @return List<Role>
      */
@@ -27,6 +29,7 @@ public interface RoleService {
 
     /**
      * 根据id获取Role
+     *
      * @param id roleId
      * @return Role
      */
@@ -34,6 +37,7 @@ public interface RoleService {
 
     /**
      * 保存Role
+     *
      * @param vo role
      * @return count
      */
@@ -41,6 +45,7 @@ public interface RoleService {
 
     /**
      * 更新Role
+     *
      * @param vo 角色
      * @return count
      */
@@ -48,6 +53,7 @@ public interface RoleService {
 
     /**
      * 删除Role
+     *
      * @param id roleId
      * @return count
      */
@@ -55,6 +61,7 @@ public interface RoleService {
 
     /**
      * 批量删除Role
+     *
      * @param ids [ids]
      * @return count
      */
@@ -62,6 +69,7 @@ public interface RoleService {
 
     /**
      * 检验是否重复roleName
+     *
      * @param params 条件
      * @return boolean
      */

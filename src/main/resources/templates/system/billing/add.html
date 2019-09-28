@@ -20,7 +20,7 @@
 								<label class="col-sm-3 control-label">停车场</label>
 								<div class="col-sm-8">
 									<label th:each="parking:${parkingList}" class="radio-inline">
-										<input name="parkingId" type="radio" th:value="${parking.id}"
+										<input id="parkingId" name="parkingId" type="radio" th:value="${parking.id}"
 											   th:text="${parking.name}">
 									</label>
 								</div>
@@ -28,38 +28,38 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">月租费用：</label>
 								<div class="col-sm-8">
-									<input id="monthlyPrice" name="monthlyPrice" class="form-control" type="text">
+									<label><input id="monthlyPrice" name="monthlyPrice" class="form-control" type="text"></label>
 								</div>
 							</div>
 														<div class="form-group">	
 								<label class="col-sm-3 control-label">免费停车时间(分钟)：</label>
 								<div class="col-sm-8">
-									<input id="freeTime" name="freeTime" class="form-control" type="text">
+									<label><input id="freeTime" name="freeTime" class="form-control" type="text"></label>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">出厂预留时间(分钟)：</label>
 								<div class="col-sm-8">
-									<input id="paidFreeTime" name="paidFreeTime" class="form-control" type="text">
+									<label><input id="paidFreeTime" name="paidFreeTime" class="form-control" type="text"></label>
 								</div>
 							</div>
 														<div class="form-group">	
 								<label class="col-sm-3 control-label">微信折扣百分比：</label>
 								<div class="col-sm-8">
-									<input id="wechatDiscount" name="wechatDiscount" class="form-control" type="text">
+									<label><input id="wechatDiscount" name="wechatDiscount" class="form-control" type="text"></label>
 								</div>
 							</div>
 														<div class="form-group">	
 								<label class="col-sm-3 control-label">支付宝折扣百分比：</label>
 								<div class="col-sm-8">
-									<input id="alipayDiscount" name="alipayDiscount" class="form-control" type="text">
+									<label><input id="alipayDiscount" name="alipayDiscount" class="form-control" type="text"></label>
 								</div>
 							</div>
 														<div class="form-group">	
 								<label class="col-sm-3 control-label">24小时最高收费：</label>
 								<div class="col-sm-8">
-									<input id="dayCost" name="dayCost" class="form-control" type="text">
+									<label><input id="dayCost" name="dayCost" class="form-control" type="text"></label>
 								</div>
 							</div>
 																					<div class="form-group">

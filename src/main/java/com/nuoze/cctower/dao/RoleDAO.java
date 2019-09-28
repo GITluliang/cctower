@@ -15,6 +15,7 @@ public interface RoleDAO extends BaseDAO<Role> {
 
     /**
      * 条件检索List
+     *
      * @param map 条件
      * @return List<Role>
      */
@@ -22,6 +23,7 @@ public interface RoleDAO extends BaseDAO<Role> {
 
     /**
      * 批量删除角色
+     *
      * @param ids 角色组
      * @return count
      */
@@ -29,6 +31,7 @@ public interface RoleDAO extends BaseDAO<Role> {
 
     /**
      * 根据name查出角色
+     *
      * @param name 角色名字
      * @return 角色
      */

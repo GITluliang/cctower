@@ -14,6 +14,12 @@ public interface ApiService {
 
     boolean in(ApiDTO apiDTO);
 
+    /**
+     * 出口调用
+     *
+     * @param apiDTO
+     * @return
+     */
     ApiOutVO out(ApiDTO apiDTO);
 
     boolean paid(ApiDTO apiDTO);

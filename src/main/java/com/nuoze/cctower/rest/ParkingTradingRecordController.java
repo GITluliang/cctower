@@ -23,40 +23,40 @@ import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 /**
  * 停车场交易记录
- * 
+ *
  * @author JiaShun
  * @date 2019-05-15 23:57:18
  */
- 
+
 @Controller
 @RequestMapping("/sys/trading")
 public class ParkingTradingRecordController {
 
-	@Autowired
-	private ParkingTradingRecordService parkingTradingRecordService;
-	@Autowired
-	private IdComponent idComponent;
-	
-	@GetMapping()
-	@RequiresPermissions("sys:parkingTradingRecord:parkingTradingRecord")
-	String parkingTradingRecord(Model model) {
-		List<Parking> parkingList = idComponent.getParkingList();
-		model.addAttribute("parkingList", parkingList);
-		return "system/parkingTradingRecord/parkingTradingRecord";
-	}
-	
-	@ResponseBody
-	@GetMapping("/list")
-	@RequiresPermissions("sys:parkingTradingRecord:parkingTradingRecord")
-	public PageUtils list(@RequestParam Map<String, Object> params){
-		params = idComponent.buildParams(params);
-		if (params.isEmpty()) {
-			return new PageUtils(EMPTY_LIST, 0);
-		}
-		//查询列表数据
-		Query query = new Query(params);
-		Pair<Integer, List<ParkingTradingRecordVO>> pair = parkingTradingRecordService.list(query);
-		return new PageUtils(pair.getRight(), pair.getLeft());
-	}
-	
+    @Autowired
+    private ParkingTradingRecordService parkingTradingRecordService;
+    @Autowired
+    private IdComponent idComponent;
+
+    @GetMapping()
+    @RequiresPermissions("sys:parkingTradingRecord:parkingTradingRecord")
+    String parkingTradingRecord(Model model) {
+        List<Parking> parkingList = idComponent.getParkingList();
+        model.addAttribute("parkingList", parkingList);
+        return "system/parkingTradingRecord/parkingTradingRecord";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    @RequiresPermissions("sys:parkingTradingRecord:parkingTradingRecord")
+    public PageUtils list(@RequestParam Map<String, Object> params) {
+        params = idComponent.buildParams(params);
+        if (params.isEmpty()) {
+            return new PageUtils(EMPTY_LIST, 0);
+        }
+        //查询列表数据
+        Query query = new Query(params);
+        Pair<Integer, List<ParkingTradingRecordVO>> pair = parkingTradingRecordService.list(query);
+        return new PageUtils(pair.getRight(), pair.getLeft());
+    }
+
 }

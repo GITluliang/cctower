@@ -39,6 +39,7 @@ CREATE TABLE `billing` (
   `wechat_discount` int(5) DEFAULT NULL COMMENT '微信折扣百分比',
   `alipay_discount` int(5) DEFAULT NULL COMMENT '支付宝折扣百分比',
   `day_cost` decimal(10,2) DEFAULT NULL COMMENT '24小时最高收费',
+  `user_id` bigint(20) NOT NULL COMMENT '所属物业公司ID',
   PRIMARY KEY (`id`),
   KEY `idx_parking_id` (`parking_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='停车计费逻辑表';
@@ -79,6 +80,7 @@ CREATE TABLE `billing_detail` (
   `twenty_four` decimal(10,2) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL COMMENT '所属物业公司ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -106,6 +108,11 @@ CREATE TABLE `car` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `number` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '车牌号',
   `parking_id` bigint(11) DEFAULT NULL COMMENT '停车场ID',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '车主姓名',
+  `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '联系方式',
+  `corporate_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '公司名称',
+  `remarks` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '备注',
+  `classification` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '月租车自定义分类',
   `parking_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0:临时车 1:包月 2:VIP 3:商户车辆\n',
   `monthly_parking_start` datetime DEFAULT NULL COMMENT '包月车辆开始时间',
   `monthly_parking_end` datetime DEFAULT NULL COMMENT '包月车辆结束时间',
@@ -313,6 +320,8 @@ CREATE TABLE `parking` (
   `user_id` bigint(20) NOT NULL COMMENT '所属物业公司ID',
   `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '位置',
   `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '负责人联系方式',
+  `contacts` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '联系人姓名',
+  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '负责人邮箱',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -334,6 +343,8 @@ CREATE TABLE `parking_record` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `open_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `applet_order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '小程序支付订单号',
+  `qr_code_order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL '付款码支付订单',
   `prepay_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `pay_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `car_number` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '车牌号',

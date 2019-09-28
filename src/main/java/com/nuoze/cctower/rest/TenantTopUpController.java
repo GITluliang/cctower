@@ -9,15 +9,18 @@ import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.User;
 import com.nuoze.cctower.pojo.vo.TenantTopUpVO;
 import com.nuoze.cctower.service.UserService;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 /**
@@ -37,7 +40,7 @@ public class TenantTopUpController {
 
     @GetMapping()
     @RequiresPermissions("sys:tenantTopUp:tenantTopUp")
-    String tenantTopUp(Model model){
+    String tenantTopUp(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
         return "system/tenantTopUp/tenantTopUp";
@@ -60,7 +63,7 @@ public class TenantTopUpController {
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:car:edit")
-    String edit(@PathVariable Long id, Model model){
+    String edit(@PathVariable Long id, Model model) {
         TenantTopUpVO vo = userToTopUpVO(id);
         model.addAttribute("tenantTopUp", vo);
         return "system/tenantTopUp/edit";
@@ -72,11 +75,8 @@ public class TenantTopUpController {
     @ResponseBody
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:edit")
-    public R update(TenantTopUpVO vo){
-        if(userService.updateBalance(vo) > 0){
-            return R.ok();
-        }
-        return R.error();
+    public R update(TenantTopUpVO vo) {
+        return userService.updateBalance(vo) > 0 ? R.ok() : R.error();
     }
 
 

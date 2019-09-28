@@ -59,6 +59,7 @@ function load() {
 									field : 'payType',
 									title : '缴费类型',
 									align : 'center',
+									//0：线下 1：微信 2：支付宝 3:vip 4：月租车、5：商户车辆
 									formatter : function(value, row, index) {
 										if (value == '0') {
 											return '<span class="label label-danger">线下支付</span>';
@@ -66,6 +67,12 @@ function load() {
 											return '<span class="label label-primary">微信支付</span>';
 										} else if (value == '2') {
 											return '<span class="label label-primary">支付宝支付</span>';
+										} else if (value == '3') {
+											return '<span class="label label-blue">无需支付</span>';
+										}else if (value == '4') {
+											return '<span class="label label-blue">月租车</span>';
+										}else if (value == '5') {
+											return '<span class="label label-blue">无需支付</span>';
 										}
 									}
 								},

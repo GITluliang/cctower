@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 /**
@@ -37,14 +38,14 @@ public class BusinessController {
 
     @GetMapping()
     @RequiresPermissions("sys:business:business")
-    String business(){
+    String business() {
         return prefix + "business";
     }
 
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("sys:business:parking")
-    public PageUtils list(@RequestParam Map<String, Object> params){
+    public PageUtils list(@RequestParam Map<String, Object> params) {
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
@@ -55,7 +56,7 @@ public class BusinessController {
 
     @GetMapping("/add")
     @RequiresPermissions("sys:business:add")
-    String add(Model model){
+    String add(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
         return prefix + "add";
@@ -63,7 +64,7 @@ public class BusinessController {
 
     @GetMapping("/edit/{id}")
     @RequiresPermissions("sys:business:edit")
-    String edit(@PathVariable Long id, Model model){
+    String edit(@PathVariable Long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
         List<Parking> parkingList = idComponent.getParkingList();

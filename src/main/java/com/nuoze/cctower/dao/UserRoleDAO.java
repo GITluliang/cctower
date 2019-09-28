@@ -14,12 +14,14 @@ public interface UserRoleDAO extends BaseDAO<UserRole> {
 
     /**
      * 删除用户和角色的对应关系
+     *
      * @param userIds [userId]
      */
     void batchRemoveByUserId(Long[] userIds);
 
     /**
      * 根据用户ID获取对应的RoleIds
+     *
      * @param userId userId
      * @return List<RoleId>
      */
@@ -27,6 +29,7 @@ public interface UserRoleDAO extends BaseDAO<UserRole> {
 
     /**
      * 根据userId删除角色
+     *
      * @param userId [userId]
      * @return int
      */
@@ -34,6 +37,7 @@ public interface UserRoleDAO extends BaseDAO<UserRole> {
 
     /**
      * 批量添加UserRole
+     *
      * @param list List<UserRole>
      * @return num
      */
@@ -41,6 +45,7 @@ public interface UserRoleDAO extends BaseDAO<UserRole> {
 
     /**
      * 根据roleId删除userRole
+     *
      * @param roleId
      */
     void removeByRoleId(Long roleId);

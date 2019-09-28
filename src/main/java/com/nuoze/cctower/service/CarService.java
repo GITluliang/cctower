@@ -21,6 +21,10 @@ import java.util.Map;
 public interface CarService {
     List<CarDTO> list(Map<String, Object> map);
 
+    List<CarDTO> listLike(Map<String, Object> map);
+
+    int countLike(Map<String, Object> map);
+
     int count(Map<String, Object> map);
 
     Car findById(Long id);
@@ -35,6 +39,12 @@ public interface CarService {
 
     ParkingRecordVO parkingRecordDetail(String carNumber);
 
+    /**
+     * 根据车牌查询费用
+     *
+     * @param carNumber
+     * @return
+     */
     Result costByNumber(String carNumber);
 
     String[] wxCarList(String openId);
@@ -54,4 +64,6 @@ public interface CarService {
     WxPayMpOrderResult renewCarPrePay(RenewCarPayDTO dto, HttpServletRequest request);
 
     List<RenewCarRecordVO> renewCarRecord(Map<String, Object> map);
+
+    int saveVipCar(Car car);
 }

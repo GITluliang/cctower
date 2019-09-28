@@ -21,10 +21,12 @@
     <result column="in_time" jdbcType="TIMESTAMP" property="inTime" />
     <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
     <result column="out_time" jdbcType="TIMESTAMP" property="outTime" />
+    <result column="applet_order_sn" jdbcType="VARCHAR" property="appletOrderSn" />
+    <result column="qr_code_order_sn" jdbcType="VARCHAR" property="qrCodeOrderSn" />
   </resultMap>
   <sql id="Base_Column_List">
     id, uuid, open_id, order_sn, prepay_id, pay_id, pay_type, car_number, parking_id, entrance_id, exit_id, unit_price, cost_time, cost, pay_status, `status`, in_time,
-    pay_time, out_time
+    pay_time, out_time, applet_order_sn, qr_code_order_sn
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -38,12 +40,12 @@
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.ParkingRecord">
     insert into parking_record (id, uuid, open_id, order_sn, prepay_id, pay_id, pay_type, car_number, parking_id,
-      entrance_id, exit_id, unit_price, cost_time, cost, pay_status, `status`, in_time, pay_time,out_time)
+      entrance_id, exit_id, unit_price, cost_time, cost, pay_status, `status`, in_time, pay_time,out_time, applet_order_sn, qr_code_order_sn)
     values (#{id,jdbcType=BIGINT}, #{uuid,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{orderSn,jdbcType=VARCHAR}, #{prepayId,jdbcType=VARCHAR},
             #{payId,jdbcType=VARCHAR}, #{payType,jdbcType=TINYINT}, #{carNumber,jdbcType=VARCHAR}, #{parkingId,jdbcType=BIGINT}, #{entranceId,jdbcType=BIGINT},
             #{exitId,jdbcType=BIGINT}, #{unitPrice,jdbcType=DECIMAL}, #{costTime,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL},
             #{payStatus,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{inTime,jdbcType=TIMESTAMP},
-            #{payTime,jdbcType=TIMESTAMP}, #{outTime,jdbcType=TIMESTAMP})
+            #{payTime,jdbcType=TIMESTAMP}, #{outTime,jdbcType=TIMESTAMP}, #{appletOrderSn,jdbcType=VARCHAR}, #{qrCodeOrderSn,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.ParkingRecord">
     insert into parking_record
@@ -105,6 +107,12 @@
       <if test="outTime != null">
         out_time,
       </if>
+      <if test="appletOrderSn != null">
+        appletOrderSn,
+      </if>
+      <if test="qrCodeOrderSn != null">
+        qrCodeOrderSn,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -163,6 +171,12 @@
       </if>
       <if test="outTime != null">
         #{outTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appletOrderSn != null">
+        #{appletOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCodeOrderSn != null">
+        #{qrCodeOrderSn,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -223,6 +237,12 @@
       <if test="outTime != null">
         out_time = #{outTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="appletOrderSn != null">
+        applet_order_sn = #{appletOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCodeOrderSn != null">
+        qr_code_order_sn = #{qrCodeOrderSn,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -245,7 +265,9 @@
       `status` = #{status,jdbcType=TINYINT},
       in_time = #{inTime,jdbcType=TIMESTAMP},
       pay_time = #{payTime,jdbcType=TIMESTAMP},
-      out_time = #{outTime,jdbcType=TIMESTAMP}
+      out_time = #{outTime,jdbcType=TIMESTAMP},
+      applet_order_sn = #{appletOrderSn,jdbcType=VARCHAR},
+      qr_code_order_sn = #{qrCodeOrderSnfindByOrderSn,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="findByParkingIdAndCarNumberAndStatus" resultMap="BaseResultMap">
@@ -264,9 +286,10 @@
   </select>
 
   <select id="findByOrderSn" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from parking_record
-    where order_sn = #{orderSn}
+    SELECT <include refid="Base_Column_List" />
+    FROM parking_record
+    WHERE order_sn = #{orderSn} OR applet_order_sn= #{orderSn} OR qr_code_order_sn= #{orderSn}
+    LIMIT 1
   </select>
 
   <select id="findByParkingId" resultMap="BaseResultMap">
@@ -288,7 +311,7 @@
         </foreach>
       </if>
     </where>
-    order by pay_time desc
+    order by in_time desc
     <if test="offset != null and limit != null">
       limit #{offset}, #{limit}
     </if>

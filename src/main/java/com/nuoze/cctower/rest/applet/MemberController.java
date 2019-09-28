@@ -22,6 +22,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.WX_SERVER_ERROR;
 /**
  * @author JiaShun
  * @date 2019-01-13 23:48
+ * 微信用户
  */
 @Slf4j
 @RestController
@@ -35,7 +36,7 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("login")
-    public Result login (@RequestBody MemberDTO dto) {
+    public Result login(@RequestBody MemberDTO dto) {
         String openId = dto.getOpenId();
         String code = dto.getCode();
         if (StringUtils.isEmpty(code)) {

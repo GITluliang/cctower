@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * top_up_record
+ * top_up_record：账单记录
  * @author JiaShun
  */
 @Data
@@ -21,13 +21,19 @@ public class TopUpRecord implements Serializable {
      * 用户open_id
      */
     private String openId;
-
+    /**
+     * 订单id
+     */
     private String orderSn;
 
     private String prepayId;
-
+    /**
+     * 微信订单号
+     */
     private String payId;
-
+    /**
+     * 停车场id
+     */
     private Long parkingId;
 
     /**

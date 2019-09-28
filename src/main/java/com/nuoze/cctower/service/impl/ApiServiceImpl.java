@@ -5,6 +5,7 @@ import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.nuoze.cctower.common.enums.ApiDataEnum;
+import com.nuoze.cctower.common.enums.IncomeType;
 import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.common.util.IpUtil;
 import com.nuoze.cctower.component.BillingComponent;
@@ -85,10 +86,12 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public ApiOutVO out(ApiDTO apiDTO) {
         log.info("[API CAR OUT] carNumber: {}, exit ip: {}, exit parking id: {} ", apiDTO.getCarNumber(), apiDTO.getIp(), apiDTO.getParkingId());
+        //parkingId：停车场id、carNumber：车牌号、record：停车记录
         Long parkingId = apiDTO.getParkingId();
         String carNumber = apiDTO.getCarNumber();
         ParkingRecord record = recordDAO.findByParkingIdAndCarNumberAndStatus(parkingId, carNumber);
         if (record != null) {
+            //cost：车费、passageway：车场通道、Car：车辆表
             BigDecimal cost = record.getCost();
             Passageway passageway = passagewayDAO.findByParkingIdAndIp(apiDTO.getParkingId(), apiDTO.getIp());
             Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
@@ -105,17 +108,23 @@ public class ApiServiceImpl implements ApiService {
             int costTime = DateUtils.diffMin(record.getInTime());
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
             if (car != null) {
+                //MONTHLY_CAR:包月
                 if (MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
+                    record.setPayType(PAYMENT_MONTHLY);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                 }
+                //VIP_CAR：VIP车辆
                 if (VIP_CAR == car.getParkingType()) {
+                    record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                 }
+                //BUSINESS_CAR：商户车辆
                 if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
                     if (car.getFreeTime() > costTime) {
                         car.setStatus(BUSINESS_FORBIDDEN_CAR);
                         car.setUpdateTime(new Date());
                         carDAO.updateByPrimaryKeySelective(car);
+                        record.setPayType(PAYMENT_VBUSINESS);
                         return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                     }
                 }
@@ -125,6 +134,7 @@ public class ApiServiceImpl implements ApiService {
             if (freeTime != null) {
                 //如果在停车场免费停车时间内，paid=1， status: LEAVE_YET
                 if (freeTime >= costTime) {
+                    record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? EMPTY_MONEY.toString() : cost.toString());
                 }
             }
@@ -154,6 +164,9 @@ public class ApiServiceImpl implements ApiService {
                     member.setBalance(balance);
                     member.setUpdateTime(new Date());
                     memberDAO.updateByPrimaryKeySelective(member);
+                    record.setPayType(PAYMENT_WECHAT);
+                    billingComponent.addTradingRecord(cost, parkingId, IncomeType.PARKING_CHARGE);
+                    billingComponent.addAccountBalance(cost, parkingId);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, cost.toString());
                 }
             }
@@ -164,6 +177,13 @@ public class ApiServiceImpl implements ApiService {
         return null;
     }
 
+    /**
+     * 获得付款码url
+     *
+     * @param record
+     * @param cost
+     * @return
+     */
     private String getCodeUrl(ParkingRecord record, BigDecimal cost) {
         WxPayUnifiedOrderRequest orderRequest = this.paymentComponent.buildWxPayReq(null, cost, null, IpUtil.getLocalHostIp());
         orderRequest.setBody("CCTower: 停车费");
@@ -177,7 +197,8 @@ public class ApiServiceImpl implements ApiService {
             if (!StringUtils.isEmpty(prepayId)) {
                 record.setPrepayId(prepayId);
             }
-            record.setOrderSn(orderRequest.getOutTradeNo());
+            //*** 付款码支付订单 ***
+            record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
             codeUrl = result.getCodeURL();
         } catch (WxPayException e) {
             log.error("pre pay has exception: {}", e.getMessage());
@@ -189,6 +210,7 @@ public class ApiServiceImpl implements ApiService {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         record.setStatus(status);
         record.setUuid(uuid);
+        //更新订单
         recordDAO.updateByPrimaryKeySelective(record);
         apiVO.setPaid(paid);
         apiVO.setCarNumber(carNumber);

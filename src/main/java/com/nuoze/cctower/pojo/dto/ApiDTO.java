@@ -9,7 +9,9 @@ import org.apache.commons.lang.StringUtils;
  */
 @Data
 public class ApiDTO {
-
+    /**
+     * 停车场id
+     */
     private Long parkingId;
     private String ip;
     private String carNumber;

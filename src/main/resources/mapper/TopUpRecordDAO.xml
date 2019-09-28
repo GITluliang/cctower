@@ -184,6 +184,7 @@
     <include refid="Base_Column_List" />
     from top_up_record
     <where>
+      pay_status = 1
       <if test="openId != null and openId != ''">and open_id = #{openId}</if>
     </where>
     <choose>
