@@ -35,7 +35,7 @@ public class DateUtils {
     }
 
     public static String formatMonthly(Date date) {
-        return format(date, MONTHLY_PATTERN);
+        return format(date, DATE_PATTERN);
     }
 
     public static String formatDateTime(Date date) {

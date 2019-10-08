@@ -25,4 +25,6 @@ public interface ParkingDAO extends BaseDAO<Parking> {
     List<Parking> findParkingByUser(Long userId);
 
     Parking findByUserIdAndParkingName(@Param("userId") Long userId, @Param("parkingName") String parkingName);
+
+    Parking findByParkingName( @Param("parkingName") String parkingName);
 }

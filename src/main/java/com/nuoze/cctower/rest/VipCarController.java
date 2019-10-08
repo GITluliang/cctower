@@ -5,6 +5,7 @@ import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
 import com.nuoze.cctower.component.IdComponent;
 import com.nuoze.cctower.dao.CarDAO;
+import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.Parking;
@@ -41,6 +42,8 @@ public class VipCarController {
 
     @Autowired
     private CarDAO carDAO;
+    @Autowired
+    private ParkingDAO parkingDAO ;
 
     @GetMapping()
     @RequiresPermissions("sys:car:vip")
@@ -52,15 +55,23 @@ public class VipCarController {
     @GetMapping("/list")
     @RequiresPermissions("sys:car:vip")
     public PageUtils list(@RequestParam Map<String, Object> params) {
-        log.info("[LONG CAR CONTROLLER] check long car list, the params: {}", params.toString());
+        log.info("[LONG CAR CONTROLLER] check vip car list, the params: {}", params.toString());
+        params.put(params.get("query").toString(), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
         }
+        //停车场查询
+        if("parkingName".equals(params.get("query"))) {
+            Parking value = parkingDAO.findByParkingName(params.get("value").toString());
+            System.out.println(value + "***");
+            params.put("parkingId", value == null ? 0 : value.getId());
+
+        }
         //查询列表数据
         params.put("parkingType", 2);
         Query query = new Query(params);
-        List<CarDTO> carList = carService.list(query);
+        List<CarDTO> carList = carService.listLike(query);
         int total = carService.count(query);
         return new PageUtils(carList, total);
     }
