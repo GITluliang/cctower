@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import static com.nuoze.cctower.common.constant.Constant.*;
 
 /**
+ * mq消息发送组件
  * @author JiaShun
  * @date 2019-04-27 00:52
  */
@@ -28,6 +29,11 @@ public class MqSendComponent {
     @Autowired
     private MqConfigDAO mqConfigDAO;
 
+    /**
+     * 发送出厂车辆
+     * @param parkingId
+     * @param goOutVO
+     */
     public void sendGoOutCar(Long parkingId, GoOutVO goOutVO) {
         ApiMqVO mqVO = new ApiMqVO();
         mqVO.setType(GO_OUT_CAR_TYPE);
@@ -35,6 +41,12 @@ public class MqSendComponent {
         sendMq(mqVO, parkingId);
     }
 
+    /**
+     * 发送收費规则
+     * @param dataEnum
+     * @param billing
+     * @param detail
+     */
     public void sendBilling(ApiDataEnum dataEnum, Billing billing, BillingDetail detail) {
         BillingVO billingVO = new BillingVO();
         BillingApiEntity apiEntity = new BillingApiEntity();
@@ -52,6 +64,11 @@ public class MqSendComponent {
         sendMq(mqVO, billing.getParkingId());
     }
 
+    /**
+     * 发送月租车
+     * @param dataEnum
+     * @param vo
+     */
     public void sendRentCar(ApiDataEnum dataEnum, Car vo) {
         RentCarVO rentCarVO = new RentCarVO();
         RentCarApiEntity apiEntity = new RentCarApiEntity();
@@ -69,6 +86,11 @@ public class MqSendComponent {
         sendMq(mqVO, vo.getParkingId());
     }
 
+    /**
+     * 通过RabbitTemplate发送mq指令
+     * @param mqVO
+     * @param parkingId
+     */
     public void sendMq(ApiMqVO mqVO, Long parkingId) {
         String queue = mqConfigDAO.selectQueueByParkingId(parkingId);
         log.info("[Mq Send Component] mq send to queue: {} , parkingId: {}, message: {}", queue, parkingId, JSON.toJSONString(mqVO));

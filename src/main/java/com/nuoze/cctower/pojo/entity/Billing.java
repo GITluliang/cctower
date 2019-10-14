@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * billing
+ * billing 收费规则表
  * @author JiaShun
  */
 @Data

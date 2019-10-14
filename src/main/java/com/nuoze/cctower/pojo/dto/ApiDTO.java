@@ -13,8 +13,17 @@ public class ApiDTO {
      * 停车场id
      */
     private Long parkingId;
+    /**
+     * IP
+     */
     private String ip;
+    /**
+     *新车牌号
+     */
     private String carNumber;
+    /**
+     * 老车牌号
+     */
     private String oldCarNumber;
 
     public boolean freeCarCheck() {

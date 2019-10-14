@@ -37,6 +37,11 @@ public interface CarService {
 
     int batchRemove(Long[] ids);
 
+    /**
+     * 根据车牌获取停车记录
+     * @param carNumber
+     * @return
+     */
     ParkingRecordVO parkingRecordDetail(String carNumber);
 
     /**

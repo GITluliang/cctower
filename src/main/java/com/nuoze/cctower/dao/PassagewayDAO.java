@@ -21,6 +21,12 @@ public interface PassagewayDAO extends BaseDAO<Passageway> {
 
     int batchRemove(Long[] ids);
 
+    /**
+     * 通过停车场id和出入口摄像头IP，查找到车场通道信息
+     * @param parkingId     停车场id
+     * @param ip            出入口摄像头IP
+     * @return Passageway   车场通道
+     */
     Passageway findByParkingIdAndIp(@Param("parkingId") Long parkingId, @Param("ip") String ip);
 
     void deleteByParkingIdAndIp(@Param("parkingId") Long parkingId, @Param("ip") String ip);

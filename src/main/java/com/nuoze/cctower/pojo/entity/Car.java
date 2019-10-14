@@ -56,11 +56,17 @@ public class Car implements Serializable {
      * 创建人
      */
     private Long createId;
-
+    /**
+     * 小程序openId
+     */
     private String openId;
-
+    /**
+     * 商户车辆免费时长
+     */
     private Integer freeTime;
-
+    /**
+     * 费用
+     */
     private BigDecimal cost;
 
     /**

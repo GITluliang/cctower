@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * billing_detail
+ * billing_detail   收费规则详情表
  * @author JiaShun
  */
 @Data

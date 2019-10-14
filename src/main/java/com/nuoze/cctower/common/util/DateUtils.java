@@ -42,6 +42,12 @@ public class DateUtils {
         return format(date, DATE_TIME_PATTERN);
     }
 
+    /**
+     * 两个日期之间的分钟
+     * @param startDate 开始时间
+     *   Instant.now()：获取当前日期
+     * @return 返回分钟
+     */
     public static int diffMin(Date startDate) {
         return (int) ChronoUnit.MINUTES.between(startDate.toInstant(), Instant.now());
     }

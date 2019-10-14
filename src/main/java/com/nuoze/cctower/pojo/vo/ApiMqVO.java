@@ -8,6 +8,10 @@ import lombok.Data;
  */
 @Data
 public class ApiMqVO {
+    /**
+     * mq信息类型:
+     *  GO_OUT_CAR、RENT_CAR、BILLING_CAR
+     */
     private String type;
     private GoOutVO goOutVO;
     private BillingVO billingVO;

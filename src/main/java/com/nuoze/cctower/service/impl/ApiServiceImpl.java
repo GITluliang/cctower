@@ -90,21 +90,39 @@ public class ApiServiceImpl implements ApiService {
         Long parkingId = apiDTO.getParkingId();
         String carNumber = apiDTO.getCarNumber();
         ParkingRecord record = recordDAO.findByParkingIdAndCarNumberAndStatus(parkingId, carNumber);
+        Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
+        Passageway passageway = passagewayDAO.findByParkingIdAndIp(apiDTO.getParkingId(), apiDTO.getIp());
+        ApiOutVO apiVO = new ApiOutVO();
+
+        //====此代码是为了解决古船停车场月租车出厂问题
+        if (car != null) {
+            if (apiDTO.getParkingId() == 1 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
+                if (record != null) {
+                    if (passageway != null) {
+                        Long exitId = passageway.getId();
+                        record.setExitId(exitId);
+                    }
+                    record.setOutTime(new Date());
+                    record.setPayType(PAYMENT_MONTHLY);
+                }
+                return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
+            }
+        }
+
         if (record != null) {
             //cost：车费、passageway：车场通道、Car：车辆表
             BigDecimal cost = record.getCost();
-            Passageway passageway = passagewayDAO.findByParkingIdAndIp(apiDTO.getParkingId(), apiDTO.getIp());
-            Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
             if (passageway != null) {
                 Long exitId = passageway.getId();
                 record.setExitId(exitId);
             }
             record.setOutTime(new Date());
-            ApiOutVO apiVO = new ApiOutVO();
+
             //如果已支付，paid设为1：已支付，status设为已出门
             if (record.getPayStatus() == 1) {
                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? EMPTY_MONEY.toString() : cost.toString());
             }
+            //停车时长（分钟）
             int costTime = DateUtils.diffMin(record.getInTime());
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
             if (car != null) {
@@ -129,10 +147,11 @@ public class ApiServiceImpl implements ApiService {
                     }
                 }
             }
+            //收费规则
             Billing billing = billingDAO.selectByParkingId(parkingId);
+            //免费停车时间
             Integer freeTime = billing.getFreeTime();
             if (freeTime != null) {
-                //如果在停车场免费停车时间内，paid=1， status: LEAVE_YET
                 if (freeTime >= costTime) {
                     record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? EMPTY_MONEY.toString() : cost.toString());
@@ -140,10 +159,12 @@ public class ApiServiceImpl implements ApiService {
             }
             //以上条件都不满足，判断car是不是微信会员临时车辆
             if (cost == null) {
+                //计算车费
                 cost = billingComponent.cost(costTime, parkingId, carNumber);
                 record.setCostTime(costTime);
                 record.setCost(cost);
             }
+            //查找临时车
             car = carDAO.findByCarNumberAndParkingType(carNumber, 0);
             if (car != null) {
                 String openId = car.getOpenId();
@@ -180,9 +201,9 @@ public class ApiServiceImpl implements ApiService {
     /**
      * 获得付款码url
      *
-     * @param record
-     * @param cost
-     * @return
+     * @param record 停车记录
+     * @param cost 车费
+     * @return String
      */
     private String getCodeUrl(ParkingRecord record, BigDecimal cost) {
         WxPayUnifiedOrderRequest orderRequest = this.paymentComponent.buildWxPayReq(null, cost, null, IpUtil.getLocalHostIp());
@@ -206,6 +227,17 @@ public class ApiServiceImpl implements ApiService {
         return codeUrl;
     }
 
+    /**
+     * 创建ApiOutVO
+     * @param apiVO
+     * @param record        停车记录
+     * @param paid          支付状态：0：未支付 1：支付成功
+     * @param status        是否出场 0：否 1：是 2：待出场
+     * @param parkingType   车辆类型 0:临时车 1:包月 2:VIP 3:商户车辆
+     * @param carNumber     车牌号
+     * @param cost          费用
+     * @return ApiOutVO
+     */
     private ApiOutVO buildApiOutVO(ApiOutVO apiVO, ParkingRecord record, int paid, int status, int parkingType, String carNumber, String cost) {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         record.setStatus(status);

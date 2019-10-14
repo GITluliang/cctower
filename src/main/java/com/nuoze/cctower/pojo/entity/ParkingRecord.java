@@ -23,22 +23,22 @@ public class ParkingRecord implements Serializable {
     private String uuid;
 
     /**
-     * 微信用户唯一标示
+     * 微信用户id
      */
     private String openId;
 
     /**
-     * 订单ID(用于微信支付)
+     * 订单ID
      */
     private String orderSn;
 
     /**
-     * prepayId(微信二次支付)
+     * 预付款id
      */
     private String prepayId;
 
     /**
-     * payId(微信支付唯一标识)
+     * 支付id
      */
     private String payId;
 
@@ -78,7 +78,7 @@ public class ParkingRecord implements Serializable {
     private Integer costTime;
 
     /**
-     * 共消费
+     * 车费
      */
     private BigDecimal cost;
 
@@ -88,7 +88,7 @@ public class ParkingRecord implements Serializable {
     private Integer payStatus;
 
     /**
-     * 是否出场 0：否 1：是
+     * 是否出场 0：否 1：是 2：待出场
      */
     private Integer status;
 

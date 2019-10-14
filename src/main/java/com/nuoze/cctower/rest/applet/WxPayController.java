@@ -37,7 +37,7 @@ public class WxPayController {
     private WxPayService wxPayService;
 
     /**
-     * 微信支付預付款
+     * 微信支付
      *
      * @param dto
      * @param request
@@ -51,7 +51,7 @@ public class WxPayController {
 
     /**
      * 支付通知
-     * WxPayOrderNotifyResult：微信支付订单通知结果
+     * WxPayOrderNotifyResult：微信支付订单结果通知
      * orderSn：订单编号
      * payId：付款id
      *

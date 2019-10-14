@@ -1,7 +1,13 @@
 package com.nuoze.cctower.service.impl;
 
+import com.nuoze.cctower.common.result.ResponseResult;
+import com.nuoze.cctower.common.result.Result;
+import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.ParkingRecordDAO;
+import com.nuoze.cctower.dao.PassagewayDAO;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
+import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.service.ParkingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +40,11 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
     @Override
     public ParkingRecord findByOrderSn(String orderSn) {
         return parkingRecordDAO.findByOrderSn(orderSn);
+    }
+
+    @Override
+    public String findByParkingIdAndIp(Long parkingId, Long exitId) {
+        ParkingRecord parkingRecord = parkingRecordDAO.findByParkingIdAndIp(parkingId, exitId);
+        return parkingRecord == null ? "" : parkingRecord.getCarNumber();
     }
 }
