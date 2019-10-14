@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 常量
  * @author JiaShun
  * @date 2019-03-01 01:57
  */
@@ -28,6 +29,7 @@ public class Constant {
 
     /**
      * 车辆出场状态
+     *      是否出场 0：否 1：是 2：待出场
      */
     public static final int NOT_LEAVE = 0;
     public static final int LEAVE_YET = 1;
@@ -44,6 +46,7 @@ public class Constant {
 
     /**
      * 车辆状态
+     * 状态: 0:禁用 1:正常
      */
     public static final int BUSINESS_FORBIDDEN_CAR = 0;
     public static final int BUSINESS_NORMAL_CAR = 1;
@@ -72,6 +75,7 @@ public class Constant {
     public static final Integer PARKING_TRADING_RECORD_EXPEND_TYPE = 0;
 
     /**
+     * 付款类型
      * pay type 0：线下 1：微信 2：支付宝 3:vip
      *      4：月租车、5：商户车辆
      */

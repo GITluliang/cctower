@@ -1,6 +1,8 @@
 package com.nuoze.cctower.service;
 
+import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 停车记录表
@@ -40,4 +42,12 @@ public interface ParkingRecordService {
      * @return
      */
     ParkingRecord findByOrderSn(String orderSn);
+
+    /**
+     * 通过停车场id和出口Id查询待出场车辆
+     * @param parkingId
+     * @param exitId
+     * @return
+     */
+    String findByParkingIdAndIp(Long parkingId, Long exitId);
 }

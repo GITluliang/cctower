@@ -275,7 +275,7 @@
     from parking_record
     where parking_id = #{parkingId}
     and car_number = #{carNumber}
-    and status != 1
+    and status != 1 order by in_time desc limit 0,1
   </select>
 
   <select id="findByCarNumberAndStatus" resultMap="BaseResultMap">
@@ -336,5 +336,9 @@
     where uuid = #{uuid}
   </select>
 
-
+ <select id="findByParkingIdAndIp" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List" />
+   from parking_record
+   where status=2 and parking_id = #{parkingId} and exit_id=#{exitId} order by out_time desc limit 0,1
+ </select>
 </mapper>
