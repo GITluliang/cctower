@@ -8,8 +8,17 @@ import lombok.Data;
  */
 @Data
 public class GoOutVO {
+    /**
+     * 停车场id
+     */
     private Long parkingId;
+    /**
+     * IP地址
+     */
     private String ip;
+    /**
+     * 车牌号
+     */
     private String carNumber;
     /**
      * 0：临时车辆 1：月租车 2：停车场VIP 3：商户VIP

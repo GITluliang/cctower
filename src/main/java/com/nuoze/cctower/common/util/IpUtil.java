@@ -58,6 +58,10 @@ public class IpUtil {
         return ipAddress;
     }
 
+    /**
+     * 获取本机IP
+     * @return
+     */
     public static String getLocalHostIp() {
         InetAddress inet;
         String ipAddress = null;

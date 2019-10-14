@@ -8,10 +8,14 @@ import lombok.Data;
  */
 @Data
 public class ParkingRecordVO {
-
+    //ParkingRecord 停车记录ID
     private Long recordId;
+    //入场时间
     private String inTime;
+    //出厂时间
     private String outTime;
+    //车费
     private String cost;
+    //停车时长
     private Integer takeMinutes;
 }

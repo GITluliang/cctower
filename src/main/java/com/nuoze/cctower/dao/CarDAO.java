@@ -48,6 +48,12 @@ public interface CarDAO extends BaseDAO<Car> {
 
     Long selectByNumberAndOpenId(@Param("number") String number, @Param("openId") String openId);
 
+    /**
+     * 通过车牌号和车辆属性查找车辆
+     * @param carNumber 车牌号
+     * @param parkingType 车辆属性 0:临时车 1:包月 2:VIP 3:商户车辆
+     * @return Car
+     */
     Car findByCarNumberAndParkingType(@Param("carNumber") String carNumber, @Param("parkingType") Integer parkingType);
 
     List<Car> findByParkingIdAndParkingType(@Param("parkingId") Long parkingId, @Param("parkingType") Integer parkingType);

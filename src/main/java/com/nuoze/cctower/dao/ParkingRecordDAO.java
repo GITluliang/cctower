@@ -16,7 +16,12 @@ import java.util.List;
  */
 @Repository
 public interface ParkingRecordDAO extends BaseDAO<ParkingRecord> {
-
+    /**
+     * 通过停车场id和车牌号查询停车记录
+     * @param parkingId 停车场id
+     * @param carNumber 车牌号
+     * @return
+     */
     ParkingRecord findByParkingIdAndCarNumberAndStatus(@Param("parkingId") Long parkingId, @Param("carNumber") String carNumber);
 
     ParkingRecord findByCarNumberAndStatus(@Param("carNumber") String carNumber);
@@ -30,4 +35,12 @@ public interface ParkingRecordDAO extends BaseDAO<ParkingRecord> {
     List<ParkingRecord> listByParkingId(Map<String, Object> map);
 
     ParkingRecord findByUuid(@Param("uuid") String uuid);
+
+    /**
+     * 通过停车场id和出口ip,查询待出场车辆
+     * @param parkingId
+     * @param exitId
+     * @return
+     */
+    ParkingRecord findByParkingIdAndIp(@Param("parkingId") Long parkingId, @Param("exitId") Long exitId);
 }

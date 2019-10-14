@@ -15,6 +15,7 @@ import static com.nuoze.cctower.common.constant.Constant.*;
 
 
 /**
+ * BillingComponent 计费组件类
  * @author JiaShun
  * @date 2019-07-07 09:14
  */
@@ -51,7 +52,7 @@ public class BillingComponent {
     }
 
     /**
-     * 更新停车场余额
+     * 更新停车场账户余额
      * @param money 金额
      * @param parkingId 停车场ID
      */
@@ -97,6 +98,13 @@ public class BillingComponent {
         return null;
     }
 
+    /**
+     * 计费费用
+     * @param costTime 停车时长（分钟）
+     * @param parkingId 停车场id
+     * @param carNumber 车牌号
+     * @return BigDecimal 停车费
+     */
     public BigDecimal cost(int costTime, Long parkingId, String carNumber) {
         if (carNumber != null) {
             Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
@@ -109,11 +117,13 @@ public class BillingComponent {
         if (detail == null) {
             return EMPTY_MONEY;
         }
+        //1:分时计费 2：分段计费
         switch (detail.getType()) {
             case 1:
                 if (billing.getFreeTime() != null) {
                     costTime = costTime - billing.getFreeTime();
                 }
+                //0：分钟 1：小时
                 if (detail.getUnitType() == 0) {
                     return detail.getUnitPrice().multiply(BigDecimal.valueOf(costTime));
                 } else {
@@ -137,6 +147,12 @@ public class BillingComponent {
         return EMPTY_MONEY;
     }
 
+    /**
+     * 获取小时费用
+     * @param detail BillingDetail  收费规则详情表
+     * @param hour int 停车时长（小时）
+     * @return
+     */
     private BigDecimal hourToCost(BillingDetail detail, int hour) {
         switch (hour) {
             case 1:

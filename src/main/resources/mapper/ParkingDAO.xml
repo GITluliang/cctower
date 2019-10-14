@@ -218,4 +218,10 @@
     where user_id = #{userId}
     and name = #{parkingName}
   </select>
+
+  <select id="findByParkingName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from parking
+    where name = #{parkingName}
+  </select>
 </mapper>

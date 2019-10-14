@@ -35,8 +35,8 @@ function load() {
 								offset:params.offset,
 								sort: 'classification',
 								order: 'desc',
-								query: $('#query').val() ,	   //查询列
-								value:'%' + $('#searchName').val() + '%',  //查询值
+								query: $('#query').val() ,	   			//查询列
+								value: $.trim($('#searchName').val()),  //查询值
 					           // name:$('#searchName').val(),
 					           // username:$('#searchName').val()
 							};

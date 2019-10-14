@@ -45,6 +45,14 @@ public class PaymentComponent {
         return map;
     }
 
+    /**
+     * 构建微信支付请求
+     * @param openId 小程序Id
+     * @param actualPrice 实际价格
+     * @param request HttpServletRequest请求
+     * @param ip IP
+     * @return WxPayUnifiedOrderRequest
+     */
     public WxPayUnifiedOrderRequest buildWxPayReq(String openId, BigDecimal actualPrice, HttpServletRequest request, String ip) {
         String orderSn = UUID.randomUUID().toString().replace("-", "");
         WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
@@ -52,6 +60,7 @@ public class PaymentComponent {
         if (!StringUtils.isEmpty(openId)) {
             orderRequest.setOpenid(openId);
         }
+        //将元转换为分，微信的api只接收分
         int fee = actualPrice.multiply(new BigDecimal(100)).intValue();
         orderRequest.setTotalFee(fee);
         if (ip == null) {
@@ -66,6 +75,12 @@ public class PaymentComponent {
         return balance.multiply(dividedOneHundred(ONE_HUNDRED - serviceCharge)).setScale(2, 1);
     }
 
+    /**
+     * 微信折扣
+     * @param cost 车费
+     * @param serviceCharge 折扣
+     * @return
+     */
     public BigDecimal wechatDiscounted(BigDecimal cost, Integer serviceCharge) {
         return cost.multiply(dividedOneHundred(serviceCharge)).setScale(2, 1);
     }

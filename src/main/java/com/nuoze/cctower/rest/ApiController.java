@@ -4,9 +4,11 @@ import com.nuoze.cctower.common.constant.Constant;
 import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.result.ResultEnum;
+import com.nuoze.cctower.dao.CarDAO;
 import com.nuoze.cctower.dao.ParkingRecordDAO;
 import com.nuoze.cctower.dao.PassagewayDAO;
 import com.nuoze.cctower.pojo.dto.ApiDTO;
+import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
 import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.pojo.vo.ApiOutVO;
@@ -17,6 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+
+import static com.nuoze.cctower.common.constant.Constant.MONTHLY_CAR;
 
 /**
  * @author JiaShun
@@ -42,6 +48,8 @@ public class ApiController {
     private PassagewayDAO passagewayDAO;
     @Autowired
     private ParkingRecordDAO parkingRecordDAO;
+    @Autowired
+    private CarDAO carDAO;
 
     /**
      * 车辆入场
@@ -57,10 +65,18 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        ParkingRecord record = parkingRecordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
-        if (record != null) {
-            log.error("车辆重复入场：parking id:{}, car number:{} ", apiDTO.getParkingId(), apiDTO.getCarNumber());
-            return ResponseResult.fail(201, "该车辆已在停车场内，不能重复进入");
+        //此代码是为了解决古船停车场月租车重复入场问题
+        Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
+        if (car != null) {
+            if (! (apiDTO.getParkingId() == 1 &&MONTHLY_CAR == car.getParkingType())) {
+                //=========
+                ParkingRecord record = parkingRecordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
+                if (record != null) {
+                    log.error("车辆重复入场：parking id:{}, car number:{} ", apiDTO.getParkingId(), apiDTO.getCarNumber());
+                    return ResponseResult.fail(201, "该车辆已在停车场内，不能重复进入");
+                }
+                //=========
+            }
         }
         return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
     }

@@ -92,7 +92,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Override
     public void payNotify(WxPayOrderNotifyResult result, HttpServletResponse response) {
         try {
-            //orderSn：获取订单号、payId：支付id、money：支付费用
+            //orderSn：订单号、payId：交易id、money：支付费用
             String orderSn = result.getOutTradeNo();
             String payId = result.getTransactionId();
             BigDecimal money = new BigDecimal(BaseWxPayResult.fenToYuan(result.getTotalFee()));
@@ -134,18 +134,24 @@ public class WxOrderServiceImpl implements WxOrderService {
                     } else {
                         goOutVO.setType(0);
                     }
+                    //通过mq发送出厂消息
                     mqSendComponent.sendGoOutCar(parkingId, goOutVO);
                     parkingRecord.setStatus(LEAVE_YET);
                 }
+                //商户车辆状态修改
                 if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
                     car.setStatus(BUSINESS_FORBIDDEN_CAR);
                     car.setUpdateTime(new Date());
                     carDAO.updateByPrimaryKeySelective(car);
                 }
+                //增加交易流水
                 billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE);
+                //更新停车场账户余额
                 billingComponent.addAccountBalance(money, parkingId);
+                //更新停车记录
                 parkingRecordService.update(parkingRecord);
             }
+            //小程序余额充值
             if (topUpRecord != null) {
                 log.info("[PAY NOTIFY TOP-UP-RECORD] id: {}, pay_id: {}", topUpRecord.getId(), topUpRecord.getPayId());
                 topUpRecord.setPayId(payId);
@@ -157,6 +163,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 member.setBalance(topUpRecord.getBalance());
                 memberService.update(member);
             }
+            //小程序长租续费
             if (renewRecord != null) {
                 log.info("[PAY NOTIFY RENEW-RECORD] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
                 renewRecord.setPayId(payId);

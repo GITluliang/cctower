@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MqConfigDAO extends BaseDAO<MqConfig> {
-
+    /**
+     * 通过停车场查询mq队列名
+     * @param parkingId
+     * @return
+     */
     String selectQueueByParkingId(Long parkingId);
 }
