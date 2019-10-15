@@ -1,0 +1,39 @@
+ /*@import url("./fonts/iconfont.css"); */
+@import "https://at.alicdn.com/t/font_1454841_3txvvpthz6i.css";
+
+body{font-size: .4rem;margin: 0;}
+a{text-decoration: none;color: #333;font-size: .48rem;}
+em{font-style: normal;}
+h1,h2,h3,h4,h5,h6{margin: 0;font-weight: 500;font-size: .4rem;}
+
+.h3{text-align: center;color: #999;margin: 1rem 0;}
+.con{border:1px solid #eee;border-radius: .15rem;margin: .4rem;position: relative;}
+.con h4{text-align: center;font-size: .48rem;background: #14d22d;height: 1.2rem;line-height: 1.2rem;color: #fff;border-radius: .15rem .15rem 0 0;}
+.con div{margin: 1rem auto;text-align: center;}
+.con i{position: absolute;top:2.38rem;right:.2rem;color: #eee;font-size: .6rem;}
+.con div input{height: .8rem;border:none;border-bottom: 1px solid #eee;display: inline-block;outline: none;width: 10%;text-align: center;font-size: .4rem;}
+.con .btn{background: #14d22d;display: block;margin: 0 1rem;height: 1.2rem;line-height: 1.2rem;text-align: center;margin-bottom: 1rem;border-radius: .15rem;color: #fff;}
+
+.head{background:#14d22d; height: 2.2rem;padding: .6rem .4rem 0;}
+.head h3{font-size: .58rem;color: #fff;}
+.head p{color: #fff;margin: .2rem 0;opacity: .6;}
+
+.botBtn{position: fixed;bottom: 0;left:0;width: 100%;display: flex;justify-content: space-between;height: 1.3rem;
+	line-height: 1.3rem;background: #fff;}
+.botBtn .paybtn{background: #14d22d;display: block;text-align: center;color: #fff;width:40%;}
+.botBtn span{padding-left: .4rem;}
+.botBtn span em{color: #ea0c0c;}
+.detail{margin: .4rem;padding-bottom: 1rem;}
+.detail p{display: flex;justify-content: space-between;color: #999;}
+.detail p:nth-child(1){font-size: .48rem;height:1.6rem;line-height: 1.6rem;border-bottom: 1px solid #eee;}
+.detail p span{color: #333;}
+
+.tit{height:1.5rem;line-height:1.5rem;text-align:center;}
+.tit:before{content:'';width:2rem;height:1px;border-bottom:1px solid #eee;display:inline-block;margin-right:.4rem;margin-bottom:.2rem;top:.1rem;position:relative;}
+.tit:after{content:'';width:2rem;height:1px;border-bottom:1px solid #eee;display:inline-block;margin-left:.4rem;margin-bottom:.2rem;top:.1rem;position:relative;}
+
+.notice p{font-size: .36rem;color: #666;}
+.payway div{height: 1.25rem;line-height: 1.25rem;}
+.payway i{font-size: .6rem;}
+.payway i:nth-child(1){padding-right:.4rem;}
+.payway i:nth-child(2){float: right;color: #999;}
