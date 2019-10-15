@@ -2,6 +2,7 @@ package com.nuoze.cctower.service;
 
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
+import com.nuoze.cctower.pojo.vo.ParkingRecordVO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -49,5 +50,5 @@ public interface ParkingRecordService {
      * @param exitId
      * @return
      */
-    String findByParkingIdAndIp(Long parkingId, Long exitId);
+    ParkingRecordVO findByParkingIdAndIp(Long parkingId, Long exitId);
 }

@@ -1,15 +1,11 @@
 package com.nuoze.cctower.rest.applet;
 
-import com.nuoze.cctower.common.result.ResponseResult;
-import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.service.ParkingRecordService;
-import com.nuoze.cctower.service.ParkingService;
-import com.nuoze.cctower.service.PassagewayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 扫码支付
@@ -23,24 +19,11 @@ public class SweepCodeRedController {
     private String prefix = "h5/sweepCodeRed/";
     @Autowired
     private ParkingRecordService parkingRecordService ;
-    @Autowired
-    private ParkingService parkingService ;
-    @Autowired
-    private PassagewayService passagewayService ;
 
     @RequestMapping("sweepCodeRed")
-    public String sweepCodeRed() {
-        return prefix + "index2" ;
+    public String sweepCodeRed(Long parkingId, Long exitId, Model model) {
+        model.addAttribute("parkingRecord",parkingRecordService.findByParkingIdAndIp(parkingId, exitId)) ;
+        return prefix + "index" ;
     }
 
-    @RequestMapping("get-car")
-    public Result getByParkingIdAndIpCar(Long parkingId, Long exitId) {
-        if(parkingService.findById(parkingId) == null) {
-            return ResponseResult.fail(201, "此停车场不存在");
-        }
-        if(passagewayService.findById(exitId) == null) {
-            return ResponseResult.fail(201, "此出口通道不存在");
-        }
-        return ResponseResult.success(parkingRecordService.findByParkingIdAndIp(parkingId, exitId));
-    }
 }

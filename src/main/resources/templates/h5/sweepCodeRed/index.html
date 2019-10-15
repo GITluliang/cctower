@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title></title>
+	<link rel="stylesheet" href="/css/h5/sweepCodeRed/common.css">
+</head>
+<body>
+<div>
+	<div class="con">
+		<h4>请输入车牌号</h4>
+		<div>
+			<input type="text" name="" value="京">
+			<input type="text" name="" value="1">
+			<input type="text" name="" value="2">
+			<input type="text" name="" value="3">
+			<input type="text" name="" value="4">
+			<input type="text" name="" value="5">
+			<input type="text" name="" value="6">
+		</div>
+		<i class="iconfont icon-closed"></i>
+	</div>
+
+	<div class="detail">
+		<p>金额<span style="font-weight: bold;">￥<em th:text="${parkingRecord.cost}"></em></span></p>
+		<p>车牌号<span th:text="${parkingRecord.carNumber}"></span></p>
+		<p>停车场<span th:text="${parkingRecord.parkingName}"></span></p>
+		<p>入场时间<span th:text="${parkingRecord.inTime}"></span></p>
+		<p>停车时长（分钟）<span th:text="${parkingRecord.takeMinutes}" /></p>
+		<div class="payway">
+			<h3 class="tit">支付方式</h3>
+			<div><i class="iconfont icon-wechat" style="color: #3bb034;"></i>微信支付<i class="iconfont icon-danxuan" id="icon-danxuan"></i></div>
+		</div>
+		<div class="notice">
+			<h3 class="tit">注意事项</h3>
+			<p>1.请您支付停车费时，先确认车牌号</p>
+		</div>
+	</div>
+
+	<div class="botBtn">
+		<span>还需要支付：<em>8元</em></span>
+		<a href="" class="btn">支付</a>
+	</div>
+	
+</div>
+</body>
+<script type="text/javascript" src="/js/h5/sweepCodeRed/flexible.js"></script>
+<script type="text/javascript" src="/js/h5/sweepCodeRed/jquery-1.11.2.min.js"></script>
+<script type="text/javascript">
+	$(function(){$(".icon-closed").click(function(){$("input").val("");});});
+	$("#icon-danxuan").prop("checked", true).css("color","#14d22d");
+</script>
+</html>

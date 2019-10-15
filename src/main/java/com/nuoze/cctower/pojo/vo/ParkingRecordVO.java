@@ -18,4 +18,8 @@ public class ParkingRecordVO {
     private String cost;
     //停车时长
     private Integer takeMinutes;
+    //停车场名称
+    private String parkingName ;
+    //车牌号
+    private String carNumber ;
 }
