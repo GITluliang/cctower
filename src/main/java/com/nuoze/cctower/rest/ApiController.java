@@ -66,17 +66,18 @@ public class ApiController {
             return result;
         }
         //此代码是为了解决古船停车场月租车重复入场问题
-        Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
-        if (car != null) {
-            if (! (apiDTO.getParkingId() == 1 &&MONTHLY_CAR == car.getParkingType())) {
-                //=========
-                ParkingRecord record = parkingRecordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
-                if (record != null) {
-                    log.error("车辆重复入场：parking id:{}, car number:{} ", apiDTO.getParkingId(), apiDTO.getCarNumber());
-                    return ResponseResult.fail(201, "该车辆已在停车场内，不能重复进入");
+        if(apiDTO.getParkingId() == 1) {
+            Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
+            if(car != null) {
+                if (MONTHLY_CAR == car.getParkingType()) {
+                    return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
                 }
-                //=========
             }
+        }
+        ParkingRecord record = parkingRecordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
+        if (record != null) {
+            log.error("车辆重复入场：parking id:{}, car number:{} ", apiDTO.getParkingId(), apiDTO.getCarNumber());
+            return ResponseResult.fail(201, "该车辆已在停车场内，不能重复进入");
         }
         return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
     }
