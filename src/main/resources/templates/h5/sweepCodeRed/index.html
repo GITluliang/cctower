@@ -9,16 +9,30 @@
 	<style>
 		/*键盘样式重写*/
 		div#single-keyboard-box,div#mixed-keyboard-box{height:40%;}
-		div#input-widget{position:absolute;width:84%;height:1rem!important;top:4.4rem;left:.8rem;}
-		div#keyboard-pad{height:27%!important;position:fixed;width:100%;left:-20px;bottom:1.6rem;}
+		div#input-widget{position:absolute;width:84%;height:1rem!important;top:3.9rem;left:.8rem;}
+		div#keyboard-pad{height:4.8rem!important;position:fixed;width:100%;left:0;bottom:0;padding:1.6rem 0 .4rem;background: #eee;}
 		div#mixed-keyboard-box,div#single-keyboard-box{border:none!important;}
 		button.key{font-size:.48rem!important;}
+
+
+		ul.rowsof-5,ul.shortcut-row{margin: 0;padding: 0 .4rem;}
+		.close{position: fixed;
+			bottom: 5.6rem;
+			right: .4rem;
+			background: #bbb;
+			width: 1.4rem;
+			height: .8rem;
+			line-height: .8rem;
+			text-align: center;
+			border-radius: .1rem;
+			z-index: 1;
+			color: #fff;}
 	</style>
 </head>
 <body>
 <div>
 	<span hidden id="carNumber" th:text="${parkingRecord.carNumber}"></span>
-	<h3 class="h3">智慧停车 即刻开启</h3>
+	<h3 class="h3">智慧停车 即可开启</h3>
 	<div class="con" id="con1">
 		<h4>请输入车牌号</h4>
 		<a href="#" class="btn">查询缴费</a>
@@ -29,26 +43,36 @@
 			<h4>请输入车牌号</h4>
 		</div>
 		<div class="detail">
-			<h3 class="tit">停车详情</h3>
-			<p>停车场:<span th:text="${parkingRecord.parkingName}"></span></p>
-			<p>停车时长：<span th:text="${parkingRecord.takeMinutes/60 >=1 ? parkingRecord.takeMinutes/60 + '小时' + parkingRecord.takeMinutes%60 + '分钟' : parkingRecord.takeMinutes/60 + '分钟'}"></span></p>
-			<p>入场时间:<span th:text="${parkingRecord.inTime}"></span></p>
-			<p>停车费:<span><em th:text="${parkingRecord.cost}"></em>元</span></p>
+			<div>
+				<h3 class="tit">停车详情</h3>
+				<p>停车场:<span class="parkingName" th:text="${parkingRecord.parkingName}"></span></p>
+				<p>停车时长：<span class="takeMinutes" th:text="${parkingRecord.takeMinutes/60 >=1 ? parkingRecord.takeMinutes/60 + '小时' + parkingRecord.takeMinutes%60 + '分钟' : parkingRecord.takeMinutes/60 + '分钟'}"></span></p>
+				<p>入场时间:<span class="inTime" th:text="${parkingRecord.inTime}"></span></p>
+				<p>停车费:<span><em class="cost" th:text="${parkingRecord.cost}"></em>元</span></p>
+			</div>
+
+			<p style="height:10px;background: #f7f7f7;"></p>
 			<div class="payway">
 				<h3 class="tit">支付方式</h3>
 				<div><i class="iconfont icon-wechat" style="color: #3bb034;"></i>微信支付<i class="iconfont icon-danxuan" id="icon-danxuan"></i></div>
+				<!-- <div><i class="iconfont icon-ywt" style="color: #c7152d;"></i>一网通银行卡支付<i class="iconfont icon-danxuan"></i></div> -->
 			</div>
+			<p style="height:10px;background: #f7f7f7;"></p>
 			<div class="notice">
 				<h3 class="tit">注意事项</h3>
-				<p>1.注意事项1</p>
+				<p>1.请您支付停车费时，先确认车牌号；</p>
+				<p>2.支付成功若没抬杆，请联系工作人员；</p>
+				<p>3.请尽快驶离车场，避免产生额外费用；</p>
 			</div>
 		</div>
 
 		<div class="botBtn">
-			<span>还需要支付：<em th:text="${parkingRecord.cost}"></em>元</span>
+			<span>还需要支付：<em class="cost" th:text="${parkingRecord.cost}"></em>元</span>
 			<a href="" class="paybtn">支付</a>
 		</div>
 	</div>
+
+	<span class="close">关闭</span>
 	<div id="mixed-keyboard-box">
 		<mixed-keyboard :args="args" :callbacks="callbacks"/>
 	</div>
@@ -60,20 +84,90 @@
 <script type="text/javascript" src="/js/h5/sweepCodeRed/jquery-1.11.2.min.js"></script>
 <script src="/js/h5/sweepCodeRed/MixedKeyboard.js"></script>
 <script>
+	var carNumber = $("#carNumber").text() ;
 	$(function(){
-		$(".btn").click(function(){
-			$(".show").show();
-			$(".btn").hide();
-			$("#con2").show().css("height","3.6rem");
-			$("#con1").hide();
+		if(carNumber != "" && carNumber != undefined) {
+			detailsShow()
+		}
+		$(".btn").click(function () {
+			detailsShow()
+		});
+		$("div#input-widget").click(function () {
+			detailsHide()
+		});
+		$(".close").click(function(){
 			$("div#keyboard-pad").hide();
+			$(this).hide();
 		});
 	});
-	$("#icon-danxuan").prop("checked", true).css("color","#14d22d");
+	//支付详情显示
+	function detailsShow() {
+		$(".show").show();
+		$(".btn").hide();
+		$("#con2").show().css("height","3.2rem");
+		$("#con1").hide();
+		$("div#keyboard-pad").hide();
+		$(".close").hide();
+	}
+	//支付详情隐藏
+	function detailsHide() {
+		$(".show").hide();
+		$(".btn").show();
+		$("#con2").hide().css("height","3.2rem");
+		$("#con1").show();
+		$("div#keyboard-pad").show();
+		$(".close").show();
+	}
+	//检查车辆
+	function checkCost(carNumber) {
+		flag = 1 ;
+		$.ajax({
+			url : '/applet/car/cost-by-number' ,
+			async : false,
+			dataType : 'json',
+			data : {carNumber: carNumber},
+			success: function (json) {
+				console.log("Json checkCost Data: " + JSON.stringify(json))
+				alert(json.msg) ;
+				if("SUCCESS" == json.msg) {
+					flag = 2 ;
+				}
+			}
+		}) ;
+		return flag ;
+	}
+	//获取支付详情
+	function getPayDetails(carNumber) {
+		flag = 1 ;
+		$.ajax({
+			url : '/applet/car/parking-record/detail' ,
+			async : false,
+			dataType : 'json',
+			data : {carNumber: carNumber},
+			success: function (json) {
+				console.log("Json getPayDetails Data: " + JSON.stringify(json))
+				if(200 == json.code) {
+					flag = 2 ;
+					day = parseInt(json.data.takeMinutes/1440)
+					hours = parseInt(json.data.takeMinutes%1440/60)  ;
+					minute = json.data.takeMinutes%1440%60 ;
+					console.log(day + "天" + hours + "小时" + minute +"分钟")
+					$(".parkingName").text(json.data.parkingName) ;
+					$(".takeMinutes").text(day > 0 ? day + "天" + hours + "小时" + minute +"分钟" : hours > 0 ? hours + "小时" + minute +"分钟" : json.data.takeMinutes +"分钟") ;
+					$(".inTime").text(json.data.inTime) ;
+					$(".cost").text(json.data.cost) ;
+					$(".carNumber").text(json.data.carNumber) ;
+
+				}
+			}
+		}) ;
+		return flag ;
+	}
 
 
+	$("#icon-danxuan").prop("checked", true).css("color","#699aff");
 
-	var number = $("#carNumber").text();
+	var number = carNumber;
 
 	function native_callback_ontextkey(text){
 		number += text;
@@ -92,6 +186,9 @@
 
 	function native_callback_completed(number, isAutoCompleted){
 		console.log("当前车牌[完成]：" + number + ", 自动完成:" + isAutoCompleted);
+		if(checkCost(number) == 2 && getPayDetails(number) == 2) {
+			detailsShow() ;
+		}
 	}
 
 	function native_callback_changed(number, isCompleted){

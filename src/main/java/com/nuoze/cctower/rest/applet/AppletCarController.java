@@ -62,6 +62,7 @@ public class AppletCarController {
      */
     @GetMapping("parking-record/detail")
     public Result parkingRecordDetail(@RequestParam("carNumber") String carNumber) {
+        log.info("[Applet Car Controller] parking-record/detail receive car number: {}", carNumber);
         return ResponseResult.success(carService.parkingRecordDetail(carNumber));
     }
 

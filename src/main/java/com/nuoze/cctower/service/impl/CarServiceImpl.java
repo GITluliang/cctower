@@ -24,6 +24,7 @@ import com.nuoze.cctower.service.BillingService;
 import com.nuoze.cctower.service.CarService;
 import com.nuoze.cctower.service.ParkingRecordService;
 
+import com.nuoze.cctower.service.ParkingService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -76,6 +77,8 @@ public class CarServiceImpl implements CarService {
     private PaymentComponent paymentComponent;
     @Autowired
     private BillingComponent billingComponent;
+    @Autowired
+    private ParkingService parkingService ;
 
     @Override
     public List<CarDTO> list(Map<String, Object> map) {
@@ -189,39 +192,48 @@ public class CarServiceImpl implements CarService {
     public ParkingRecordVO parkingRecordDetail(String carNumber) {
         ParkingRecord parkingRecord = parkingRecordService.findByCarNumberAndStatus(carNumber);
         ParkingRecordVO parkingRecordVO = new ParkingRecordVO();
-        String inTime = DateUtils.formatDateTime(parkingRecord.getInTime());
-        String outTime = DateUtils.formatDateTime(new Date());
-        Long parkingId = parkingRecord.getParkingId();
-        Billing billing = billingService.findByParkingId(parkingId);
-        Integer takeMinutes = parkingRecord.getCostTime();
-        BigDecimal cost = parkingRecord.getCost();
-        if (cost == null) {
-            takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
-            Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
-            if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                int freeTime = car.getFreeTime();
-                if (freeTime >= takeMinutes) {
-                    cost = EMPTY_MONEY;
+        if(parkingRecord != null) {
+            String inTime = DateUtils.formatDateTime(parkingRecord.getInTime());
+            String outTime = DateUtils.formatDateTime(new Date());
+            Long parkingId = parkingRecord.getParkingId();
+            Billing billing = billingService.findByParkingId(parkingId);
+            Integer takeMinutes = parkingRecord.getCostTime();
+            BigDecimal cost = parkingRecord.getCost();
+            if (cost == null) {
+                takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
+                Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
+                if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                    int freeTime = car.getFreeTime();
+                    if (freeTime >= takeMinutes) {
+                        cost = EMPTY_MONEY;
+                    } else {
+                        cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
+                        if (billing.getWechatDiscount() != null) {
+                            cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
+                        }
+                    }
                 } else {
-                    cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
-                    if (billing.getWechatDiscount() != null) {
-                        cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
+                    Integer freeTime = billing.getFreeTime();
+                    if (freeTime != null && freeTime >= takeMinutes) {
+                        cost = EMPTY_MONEY;
+                    } else {
+                        cost = billingComponent.cost(takeMinutes, parkingId, null);
                     }
                 }
-            } else {
-                Integer freeTime = billing.getFreeTime();
-                if (freeTime != null && freeTime >= takeMinutes) {
-                    cost = EMPTY_MONEY;
-                } else {
-                    cost = billingComponent.cost(takeMinutes, parkingId, null);
-                }
             }
+            Parking parking = parkingService.findById(parkingRecord.getParkingId());
+            if (parking != null) {
+                parkingRecordVO.setParkingName(parking.getName());
+            }
+            parkingRecordVO.setCarNumber(parkingRecord.getCarNumber());
+            parkingRecordVO.setRecordId(parkingRecord.getId());
+            parkingRecordVO.setInTime(inTime);
+            parkingRecordVO.setOutTime(outTime);
+            parkingRecordVO.setTakeMinutes(takeMinutes);
+            parkingRecordVO.setCost(cost.toString());
+        }else {
+            parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
         }
-        parkingRecordVO.setRecordId(parkingRecord.getId());
-        parkingRecordVO.setInTime(inTime);
-        parkingRecordVO.setOutTime(outTime);
-        parkingRecordVO.setTakeMinutes(takeMinutes);
-        parkingRecordVO.setCost(cost.toString());
         return parkingRecordVO;
     }
 

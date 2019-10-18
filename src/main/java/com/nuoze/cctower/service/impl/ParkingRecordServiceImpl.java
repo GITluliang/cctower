@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
+import static com.nuoze.cctower.common.constant.Constant.PARKING_TRADING_RECORD_EXPEND_TYPE;
+
 /**
  * @author JiaShun
  * @date 2019-04-06 12:58
@@ -54,10 +57,10 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
 
     @Override
     public ParkingRecordVO findByParkingIdAndIp(Long parkingId, Long exitId) {
+        ParkingRecordVO parkingRecordVO = new ParkingRecordVO();
         if(parkingService.findById(parkingId) != null && passagewayService.findById(exitId) != null) {
             ParkingRecord parkingRecord = parkingRecordDAO.findByParkingIdAndIp(parkingId, exitId);
-            if(parkingId != null) {
-                ParkingRecordVO parkingRecordVO = new ParkingRecordVO();
+            if(parkingRecord != null) {
                 parkingRecordVO.setRecordId(parkingRecord.getId());
                 parkingRecordVO.setCost(parkingRecord.getCost().toString());
                 parkingRecordVO.setInTime(DateUtils.formatDateTime(parkingRecord.getInTime()));
@@ -68,9 +71,10 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
                 if (parking != null) {
                     parkingRecordVO.setParkingName(parking.getName());
                 }
-                return parkingRecordVO ;
+            }else {
+                parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
             }
         }
-        return null ;
+        return parkingRecordVO ;
     }
 }
