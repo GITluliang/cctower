@@ -231,7 +231,7 @@ public class CarServiceImpl implements CarService {
             parkingRecordVO.setOutTime(outTime);
             parkingRecordVO.setTakeMinutes(takeMinutes);
             parkingRecordVO.setCost(cost.toString());
-        }else {
+        } else {
             parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
         }
         return parkingRecordVO;

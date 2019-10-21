@@ -58,9 +58,9 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
     @Override
     public ParkingRecordVO findByParkingIdAndIp(Long parkingId, Long exitId) {
         ParkingRecordVO parkingRecordVO = new ParkingRecordVO();
-        if(parkingService.findById(parkingId) != null && passagewayService.findById(exitId) != null) {
+        if (parkingService.findById(parkingId) != null && passagewayService.findById(exitId) != null) {
             ParkingRecord parkingRecord = parkingRecordDAO.findByParkingIdAndIp(parkingId, exitId);
-            if(parkingRecord != null) {
+            if (parkingRecord != null) {
                 parkingRecordVO.setRecordId(parkingRecord.getId());
                 parkingRecordVO.setCost(parkingRecord.getCost().toString());
                 parkingRecordVO.setInTime(DateUtils.formatDateTime(parkingRecord.getInTime()));
@@ -71,7 +71,7 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
                 if (parking != null) {
                     parkingRecordVO.setParkingName(parking.getName());
                 }
-            }else {
+            } else {
                 parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
             }
         }

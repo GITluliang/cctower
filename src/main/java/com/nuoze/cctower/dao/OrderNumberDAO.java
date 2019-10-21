@@ -15,5 +15,5 @@ public interface OrderNumberDAO extends BaseDAO<OrderNumber> {
      * @param orderSn 订单编号
      * @return OrderNumber
      */
-    OrderNumber findByorderSn(@Param("orderSn") String orderSn) ;
+    OrderNumber findByorderSn(@Param("orderSn") String orderSn);
 }

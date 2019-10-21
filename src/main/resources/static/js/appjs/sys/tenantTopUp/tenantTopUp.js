@@ -106,7 +106,7 @@ function remove(id) {
 				if (r.code==0) {
 					layer.msg(r.msg);
 					reLoad();
-				}else{
+				} else {
 					layer.msg(r.msg);
 				}
 			}
