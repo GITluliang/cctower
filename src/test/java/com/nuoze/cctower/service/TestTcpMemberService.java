@@ -15,17 +15,17 @@ import java.util.*;
 @SpringBootTest
 public class TestTcpMemberService {
 
-    @Autowired
-    private OrderNumberDAO orderNumberDAO ;
-
-    @Test
-    public void test() {
-/*        OrderNumber orderNumber = new OrderNumber();
-        orderNumber.setCreateTime(new Date());
-        orderNumber.setOrderSn(UUID.randomUUID().toString());
-        orderNumber.setParkingRecordId(1L);
-        orderNumberDAO.insert(orderNumber) ;*/
-        Assert.assertNotNull(orderNumberDAO.findByorderSn("ba0ce293-c3ba-429b-9db1-f00d2164978a"));
-    }
+//    @Autowired
+//    private OrderNumberDAO orderNumberDAO ;
+//
+//    @Test
+//    public void test() {
+///*        OrderNumber orderNumber = new OrderNumber();
+//        orderNumber.setCreateTime(new Date());
+//        orderNumber.setOrderSn(UUID.randomUUID().toString());
+//        orderNumber.setParkingRecordId(1L);
+//        orderNumberDAO.insert(orderNumber) ;*/
+//        Assert.assertNotNull(orderNumberDAO.findByorderSn("ba0ce293-c3ba-429b-9db1-f00d2164978a"));
+//    }
 
 }
