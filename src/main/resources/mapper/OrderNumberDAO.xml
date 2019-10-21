@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuoze.cctower.dao.OrderNumberDAO">
+    <resultMap id="BaseResultMap" type="com.nuoze.cctower.pojo.entity.OrderNumber">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="parking_record_id" jdbcType="BIGINT" property="parkingRecordId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">id,order_sn,parking_record_id,create_time</sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from order_number
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from parking_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.OrderNumber">
+    insert into order_number (id,order_sn,parking_record_id,create_time)
+    values (#{id,jdbcType=BIGINT}, #{orderSn,jdbcType=VARCHAR}, #{parkingRecordId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.OrderNumber">
+        insert into order_number
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderSn != null">
+                order_sn,
+            </if>
+            <if test="parkingRecordId != null">
+                parking_record_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="orderSn != null">
+                #{orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="parkingRecordId != null">
+                #{parkingRecordId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.nuoze.cctower.pojo.entity.OrderNumber">
+        update order_number
+        <set>
+            <if test="orderSn != null">
+                order_sn = #{orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="parkingRecordId != null">
+                parking_record_id = #{parkingRecordId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.nuoze.cctower.pojo.entity.OrderNumber">
+    update order_number
+    set order_sn = #{orderSn,jdbcType=VARCHAR},
+      parking_record_id = #{parkingRecordId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="findByorderSn" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from order_number
+        where order_sn = #{orderSn,jdbcType=VARCHAR}
+    </select>
+</mapper>

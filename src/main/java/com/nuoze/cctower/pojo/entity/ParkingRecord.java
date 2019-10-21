@@ -29,6 +29,7 @@ public class ParkingRecord implements Serializable {
 
     /**
      * 订单ID
+     *  最终支付订单号，如果是小程序支付保存小程序订单号，付款码保存付款码订单号
      */
     private String orderSn;
 

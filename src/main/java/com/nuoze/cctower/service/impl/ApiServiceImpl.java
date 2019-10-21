@@ -64,6 +64,8 @@ public class ApiServiceImpl implements ApiService {
     private BillingComponent billingComponent;
     @Autowired
     private BillingDetailDAO detailDAO;
+    @Autowired
+    private OrderNumberDAO orderNumberDAO ;
 
     @Override
     public boolean in(ApiDTO apiDTO) {
@@ -219,7 +221,15 @@ public class ApiServiceImpl implements ApiService {
                 record.setPrepayId(prepayId);
             }
             //*** 付款码支付订单 ***
-            record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
+            if(StringUtils.isEmpty(record.getQrCodeOrderSn())) {
+                record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
+            }else {
+                OrderNumber orderNumber = new OrderNumber();
+                orderNumber.setParkingRecordId(record.getId());
+                orderNumber.setOrderSn(orderRequest.getOutTradeNo());
+                orderNumber.setCreateTime(new Date());
+                orderNumberDAO.insert(orderNumber) ;
+            }
             codeUrl = result.getCodeURL();
         } catch (WxPayException e) {
             log.error("pre pay has exception: {}", e.getMessage());

@@ -46,6 +46,7 @@ public class WxPayController {
     @PostMapping("prepay")
     @ResponseBody
     public WxPayMpOrderResult wxPrePay(@RequestBody WxPayDTO dto, HttpServletRequest request) {
+        log.info("[WX PAY CONTROLLER] Applet submit payment: {}", dto);
         return wxOrderService.wxPrePay(dto, request);
     }
 

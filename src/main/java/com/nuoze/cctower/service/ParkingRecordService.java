@@ -3,7 +3,6 @@ package com.nuoze.cctower.service;
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
 import com.nuoze.cctower.pojo.vo.ParkingRecordVO;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * 停车记录表
