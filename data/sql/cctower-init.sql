@@ -342,7 +342,7 @@ DROP TABLE IF EXISTS `parking_record`;
 CREATE TABLE `parking_record` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `open_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '最终支付订单号',
   `applet_order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '小程序支付订单号',
   `qr_code_order_sn` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL '付款码支付订单',
   `prepay_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
@@ -772,3 +772,14 @@ INSERT INTO `user_role` VALUES (3, 3, 3);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- -------------------------------------
+DROP TABLE IF EXISTS order_number;
+create table order_number (
+	id bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  order_sn varchar(200) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '订单编号',
+	parking_record_id bigint(11) NOT NULL COMMENT '停车记录ID',
+	create_time datetime DEFAULT NULL COMMENT '创建时间',
+	PRIMARY KEY (id),
+	KEY idx_order_sn (order_sn) USING BTREE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';

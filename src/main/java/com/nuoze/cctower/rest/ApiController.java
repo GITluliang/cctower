@@ -66,9 +66,9 @@ public class ApiController {
             return result;
         }
         //此代码是为了解决古船停车场月租车重复入场问题
-        if(apiDTO.getParkingId() == 1) {
+        if (apiDTO.getParkingId() == 1) {
             Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
-            if(car != null) {
+            if (car != null) {
                 if (MONTHLY_CAR == car.getParkingType()) {
                     return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
                 }

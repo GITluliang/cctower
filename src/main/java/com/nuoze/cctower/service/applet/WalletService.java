@@ -13,6 +13,12 @@ import java.util.Map;
  * @date 2019-01-19 00:49
  */
 public interface WalletService {
+    /**
+     * 钱包充值
+     * @param dto
+     * @param request
+     * @return
+     */
     WxPayMpOrderResult walletPrepay(WalletDTO dto, HttpServletRequest request);
 
     /**
