@@ -48,7 +48,7 @@ public class AppletCarController {
      * @param carNumber
      * @return
      */
-    @GetMapping("offline payment in parking idcost-by-number")
+    @GetMapping("cost-by-number")
     public Result costByNumber(@RequestParam("carNumber") String carNumber) {
         log.info("[Applet Car Controller] cost-by-number receive car number: {}", carNumber);
         return carService.costByNumber(carNumber);
