@@ -49,6 +49,12 @@ public class WalletController {
         return ResponseResult.fail(PERMISSION_DENIED);
     }
 
+    /**
+     * 微信小程序钱包充值
+     * @param dto
+     * @param request
+     * @return
+     */
     @PostMapping("prepay")
     public WxPayMpOrderResult walletPrepay(@RequestBody WalletDTO dto, HttpServletRequest request) {
         String openId = dto.getOpenId();

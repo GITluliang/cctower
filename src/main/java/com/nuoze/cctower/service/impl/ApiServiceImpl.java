@@ -64,6 +64,8 @@ public class ApiServiceImpl implements ApiService {
     private BillingComponent billingComponent;
     @Autowired
     private BillingDetailDAO detailDAO;
+    @Autowired
+    private OrderNumberDAO orderNumberDAO;
 
     @Override
     public boolean in(ApiDTO apiDTO) {
@@ -202,7 +204,7 @@ public class ApiServiceImpl implements ApiService {
      * 获得付款码url
      *
      * @param record 停车记录
-     * @param cost 车费
+     * @param cost   车费
      * @return String
      */
     private String getCodeUrl(ParkingRecord record, BigDecimal cost) {
@@ -219,7 +221,15 @@ public class ApiServiceImpl implements ApiService {
                 record.setPrepayId(prepayId);
             }
             //*** 付款码支付订单 ***
-            record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
+            if (StringUtils.isEmpty(record.getQrCodeOrderSn())) {
+                record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
+            } else {
+                OrderNumber orderNumber = new OrderNumber();
+                orderNumber.setParkingRecordId(record.getId());
+                orderNumber.setOrderSn(orderRequest.getOutTradeNo());
+                orderNumber.setCreateTime(new Date());
+                orderNumberDAO.insert(orderNumber);
+            }
             codeUrl = result.getCodeURL();
         } catch (WxPayException e) {
             log.error("pre pay has exception: {}", e.getMessage());
@@ -229,13 +239,14 @@ public class ApiServiceImpl implements ApiService {
 
     /**
      * 创建ApiOutVO
+     *
      * @param apiVO
-     * @param record        停车记录
-     * @param paid          支付状态：0：未支付 1：支付成功
-     * @param status        是否出场 0：否 1：是 2：待出场
-     * @param parkingType   车辆类型 0:临时车 1:包月 2:VIP 3:商户车辆
-     * @param carNumber     车牌号
-     * @param cost          费用
+     * @param record      停车记录
+     * @param paid        支付状态：0：未支付 1：支付成功
+     * @param status      是否出场 0：否 1：是 2：待出场
+     * @param parkingType 车辆类型 0:临时车 1:包月 2:VIP 3:商户车辆
+     * @param carNumber   车牌号
+     * @param cost        费用
      * @return ApiOutVO
      */
     private ApiOutVO buildApiOutVO(ApiOutVO apiVO, ParkingRecord record, int paid, int status, int parkingType, String carNumber, String cost) {

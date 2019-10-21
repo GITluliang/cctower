@@ -65,6 +65,8 @@ public class WxOrderServiceImpl implements WxOrderService {
     private PaymentComponent paymentComponent;
     @Autowired
     private BillingComponent billingComponent;
+    @Autowired
+    private OrderNumberDAO orderNumberDAO ;
 
     @Override
     public WxPayMpOrderResult wxPrePay(WxPayDTO dto, HttpServletRequest request) {
@@ -78,8 +80,16 @@ public class WxOrderServiceImpl implements WxOrderService {
             String prepayId = result.getPackageValue();
             prepayId = prepayId.replace("prepay_id=", "");
             ParkingRecord parkingRecord = parkingRecordService.findById(dto.getRecordId());
-            //*** 保存小程序支付订单号 ***
-            parkingRecord.setAppletOrderSn(orderRequest.getOutTradeNo());
+            //*** 保存小程序支付订单号,如果是第一次保存在parkingRecord中，如果是第二次保存在OrderNumber中 ***
+            if(StringUtils.isEmpty(parkingRecord.getAppletOrderSn())) {
+                parkingRecord.setAppletOrderSn(orderRequest.getOutTradeNo());
+            }else {
+                OrderNumber orderNumber = new OrderNumber();
+                orderNumber.setParkingRecordId(parkingRecord.getId());
+                orderNumber.setOrderSn(orderRequest.getOutTradeNo());
+                orderNumber.setCreateTime(new Date());
+                orderNumberDAO.insert(orderNumber) ;
+            }
             parkingRecord.setPrepayId(prepayId);
             parkingRecord.setOpenId(openId);
             parkingRecordService.update(parkingRecord);
@@ -98,6 +108,12 @@ public class WxOrderServiceImpl implements WxOrderService {
             BigDecimal money = new BigDecimal(BaseWxPayResult.fenToYuan(result.getTotalFee()));
             //根据订单，查询停车记录
             ParkingRecord parkingRecord = parkingRecordService.findByOrderSn(orderSn);
+            if(parkingRecord == null) {
+                OrderNumber orderNumber = orderNumberDAO.findByorderSn(orderSn);
+                if(orderNumber != null) {
+                    parkingRecord = parkingRecordService.findById(orderNumber.getParkingRecordId()) ;
+                }
+            }
             //根据订单，查询账单记录
             TopUpRecord topUpRecord = topUpRecordService.findByOrderSn(orderSn);
             //根据订单，查询小程序续费记录
@@ -107,6 +123,7 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             if (parkingRecord != null) {
                 log.info("[PAY NOTIFY PARKING-RECORD] id: {}, pay_id: {}", parkingRecord.getId(), result.getTransactionId());
+                parkingRecord.setOrderSn(orderSn);
                 parkingRecord.setCost(money);
                 parkingRecord.setPayId(payId);
                 parkingRecord.setPayType(PAYMENT_WECHAT);

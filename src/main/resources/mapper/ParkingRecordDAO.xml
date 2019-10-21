@@ -282,7 +282,7 @@
     select <include refid="Base_Column_List" />
     from parking_record
     where car_number = #{carNumber}
-    and status != 1
+    and status != 1 order by in_time desc limit 0,1
   </select>
 
   <select id="findByOrderSn" resultMap="BaseResultMap">

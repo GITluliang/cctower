@@ -62,6 +62,7 @@ public class AppletCarController {
      */
     @GetMapping("parking-record/detail")
     public Result parkingRecordDetail(@RequestParam("carNumber") String carNumber) {
+        log.info("[Applet Car Controller] parking-record/detail receive car number: {}", carNumber);
         return ResponseResult.success(carService.parkingRecordDetail(carNumber));
     }
 
@@ -124,7 +125,7 @@ public class AppletCarController {
     }
 
     /**
-     * 更新车辆预付款
+     * 小程序月租车续费
      *
      * @param dto
      * @param request

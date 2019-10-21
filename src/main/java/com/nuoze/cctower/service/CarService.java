@@ -66,6 +66,12 @@ public interface CarService {
 
     RenewCarVO findMonthlyPriceByParkingId(Long parkingId);
 
+    /**
+     * 小程序长租车续费
+     * @param dto
+     * @param request
+     * @return
+     */
     WxPayMpOrderResult renewCarPrePay(RenewCarPayDTO dto, HttpServletRequest request);
 
     List<RenewCarRecordVO> renewCarRecord(Map<String, Object> map);
