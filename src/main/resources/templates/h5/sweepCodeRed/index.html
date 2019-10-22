@@ -13,8 +13,6 @@
 		div#keyboard-pad{height:4.8rem!important;position:fixed;width:100%;left:0;bottom:0;padding:1.6rem 0 .4rem;background: #eee;}
 		div#mixed-keyboard-box,div#single-keyboard-box{border:none!important;}
 		button.key{font-size:.48rem!important;}
-
-
 		ul.rowsof-5,ul.shortcut-row{margin: 0;padding: 0 .4rem;}
 		.close{position: fixed;
 			bottom: 5.6rem;
@@ -32,10 +30,11 @@
 <body>
 <div>
 	<span hidden id="carNumber" th:text="${parkingRecord.carNumber}"></span>
+	<span hidden id="recordId" th:text="${parkingRecord.recordId}"></span>
 	<h3 class="h3">智慧停车 即可开启</h3>
 	<div class="con" id="con1">
 		<h4>请输入车牌号</h4>
-		<a href="#" class="btn">查询缴费</a>
+		<!--<a href="#" class="btn">查询缴费</a>-->
 	</div>
 
 	<div class="show" style="display: none;">
@@ -67,8 +66,8 @@
 		</div>
 
 		<div class="botBtn">
-			<span>还需要支付：<em class="cost" th:text="${parkingRecord.cost}"></em>元</span>
-			<a href="" class="paybtn">支付</a>
+			<span>还需要支付：<em id="cost" th:text="${parkingRecord.cost}"></em>元</span>
+			<button class="paybtn" onclick="payOrder()">支付</button>
 		</div>
 	</div>
 
@@ -77,7 +76,9 @@
 		<mixed-keyboard :args="args" :callbacks="callbacks"/>
 	</div>
 
-
+	<div class="toast">
+		<div>土司土司</div>
+	</div>
 </div>
 </body>
 <script type="text/javascript" src="/js/h5/sweepCodeRed/flexible.js"></script>
@@ -100,23 +101,25 @@
 			$(this).hide();
 		});
 	});
-	//支付详情显示
-	function detailsShow() {
-		$(".show").show();
-		$(".btn").hide();
-		$("#con2").show().css("height","3.2rem");
-		$("#con1").hide();
-		$("div#keyboard-pad").hide();
-		$(".close").hide();
-	}
-	//支付详情隐藏
-	function detailsHide() {
-		$(".show").hide();
-		$(".btn").show();
-		$("#con2").hide().css("height","3.2rem");
-		$("#con1").show();
-		$("div#keyboard-pad").show();
-		$(".close").show();
+	//点击支付
+	function payOrder() {
+		code = "ok4BMv7nNMDwajv38JTiRc1ExkNA" ;
+		recordId = $("#recordId").text() ;
+		money = $("#cost").text() ;
+		console.log("点击支付传过来的值：{},{}" + recordId + "," + money)
+		if(typeof(typeof(code) != "undefined" && recordId) != "undefined" && typeof(money) != "undefined") {
+			$.ajax({
+				url : '/applet/wx-pay/prepay' ,
+				type: 'POST',
+				dataType : 'json',
+				contentType: "application/json;charset=UTF-8",
+				data: JSON.stringify({code: code, recordId: recordId, money: money }),
+				success: function (json) {
+					console.log("[Json payOrder Data: ]" + JSON.stringify(json))
+
+				}
+			}) ;
+		}
 	}
 	//检查车辆
 	function checkCost(carNumber) {
@@ -128,7 +131,8 @@
 			data : {carNumber: carNumber},
 			success: function (json) {
 				console.log("Json checkCost Data: " + JSON.stringify(json))
-				alert(json.msg) ;
+				//alert(json.msg) ;
+				$(".toast div").text(json.msg) ;
 				if("SUCCESS" == json.msg) {
 					flag = 2 ;
 				}
@@ -156,12 +160,30 @@
 					$(".takeMinutes").text(day > 0 ? day + "天" + hours + "小时" + minute +"分钟" : hours > 0 ? hours + "小时" + minute +"分钟" : json.data.takeMinutes +"分钟") ;
 					$(".inTime").text(json.data.inTime) ;
 					$(".cost").text(json.data.cost) ;
+					$("#cost").text(json.data.cost) ;
 					$(".carNumber").text(json.data.carNumber) ;
-
 				}
 			}
 		}) ;
 		return flag ;
+	}
+	//支付详情显示
+	function detailsShow() {
+		$(".show").show();
+		$(".btn").hide();
+		$("#con2").show().css("height","3.2rem");
+		$("#con1").hide();
+		$("div#keyboard-pad").hide();
+		$(".close").hide();
+	}
+	//支付详情隐藏
+	function detailsHide() {
+		$(".show").hide();
+		$(".btn").show();
+		$("#con2").hide().css("height","3.2rem");
+		$("#con1").show();
+		$("div#keyboard-pad").show();
+		$(".close").show();
 	}
 
 
