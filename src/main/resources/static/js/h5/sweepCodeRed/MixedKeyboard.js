@@ -193,7 +193,14 @@ var native_update_keyboard = function (e) {
                             return 7
                     }
                 }
-            };
+            };           S_A_L: "ASDFGHJKL",
+                S_Z_M: "ZXCVBNM",
+                S_HK_MACAO: "港澳",
+                S_EMBASSY_PVS: "使123",
+                C_DEL: "-",
+                C_OK: "+",
+                C_MORE: "=",
+                S_DEL_OK: "-+"
             return {
                 KB_TYPES: e,
                 KEY_TYPES: t,
@@ -221,14 +228,7 @@ var native_update_keyboard = function (e) {
                 S_Q_IOP: "QWERTYUIOP",
                 S_Q_OP: "QWERTYUOP",
                 S_Q_P: "QWERTYUP",
-                S_A_L: "ASDFGHJKL",
-                S_Z_M: "ZXCVBNM",
-                S_HK_MACAO: "港澳",
-                S_EMBASSY_PVS: "使123",
-                C_DEL: "-",
-                C_OK: "+",
-                C_MORE: "=",
-                S_DEL_OK: "-+"
+
             }
         }()
     }()
