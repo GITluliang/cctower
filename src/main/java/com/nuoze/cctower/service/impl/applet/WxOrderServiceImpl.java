@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,6 +75,41 @@ public class WxOrderServiceImpl implements WxOrderService {
         BigDecimal actualPrice = new BigDecimal(dto.getMoney());
         WxPayUnifiedOrderRequest orderRequest = paymentComponent.buildWxPayReq(openId, actualPrice, request, null);
         orderRequest.setBody("停车费");
+        WxPayMpOrderResult result = null;
+        try {
+            result = wxPayService.createOrder(orderRequest);
+            String prepayId = result.getPackageValue();
+            prepayId = prepayId.replace("prepay_id=", "");
+            ParkingRecord parkingRecord = parkingRecordService.findById(dto.getRecordId());
+            //*** 保存小程序支付订单号,如果是第一次保存在parkingRecord中，如果是第二次保存在OrderNumber中 ***
+            if(StringUtils.isEmpty(parkingRecord.getAppletOrderSn())) {
+                parkingRecord.setAppletOrderSn(orderRequest.getOutTradeNo());
+            }else {
+                OrderNumber orderNumber = new OrderNumber();
+                orderNumber.setParkingRecordId(parkingRecord.getId());
+                orderNumber.setOrderSn(orderRequest.getOutTradeNo());
+                orderNumber.setCreateTime(new Date());
+                orderNumberDAO.insert(orderNumber) ;
+            }
+            parkingRecord.setPrepayId(prepayId);
+            parkingRecord.setOpenId(openId);
+            parkingRecordService.update(parkingRecord);
+        } catch (WxPayException e) {
+            log.error("pre pay has exception: {}", e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public WxPayMpOrderResult wxPrePayH5(WxPayDTO dto, HttpServletRequest request) {
+        Map<String, String> map = wxUtils.getUserInfoAccessToken(dto.getCode());//通过这个code获取access_token
+        String openId = map.get("openid");
+        log.info("[openId] : {}", openId);
+        BigDecimal actualPrice = new BigDecimal(dto.getMoney());
+        WxPayUnifiedOrderRequest orderRequest = paymentComponent.buildWxPayReq(openId, actualPrice, request, null);
+        orderRequest.setBody("停车费");
+        orderRequest.setAppid("wxc1487ff13e8c64df");
+        orderRequest.setNotifyUrl("http://www.luliang888.top/applet/wx-pay/pay-notify");
         WxPayMpOrderResult result = null;
         try {
             result = wxPayService.createOrder(orderRequest);

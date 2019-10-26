@@ -15,13 +15,21 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface WxOrderService {
     /**
-     * WX付款订单结果
+     * WX付款订单结果(小程序)
      *
      * @param dto
      * @param request
      * @return
      */
     WxPayMpOrderResult wxPrePay(WxPayDTO dto, HttpServletRequest request);
+
+    /**
+     * WX付款订单结果(H5公众号)
+     * @param dto
+     * @param request
+     * @return
+     */
+    WxPayMpOrderResult wxPrePayH5(WxPayDTO dto, HttpServletRequest request);
 
     /**
      * 支付通知

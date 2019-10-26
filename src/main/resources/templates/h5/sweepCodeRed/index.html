@@ -29,6 +29,7 @@
 </head>
 <body>
 <div>
+	<span hidden id="code" th:text="${code}"></span>
 	<span hidden id="carNumber" th:text="${parkingRecord.carNumber}"></span>
 	<span hidden id="recordId" th:text="${parkingRecord.recordId}"></span>
 	<h3 class="h3">智慧停车 即可开启</h3>
@@ -81,6 +82,7 @@
 	</div>
 </div>
 </body>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script type="text/javascript" src="/js/h5/sweepCodeRed/flexible.js"></script>
 <script type="text/javascript" src="/js/h5/sweepCodeRed/jquery-1.11.2.min.js"></script>
 <script src="/js/h5/sweepCodeRed/MixedKeyboard.js"></script>
@@ -104,23 +106,70 @@
 	});
 	//点击支付
 	function payOrder() {
-		code = "ok4BMv7nNMDwajv38JTiRc1ExkNA" ;
+        code = $("#code").text() ;
 		recordId = $("#recordId").text() ;
 		money = $("#cost").text() ;
 		console.log("点击支付传过来的值：{},{}" + recordId + "," + money)
+		console.log("code code = " + code)
 		if(typeof(typeof(code) != "undefined" && recordId) != "undefined" && typeof(money) != "undefined") {
 			$.ajax({
-				url : '/applet/wx-pay/prepay' ,
+				url : '/mp/wx-pay/prepay' ,
 				type: 'POST',
 				dataType : 'json',
 				contentType: "application/json;charset=UTF-8",
 				data: JSON.stringify({code: code, recordId: recordId, money: money }),
-				success: function (json) {
-					console.log("[Json payOrder Data: ]" + JSON.stringify(json))
-
+				success: function (data) {
+					console.log("[Json payOrder Data: ]" + JSON.stringify(data))
+					doBridgeReady(data);
+					console.log("appId:" + data.appId);
+				},
+				error: function (res) {
+					console.log("ajax请求失败,res:" + res.toString());
 				}
 			}) ;
 		}
+	}
+	//判断浏览器是否支持JSAPI，只用微信内置浏览器可用。
+	function doBridgeReady(data){
+		if (typeof WeixinJSBridge == "undefined"){
+			if( document.addEventListener ){
+				document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+			}else if (document.attachEvent){
+				document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+				document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+			}
+		}else{
+			onBridgeReady(data);
+		}
+	}
+
+	//真实支付请求
+	function onBridgeReady(data){
+		WeixinJSBridge.invoke(
+				'getBrandWCPayRequest', {
+					"appId": data.appId,     //公众号名称，由商户传入
+					"timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
+					"nonceStr": data.nonceStr, //随机串
+					"package": data.packageValue,
+					"signType": data.signType,         //微信签名方式：
+					"paySign": data.paySign //微信签名
+				},
+				function(res){
+					if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+						self.location.href="/mp/watchPay/forward" ;
+					}else{
+						alert("支付失败，提示【" + res.err_msg + "】");
+					}
+				}
+		);
+	}
+
+	function getQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null;
 	}
 	//检查车辆
 	function checkCost(carNumber) {
@@ -142,11 +191,13 @@
 	}
 
 	function toast(msg) {
-		$(".toast span").text(msg) ;
-		$(".toast").show();
-		setTimeout(function () {
-			$(".toast").hide();
-		}, 1000);
+		if("SUCCESS" != msg){
+			$(".toast span").text(msg) ;
+			$(".toast").show();
+			setTimeout(function () {
+				$(".toast").hide();
+			}, 1000);
+		}
 	}
 	//获取支付详情
 	function getPayDetails(carNumber) {
