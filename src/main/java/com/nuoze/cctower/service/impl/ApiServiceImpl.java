@@ -160,12 +160,11 @@ public class ApiServiceImpl implements ApiService {
                 }
             }
             //以上条件都不满足，判断car是不是微信会员临时车辆
-            if (cost == null) {
-                //计算车费
-                cost = billingComponent.cost(costTime, parkingId, carNumber);
-                record.setCostTime(costTime);
-                record.setCost(cost);
-            }
+            //计算车费
+            cost = billingComponent.cost(costTime, parkingId, carNumber);
+            record.setCostTime(costTime);
+            record.setCost(cost);
+
             //查找临时车
             car = carDAO.findByCarNumberAndParkingType(carNumber, 0);
             if (car != null) {

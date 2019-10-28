@@ -199,26 +199,24 @@ public class CarServiceImpl implements CarService {
             Billing billing = billingService.findByParkingId(parkingId);
             Integer takeMinutes = parkingRecord.getCostTime();
             BigDecimal cost = parkingRecord.getCost();
-            if (cost == null) {
-                takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
-                Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
-                if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                    int freeTime = car.getFreeTime();
-                    if (freeTime >= takeMinutes) {
-                        cost = EMPTY_MONEY;
-                    } else {
-                        cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
-                        if (billing.getWechatDiscount() != null) {
-                            cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
-                        }
-                    }
+            takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
+            Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
+            if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                int freeTime = car.getFreeTime();
+                if (freeTime >= takeMinutes) {
+                    cost = EMPTY_MONEY;
                 } else {
-                    Integer freeTime = billing.getFreeTime();
-                    if (freeTime != null && freeTime >= takeMinutes) {
-                        cost = EMPTY_MONEY;
-                    } else {
-                        cost = billingComponent.cost(takeMinutes, parkingId, null);
+                    cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
+                    if (billing.getWechatDiscount() != null) {
+                        cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
                     }
+                }
+            } else {
+                Integer freeTime = billing.getFreeTime();
+                if (freeTime != null && freeTime >= takeMinutes) {
+                    cost = EMPTY_MONEY;
+                } else {
+                    cost = billingComponent.cost(takeMinutes, parkingId, null);
                 }
             }
             Parking parking = parkingService.findById(parkingRecord.getParkingId());

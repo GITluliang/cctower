@@ -1,7 +1,11 @@
 package com.nuoze.cctower.rest.mp;
 
+import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.common.util.Util;
+import com.nuoze.cctower.common.util.WxUtils;
+import com.nuoze.cctower.pojo.entity.ParkingRecord;
 import com.nuoze.cctower.service.ParkingRecordService;
+import com.nuoze.cctower.service.ParkingService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  * 扫码支付
@@ -26,6 +31,10 @@ public class SweepCodeRedController {
     private String prefix = "h5/sweepCodeRed/";
     @Autowired
     private ParkingRecordService parkingRecordService ;
+    @Autowired
+    private WxUtils wxUtils;
+    @Autowired
+    private ParkingService parkingService ;
 
     /**
      * 通过停车场和通道，获取正在出厂车辆
@@ -41,12 +50,27 @@ public class SweepCodeRedController {
         if(StringUtils.isEmpty(code)) {
             return prefix + "code" ;
         }
+        if(StringUtils.isNotEmpty(code)) {
+            Map<String, String> map = wxUtils.getUserInfoAccessToken(code);
+            model.addAttribute("openId", map.get("openid")) ;
+        }
         model.addAttribute("parkingRecord",parkingRecordService.findByParkingIdAndIp(parkingId, exitId)) ;
-        model.addAttribute("code",code) ;
         return prefix + "index" ;
     }
+
+    /**
+     * 支付成功跳转
+     * @param recordId
+     * @param model
+     * @return
+     */
     @RequestMapping("forward")
-    public String forward() {
+    public String forward(Long recordId, Model model) {
+        log.info("[支付成功，查询跳转] Applet forward: {}", recordId);
+        ParkingRecord parkingRecord = parkingRecordService.findById(recordId);
+        model.addAttribute("parkingRecord",parkingRecord) ;
+        model.addAttribute("payTime", DateUtils.formatDateTime(parkingRecord.getPayTime())) ;
+        model.addAttribute("parking",parkingService.findById(parkingRecord.getParkingId())) ;
         return prefix + "success" ;
     }
 

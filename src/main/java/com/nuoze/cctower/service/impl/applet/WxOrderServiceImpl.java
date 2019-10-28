@@ -102,11 +102,8 @@ public class WxOrderServiceImpl implements WxOrderService {
 
     @Override
     public WxPayMpOrderResult wxPrePayH5(WxPayDTO dto, HttpServletRequest request) {
-        Map<String, String> map = wxUtils.getUserInfoAccessToken(dto.getCode());//通过这个code获取access_token
-        String openId = map.get("openid");
-        log.info("[openId] : {}", openId);
         BigDecimal actualPrice = new BigDecimal(dto.getMoney());
-        WxPayUnifiedOrderRequest orderRequest = paymentComponent.buildWxPayReq(openId, actualPrice, request, null);
+        WxPayUnifiedOrderRequest orderRequest = paymentComponent.buildWxPayReq(dto.getOpenId(), actualPrice, request, null);
         orderRequest.setBody("停车费");
         orderRequest.setAppid("wxc1487ff13e8c64df");
         orderRequest.setNotifyUrl("http://www.luliang888.top/applet/wx-pay/pay-notify");
@@ -127,7 +124,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 orderNumberDAO.insert(orderNumber) ;
             }
             parkingRecord.setPrepayId(prepayId);
-            parkingRecord.setOpenId(openId);
+            parkingRecord.setOpenId(dto.getOpenId());
             parkingRecordService.update(parkingRecord);
         } catch (WxPayException e) {
             log.error("pre pay has exception: {}", e.getMessage());

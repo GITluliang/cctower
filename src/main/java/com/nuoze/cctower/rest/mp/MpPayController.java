@@ -1,7 +1,6 @@
 package com.nuoze.cctower.rest.mp;
 
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
-import com.nuoze.cctower.common.util.WxUtils;
 import com.nuoze.cctower.pojo.dto.WxPayDTO;
 import com.nuoze.cctower.service.applet.WxOrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.Map;
 
 /**
  * @author luliang
@@ -38,7 +35,7 @@ public class MpPayController {
     @PostMapping("prepay")
     @ResponseBody
     public WxPayMpOrderResult wxPrePay(@RequestBody WxPayDTO dto, HttpServletRequest request) {
-        log.info("[WX PAY CONTROLLER] Applet submit payment: {}", dto);
+        log.info("[公众号支付 WX PAY CONTROLLER] Applet submit payment: {}", dto);
         return wxOrderService.wxPrePayH5(dto, request);
     }
 

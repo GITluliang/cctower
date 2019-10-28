@@ -339,6 +339,6 @@
  <select id="findByParkingIdAndIp" resultMap="BaseResultMap">
    select <include refid="Base_Column_List" />
    from parking_record
-   where status=2 and parking_id = #{parkingId} and exit_id=#{exitId} order by out_time desc limit 0,1
+   where status=2 and pay_status=0 and parking_id = #{parkingId} and exit_id=#{exitId} order by out_time desc limit 0,1
  </select>
 </mapper>
