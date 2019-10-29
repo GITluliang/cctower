@@ -72,7 +72,6 @@ public class LongCarController {
         //停车场查询
         if("parkingName".equals(params.get("query"))) {
             Parking value = parkingDAO.findByParkingName(params.get("value").toString());
-            System.out.println(value + "***");
             params.put("parkingId", value == null ? 0 : value.getId());
 
         }

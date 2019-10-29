@@ -6,6 +6,7 @@ import com.nuoze.cctower.dao.*;
 import com.nuoze.cctower.pojo.dto.DepositRecordDTO;
 import com.nuoze.cctower.pojo.entity.Account;
 import com.nuoze.cctower.pojo.entity.DepositRecord;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.ParkingTradingRecord;
 import com.nuoze.cctower.pojo.vo.DepositRecordVO;
 import com.nuoze.cctower.service.DepositRecordService;
@@ -62,8 +63,8 @@ public class DepositRecordServiceImpl implements DepositRecordService {
                     vo.setUserName(userName);
                 }
                 if (parkingId != null) {
-                    String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-                    vo.setParkingName(parkingName);
+                    Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
+                    vo.setParkingName(parking != null ? parking.getName() : "");
                 }
                 vos.add(vo);
             }
@@ -86,19 +87,12 @@ public class DepositRecordServiceImpl implements DepositRecordService {
         depositRecord.setCreateTime(new Date());
         BigDecimal amount = depositRecord.getAmount();
         Account account = accountDAO.selectByPrimaryKey(depositRecord.getAccountId());
-        BigDecimal serviceCharge = paymentComponent.getServiceCharge(amount, account.getServiceCharge());
-        depositRecord.setServiceCharge(serviceCharge);
-        BigDecimal balance = account.getBalance().subtract(amount.add(serviceCharge)).setScale(2, 1);
-        if (balance.compareTo(EMPTY_MONEY) <= 0) {
-            balance = EMPTY_MONEY;
-            amount = account.getBalance().subtract(serviceCharge);
-            depositRecord.setAmount(amount);
-        }
+        BigDecimal balance = account.getBalance().subtract(amount).setScale(2, 1);
         //更新交易记录
         ParkingTradingRecord tradingRecord = new ParkingTradingRecord();
         tradingRecord.setParkingId(depositRecord.getParkingId());
         tradingRecord.setType(PARKING_TRADING_RECORD_EXPEND_TYPE);
-        tradingRecord.setAmount(amount.add(serviceCharge));
+        tradingRecord.setAmount(amount);
         tradingRecord.setPayTime(new Date());
         tradingRecordDAO.insert(tradingRecord);
         //停车场余额更新

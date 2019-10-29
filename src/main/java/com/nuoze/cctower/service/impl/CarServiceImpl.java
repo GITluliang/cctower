@@ -120,10 +120,8 @@ public class CarServiceImpl implements CarService {
             CarDTO carDTO = new CarDTO();
             BeanUtils.copyProperties(car, carDTO);
             if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
-                String beginDate = DateUtils.toTimeString(car.getMonthlyParkingStart());
-                String endDate = DateUtils.toTimeString(car.getMonthlyParkingEnd());
-                carDTO.setBeginDate(beginDate);
-                carDTO.setEndDate(endDate);
+                carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()));
+                carDTO.setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
             }
             if (car.getParkingId() != null) {
                 String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
@@ -145,8 +143,15 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car findById(Long id) {
-        return carDAO.selectByPrimaryKey(id);
+    public CarDTO findById(Long id) {
+        CarDTO carDTO = new CarDTO();
+        Car car = carDAO.selectByPrimaryKey(id);
+        BeanUtils.copyProperties(car, carDTO);
+        if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
+            carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()));
+            carDTO.setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
+        }
+        return carDTO;
     }
 
     @Override

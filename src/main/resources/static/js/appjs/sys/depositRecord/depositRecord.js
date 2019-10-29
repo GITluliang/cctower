@@ -48,10 +48,6 @@ function load() {
 									title : '提现金额' 
 								},
 																{
-									field : 'serviceCharge',
-									title : '手续费'
-								},
-																{
 									field : 'userName',
 									title : '用户名'
 								},

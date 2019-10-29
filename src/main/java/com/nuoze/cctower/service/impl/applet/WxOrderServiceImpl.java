@@ -69,6 +69,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Autowired
     private OrderNumberDAO orderNumberDAO ;
 
+
     @Override
     public WxPayMpOrderResult wxPrePay(WxPayDTO dto, HttpServletRequest request) {
         String openId = wxUtils.findOpenIdByCode(dto.getCode());
@@ -147,9 +148,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                     parkingRecord = parkingRecordService.findById(orderNumber.getParkingRecordId()) ;
                 }
             }
-            //根据订单，查询账单记录
             TopUpRecord topUpRecord = topUpRecordService.findByOrderSn(orderSn);
-            //根据订单，查询小程序续费记录
             RenewRecord renewRecord = renewRecordDAO.findByOrderSn(orderSn);
             if (parkingRecord == null && topUpRecord == null && renewRecord == null) {
                 log.error("[PAY NOTIFY PARKING-RECORD] 订单不存在 orderSn: {}", orderSn);

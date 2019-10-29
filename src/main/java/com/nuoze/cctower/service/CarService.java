@@ -27,7 +27,7 @@ public interface CarService {
 
     int count(Map<String, Object> map);
 
-    Car findById(Long id);
+    CarDTO findById(Long id);
 
     int save(CarDTO dto);
 
