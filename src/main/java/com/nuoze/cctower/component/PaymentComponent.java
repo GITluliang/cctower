@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.nuoze.cctower.common.constant.Constant.MINIMUM_SERVICE_CHARGE;
-import static com.nuoze.cctower.common.constant.Constant.ONE_HUNDRED;
+import static com.nuoze.cctower.common.constant.Constant.*;
 
 
 /**
@@ -92,7 +91,7 @@ public class PaymentComponent {
      * @return
      */
     public BigDecimal getServiceCharge(BigDecimal amount, Integer serviceCharge) {
-          return amount.multiply(dividedOneHundred(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);
+          return amount.compareTo(new BigDecimal(10)) == -1 ? EMPTY_MONEY_FEN : amount.multiply(dividedOneHundred(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);
     }
     public BigDecimal getBalanceByAmountAndServiceCharge(BigDecimal balance, BigDecimal amount, BigDecimal serviceCharge) {
         return balance.subtract(amount.add(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);

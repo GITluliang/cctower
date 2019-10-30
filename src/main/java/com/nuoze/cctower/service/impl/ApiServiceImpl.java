@@ -69,6 +69,8 @@ public class ApiServiceImpl implements ApiService {
     private OrderNumberDAO orderNumberDAO;
     @Autowired
     private AccountService accountService ;
+    @Autowired
+    private ParkingDAO parkingDAO ;
 
     @Override
     public boolean in(ApiDTO apiDTO) {
@@ -99,16 +101,18 @@ public class ApiServiceImpl implements ApiService {
         Passageway passageway = passagewayDAO.findByParkingIdAndIp(apiDTO.getParkingId(), apiDTO.getIp());
         ApiOutVO apiVO = new ApiOutVO();
 
-        //====此代码是为了解决古船停车场月租车出厂问题
-        if (car != null) {
-            if (apiDTO.getParkingId() == 1 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
+        //解决月租车与vip重复出厂
+        Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
+        if(parking != null && car != null) {
+            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType() ;
+            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd()) ;
+            if(vipStatic || rentStatic) {
                 if (record != null) {
-                    if (passageway != null) {
-                        Long exitId = passageway.getId();
-                        record.setExitId(exitId);
-                    }
                     record.setOutTime(new Date());
-                    record.setPayType(PAYMENT_MONTHLY);
+                    record.setPayType(PAYMENT_VIP.equals(car.getParkingType()) ? PAYMENT_VIP : PAYMENT_MONTHLY);
+                    if (passageway != null) {
+                        record.setExitId(passageway.getId());
+                    }
                 }
                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
             }
@@ -258,10 +262,11 @@ public class ApiServiceImpl implements ApiService {
      */
     private ApiOutVO buildApiOutVO(ApiOutVO apiVO, ParkingRecord record, int paid, int status, int parkingType, String carNumber, String cost) {
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        record.setStatus(status);
-        record.setUuid(uuid);
-        //更新订单
-        recordDAO.updateByPrimaryKeySelective(record);
+        if (record != null) {
+            record.setStatus(status);
+            record.setUuid(uuid);
+            recordDAO.updateByPrimaryKeySelective(record);
+        }
         apiVO.setPaid(paid);
         apiVO.setCarNumber(carNumber);
         apiVO.setType(parkingType);

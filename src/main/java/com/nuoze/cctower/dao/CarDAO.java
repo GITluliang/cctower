@@ -50,7 +50,8 @@ public interface CarDAO extends BaseDAO<Car> {
 
     /**
      * 通过车牌号和车辆属性查找车辆
-     * @param carNumber 车牌号
+     *
+     * @param carNumber   车牌号
      * @param parkingType 车辆属性 0:临时车 1:包月 2:VIP 3:商户车辆
      * @return Car
      */

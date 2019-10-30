@@ -9,6 +9,7 @@ import com.nuoze.cctower.pojo.entity.Member;
 import com.nuoze.cctower.pojo.vo.ParkingRecordVO;
 import com.nuoze.cctower.pojo.vo.RenewCarRecordVO;
 import com.nuoze.cctower.pojo.vo.RenewCarVO;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -39,6 +40,7 @@ public interface CarService {
 
     /**
      * 根据车牌获取停车记录
+     *
      * @param carNumber
      * @return
      */
@@ -77,4 +79,6 @@ public interface CarService {
     List<RenewCarRecordVO> renewCarRecord(Map<String, Object> map);
 
     int saveVipCar(Car car);
+
+    Car findByParkingIdAndCarNumber(@Param("parkingId") Long parkingId, @Param("carNumber") String carNumber);
 }

@@ -324,6 +324,8 @@ CREATE TABLE `parking` (
   `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '负责人邮箱',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+   rent_static tinyint(2) NOT NULL DEFAULT '0' COMMENT '月租车重复出入场：0:可以 1：不可以',
+   vip_static tinyint(2) NOT NULL DEFAULT '0' COMMENT 'VIP车重复出入场：0:可以 1：不可以',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='停车场管理';

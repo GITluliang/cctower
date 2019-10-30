@@ -35,8 +35,9 @@ public class TestTcpMemberService {
 
     @Test
     public void money() {
-        BigDecimal bigDecimal = new BigDecimal(1000);
-        BigDecimal serviceCharge = paymentComponent.getServiceCharge(bigDecimal, 1);
+        BigDecimal bigDecimal = new BigDecimal(10);
+        BigDecimal serviceCharge = paymentComponent.getServiceCharge(bigDecimal, 5);
+        System.out.println(serviceCharge);
         System.out.println(bigDecimal.subtract(serviceCharge));
     }
 }

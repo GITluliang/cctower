@@ -78,7 +78,7 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private BillingComponent billingComponent;
     @Autowired
-    private ParkingService parkingService ;
+    private ParkingService parkingService;
 
     @Override
     public List<CarDTO> list(Map<String, Object> map) {
@@ -197,7 +197,7 @@ public class CarServiceImpl implements CarService {
     public ParkingRecordVO parkingRecordDetail(String carNumber) {
         ParkingRecord parkingRecord = parkingRecordService.findByCarNumberAndStatus(carNumber);
         ParkingRecordVO parkingRecordVO = new ParkingRecordVO();
-        if(parkingRecord != null) {
+        if (parkingRecord != null) {
             String inTime = DateUtils.formatDateTime(parkingRecord.getInTime());
             String outTime = DateUtils.formatDateTime(new Date());
             Long parkingId = parkingRecord.getParkingId();
@@ -234,7 +234,7 @@ public class CarServiceImpl implements CarService {
             parkingRecordVO.setOutTime(outTime);
             parkingRecordVO.setTakeMinutes(takeMinutes);
             parkingRecordVO.setCost(cost.toString());
-        }else {
+        } else {
             parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
         }
         return parkingRecordVO;
@@ -461,5 +461,10 @@ public class CarServiceImpl implements CarService {
         car.setCreateTime(new Date());
         car.setUpdateTime(new Date());
         return carDAO.insert(car);
+    }
+
+    @Override
+    public Car findByParkingIdAndCarNumber(Long parkingId, String carNumber) {
+        return carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
     }
 }
