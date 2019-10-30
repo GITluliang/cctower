@@ -16,6 +16,7 @@ import com.nuoze.cctower.dao.*;
 import com.nuoze.cctower.pojo.dto.WxPayDTO;
 import com.nuoze.cctower.pojo.entity.*;
 import com.nuoze.cctower.pojo.vo.GoOutVO;
+import com.nuoze.cctower.service.AccountService;
 import com.nuoze.cctower.service.ParkingRecordService;
 import com.nuoze.cctower.service.applet.MemberService;
 import com.nuoze.cctower.service.applet.TopUpRecordService;
@@ -68,7 +69,8 @@ public class WxOrderServiceImpl implements WxOrderService {
     private BillingComponent billingComponent;
     @Autowired
     private OrderNumberDAO orderNumberDAO ;
-
+    @Autowired
+    private AccountService accountService ;
 
     @Override
     public WxPayMpOrderResult wxPrePay(WxPayDTO dto, HttpServletRequest request) {
@@ -164,6 +166,12 @@ public class WxOrderServiceImpl implements WxOrderService {
                 int status = parkingRecord.getStatus();
                 Long parkingId = parkingRecord.getParkingId();
                 Car car = carDAO.findByParkingIdAndCarNumber(parkingId, parkingRecord.getCarNumber());
+                Account account = accountService.findByParkingId(parkingId);
+                if(account != null) {
+                    BigDecimal serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
+                    parkingRecord.setServiceCharge(serviceCharge);
+                    money = money.subtract(serviceCharge) ;
+                }
                 //如果是待出门，通过mq发送出门指令
                 if (status == READY_TO_LEAVE) {
                     GoOutVO goOutVO = new GoOutVO();
@@ -193,12 +201,30 @@ public class WxOrderServiceImpl implements WxOrderService {
                     car.setUpdateTime(new Date());
                     carDAO.updateByPrimaryKeySelective(car);
                 }
-                //增加交易流水
                 billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE);
-                //更新停车场账户余额
                 billingComponent.addAccountBalance(money, parkingId);
-                //更新停车记录
                 parkingRecordService.update(parkingRecord);
+            }
+            //小程序长租续费
+            if (renewRecord != null) {
+                log.info("[PAY NOTIFY RENEW-RECORD] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
+                Account account = accountService.findByParkingId(renewRecord.getParkingId());
+                if(account != null) {
+                    BigDecimal serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
+                    renewRecord.setServiceCharge(serviceCharge);
+                    money = money.subtract(serviceCharge) ;
+                }
+                renewRecord.setPayId(payId);
+                renewRecord.setPayStatus(1);
+                int monthCount = renewRecord.getMonthCount();
+                Car car = carDAO.findByCarNumberAndParkingType(renewRecord.getCarNumber(), MONTHLY_CAR);
+                Date monthlyParkingEnd = DateUtils.addMonthByDate(car.getMonthlyParkingEnd(), monthCount);
+                car.setMonthlyParkingEnd(monthlyParkingEnd);
+                car.setUpdateTime(new Date());
+                carDAO.updateByPrimaryKeySelective(car);
+                renewRecordDAO.updateByPrimaryKeySelective(renewRecord);
+                billingComponent.addTradingRecord(money, renewRecord.getParkingId(), IncomeType.PARKING_CHARGE);
+                billingComponent.addAccountBalance(money, renewRecord.getParkingId());
             }
             //小程序余额充值
             if (topUpRecord != null) {
@@ -211,21 +237,6 @@ public class WxOrderServiceImpl implements WxOrderService {
                 Member member = memberService.findByOpenId(openId);
                 member.setBalance(topUpRecord.getBalance());
                 memberService.update(member);
-            }
-            //小程序长租续费
-            if (renewRecord != null) {
-                log.info("[PAY NOTIFY RENEW-RECORD] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
-                renewRecord.setPayId(payId);
-                renewRecord.setPayStatus(1);
-                renewRecordDAO.updateByPrimaryKeySelective(renewRecord);
-                int monthCount = renewRecord.getMonthCount();
-                Car car = carDAO.findByCarNumberAndParkingType(renewRecord.getCarNumber(), MONTHLY_CAR);
-                Date monthlyParkingEnd = DateUtils.addMonthByDate(car.getMonthlyParkingEnd(), monthCount);
-                car.setMonthlyParkingEnd(monthlyParkingEnd);
-                car.setUpdateTime(new Date());
-                carDAO.updateByPrimaryKeySelective(car);
-                billingComponent.addTradingRecord(money, renewRecord.getParkingId(), IncomeType.PARKING_CHARGE);
-                billingComponent.addAccountBalance(money, renewRecord.getParkingId());
             }
         } catch (Exception e) {
             log.error("pay notify has exception: {}", e.getMessage());

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * top_up_record：账单记录（微信）
+ * 微信账单记录
  * @author JiaShun
  */
 @Data

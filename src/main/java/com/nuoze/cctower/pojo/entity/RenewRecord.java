@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * renew_record:小程序续费记录
+ *
  * @author JiaShun
  */
 @Data
@@ -56,6 +57,11 @@ public class RenewRecord implements Serializable {
      * 续费金额
      */
     private BigDecimal cost;
+
+    /**
+     * 服务费
+     */
+    private BigDecimal serviceCharge;
 
     /**
      * 支付状态

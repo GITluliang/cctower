@@ -69,9 +69,9 @@ public class ParkingRecord implements Serializable {
     private Long exitId;
 
     /**
-     * 单价(小时)
+     * 服务费
      */
-    private BigDecimal unitPrice;
+    private BigDecimal serviceCharge;
 
     /**
      * 停车时长

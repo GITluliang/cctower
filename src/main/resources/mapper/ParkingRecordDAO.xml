@@ -13,7 +13,7 @@
     <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
     <result column="entrance_id" jdbcType="BIGINT" property="entranceId" />
     <result column="exit_id" jdbcType="BIGINT" property="exitId" />
-    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="service_charge" jdbcType="DECIMAL" property="serviceCharge" />
     <result column="cost_time" jdbcType="INTEGER" property="costTime" />
     <result column="cost" jdbcType="DECIMAL" property="cost" />
     <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
@@ -25,7 +25,7 @@
     <result column="qr_code_order_sn" jdbcType="VARCHAR" property="qrCodeOrderSn" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, uuid, open_id, order_sn, prepay_id, pay_id, pay_type, car_number, parking_id, entrance_id, exit_id, unit_price, cost_time, cost, pay_status, `status`, in_time,
+    id, uuid, open_id, order_sn, prepay_id, pay_id, pay_type, car_number, parking_id, entrance_id, exit_id, service_charge, cost_time, cost, pay_status, `status`, in_time,
     pay_time, out_time, applet_order_sn, qr_code_order_sn
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -40,10 +40,10 @@
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.ParkingRecord">
     insert into parking_record (id, uuid, open_id, order_sn, prepay_id, pay_id, pay_type, car_number, parking_id,
-      entrance_id, exit_id, unit_price, cost_time, cost, pay_status, `status`, in_time, pay_time,out_time, applet_order_sn, qr_code_order_sn)
+      entrance_id, exit_id, service_charge, cost_time, cost, pay_status, `status`, in_time, pay_time,out_time, applet_order_sn, qr_code_order_sn)
     values (#{id,jdbcType=BIGINT}, #{uuid,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{orderSn,jdbcType=VARCHAR}, #{prepayId,jdbcType=VARCHAR},
             #{payId,jdbcType=VARCHAR}, #{payType,jdbcType=TINYINT}, #{carNumber,jdbcType=VARCHAR}, #{parkingId,jdbcType=BIGINT}, #{entranceId,jdbcType=BIGINT},
-            #{exitId,jdbcType=BIGINT}, #{unitPrice,jdbcType=DECIMAL}, #{costTime,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL},
+            #{exitId,jdbcType=BIGINT}, #{serviceCharge,jdbcType=DECIMAL}, #{costTime,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL},
             #{payStatus,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{inTime,jdbcType=TIMESTAMP},
             #{payTime,jdbcType=TIMESTAMP}, #{outTime,jdbcType=TIMESTAMP}, #{appletOrderSn,jdbcType=VARCHAR}, #{qrCodeOrderSn,jdbcType=VARCHAR})
   </insert>
@@ -83,8 +83,8 @@
       <if test="exitId != null">
         exit_id,
       </if>
-      <if test="unitPrice != null">
-        unit_price,
+      <if test="serviceCharge != null">
+        service_charge,
       </if>
       <if test="costTime != null">
         cost_time,
@@ -148,8 +148,8 @@
       <if test="exitId != null">
         #{exitId,jdbcType=BIGINT},
       </if>
-      <if test="unitPrice != null">
-        #{unitPrice,jdbcType=DECIMAL},
+      <if test="serviceCharge != null">
+        #{serviceCharge,jdbcType=DECIMAL},
       </if>
       <if test="costTime != null">
         #{cost_time,jdbcType=INTEGER},
@@ -213,8 +213,8 @@
       <if test="exitId != null">
         exit_id = #{exitId,jdbcType=BIGINT},
       </if>
-      <if test="unitPrice != null">
-        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      <if test="serviceCharge != null">
+        service_charge = #{serviceCharge,jdbcType=DECIMAL},
       </if>
       <if test="costTime != null">
         cost_time = #{costTime,jdbcType=INTEGER},
@@ -258,7 +258,7 @@
       parking_id = #{parkingId,jdbcType=BIGINT},
       entrance_id = #{entranceId,jdbcType=BIGINT},
       exit_id = #{exitId,jdbcType=BIGINT},
-      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      service_charge = #{serviceCharge,jdbcType=DECIMAL},
       cost_time = #{costTime,jdbcType=INTEGER},
       cost = #{cost,jdbcType=DECIMAL},
       pay_status = #{payStatus,jdbcType=TINYINT},

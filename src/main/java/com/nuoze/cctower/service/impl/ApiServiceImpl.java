@@ -17,6 +17,7 @@ import com.nuoze.cctower.pojo.entity.*;
 import com.nuoze.cctower.pojo.vo.ApiCheckCarVO;
 import com.nuoze.cctower.pojo.vo.ApiOutVO;
 import com.nuoze.cctower.pojo.vo.ApiPayStatusVO;
+import com.nuoze.cctower.service.AccountService;
 import com.nuoze.cctower.service.ApiService;
 import com.nuoze.cctower.service.PassagewayService;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +67,8 @@ public class ApiServiceImpl implements ApiService {
     private BillingDetailDAO detailDAO;
     @Autowired
     private OrderNumberDAO orderNumberDAO;
+    @Autowired
+    private AccountService accountService ;
 
     @Override
     public boolean in(ApiDTO apiDTO) {
@@ -168,6 +171,7 @@ public class ApiServiceImpl implements ApiService {
             //查找临时车
             car = carDAO.findByCarNumberAndParkingType(carNumber, 0);
             if (car != null) {
+                BigDecimal serviceCharge = new BigDecimal(0) ;
                 String openId = car.getOpenId();
                 Member member = memberDAO.selectByOpenId(openId);
                 //如果余额 > 车费，直接从余额扣除。
@@ -187,8 +191,12 @@ public class ApiServiceImpl implements ApiService {
                     member.setUpdateTime(new Date());
                     memberDAO.updateByPrimaryKeySelective(member);
                     record.setPayType(PAYMENT_WECHAT);
-                    billingComponent.addTradingRecord(cost, parkingId, IncomeType.PARKING_CHARGE);
-                    billingComponent.addAccountBalance(cost, parkingId);
+                    Account account = accountService.findByParkingId(parkingId);
+                    if(account != null) {
+                        serviceCharge = paymentComponent.getServiceCharge(cost, account.getServiceCharge());
+                    }
+                    billingComponent.addTradingRecord(cost.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE);
+                    billingComponent.addAccountBalance(cost.subtract(serviceCharge), parkingId);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, cost.toString());
                 }
             }

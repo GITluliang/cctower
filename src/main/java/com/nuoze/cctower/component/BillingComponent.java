@@ -48,7 +48,6 @@ public class BillingComponent {
         tradingRecord.setPayTime(new Date());
         tradingRecord.setIncomeType(type.name());
         tradingRecordDAO.insert(tradingRecord);
-
     }
 
     /**
