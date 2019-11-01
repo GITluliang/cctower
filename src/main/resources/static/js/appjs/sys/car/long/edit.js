@@ -36,14 +36,35 @@ function update() {
 function validateRule() {
     var icon = "<i class='fa fa-times-circle'></i> ";
     $("#signupForm").validate({
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent().parent());
+        },
         rules: {
-            name: {
+            parkingId: {
+                required: true
+            },
+            number: {
+                required: true
+            },
+            beginDate: {
+                required: true
+            },
+            endDate: {
                 required: true
             }
         },
         messages: {
-            name: {
-                required: icon + "请输入名字"
+            parkingId: {
+                required: icon + "请选择停车场"
+            },
+            number: {
+                required: icon + "请输入车牌号"
+            },
+            beginDate: {
+                required: icon + "请选择生效日期"
+            },
+            endDate: {
+                required: icon + "请选择失效日期"
             }
         }
     })

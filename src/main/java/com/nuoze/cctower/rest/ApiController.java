@@ -67,7 +67,7 @@ public class ApiController {
      */
     @PostMapping("in")
     public Result in(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] receive carNumber: {} enter parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
+        log.info("[API CONTROLLER] 入场 receive carNumber: {} enter parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK);
         if (result != null) {
             return result;
@@ -99,7 +99,7 @@ public class ApiController {
      */
     @PostMapping("out")
     public Result out(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] carNumber: {} out parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
+        log.info("[API CONTROLLER]出厂 carNumber: {} out parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK);
         if (result != null) {
             return result;
@@ -121,7 +121,7 @@ public class ApiController {
      */
     @PostMapping("paid")
     public Result paid(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] carNumber: {} offline payment in parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
+        log.info("[API CONTROLLER]线下支付 carNumber: {} offline payment in parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK);
         if (result != null) {
             return result;
@@ -156,15 +156,10 @@ public class ApiController {
         return ResponseResult.success(apiService.changeCarNumber(apiDTO) ? ResponseResult.success() : ResponseResult.fail(202, "停车场内无此车辆"));
     }
 
-    /**
-     * 判断是否是月租车
-     *
-     * @param apiDTO apiDTO
-     * @param auth   token
-     * @return Result
-     */
+
     @PostMapping("is-free-car")
     public Result isFreeCar(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
+        log.info("[API CONTROLLER] isFreeCar getOldCarNumber: {} CarNumber: {} parking id: {}", apiDTO.getOldCarNumber(), apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK_IS_FREE_CAR);
         return result != null ? result : ResponseResult.success(apiService.isRentFreeCar(apiDTO));
     }

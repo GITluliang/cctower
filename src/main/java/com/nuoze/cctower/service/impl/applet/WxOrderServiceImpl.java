@@ -197,9 +197,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 }
                 //商户车辆状态修改
                 if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                    car.setStatus(BUSINESS_FORBIDDEN_CAR);
-                    car.setUpdateTime(new Date());
-                    carDAO.updateByPrimaryKeySelective(car);
+                    carDAO.deleteByPrimaryKey(car.getId()) ;
                 }
                 billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE);
                 billingComponent.addAccountBalance(money, parkingId);

@@ -3,6 +3,7 @@ package com.nuoze.cctower.rest;
 import java.util.List;
 import java.util.Map;
 
+import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.util.PageUtils;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
@@ -82,8 +83,11 @@ public class BusinessCarController {
     @RequiresPermissions("sys:car:business:add")
     public R save(CarDTO dto) {
         Long userId = ShiroUtils.getUserId();
-        Long parkingId = userDAO.selectByPrimaryKey(userId).getParkingId();
-        dto.setParkingId(parkingId);
+        dto.setParkingId(userDAO.selectByPrimaryKey(userId).getParkingId());
+        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+        if (car != null) {
+            return ResponseResult.addCarCheck(car) ;
+        }
         return carService.saveBusinessCar(dto) > 0 ? R.ok() : R.error();
     }
 

@@ -1,5 +1,6 @@
 package com.nuoze.cctower.rest;
 
+import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.util.PageUtils;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
+import static com.nuoze.cctower.common.constant.Constant.*;
 
 /**
  * VIP车辆
@@ -36,12 +37,8 @@ public class VipCarController {
 
     @Autowired
     private CarService carService;
-
     @Autowired
     private IdComponent idComponent;
-
-    @Autowired
-    private CarDAO carDAO;
     @Autowired
     private ParkingDAO parkingDAO ;
 
@@ -101,17 +98,9 @@ public class VipCarController {
     @PostMapping("/save")
     @RequiresPermissions("sys:car:vip:add")
     public R save(CarDTO dto) {
-        Long parkingId = dto.getParkingId();
-        String carNumber = dto.getNumber();
-        Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
+        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
         if (car != null) {
-            if (1 == car.getParkingType()) {
-                return R.error(201, "此车牌号月租车中已存在");
-            } else if (2 == car.getParkingType()) {
-                return R.error(201, "此车牌号VIP车中已存在");
-            } else {
-                return R.error(201, "此停车场已有此车牌号，不能重复添加");
-            }
+            return ResponseResult.addCarCheck(car) ;
         }
         return carService.save(dto) > 0 ? R.ok() : R.error();
     }

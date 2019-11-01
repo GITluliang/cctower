@@ -65,14 +65,14 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
                 parkingRecordVO.setCost(parkingRecord.getCost() == null ? "0.0" : parkingRecord.getCost().toString());
                 parkingRecordVO.setInTime(DateUtils.formatDateTime(parkingRecord.getInTime()));
                 parkingRecordVO.setOutTime(DateUtils.formatDateTime(new Date()));
-                parkingRecordVO.setTakeMinutes(parkingRecord.getCostTime());
+                Integer costTime = parkingRecord.getCostTime();
+                parkingRecordVO.setTakeMinutes(costTime);
+                parkingRecordVO.setTakeMinutesStr(costTime/60 >=1 ? costTime/60 + "小时" + costTime%60 + "分钟" : costTime + "分钟");
                 parkingRecordVO.setCarNumber(parkingRecord.getCarNumber());
                 Parking parking = parkingService.findById(parkingRecord.getParkingId());
                 if (parking != null) {
                     parkingRecordVO.setParkingName(parking.getName());
                 }
-            }else {
-                parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
             }
         }
         return parkingRecordVO ;

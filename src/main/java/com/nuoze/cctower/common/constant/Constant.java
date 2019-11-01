@@ -78,7 +78,7 @@ public class Constant {
     /**
      * 付款类型
      * pay type 0：线下 1：微信 2：支付宝 3:vip
-     *      4：月租车、5：商户车辆
+     *      4：月租车、5：商户车辆、6：无需支付
      */
     public static final Integer PAYMENT_OFFLINE = 0;
     public static final Integer PAYMENT_WECHAT = 1;
@@ -86,4 +86,5 @@ public class Constant {
     public static final Integer PAYMENT_VIP = 3;
     public static final Integer PAYMENT_MONTHLY = 4;
     public static final Integer PAYMENT_VBUSINESS = 5;
+    public static final Integer PAYMENT_NOT = 6;
 }

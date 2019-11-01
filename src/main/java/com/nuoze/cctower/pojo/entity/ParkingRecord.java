@@ -45,7 +45,7 @@ public class ParkingRecord implements Serializable {
 
     /**
      * 付款类型：0：线下 1：微信 2：支付宝 3:vip
-     *      *      4：月租车、5：商户车辆
+     *      *      4：月租车、5：商户车辆、6：无需支付
      */
     private Integer payType;
 

@@ -109,7 +109,7 @@ public class ApiServiceImpl implements ApiService {
             if(vipStatic || rentStatic) {
                 if (record != null) {
                     record.setOutTime(new Date());
-                    record.setPayType(PAYMENT_VIP.equals(car.getParkingType()) ? PAYMENT_VIP : PAYMENT_MONTHLY);
+                    record.setPayType(VIP_CAR == car.getParkingType() ? PAYMENT_VIP : PAYMENT_MONTHLY);
                     if (passageway != null) {
                         record.setExitId(passageway.getId());
                     }
@@ -135,24 +135,24 @@ public class ApiServiceImpl implements ApiService {
             int costTime = DateUtils.diffMin(record.getInTime());
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
             if (car != null) {
-                //MONTHLY_CAR:包月
-                if (MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
-                    record.setPayType(PAYMENT_MONTHLY);
-                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
-                }
                 //VIP_CAR：VIP车辆
                 if (VIP_CAR == car.getParkingType()) {
                     record.setPayType(PAYMENT_VIP);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
                 }
+                //MONTHLY_CAR:包月
+                if (MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
+                    record.setPayType(PAYMENT_MONTHLY);
+                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
+                }
                 //BUSINESS_CAR：商户车辆
                 if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                    if (car.getFreeTime() > costTime) {
-                        car.setStatus(BUSINESS_FORBIDDEN_CAR);
-                        car.setUpdateTime(new Date());
-                        carDAO.updateByPrimaryKeySelective(car);
+                    if (car.getFreeTime() >= costTime) {
+                        carDAO.deleteByPrimaryKey(car.getId()) ;
                         record.setPayType(PAYMENT_VBUSINESS);
                         return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, EMPTY_MONEY.toString());
+                    }else {
+                        costTime = costTime - car.getFreeTime();
                     }
                 }
             }
@@ -162,17 +162,24 @@ public class ApiServiceImpl implements ApiService {
             Integer freeTime = billing.getFreeTime();
             if (freeTime != null) {
                 if (freeTime >= costTime) {
-                    record.setPayType(PAYMENT_VIP);
+                    if(car != null) {
+                        if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                            carDAO.deleteByPrimaryKey(car.getId()) ;
+                            record.setPayType(PAYMENT_VBUSINESS);
+                        }
+                    }else {
+                        record.setPayType(PAYMENT_NOT);
+                    }
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? EMPTY_MONEY.toString() : cost.toString());
                 }
             }
-            //以上条件都不满足，判断car是不是微信会员临时车辆
+
             //计算车费
-            cost = billingComponent.cost(costTime, parkingId, carNumber);
+            cost = billingComponent.cost(costTime, parkingId, null);
             record.setCostTime(costTime);
             record.setCost(cost);
 
-            //查找临时车
+            //以上条件都不满足，判断car是不是微信会员临时车辆
             car = carDAO.findByCarNumberAndParkingType(carNumber, 0);
             if (car != null) {
                 BigDecimal serviceCharge = new BigDecimal(0) ;
@@ -275,8 +282,19 @@ public class ApiServiceImpl implements ApiService {
         return apiVO;
     }
 
+    /**
+     * 线下支付回调
+     * @param apiDTO
+     * @return
+     */
     @Override
     public boolean paid(ApiDTO apiDTO) {
+        Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
+        if(car != null) {
+            if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                carDAO.deleteByPrimaryKey(car.getId()) ;
+            }
+        }
         ParkingRecord record = recordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
         if (record != null) {
             record.setPayType(PAYMENT_OFFLINE);

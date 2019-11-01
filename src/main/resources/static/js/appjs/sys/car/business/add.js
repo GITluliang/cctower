@@ -35,14 +35,25 @@ function save() {
 function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
+		errorPlacement: function (error, element) {
+			error.appendTo(element.parent().parent());
+		},
 		rules : {
-			name : {
+			number : {
 				required : true
+			},
+			freeTime : {
+				required : true ,
+				digits:true
 			}
 		},
 		messages : {
-			name : {
+			number : {
 				required : icon + "请输入姓名"
+			},
+			freeTime : {
+				required : icon + "请输入时长",
+				digits: icon + "输入整数"
 			}
 		}
 	})

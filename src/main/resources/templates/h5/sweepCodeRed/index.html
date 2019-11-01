@@ -46,7 +46,7 @@
 			<div>
 				<h3 class="tit">停车详情</h3>
 				<p>停车场:<span class="parkingName" th:text="${parkingRecord.parkingName}"></span></p>
-				<p>停车时长：<span class="takeMinutes" th:text="${parkingRecord.takeMinutes/60 >=1 ? parkingRecord.takeMinutes/60 + '小时' + parkingRecord.takeMinutes%60 + '分钟' : parkingRecord.takeMinutes + '分钟'}"></span></p>
+				<p>停车时长：<span class="takeMinutes" th:text="${parkingRecord.takeMinutesStr}"></span></p>
 				<p>入场时间:<span class="inTime" th:text="${parkingRecord.inTime}"></span></p>
 				<p>停车费:<span><em class="cost" th:text="${parkingRecord.cost}"></em>元</span></p>
 			</div>
@@ -110,21 +110,25 @@
 		recordId = $("#recordId").text() ;
 		money = $("#cost").text() ;
 		console.log("点击支付传过来的值：" + openId + ',' + recordId + "," + money)
-		if(typeof(openId) != "undefined" && typeof(recordId) != "undefined" && typeof(money) != "undefined") {
-			$.ajax({
-				url : '/mp/wx-pay/prepay' ,
-				type: 'POST',
-				dataType : 'json',
-				contentType: "application/json;charset=UTF-8",
-				data: JSON.stringify({openId: openId, recordId: recordId, money: money }),
-				success: function (data) {
-					console.log("[Json payOrder Data: ]" + JSON.stringify(data))
-					doBridgeReady(data);
-				},
-				error: function (res) {
-					console.log("ajax请求失败,res:" + res.toString());
-				}
-			}) ;
+		if(money == 0 || typeof(openId) == "undefined") {
+			alert("无需支付！");
+		}else {
+			if(typeof(openId) != "undefined" && typeof(recordId) != "undefined" && typeof(money) != "undefined") {
+				$.ajax({
+					url : '/mp/wx-pay/prepay' ,
+					type: 'POST',
+					dataType : 'json',
+					contentType: "application/json;charset=UTF-8",
+					data: JSON.stringify({openId: openId, recordId: recordId, money: money }),
+					success: function (data) {
+						console.log("[Json payOrder Data: ]" + JSON.stringify(data))
+						doBridgeReady(data);
+					},
+					error: function (res) {
+						console.log("ajax请求失败,res:" + res.toString());
+					}
+				}) ;
+			}
 		}
 	}
 	//判断浏览器是否支持JSAPI，只用微信内置浏览器可用。
@@ -220,9 +224,6 @@
 					$(".cost").text(json.data.cost) ;
 					$("#cost").text(json.data.cost) ;
 					$(".carNumber").text(json.data.carNumber) ;
-					if(json.data.cost <= 0) {
-						$(".paybtn").unbind("click") ;
-					}
 				}
 			}
 		}) ;
