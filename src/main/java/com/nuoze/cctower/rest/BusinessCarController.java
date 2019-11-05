@@ -119,8 +119,7 @@ public class BusinessCarController {
     @ResponseBody
     @RequiresPermissions("sys:car:business:batchRemove")
     public R remove(@RequestParam("ids[]") Long[] ids) {
-        carService.batchRemove(ids);
-        return R.ok();
+        return carService.batchRemove(ids) > 0 ? R.ok() : R.error();
     }
 
 }

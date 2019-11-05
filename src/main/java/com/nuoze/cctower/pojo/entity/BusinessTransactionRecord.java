@@ -19,7 +19,7 @@ public class BusinessTransactionRecord implements Serializable {
      */
     private Long userId;
     /**
-     * 0: 支出 1：充值
+     * 0: 支出 1：充值 2. 退款
      */
     private Integer type;
     /**

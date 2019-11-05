@@ -79,6 +79,8 @@ public class CarServiceImpl implements CarService {
     private BillingComponent billingComponent;
     @Autowired
     private ParkingService parkingService;
+    @Autowired
+    private BillingDAO billingDAO;
 
     @Override
     public List<CarDTO> list(Map<String, Object> map) {
@@ -182,8 +184,26 @@ public class CarServiceImpl implements CarService {
     @Override
     public int remove(Long id) {
         Car car = carDAO.selectByPrimaryKey(id);
-        if (1 == car.getParkingType()) {
-            mqSendComponent.sendRentCar(ApiDataEnum.DELETE, car);
+        if(car != null) {
+            if (MONTHLY_CAR == car.getParkingType()) {
+                mqSendComponent.sendRentCar(ApiDataEnum.DELETE, car);
+            }
+            if(BUSINESS_CAR == car.getParkingType()) {
+                Long userId = ShiroUtils.getUserId();
+                User user = userDAO.selectByPrimaryKey(userId);
+                BigDecimal balance = user.getBalance().add(car.getCost());
+                user.setBalance(balance);
+                user.setUpdateTime(new Date());
+                BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord();
+                businessTransactionRecord.setUserId(userId);
+                businessTransactionRecord.setAmount(car.getCost());
+                businessTransactionRecord.setBalance(balance);
+                businessTransactionRecord.setCarNumber(car.getNumber());
+                businessTransactionRecord.setType(2);
+                businessTransactionRecord.setCreateTime(new Date());
+                userDAO.updateByPrimaryKeySelective(user);
+                businessTransactionRecordDAO.insert(businessTransactionRecord);
+            }
         }
         return carDAO.deleteByPrimaryKey(id);
     }
@@ -332,6 +352,10 @@ public class CarServiceImpl implements CarService {
         BeanUtils.copyProperties(dto, car);
         Integer freeTime = dto.getFreeTime();
         Long parkingId = dto.getParkingId();
+        Billing billing = billingDAO.selectByParkingId(parkingId);
+        if (billing != null) {
+            freeTime = freeTime + billing.getFreeTime();
+        }
         BigDecimal cost = billingComponent.cost(freeTime, parkingId, null);
         Long userId = ShiroUtils.getUserId();
         User user = userDAO.selectByPrimaryKey(userId);

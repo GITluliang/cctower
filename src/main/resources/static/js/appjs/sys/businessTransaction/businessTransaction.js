@@ -55,9 +55,11 @@ function load() {
                         align: 'center',
                         formatter: function (value, row, index) {
                             if (value == '0') {
-                                return '<span class="label label-danger">停车费</span>';
+                                return '<span class="label label-primary">停车费</span>';
                             } else if (value == '1') {
-                                return '<span class="label label-primary">充值</span>';
+                                return '<span class="label abel-success">余额充值</span>';
+                            }else if (value == '2') {
+                                return '<span class="label label-warning">停车费退回</span>';
                             }
                         }
                     },
