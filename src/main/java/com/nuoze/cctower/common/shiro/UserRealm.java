@@ -43,12 +43,15 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
         User user = userDAO.findByUsername(username);
-        if (user == null || (!password.equals(user.getPassword()))) {
-            throw new IncorrectCredentialsException("账号或密码不正确");
+        if(user == null) {
+            throw new UnknownAccountException("账号不存在！") ;
+        }
+        if (!password.equals(user.getPassword())) {
+            throw new IncorrectCredentialsException("账号或密码不正确！");
         }
         if (user.getStatus().compareTo(BUSINESS_FORBIDDEN_CAR) == 0) {
             throw new LockedAccountException(username + "账户已经被锁定！");
         }
-        return new SimpleAuthenticationInfo(username, password, this.getName());
+        return new SimpleAuthenticationInfo(user, password, this.getName());
     }
 }

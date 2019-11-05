@@ -30,9 +30,9 @@
         </div>
 
         <div class="grid dribbble" >
-            <a class="mui-col-xs-4" href="listYuezu.html"><i class="iconfont icon-yuezu"></i>月租管理</a>
-            <a class="mui-col-xs-4" href="listShanghu.html"><i class="iconfont icon-Vip"></i>商户管理</a>
-            <a class="mui-col-xs-4" href="listVip.html"><i class="iconfont icon-shanghu"></i>VIP管理<span class="badge">19</span></a>
+            <a class="mui-col-xs-4" id="longCar" ><i class="iconfont icon-yuezu"></i>月租车辆</a>
+            <a class="mui-col-xs-4" id="businessCar" ><i class="iconfont icon-Vip"></i>商户车辆</a>
+            <a class="mui-col-xs-4" id="vipCar" ><i class="iconfont icon-shanghu"></i>VIP车辆<span class="badge">19</span></a>
         </div>
         <h3 class="bigtit">月租管理</h3>
         <ul class="mui-table-view longlist" id="longList"></ul>
@@ -44,7 +44,34 @@
 </body>
 <style>body,.mui-content{background: #fff;}</style>
 <script src="/js/h5/mobile/common.js"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
 <script>
+    $(function () {
+        $("#longCar").click(function () {
+            authz("/mobile/car/long");
+        }) ;
+        $("#businessCar").click(function () {
+            authz("/mobile/car/business");
+        }) ;
+        $("#vipCar").click(function () {
+            authz("/mobile/car/vip");
+        }) ;
+    });
+
+    //权限校验
+    function authz(url) {
+        $.getJSON(url, function(data){
+            console.log("JSON Data: " + JSON.stringify(data));
+            if(data.code == 200 && data.msg.equals("SUCCESS")) {
+
+            }else {
+                layer.msg(data.msg);
+            }
+
+        });
+    }
+
+
   //首页轮播数据
     this.carousel = function () {
         var gallery = mui('.mui-slider');

@@ -109,7 +109,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         WxPayUnifiedOrderRequest orderRequest = paymentComponent.buildWxPayReq(dto.getOpenId(), actualPrice, request, null);
         orderRequest.setBody("停车费");
         orderRequest.setAppid("wxc1487ff13e8c64df");
-        orderRequest.setNotifyUrl("http://www.luliang888.top/applet/wx-pay/pay-notify");
+        orderRequest.setNotifyUrl("https://www.cctower.cn/applet/wx-pay/pay-notify");
         WxPayMpOrderResult result = null;
         try {
             result = wxPayService.createOrder(orderRequest);

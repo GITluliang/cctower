@@ -19,14 +19,14 @@
                账号登录
             </h2>
             
-            <form class="mui-input-group" action="/mobile/register" method="post" >
+            <form class="mui-input-group" id="signupForm" >
                 <div class="mui-input-row">
                     <!-- <label class="iconfont icon-user"></label> -->
-                    <input type="text" id="username" class="mui-input-clear mui-input" placeholder="请输入用户名">
+                    <input type="text" id="username" name="username" class="mui-input-clear mui-input" placeholder="请输入用户名">
                 </div>
                 <div class="mui-input-row">
                     <!-- <label class="iconfont icon-password"></label> -->
-                    <input type="password" id="password" class="mui-input-password" placeholder="请输入密码">
+                    <input type="password" id="password" name="password" class="mui-input-password" placeholder="请输入密码">
                     <!-- <span class="mui-icon mui-icon-eye"></span> -->
                 </div>
             </form>
@@ -42,6 +42,8 @@
     
 </body>
 <script src="/js/h5/mobile/common.js"></script>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
 <script>
     $("#alertBtn").click(function() {
         if ($("#username").val() == '') {
@@ -51,8 +53,22 @@
             mui.toast('密码不能为空');
             return;
         }else {
-            $(".mui-input-group").submit() ;
+            login();
         }
     });
+    function login() {
+        $.ajax({
+            type: "POST",
+            url: ctx+"login",
+            data: $('#signupForm').serialize(),
+            success: function (r) {
+                if (r.code == 0) {
+                    parent.location.href = '/mobile/home';
+                } else {
+                    layer.msg(r.msg);
+                }
+            },
+        });
+    }
 </script>
 </html>
