@@ -1,0 +1,102 @@
+
+
+/* 选项卡简约重写 */
+.tab.mui-segmented-control{border:none;border-bottom:1px solid #ccc;border-radius:0;padding:.15rem 0 0;background:#fff;font-size:.4rem}
+.tab.mui-segmented-control .mui-control-item{color:#666;border:none;line-height:1rem}
+.tab.mui-segmented-control .mui-control-item.mui-active{color:#21A3DA;background:none;border:none;border-bottom:3px solid #21A3DA}
+
+
+/* 列表 */
+.mui-table-view:before, .mui-table-view:after{height: 0;}
+.mui-table-view-cell:after{right: 15px;}
+.mui-content>.mui-table-view:first-child{margin-top: 0;}
+.mui-table-view h3 {margin: 0.1rem 0 0.3rem; color: #333;display: flex;justify-content: space-between;}
+.mui-table-view h3 span{width: 70%; font-size: 0.4rem; }
+.mui-table-view h3 em{ font-size: 10px; color: #4EACDA; background:#feffef; border-radius: 0.5rem; padding: 4px 8px; height: 18px; line-height: 12px;}
+.mui-table-view p, .mui-table-view p span {font-size: 0.36rem;line-height: 0.36rem; }
+.mui-table-view p{margin:0.2rem 0 0 0; }
+.mui-table-view h6 {border-top: 1px solid #eee; padding-top: 14px; }
+.mui-table-view p span {margin-right: 20px; }
+.mui-table-view em.btn{position:absolute;right:.22rem;top:.48rem;width:.88rem;height:.88rem;line-height:.88rem;text-align:center;border-radius:100%;border:1px solid #4EACDA;color:#4EACDA}
+
+/* 长字段列表 */
+.longlist li{padding:18px 15px;}
+.longlist .iconfont{position: absolute;top: .5rem;font-size: .48rem;right: .4rem;z-index: 999;}
+.longlist .mui-table-view-cell>a:not(.mui-btn){ margin:-18px -15px;}
+.longlist .mui-table-view-cell:after{height: 0;}
+.longlist li:last-child{border: none}
+
+/* 短字段列表 */
+.shortlist .mui-table-view-cell:after{height: 0;}
+.shortlist.mui-table-view{background:none;text-align: center;}
+.shortlist .mui-table-view-cell {padding: 8px 15px; text-align: left;}
+.shortlist .mui-table-view-cell > a:not(.mui-btn){white-space:normal;margin:0;padding:4% 3%;background-color:#fff;border-bottom-left-radius:8px;border-top-left-radius:8px;border-left:8px solid #fff7e0; background: #fffdf7}
+.shortlist .mui-navigate-right:after,.mui-push-right:after{right:5px}
+
+/* 新闻列表 */
+.newslist li{padding: 15px;}
+.newslist h3{color:#21A3DA; }
+.newslist h3 em{ background: none; font-size: 0.4rem; padding: 0; color: #999; }
+
+
+
+/* 详情 */
+.detail{text-align:center;margin:0;padding:0 0.4rem;background:#fff;min-height:100%}
+.detail h3{color:#333;margin:0 0 .4rem;padding-top:0.8rem;font-size:0.5rem;text-align: left;font-weight: bold !important;}
+.detail h5{color:#999;margin:0.4rem 0 0.6rem;padding:0;text-align: left;}
+.detail h5 span{margin:0 0 0.2rem;display:inline-block;font-size:0.35rem}
+.detail .cont{min-height:10rem}
+.detail .cont p span{float: right;text-align: left;width: 6rem;display: block;}
+.detail img{max-width:100%;margin:0.1rem 0}
+.detail p{color:#333;font-size:0.4rem;line-height:2;text-align:left}
+
+/* 短详情（仿优惠券） */
+.shortDetail {margin: 0.8rem; padding: 0; background: none; }
+.shortDetail .top, .detail .bot{padding: 0.4rem; border-radius: 0.3rem; background: #fffdf7;}
+.shortDetail .bot{border-top: 1px dashed #eee;}
+.shortDetail .bot .cont{min-height: 6rem; margin-top: 0.3rem;}
+.shortDetail .mui-content-padded{padding-bottom: 10px;}
+
+/* 流程类详情（代码布局同上） */
+.flowdetail{background: none; margin: 0; padding: 0; text-align: left;}
+.flowdetail .top, .flowdetail .flow{padding: 0.4rem;background: #fff; margin-bottom: 10px;  border-radius: 0;}
+.flowdetail .top{overflow: hidden;}
+.flowdetail .top i{float: left; display: block; width: 1.3rem; height: 1.3rem; line-height: 1.3rem; font-size: .56rem; text-align: center; margin-right: .4rem; border-radius: 100%; color: #fff; }
+.flowdetail .top>div{float: left;}
+.flowdetail h3{padding-top: 0.2rem;}
+.flowdetail h5{margin-bottom: 0;}
+.flowdetail h5 span{margin: 0 0.4rem 0.2rem 0;}
+.flowdetail .flow{padding: 0.4rem 0.6rem;}
+.flowdetail .flow li{position: relative;margin-bottom: -0.1rem;min-height: 2.4rem;}
+.flowdetail .flow li strong{position: absolute; width: 0.5rem; height: 0.5rem; display: block; border-radius: 100%; border: 1px solid #999; background: #fff;}
+.flowdetail .flow li > div{padding-left: 1rem; margin-left: 0.24rem; border-left: 1px solid #999;min-height: 2.4rem;}
+.flowdetail .flow li h4{font-size: 0.54rem; color: #999;}
+.flowdetail .flow li h4 em{font-size: 0.4rem; float: right; color: #bbb;}
+.flowdetail .flow li h4 a{ font-size: 0.4rem; color: #fff; background: #ddd; padding: 0.3rem 0.6rem; border-radius: 0.5rem; float: right; margin-top: -0.24rem;}
+.flowdetail .flow li.on strong{border-color: #21A3DA; background: #21A3DA;}
+.flowdetail .flow li.on > div{border-left-color: #21A3DA;}
+.flowdetail .flow li.on h4{color: #21A3DA;}
+.flowdetail .flow li.on h4 a{background: #21A3DA;}
+
+
+/* 弹出层 */
+.popup{display: none; width: 100%; height: 100%; position: fixed; top:0; z-index: 9999; background: rgba(0,0,0,.4);text-align: center; }
+.popup:before {content: '';  display: inline-block; height: 100%; vertical-align: middle; margin-right: -0.25em;}
+.pop-container{position: relative; width: 80%; min-height: auto; border-radius: 13px; background: #fff; display: inline-block; vertical-align: middle;margin: 0;}
+.popup .close {position: absolute; right: .2rem; top: .2rem; font-size: .5rem; color: #bbb;}
+.popup h3{ font-size: 18px; font-weight: 500 !important; margin-top: 15px; color: #000;}
+.popup h5{ font-size: 14px; margin: 10px 0 0; color: #333;}
+.popbtn{display: flex; height: 44px; line-height: 44px; font-size: 17px; justify-content: space-around; margin-top: 15px; border-top: 1px solid rgba(0,0,0,.2);}
+.popbtn a{ font-weight: 600 !important; color: #007aff; border-right: 1px solid rgba(0,0,0,.2); width: 100%;}
+.popbtn a:last-child{border: none;}
+.popbtn .left{font-weight: 400 !important;}
+.popcont{padding: 15px 0; max-height: 300px; overflow-y: scroll;}
+.popcont .mui-radio label{width: 100%; line-height: 40px; padding: 6px 0 10px 28px; text-align: left;}
+.popcont .mui-radio input:checked:before{content:'\e442';}
+.popcont .mui-radio img{ width: 40px; height: 40px; border-radius: 100%; margin-right: 10px; float: left;}
+
+.mui-content>a>img, .mui-content>img.bot-bg{position: fixed;
+    bottom: 0;
+    right: -1.3rem;
+    width: 7rem;
+    opacity: .1;}
