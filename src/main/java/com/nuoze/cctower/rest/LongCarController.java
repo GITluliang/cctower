@@ -1,5 +1,6 @@
 package com.nuoze.cctower.rest;
 
+import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.component.IdComponent;
 
@@ -64,7 +65,7 @@ public class LongCarController {
     @RequiresPermissions("sys:car:car")
     public PageUtils list(@RequestParam Map<String, Object> params) {
         log.info("[LONG CAR CONTROLLER] check long car list, the params: {}", params.toString());
-        params.put(params.get("query").toString(), "%" + params.get("value") + "%");
+        params.put(String.valueOf(params.get("query")), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
@@ -72,7 +73,6 @@ public class LongCarController {
         //停车场查询
         if("parkingName".equals(params.get("query"))) {
             Parking value = parkingDAO.findByParkingName(params.get("value").toString());
-            System.out.println(value + "***");
             params.put("parkingId", value == null ? 0 : value.getId());
 
         }
@@ -109,12 +109,9 @@ public class LongCarController {
     @PostMapping("/save")
     @RequiresPermissions("sys:car:add")
     public R save(CarDTO dto) {
-        Long parkingId = dto.getParkingId();
-        String carNumber = dto.getNumber();
-        Integer parkingType = dto.getParkingType();
-        Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
+        Car car = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
         if (car != null) {
-            return R.error(201, "此停车场已有此车牌号，不能重复添加");
+            return ResponseResult.addCarCheck(car) ;
         }
         return carService.save(dto) > 0 ? R.ok() : R.error();
     }

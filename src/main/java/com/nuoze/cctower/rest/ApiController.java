@@ -5,15 +5,19 @@ import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.result.ResultEnum;
 import com.nuoze.cctower.dao.CarDAO;
+import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.ParkingRecordDAO;
 import com.nuoze.cctower.dao.PassagewayDAO;
 import com.nuoze.cctower.pojo.dto.ApiDTO;
 import com.nuoze.cctower.pojo.entity.Car;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
 import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.pojo.vo.ApiOutVO;
 import com.nuoze.cctower.pojo.vo.ApiPayStatusVO;
 import com.nuoze.cctower.service.ApiService;
+import com.nuoze.cctower.service.CarService;
+import com.nuoze.cctower.service.ParkingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 import static com.nuoze.cctower.common.constant.Constant.MONTHLY_CAR;
+import static com.nuoze.cctower.common.constant.Constant.VIP_CAR;
 
 /**
  * @author JiaShun
@@ -49,7 +54,9 @@ public class ApiController {
     @Autowired
     private ParkingRecordDAO parkingRecordDAO;
     @Autowired
-    private CarDAO carDAO;
+    private CarService carService;
+    @Autowired
+    private ParkingService parkingService;
 
     /**
      * 车辆入场
@@ -60,18 +67,19 @@ public class ApiController {
      */
     @PostMapping("in")
     public Result in(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] receive carNumber: {} enter parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
+        log.info("[API CONTROLLER] 入场 receive carNumber: {} enter parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK);
         if (result != null) {
             return result;
         }
-        //此代码是为了解决古船停车场月租车重复入场问题
-        if (apiDTO.getParkingId() == 1) {
-            Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
-            if (car != null) {
-                if (MONTHLY_CAR == car.getParkingType()) {
-                    return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
-                }
+        //解决月租车与vip重复入厂
+        Parking parking = parkingService.findById(apiDTO.getParkingId());
+        Car car = carService.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
+        if(parking != null && car != null) {
+            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType() ;
+            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd()) ;
+            if(vipStatic || rentStatic) {
+                return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
             }
         }
         ParkingRecord record = parkingRecordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
@@ -91,7 +99,7 @@ public class ApiController {
      */
     @PostMapping("out")
     public Result out(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] carNumber: {} out parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
+        log.info("[API CONTROLLER]出厂 carNumber: {} out parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK);
         if (result != null) {
             return result;
@@ -113,7 +121,7 @@ public class ApiController {
      */
     @PostMapping("paid")
     public Result paid(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] carNumber: {} offline payment in parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
+        log.info("[API CONTROLLER]线下支付 carNumber: {} offline payment in parking id: {}", apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK);
         if (result != null) {
             return result;
@@ -148,15 +156,10 @@ public class ApiController {
         return ResponseResult.success(apiService.changeCarNumber(apiDTO) ? ResponseResult.success() : ResponseResult.fail(202, "停车场内无此车辆"));
     }
 
-    /**
-     * 判断是否是月租车
-     *
-     * @param apiDTO apiDTO
-     * @param auth   token
-     * @return Result
-     */
+
     @PostMapping("is-free-car")
     public Result isFreeCar(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
+        log.info("[API CONTROLLER] isFreeCar getOldCarNumber: {} CarNumber: {} parking id: {}", apiDTO.getOldCarNumber(), apiDTO.getCarNumber(), apiDTO.getParkingId());
         Result result = checkParam(apiDTO, auth, API_CHECK_IS_FREE_CAR);
         return result != null ? result : ResponseResult.success(apiService.isRentFreeCar(apiDTO));
     }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css?v1.0" />
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">账号登录</h1>
+    </header>
+    <div class="mui-content">
+        <div class="userbind">
+            <h2 class="title">
+               账号登录
+            </h2>
+            
+            <form class="mui-input-group" id="signupForm" >
+                <div class="mui-input-row">
+                    <!-- <label class="iconfont icon-user"></label> -->
+                    <input type="text" id="username" name="username" class="mui-input-clear mui-input" placeholder="请输入用户名">
+                </div>
+                <div class="mui-input-row">
+                    <!-- <label class="iconfont icon-password"></label> -->
+                    <input type="password" id="password" name="password" class="mui-input-password" placeholder="请输入密码">
+                    <!-- <span class="mui-icon mui-icon-eye"></span> -->
+                </div>
+            </form>
+            <div class="mui-content-padded">
+                <div class="btncont">
+                    <a class="mui-btn mui-btn-block mui-btn-primary" id="alertBtn">登录</a>
+                </div>
+                <p>CCTower停车场后台管理员登录</p>
+            </div>    
+        </div>
+    </div>
+    <!-- <div class="area-fix"><p>Copyright &copy; 2019 诺泽科技 All Rights Served</p></div> -->
+    
+</body>
+<script src="/js/h5/mobile/common.js"></script>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script>
+    $("#alertBtn").click(function() {
+        if ($("#username").val() == '') {
+            mui.toast('用户名不能为空');
+            return;
+        }else if ($("#password").val() == '') {
+            mui.toast('密码不能为空');
+            return;
+        }else {
+            login();
+        }
+    });
+    function login() {
+        $.ajax({
+            type: "POST",
+            url: ctx+"login",
+            data: $('#signupForm').serialize(),
+            success: function (r) {
+                if (r.code == 0) {
+                    parent.location.href = '/mobile/home';
+                } else {
+                    layer.msg(r.msg);
+                }
+            },
+        });
+    }
+</script>
+</html>

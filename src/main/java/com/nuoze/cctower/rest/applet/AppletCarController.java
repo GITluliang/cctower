@@ -5,22 +5,12 @@ import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.component.PaymentComponent;
-import com.nuoze.cctower.pojo.dto.ParkingRecordDTO;
 import com.nuoze.cctower.pojo.dto.RenewCarPayDTO;
-import com.nuoze.cctower.pojo.entity.ParkingRecord;
-import com.nuoze.cctower.pojo.entity.Passageway;
-import com.nuoze.cctower.pojo.vo.ParkingRecordVO;
 import com.nuoze.cctower.pojo.vo.RenewCarVO;
 import com.nuoze.cctower.service.CarService;
-
-import com.nuoze.cctower.service.ParkingRecordService;
-import com.nuoze.cctower.service.ParkingService;
-import com.nuoze.cctower.service.PassagewayService;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Map;

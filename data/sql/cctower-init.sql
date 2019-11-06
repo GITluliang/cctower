@@ -324,6 +324,8 @@ CREATE TABLE `parking` (
   `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '负责人邮箱',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+   rent_static tinyint(2) NOT NULL DEFAULT '0' COMMENT '月租车重复出入场：0:可以 1：不可以',
+   vip_static tinyint(2) NOT NULL DEFAULT '0' COMMENT 'VIP车重复出入场：0:可以 1：不可以',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='停车场管理';
@@ -351,9 +353,9 @@ CREATE TABLE `parking_record` (
   `parking_id` bigint(11) NOT NULL COMMENT '停车场ID',
   `entrance_id` bigint(11) DEFAULT NULL COMMENT '入口ID',
   `exit_id` bigint(11) DEFAULT NULL COMMENT '出口ID',
-  `unit_price` decimal(5,2) DEFAULT NULL COMMENT '单价(分钟)',
   `cost_time` int(11) DEFAULT NULL COMMENT '停车时长',
   `cost` decimal(10,2) DEFAULT NULL COMMENT '共消费',
+  `service_charge` decimal(11,2) DEFAULT NULL COMMENT '服务费',
   `pay_status` tinyint(2) DEFAULT NULL COMMENT '0:未支付 1：支付成功',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否出场 0：否 1：是 2：待出场',
   `in_time` datetime NOT NULL COMMENT '入场时间',
@@ -411,6 +413,7 @@ CREATE TABLE `renew_record` (
   `parking_id` bigint(11) DEFAULT NULL COMMENT '停车场ID',
   `month_count` int(10) NOT NULL COMMENT '续费月数',
   `cost` decimal(11,2) DEFAULT NULL COMMENT '续费金额',
+  `service_charge` decimal(11,2) DEFAULT NULL COMMENT '服务费',
   `pay_status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '支付状态',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),

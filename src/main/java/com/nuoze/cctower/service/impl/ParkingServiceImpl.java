@@ -36,6 +36,11 @@ public class ParkingServiceImpl implements ParkingService {
     private AccountDAO accountDAO;
 
     @Override
+    public List<Parking> findParkingByUser(Long userId) {
+        return parkingDAO.findParkingByUser(userId);
+    }
+
+    @Override
     public List<Parking> list(Map<String, Object> map) {
         Long userId = idComponent.getUserId();
         if (userId != null) {
@@ -60,7 +65,7 @@ public class ParkingServiceImpl implements ParkingService {
         parking.setUserId(userId);
         parking.setCreateTime(new Date());
         parking.setUpdateTime(new Date());
-        int i = parkingDAO.insert(parking);
+        int i = parkingDAO.insertSelective(parking);
         if (i > 0) {
             Account account = new Account();
             account.setParkingId(parkingDAO.findByUserIdAndParkingName(userId, parking.getName()).getId());

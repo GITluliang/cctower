@@ -13,8 +13,6 @@
 		div#keyboard-pad{height:4.8rem!important;position:fixed;width:100%;left:0;bottom:0;padding:1.6rem 0 .4rem;background: #eee;}
 		div#mixed-keyboard-box,div#single-keyboard-box{border:none!important;}
 		button.key{font-size:.48rem!important;}
-
-
 		ul.rowsof-5,ul.shortcut-row{margin: 0;padding: 0 .4rem;}
 		.close{position: fixed;
 			bottom: 5.6rem;
@@ -31,11 +29,13 @@
 </head>
 <body>
 <div>
+	<span hidden id="openId" th:text="${openId}"></span>
 	<span hidden id="carNumber" th:text="${parkingRecord.carNumber}"></span>
+	<span hidden id="recordId" th:text="${parkingRecord.recordId}"></span>
 	<h3 class="h3">智慧停车 即可开启</h3>
 	<div class="con" id="con1">
 		<h4>请输入车牌号</h4>
-		<a href="#" class="btn">查询缴费</a>
+		<!--<a href="#" class="btn">查询缴费</a>-->
 	</div>
 
 	<div class="show" style="display: none;">
@@ -46,7 +46,7 @@
 			<div>
 				<h3 class="tit">停车详情</h3>
 				<p>停车场:<span class="parkingName" th:text="${parkingRecord.parkingName}"></span></p>
-				<p>停车时长：<span class="takeMinutes" th:text="${parkingRecord.takeMinutes/60 >=1 ? parkingRecord.takeMinutes/60 + '小时' + parkingRecord.takeMinutes%60 + '分钟' : parkingRecord.takeMinutes/60 + '分钟'}"></span></p>
+				<p>停车时长：<span class="takeMinutes" th:text="${parkingRecord.takeMinutesStr}"></span></p>
 				<p>入场时间:<span class="inTime" th:text="${parkingRecord.inTime}"></span></p>
 				<p>停车费:<span><em class="cost" th:text="${parkingRecord.cost}"></em>元</span></p>
 			</div>
@@ -60,15 +60,15 @@
 			<p style="height:10px;background: #f7f7f7;"></p>
 			<div class="notice">
 				<h3 class="tit">注意事项</h3>
-				<p>1.请您支付停车费时，先确认车牌号；</p>
+				<p>1.请您支付停车费时，先确认停车信息及车牌号；</p>
 				<p>2.支付成功若没抬杆，请联系工作人员；</p>
 				<p>3.请尽快驶离车场，避免产生额外费用；</p>
 			</div>
 		</div>
 
 		<div class="botBtn">
-			<span>还需要支付：<em class="cost" th:text="${parkingRecord.cost}"></em>元</span>
-			<a href="" class="paybtn">支付</a>
+			<span>还需要支付：<em id="cost" th:text="${parkingRecord.cost}"></em>元</span>
+			<button class="paybtn" onclick="payOrder()">支付</button>
 		</div>
 	</div>
 
@@ -77,15 +77,19 @@
 		<mixed-keyboard :args="args" :callbacks="callbacks"/>
 	</div>
 
-
+	<div class="toast">
+		<span></span>
+	</div>
 </div>
 </body>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <script type="text/javascript" src="/js/h5/sweepCodeRed/flexible.js"></script>
 <script type="text/javascript" src="/js/h5/sweepCodeRed/jquery-1.11.2.min.js"></script>
 <script src="/js/h5/sweepCodeRed/MixedKeyboard.js"></script>
 <script>
 	var carNumber = $("#carNumber").text() ;
 	$(function(){
+		$(".toast").hide();
 		if(carNumber != "" && carNumber != undefined) {
 			detailsShow()
 		}
@@ -100,23 +104,75 @@
 			$(this).hide();
 		});
 	});
-	//支付详情显示
-	function detailsShow() {
-		$(".show").show();
-		$(".btn").hide();
-		$("#con2").show().css("height","3.2rem");
-		$("#con1").hide();
-		$("div#keyboard-pad").hide();
-		$(".close").hide();
+	//点击支付
+	function payOrder() {
+		openId = $("#openId").text() ;
+		recordId = $("#recordId").text() ;
+		money = $("#cost").text() ;
+		console.log("点击支付传过来的值：" + openId + ',' + recordId + "," + money)
+		if(money == 0 || typeof(openId) == "undefined") {
+			alert("无需支付！");
+		}else {
+			if(typeof(openId) != "undefined" && typeof(recordId) != "undefined" && typeof(money) != "undefined") {
+				$.ajax({
+					url : '/mp/wx-pay/prepay' ,
+					type: 'POST',
+					dataType : 'json',
+					contentType: "application/json;charset=UTF-8",
+					data: JSON.stringify({openId: openId, recordId: recordId, money: money }),
+					success: function (data) {
+						console.log("[Json payOrder Data: ]" + JSON.stringify(data))
+						doBridgeReady(data);
+					},
+					error: function (res) {
+						console.log("ajax请求失败,res:" + res.toString());
+					}
+				}) ;
+			}
+		}
 	}
-	//支付详情隐藏
-	function detailsHide() {
-		$(".show").hide();
-		$(".btn").show();
-		$("#con2").hide().css("height","3.2rem");
-		$("#con1").show();
-		$("div#keyboard-pad").show();
-		$(".close").show();
+	//判断浏览器是否支持JSAPI，只用微信内置浏览器可用。
+	function doBridgeReady(data){
+		if (typeof WeixinJSBridge == "undefined"){
+			if( document.addEventListener ){
+				document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+			}else if (document.attachEvent){
+				document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+				document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+			}
+		}else{
+			onBridgeReady(data);
+		}
+	}
+
+	//真实支付请求
+	function onBridgeReady(data){
+		WeixinJSBridge.invoke(
+				'getBrandWCPayRequest', {
+					"appId": data.appId,     //公众号名称，由商户传入
+					"timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
+					"nonceStr": data.nonceStr, //随机串
+					"package": data.packageValue,
+					"signType": data.signType,         //微信签名方式：
+					"paySign": data.paySign //微信签名
+				},
+				function(res){
+					if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+						self.location.href="/mp/watchPay/forward?recordId=" + $("#recordId").text() ;
+					}else{
+						console.log("支付失败，提示【" + res.err_msg + "】")
+						alert("支付失败，请重新支付！");
+					}
+				}
+		);
+	}
+
+	function getQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null;
 	}
 	//检查车辆
 	function checkCost(carNumber) {
@@ -127,14 +183,24 @@
 			dataType : 'json',
 			data : {carNumber: carNumber},
 			success: function (json) {
-				console.log("Json checkCost Data: " + JSON.stringify(json))
-				alert(json.msg) ;
+				console.log("Json checkCost Data: " + JSON.stringify(json)) ;
+				toast(json.msg);
 				if("SUCCESS" == json.msg) {
 					flag = 2 ;
 				}
 			}
 		}) ;
 		return flag ;
+	}
+
+	function toast(msg) {
+		if("SUCCESS" != msg){
+			$(".toast span").text(msg) ;
+			$(".toast").show();
+			setTimeout(function () {
+				$(".toast").hide();
+			}, 1000);
+		}
 	}
 	//获取支付详情
 	function getPayDetails(carNumber) {
@@ -156,12 +222,30 @@
 					$(".takeMinutes").text(day > 0 ? day + "天" + hours + "小时" + minute +"分钟" : hours > 0 ? hours + "小时" + minute +"分钟" : json.data.takeMinutes +"分钟") ;
 					$(".inTime").text(json.data.inTime) ;
 					$(".cost").text(json.data.cost) ;
+					$("#cost").text(json.data.cost) ;
 					$(".carNumber").text(json.data.carNumber) ;
-
 				}
 			}
 		}) ;
 		return flag ;
+	}
+	//支付详情显示
+	function detailsShow() {
+		$(".show").show();
+		$(".btn").hide();
+		$("#con2").show().css("height","3.2rem");
+		$("#con1").hide();
+		$("div#keyboard-pad").hide();
+		$(".close").hide();
+	}
+	//支付详情隐藏
+	function detailsHide() {
+		$(".show").hide();
+		$(".btn").show();
+		$("#con2").hide().css("height","3.2rem");
+		$("#con1").show();
+		$("div#keyboard-pad").show();
+		$(".close").show();
 	}
 
 

@@ -5,6 +5,7 @@ import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.component.IdComponent;
 import com.nuoze.cctower.pojo.entity.BusinessTransactionRecord;
+import com.nuoze.cctower.pojo.vo.BusinessTransactionRecordVO;
 import com.nuoze.cctower.service.BusinessTransactionRecordService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,7 +48,7 @@ public class BusinessTransactionRecordController {
         }
         //查询列表数据
         Query query = new Query(params);
-        Pair<Integer, List<BusinessTransactionRecord>> pair = businessTransactionRecordService.list(query);
+        Pair<Integer, List<BusinessTransactionRecordVO>> pair = businessTransactionRecordService.list(query);
         return new PageUtils(pair.getRight(), pair.getLeft());
     }
 }

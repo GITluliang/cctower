@@ -69,6 +69,7 @@ public class Constant {
     public static final Long BUSINESS_ROLE_ID = 4L;
 
     public static final BigDecimal EMPTY_MONEY = new BigDecimal("0.00");
+    public static final BigDecimal EMPTY_MONEY_FEN = new BigDecimal("0.01");
     public static final BigDecimal MINIMUM_SERVICE_CHARGE = new BigDecimal("0.10");
     public static final Integer ONE_HUNDRED = 100;
     public static final Integer PARKING_TRADING_RECORD_INCOME_TYPE = 1;
@@ -77,7 +78,7 @@ public class Constant {
     /**
      * 付款类型
      * pay type 0：线下 1：微信 2：支付宝 3:vip
-     *      4：月租车、5：商户车辆
+     *      4：月租车、5：商户车辆、6：无需支付
      */
     public static final Integer PAYMENT_OFFLINE = 0;
     public static final Integer PAYMENT_WECHAT = 1;
@@ -85,4 +86,5 @@ public class Constant {
     public static final Integer PAYMENT_VIP = 3;
     public static final Integer PAYMENT_MONTHLY = 4;
     public static final Integer PAYMENT_VBUSINESS = 5;
+    public static final Integer PAYMENT_NOT = 6;
 }

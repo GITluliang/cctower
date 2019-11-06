@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.nuoze.cctower.common.constant.Constant.MINIMUM_SERVICE_CHARGE;
-import static com.nuoze.cctower.common.constant.Constant.ONE_HUNDRED;
+import static com.nuoze.cctower.common.constant.Constant.*;
 
 
 /**
@@ -85,18 +84,20 @@ public class PaymentComponent {
         return cost.multiply(dividedOneHundred(serviceCharge)).setScale(2, 1);
     }
 
+    /**
+     * 计算扣掉服务费的金额
+     * @param amount 金额
+     * @param serviceCharge 服务费
+     * @return
+     */
     public BigDecimal getServiceCharge(BigDecimal amount, Integer serviceCharge) {
-        BigDecimal serviceChargeCost = amount.multiply(dividedOneHundred(serviceCharge)).setScale(2, 1);
-        if (serviceChargeCost.compareTo(MINIMUM_SERVICE_CHARGE) <= 0) {
-            serviceChargeCost = MINIMUM_SERVICE_CHARGE;
-        }
-        return serviceChargeCost;
+          return amount.compareTo(new BigDecimal(10)) == -1 ? EMPTY_MONEY_FEN : amount.multiply(dividedOneHundred(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);
     }
     public BigDecimal getBalanceByAmountAndServiceCharge(BigDecimal balance, BigDecimal amount, BigDecimal serviceCharge) {
-        return balance.subtract(amount.add(serviceCharge)).setScale(2, 1);
+        return balance.subtract(amount.add(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);
     }
 
     private BigDecimal dividedOneHundred(Integer num) {
-        return BigDecimal.valueOf((double) num / 100.0D).setScale(2, 1);
+        return BigDecimal.valueOf((double) num / 1000.0D).setScale(3, BigDecimal.ROUND_DOWN);
     }
 }

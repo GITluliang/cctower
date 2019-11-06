@@ -26,4 +26,5 @@ public interface ParkingService {
 
     int batchRemove(Long[] ids);
 
+    List<Parking> findParkingByUser(Long userId);
 }

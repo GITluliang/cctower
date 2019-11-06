@@ -22,4 +22,6 @@ public class ParkingRecordVO {
     private String parkingName ;
     //车牌号
     private String carNumber ;
+
+    private String takeMinutesStr;
 }

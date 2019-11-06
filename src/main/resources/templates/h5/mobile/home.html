@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css" />
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">首页</h1>
+    </header>
+    <div class="mui-content">
+        <div class="mui-slider" style="margin: 4%; width: 92%; border-radius: 16px;">
+            <div class="mui-slider-group mui-slider-loop">
+                <!--支持循环，需要重复图片节点-->
+                <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="/img/h5/mobile/banner01.jpg" /></a></div>
+                <div class="mui-slider-item"><a href="#"><img src="/img/h5/mobile/banner01.jpg" /></a></div>
+                <div class="mui-slider-item"><a href="#"><img src="/img/h5/mobile/banner01.jpg" /></a></div>
+                <!--支持循环，需要重复图片节点-->
+                <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="/img/h5/mobile/banner01.jpg" /></a></div>
+            </div>
+            <div class="mui-slider-indicator">
+                <div class="mui-indicator mui-active"></div>
+                <div class="mui-indicator"></div>
+            </div>
+        </div>
+
+        <div class="grid dribbble" >
+            <a class="mui-col-xs-4" id="longCar" ><i class="iconfont icon-yuezu"></i>月租车辆</a>
+            <a class="mui-col-xs-4" id="businessCar" ><i class="iconfont icon-Vip"></i>商户车辆</a>
+            <a class="mui-col-xs-4" id="vipCar" ><i class="iconfont icon-shanghu"></i>VIP车辆<span class="badge">19</span></a>
+        </div>
+        <h3 class="bigtit">月租管理</h3>
+        <ul class="mui-table-view longlist" id="longList"></ul>
+        <p class="list-bot">没有更多内容啦</p>
+        <!-- <a class="afix small" id="consolt"><i class="iconfont icon-zixun1"></i><span>售后</span></a> -->
+        <!-- <img src="../assets/images/bg-wave.png" alt="" class="imgfix"> -->
+    </div>
+
+</body>
+<style>body,.mui-content{background: #fff;}</style>
+<script src="/js/h5/mobile/common.js"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script>
+    $(function () {
+        $("#longCar").click(function () {
+            authz("/mobile/car/long/authz","/mobile/car/long");
+        }) ;
+        $("#businessCar").click(function () {
+            authz("/mobile/car/business/authz","/mobile/car/business");
+        }) ;
+        $("#vipCar").click(function () {
+            authz("/mobile/car/vip/authz","/mobile/car/vip");
+        }) ;
+    });
+
+    //权限校验
+    function authz(url,replace) {
+        $.getJSON(url, function(data){
+            console.log("JSON Data: " + JSON.stringify(data));
+            if(data.code == 200 && data.msg == "SUCCESS") {
+                window.location.replace(replace);
+            }else {
+                layer.msg(data.msg);
+            }
+        });
+    }
+
+
+  //首页轮播数据
+    this.carousel = function () {
+        var gallery = mui('.mui-slider');
+        gallery.slider({interval:3000});
+    }
+
+    $.ajax({
+        url: "http://list",
+        dataType: "json",
+        async: false,
+        data: {},
+        type: "GET",
+        success: function(data) {
+            var json = "";
+            for (i in data.longList) {
+                json += `
+                    <li class="mui-table-view-cell">
+                        <a href="detailYuezu.html">
+                            <h3><span class="mui-ellipsis">车牌号：${data.longList[i].title}</span>
+                `
+                json +=`</h3>
+                            <p><span>生效日期：${data.longList[i].t1}</span><span>失效日期：${data.longList[i].t2}</span></p>
+                            <p>停车场：${data.longList[i].t3}</p>
+                        </a>
+                    </li> 
+                `
+            }
+            $("#longList").html(json);  
+        },        
+    });
+
+</script>
+</html>
+
+
