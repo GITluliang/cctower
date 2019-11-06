@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <link rel="stylesheet" href="/css/h5/sweepCodeRed/common.css">
+    <style>
+        .detail>div.res{text-align: center;margin: 1rem auto 1rem;}
+        .res img{width: 1.6rem;margin:0 auto .2rem 0;}
+        .res span{font-size: .8rem;font-weight: bold;margin: .4rem 0 0;display: block;}
+        .res span font{font-size: .4rem;}
+    </style>
+</head>
+<body>
+<div>
+    <div class="detail">
+        <div class="res">
+            <img src="/img/h5/success.png">
+            <h3>支付成功</h3>
+            <span><em th:text="${parkingRecord.cost}"></em><font>元</font></span>
+        </div>
+        <p style="height:10px;background: #f7f7f7;"></p>
+        <div>
+            <h3 class="tit">停车详情</h3>
+            <p >停车场<span th:text="${parking.name}"></span></p>
+            <p>车牌号<span th:text="${parkingRecord.carNumber}"></span></p>
+            <p>停车时长：<span th:text="${parkingRecord.costTime/60 >=1 ? parkingRecord.costTime/60 + '小时' + parkingRecord.costTime%60 + '分钟' : parkingRecord.costTime + '分钟'}"></span></p>
+            <p>支付时间<span th:text="${payTime}"></span></p>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/js/h5/sweepCodeRed/flexible.js"></script>
+</html>

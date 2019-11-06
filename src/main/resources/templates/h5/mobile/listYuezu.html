@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>月租管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css"/>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">月租管理</h1>
+</header>
+<div class="mui-content">
+    <div class="user bantop">
+        <i class="iconfont icon-yuezu"></i>
+        <h3>月租管理</h3>
+        <h5>MONTHLY RENT MANAGEMENT</h5>
+    </div>
+    <ul class="mui-table-view longlist" id="longList"></ul>
+    <a href="/mobile/car/long/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
+</div>
+
+<!-- 自开发弹出层：选择内容过多，需要滚动 -->
+<div class="popup" id="popup">
+    <div class="pop-container">
+        <h3>删除</h3>
+        <div class="popcont">
+            确定要删除吗？
+        </div>
+        <div class="popbtn">
+            <a class="left cancel">取消</a>
+            <a id="yes">确认</a>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/h5/mobile/common.js"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script>
+    $.ajax({
+        url: "/sys/car/long/list",
+        dataType: "json",
+        async: false,
+        data: {
+            limit: 10,
+            offset: 0,
+            sort: 'update_time',
+            order: 'desc',
+        },
+        type: "GET",
+        success: function (data) {
+            var json = "";
+            for (i in data.rows) {
+                json += `
+                    <li class="mui-table-view-cell">
+                        <a href="/mobile/car/long/detail/${data.rows[i].id}">
+                            <h3><span class="mui-ellipsis">车牌号：${data.rows[i].number}</span>
+                `
+                json += `</h3>
+                            <p><span>生效日期：${data.rows[i].beginDate}</span><span>失效日期：${data.rows[i].endDate}</span></p>
+                            <p>停车场：${data.rows[i].parkingName}</p>
+                        </a>
+                        <i class="iconfont icon-shanchu" id="delete" value=${data.rows[i].id}></i>
+                    </li>
+                `
+            }
+            $("#longList").html(json);
+        },
+    });
+    $("#delete").click(function () {
+        $("#popup").fadeIn();
+        $("body").css("overflow", "hidden");
+    });
+    $("#yes").click(function () {
+        $.post("/sys/car/business/remove",{id:$("#delete").attr("value")},function (data) {
+            if(data.code == 0){
+                window.location.reload();
+            }else {
+                layer.msg(data.msg);
+            }
+        },"json");
+    });
+</script>
+</html>

@@ -42,20 +42,6 @@ public class ShiroConfig {
     @Value("${spring.cache.type}")
     private String cacheType ;
 
-    @Bean
-    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
-
-    /**
-     * ShiroDialect，为了在thymeleaf里使用shiro的标签的bean
-     *
-     * @return ShiroDialect
-     */
-    @Bean
-    public ShiroDialect shiroDialect() {
-        return new ShiroDialect();
-    }
 
     @Bean
     ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
@@ -65,6 +51,9 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        //filterChainDefinitionMap.put("/mobile/**", "anon");
+        filterChainDefinitionMap.put("/mp/**", "anon");
+        filterChainDefinitionMap.put("/mobile/login","anon");
         filterChainDefinitionMap.put("/login","anon");
         filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/applet/**", "anon");
@@ -85,7 +74,6 @@ public class ShiroConfig {
         return shiroFilterFactoryBean;
     }
 
-
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
@@ -104,6 +92,28 @@ public class ShiroConfig {
     @Bean
     UserRealm userRealm() {
         return new UserRealm();
+    }
+
+
+
+
+
+
+
+
+    @Bean
+    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
+    /**
+     * ShiroDialect，为了在thymeleaf里使用shiro的标签的bean
+     *
+     * @return ShiroDialect
+     */
+    @Bean
+    public ShiroDialect shiroDialect() {
+        return new ShiroDialect();
     }
 
     /**
@@ -146,7 +156,6 @@ public class ShiroConfig {
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
     }
-
 
     /**
      * RedisSessionDAO shiro sessionDao层的实现 通过redis

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/js/h5/sweepCodeRed/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" >
+        $(function () {
+            var appid = 'wxc1487ff13e8c64df';//appid为公众号appid
+            var local = window.location.href ;//当前跳转路径
+            var code = getQueryString('code');//获取地址栏参数code
+            if(code == "" || code == null) {
+                location.replace("https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + encodeURIComponent(local) + "&response_type=code&scope=snsapi_base#wechat_redirect")
+            }
+        });
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+                return unescape(r[2]);
+            return null;
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

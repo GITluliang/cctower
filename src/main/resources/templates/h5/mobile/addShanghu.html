@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>添加商户车辆</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css" />
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">添加商户车辆</h1>
+    </header>
+    <div class="mui-content">
+        <form id="signupForm">
+            <div class="mui-input-group">
+                <div class="mui-input-row">
+                    <label>车牌号</label>
+                    <input id="number" name="number" type="text" class="mui-input-clear mui-input" placeholder="请输入车牌号">
+                </div>
+                 <div class="mui-input-row">
+                    <label>免费时长(分钟)</label>
+                    <input id="freeTime"  name="freeTime" type="number" class="mui-input-clear mui-input" placeholder="请输入免费时长">
+                </div>
+                <div class="mui-input-row">
+                    <label>车主姓名</label>
+                    <input name="name" type="text" class="mui-input-clear mui-input" placeholder="请输入车主姓名">
+                </div>
+                <div class="mui-input-row">
+                    <label>联系方式</label>
+                    <input name="phone" type="number" class="mui-input-clear mui-input" placeholder="请输入联系方式">
+                </div>
+                <div class="mui-input-row radio">
+                    <label>状态</label>
+                    <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
+                        <div class="mui-radio mui-left">
+                            <label>正常</label>
+                            <input name="status" type="radio" value="1" checked="">
+                        </div>
+                        <div class="mui-radio mui-left">
+                            <label>禁用</label>
+                            <input name="status" value="0" type="radio">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="parkingType" value="3" >
+        </form>
+        <div class="mui-content-padded">
+            <div class="btncont">
+                <a class="mui-btn mui-btn-block mui-btn-primary" id="alertBtn">提交</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="/js/h5/mobile/common.js"></script>
+<script src="/js/h5/mobile/webuploader.min.js"></script>
+<script src="/js/h5/mobile/demo.js"></script>
+<script>
+
+    // 提交(非最后一步提交成功的验证，用“自动消失提示框”)
+    $("#alertBtn").click(function() {
+        if ($("#number").val() == '') {
+            toast("车牌号不能为空");
+        }else if ($("#freeTime").val() == '') {
+            toast("免费时长不能为空");
+        }else {
+            $.post("/sys/car/business/save",$('#signupForm').serialize(),function(data) {
+                toast(data.msg) ;
+                if(data.code == 0) {
+                    window.location.href='/mobile/car/business';
+                }
+            },"json");
+        }
+    });
+    $.getJSON("/mobile/getParking",function (data) {
+        $("#parking label").text(data.data[0].name) ;
+        $("#parking input").val(data.data[0].id) ;
+    }) ;
+    function toast(msg) {
+        mui.toast(msg);
+        $("#name").focus();//定位
+        $("#name").css("caret-color", "orangered")//光标变色
+        return;
+    }
+</script>
+</html>

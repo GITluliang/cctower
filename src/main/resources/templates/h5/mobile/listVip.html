@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>VIP管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css"/>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">VIP管理</h1>
+    </header>
+    <div class="mui-content">
+         <div class="user bantop" style="background: linear-gradient(-320deg,#f3a425 40%,rgba(243, 164, 37,0.6));border-bottom:10px solid #f1980a;">
+            <i class="iconfont icon-Vip"></i>
+            <h3>VIP管理</h3>
+            <h5>VIP MANAGEMENT</h5>
+        </div>
+        <ul class="mui-table-view longlist" id="longList"></ul>
+        <a href="/mobile/car/vip/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
+    </div>
+
+     <!-- 自开发弹出层：选择内容过多，需要滚动 -->
+    <div class="popup" id="popup">
+        <div class="pop-container">
+            <h3>删除</h3>
+             <div class="popcont">
+                 确定要删除吗？
+             </div>
+            <div class="popbtn">
+                <a class="left cancel">取消</a>
+                <a id="yes">确认</a>
+            </div>
+        </div>
+    </div> 
+</body>
+<script src="/js/h5/mobile/common.js"></script>
+<script>
+  
+    $.ajax({
+        url: "/sys/car/vip/list",
+        dataType: "json",
+        async: false,
+        data: {
+            limit: 10,
+            offset: 0,
+            sort: 'update_time',
+            order: 'desc',
+        },
+        type: "GET",
+        success: function(data) {
+            var json = "";
+            for (i in data.rows) {
+                json += `
+                    <li class="mui-table-view-cell">
+                        <a href="/mobile/car/vip/detail/${data.rows[i].id}">
+                            <h3><span class="mui-ellipsis">车牌号：${data.rows[i].number}</span>
+                `
+                json +=`</h3>
+                            <p><span>停车场：${data.rows[i].parkingName}</span><span>车主姓名：${data.rows[i].name}</span></p>
+                        </a>
+                        <i class="iconfont icon-shanchu" id="delete" value=${data.rows[i].id}></i>
+                    </li> 
+                `
+            }
+            $("#longList").html(json);  
+        },        
+    });
+    $("#delete").click(function () { $("#popup").fadeIn(); $("body").css("overflow", "hidden"); });
+    $("#yes").click(function () {
+        $.post("/sys/car/vip/remove",{id:$("#delete").attr("value")},function (data) {
+            if(data.code == 0){
+                window.location.reload();
+            }else {
+                layer.msg(data.msg);
+            }
+        },"json");
+    });
+</script>
+</html>

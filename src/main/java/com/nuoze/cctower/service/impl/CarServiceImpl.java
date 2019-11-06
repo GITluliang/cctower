@@ -78,7 +78,9 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private BillingComponent billingComponent;
     @Autowired
-    private ParkingService parkingService ;
+    private ParkingService parkingService;
+    @Autowired
+    private BillingDAO billingDAO;
 
     @Override
     public List<CarDTO> list(Map<String, Object> map) {
@@ -120,10 +122,8 @@ public class CarServiceImpl implements CarService {
             CarDTO carDTO = new CarDTO();
             BeanUtils.copyProperties(car, carDTO);
             if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
-                String beginDate = DateUtils.toTimeString(car.getMonthlyParkingStart());
-                String endDate = DateUtils.toTimeString(car.getMonthlyParkingEnd());
-                carDTO.setBeginDate(beginDate);
-                carDTO.setEndDate(endDate);
+                carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()));
+                carDTO.setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
             }
             if (car.getParkingId() != null) {
                 String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
@@ -145,8 +145,19 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car findById(Long id) {
-        return carDAO.selectByPrimaryKey(id);
+    public CarDTO findById(Long id) {
+        CarDTO carDTO = new CarDTO();
+        Car car = carDAO.selectByPrimaryKey(id);
+        BeanUtils.copyProperties(car, carDTO);
+        if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
+            carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()));
+            carDTO.setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
+        }
+        Parking parking = parkingDAO.selectByPrimaryKey(car.getParkingId());
+        if (parking != null) {
+            carDTO.setParkingName(parking.getName());
+        }
+        return carDTO;
     }
 
     @Override
@@ -177,8 +188,26 @@ public class CarServiceImpl implements CarService {
     @Override
     public int remove(Long id) {
         Car car = carDAO.selectByPrimaryKey(id);
-        if (1 == car.getParkingType()) {
-            mqSendComponent.sendRentCar(ApiDataEnum.DELETE, car);
+        if(car != null) {
+            if (MONTHLY_CAR == car.getParkingType()) {
+                mqSendComponent.sendRentCar(ApiDataEnum.DELETE, car);
+            }
+            if(BUSINESS_CAR == car.getParkingType()) {
+                Long userId = ShiroUtils.getUserId();
+                User user = userDAO.selectByPrimaryKey(userId);
+                BigDecimal balance = user.getBalance().add(car.getCost());
+                user.setBalance(balance);
+                user.setUpdateTime(new Date());
+                BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord();
+                businessTransactionRecord.setUserId(userId);
+                businessTransactionRecord.setAmount(car.getCost());
+                businessTransactionRecord.setBalance(balance);
+                businessTransactionRecord.setCarNumber(car.getNumber());
+                businessTransactionRecord.setType(2);
+                businessTransactionRecord.setCreateTime(new Date());
+                userDAO.updateByPrimaryKeySelective(user);
+                businessTransactionRecordDAO.insert(businessTransactionRecord);
+            }
         }
         return carDAO.deleteByPrimaryKey(id);
     }
@@ -192,33 +221,31 @@ public class CarServiceImpl implements CarService {
     public ParkingRecordVO parkingRecordDetail(String carNumber) {
         ParkingRecord parkingRecord = parkingRecordService.findByCarNumberAndStatus(carNumber);
         ParkingRecordVO parkingRecordVO = new ParkingRecordVO();
-        if(parkingRecord != null) {
+        if (parkingRecord != null) {
             String inTime = DateUtils.formatDateTime(parkingRecord.getInTime());
             String outTime = DateUtils.formatDateTime(new Date());
             Long parkingId = parkingRecord.getParkingId();
             Billing billing = billingService.findByParkingId(parkingId);
             Integer takeMinutes = parkingRecord.getCostTime();
             BigDecimal cost = parkingRecord.getCost();
-            if (cost == null) {
-                takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
-                Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
-                if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                    int freeTime = car.getFreeTime();
-                    if (freeTime >= takeMinutes) {
-                        cost = EMPTY_MONEY;
-                    } else {
-                        cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
-                        if (billing.getWechatDiscount() != null) {
-                            cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
-                        }
-                    }
+            takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
+            Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
+            if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                int freeTime = car.getFreeTime();
+                if (freeTime >= takeMinutes) {
+                    cost = EMPTY_MONEY;
                 } else {
-                    Integer freeTime = billing.getFreeTime();
-                    if (freeTime != null && freeTime >= takeMinutes) {
-                        cost = EMPTY_MONEY;
-                    } else {
-                        cost = billingComponent.cost(takeMinutes, parkingId, null);
+                    cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
+                    if (billing.getWechatDiscount() != null) {
+                        cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
                     }
+                }
+            } else {
+                Integer freeTime = billing.getFreeTime();
+                if (freeTime != null && freeTime >= takeMinutes) {
+                    cost = EMPTY_MONEY;
+                } else {
+                    cost = billingComponent.cost(takeMinutes, parkingId, null);
                 }
             }
             Parking parking = parkingService.findById(parkingRecord.getParkingId());
@@ -329,6 +356,10 @@ public class CarServiceImpl implements CarService {
         BeanUtils.copyProperties(dto, car);
         Integer freeTime = dto.getFreeTime();
         Long parkingId = dto.getParkingId();
+        Billing billing = billingDAO.selectByParkingId(parkingId);
+        if (billing != null) {
+            freeTime = freeTime + billing.getFreeTime();
+        }
         BigDecimal cost = billingComponent.cost(freeTime, parkingId, null);
         Long userId = ShiroUtils.getUserId();
         User user = userDAO.selectByPrimaryKey(userId);
@@ -458,5 +489,10 @@ public class CarServiceImpl implements CarService {
         car.setCreateTime(new Date());
         car.setUpdateTime(new Date());
         return carDAO.insert(car);
+    }
+
+    @Override
+    public Car findByParkingIdAndCarNumber(Long parkingId, String carNumber) {
+        return carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
     }
 }

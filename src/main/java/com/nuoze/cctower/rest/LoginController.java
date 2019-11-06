@@ -8,8 +8,7 @@ import com.nuoze.cctower.pojo.entity.Menu;
 import com.nuoze.cctower.service.MenuService;
 import lombok.Data;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,8 +58,14 @@ public class LoginController {
         try {
             subject.login(token);
             return R.ok();
+        } catch (UnknownAccountException uae) {
+            return R.error("账号不存在");
+        } catch (IncorrectCredentialsException ice) {
+            return R.error("密码错误");
+        } catch (LockedAccountException lae) {
+            return R.error("账号被锁定");
         } catch (AuthenticationException e) {
-            return R.error("用户名或密码错误");
+            return R.error("登录失败，请重新登录");
         }
     }
 

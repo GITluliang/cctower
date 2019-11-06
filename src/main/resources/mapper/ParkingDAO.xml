@@ -11,9 +11,11 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="rent_static" jdbcType="TINYINT" property="rentStatic" />
+    <result column="vip_static" jdbcType="TINYINT" property="vipStatic" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, user_id, `location`, phone, create_time,update_time, contacts, email
+    id, `name`, user_id, `location`, phone, create_time,update_time, contacts, email, rent_static, vip_static
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,12 +28,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Parking">
-    insert into parking (id, `name`, user_id, `location`, phone, create_time, update_time, contacts, email
-      )
+    insert into parking (id, `name`, user_id, `location`, phone, create_time, update_time, contacts, email, rent_static, vip_static)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
-      #{location,jdbcType=VARCHAR},
-      #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-      #{contacts,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR}
+      #{location,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{contacts,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{rentStatic,jdbcType=TINYINT},#{vipStatic,jdbcType=TINYINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Parking">
@@ -64,6 +64,12 @@
       <if test="email != null">
         email,
       </if>
+      <if test="rentStatic != null">
+        rent_static,
+      </if>
+      <if test="vipStatic != null">
+        vip_static,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -92,6 +98,12 @@
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="rentStatic != null">
+        #{rentStatic,jdbcType=TINYINT},
+      </if>
+      <if test="vipStatic != null">
+        #{vipStatic,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -122,6 +134,12 @@
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
+      <if test="rentStatic != null">
+        rent_static = #{rentStatic,jdbcType=TINYINT},
+      </if>
+      <if test="vipStatic != null">
+        vip_static = #{vipStatic,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -134,7 +152,9 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP} ,
       contacts = #{contacts,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR}
+      email = #{email,jdbcType=VARCHAR},
+      rent_static = #{rentStatic,jdbcType=TINYINT},
+      vip_static = #{vipStatic,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -152,6 +172,8 @@
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
       <if test="contacts != null and contacts != ''">and contacts = #{contacts}</if>
       <if test="email != null and email != ''">and email = #{email}</if>
+      <if test="rentStatic != null and rentStatic != ''">and rent_static = #{rentStatic}</if>
+      <if test="vipStatic != null and vipStatic != ''">and vip_static = #{vipStatic}</if>
       <if test="keyword != null and keyword != ''">
         AND (location LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')
@@ -183,6 +205,8 @@
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
       <if test="contacts != null and contacts != ''">and contacts = #{contacts}</if>
       <if test="email != null and email != ''">and email = #{email}</if>
+      <if test="rentStatic != null and rentStatic != ''">and rent_static = #{rentStatic}</if>
+      <if test="vipStatic != null and vipStatic != ''">and vip_static = #{vipStatic}</if>
       <if test="keyword != null and keyword != ''">
         AND (location LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')

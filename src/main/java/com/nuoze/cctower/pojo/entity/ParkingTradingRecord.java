@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * parking_trading_record
+ * 停车场交易记录
  * @author JiaShun
  */
 @Data

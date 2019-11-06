@@ -120,7 +120,7 @@
     <include refid="Base_Column_List" />
     from business_transaction_record
     <where>
-      <if test="user_id != null and user_id != ''">and user_id = #{userId}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -138,7 +138,7 @@
   <select id="count" resultType="int">
     select count(id) from business_transaction_record
     <where>
-      <if test="user_id != null and user_id != ''">and user_id = #{userId}</if>
+      <if test="userId != null and userId != ''">and user_id = #{userId}</if>
     </where>
   </select>
 </mapper>

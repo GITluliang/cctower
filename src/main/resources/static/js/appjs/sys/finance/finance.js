@@ -64,15 +64,17 @@ function load() {
 										if (value == '0') {
 											return '<span class="label label-danger">线下支付</span>';
 										} else if (value == '1') {
-											return '<span class="label label-primary">微信支付</span>';
+											return '<span class="label label-success">微信支付</span>';
 										} else if (value == '2') {
-											return '<span class="label label-primary">支付宝支付</span>';
+											return '<span class="label label-success">支付宝支付</span>';
 										} else if (value == '3') {
-											return '<span class="label label-blue">无需支付</span>';
+											return '<span class="label label-primary">VIP</span>';
 										}else if (value == '4') {
-											return '<span class="label label-blue">月租车</span>';
+											return '<span class="label label-warning">月租车</span>';
 										}else if (value == '5') {
-											return '<span class="label label-blue">无需支付</span>';
+											return '<span class="label label-info">商户车辆</span>';
+										}else if (value == '6') {
+											return '<span class="label label-default">无需支付</span>';
 										}
 									}
 								},

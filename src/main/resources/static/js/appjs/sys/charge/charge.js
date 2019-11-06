@@ -49,7 +49,7 @@ function load() {
 								},
 																{
 									field : 'serviceCharge',
-									title : '服务费(百分比)'
+									title : '服务费(千分比)'
 								},
 																{
 									title : '操作',
