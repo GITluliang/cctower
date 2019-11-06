@@ -1,7 +1,7 @@
 package com.nuoze.cctower.rest.mp;
 
 import com.nuoze.cctower.common.util.DateUtils;
-import com.nuoze.cctower.common.util.Util;
+import com.nuoze.cctower.common.util.AuthUtil;
 import com.nuoze.cctower.common.util.WxUtils;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
 import com.nuoze.cctower.service.ParkingRecordService;
@@ -76,13 +76,13 @@ public class SweepCodeRedController {
 
     //校验access_token
     @RequestMapping("token")
-    public void access_token(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void accessToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String signature = request.getParameter("signature");
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
         String echostr = request.getParameter("echostr");
         PrintWriter out = response.getWriter();
-        if (Util.checkSignature(signature, timestamp, nonce)) {
+        if (AuthUtil.checkSignature(signature, timestamp, nonce)) {
             // 如果校验成功，将得到的随机字符串原路返回
             out.print(echostr);
         }
