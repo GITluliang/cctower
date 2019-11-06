@@ -85,9 +85,9 @@ public class WxOrderServiceImpl implements WxOrderService {
             prepayId = prepayId.replace("prepay_id=", "");
             ParkingRecord parkingRecord = parkingRecordService.findById(dto.getRecordId());
             //*** 保存小程序支付订单号,如果是第一次保存在parkingRecord中，如果是第二次保存在OrderNumber中 ***
-            if(StringUtils.isEmpty(parkingRecord.getAppletOrderSn())) {
+            if (StringUtils.isEmpty(parkingRecord.getAppletOrderSn())) {
                 parkingRecord.setAppletOrderSn(orderRequest.getOutTradeNo());
-            }else {
+            } else {
                 OrderNumber orderNumber = new OrderNumber();
                 orderNumber.setParkingRecordId(parkingRecord.getId());
                 orderNumber.setOrderSn(orderRequest.getOutTradeNo());
