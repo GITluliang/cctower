@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>添加月租</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
-    <link rel="stylesheet" href="../assets/css/common.css?v1.2" />
+    <link rel="stylesheet" href="/css/h5/mobile/common.css?v1.2" />
 </head>
 
 <body>
@@ -14,89 +14,82 @@
         <h1 class="mui-title">添加月租</h1>
     </header>
     <div class="mui-content">
-        <form>
+        <form id="signupForm">
             <div class="mui-input-group">
                  <div class="mui-input-row radio">                    
                     <label>停车场</label>
                     <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
-                        <div class="mui-radio mui-left">
-                            <label>停车场1</label>
-                            <input name="parking" type="radio" value="4">
+                        <div class="mui-radio mui-left" id="parking">
+                            <label></label>
+                            <input name="parkingId" type="radio" checked>
                         </div>
                     </div>
                 </div>
                 <div class="mui-input-row">
                     <label>车牌号</label>
-                    <input type="text" id="name" class="mui-input-clear mui-input" placeholder="请输入车牌号">
-                </div>   
-                 <div class="mui-input-row">
+                    <input id="number" name="number" type="text" class="mui-input-clear mui-input" placeholder="请输入车牌号">
+                </div>
+                <div class="mui-input-row">
                     <label>生效日期</label>
                     <span class="mui-navigate-right"></span>
-                    <input id="date" readonly placeholder="请选择生效日期">
+                    <input inlist="beginDate" name="beginDate" id="date" readonly placeholder="请选择生效日期">
                 </div>
 
-               <div class="mui-input-row">
+                <div class="mui-input-row">
                     <label>失效日期</label>
                     <span class="mui-navigate-right"></span>
-                    <input id="date01" readonly placeholder="请选择失效日期">
-                </div>   
-                 <div class="mui-input-row radio">                    
-                    <label>状态</label>
-                    <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
-                        <div class="mui-radio mui-left">
-                            <label>正常</label>
-                            <input name="stockState" type="radio" value="3" checked="">
-                        </div>
-                        <div class="mui-radio mui-left">
-                            <label>禁用</label>
-                            <input name="stockState" value="10" type="radio">
-                        </div>
-                    </div>
-                    
-                </div>    
+                    <input inlist="endDate" name="endDate" id="date01" readonly placeholder="请选择失效日期">
+                </div>
                 <div class="mui-input-row">
                     <label>车主姓名</label>
-                    <input type="text" class="mui-input-clear mui-input" placeholder="请输入车主姓名">
-                    
+                    <input name="name" type="text" class="mui-input-clear mui-input" placeholder="请输入车主姓名">
                 </div>
                 <div class="mui-input-row">
                     <label>联系方式</label>
-                    <input type="number" class="mui-input-clear mui-input" placeholder="请输入联系方式">
+                    <input name="phone" type="number" class="mui-input-clear mui-input" placeholder="请输入联系方式">
                     
                 </div>
                 <div class="mui-input-row">
                     <label>公司姓名</label>
-                    <input type="text" class="mui-input-clear mui-input" placeholder="请输入公司姓名">
-                    
+                    <input name="corporateName" type="text" class="mui-input-clear mui-input" placeholder="请输入公司姓名">
                 </div>
-
                  <div class="mui-input-row">
                     <label>月租车分类</label>
-                    <input type="text" class="mui-input-clear mui-input" placeholder="请输入公司姓名">
-                    
+                    <input name="classification" type="text" class="mui-input-clear mui-input" placeholder="请输入分类">
                 </div>
-               
-
-                 <div class="mui-input-row radio">                    
+                <div class="mui-input-row">
+                    <label>备注</label>
+                    <input name="remarks" type="text" class="mui-input-clear mui-input" placeholder="请输入备注">
+                </div>
+                <div class="mui-input-row radio">
+                    <label>状态</label>
+                    <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
+                        <div class="mui-radio mui-left">
+                            <label>正常</label>
+                            <input name="status" type="radio" value="1" checked="">
+                        </div>
+                        <div class="mui-radio mui-left">
+                            <label>禁用</label>
+                            <input name="status" value="0" type="radio">
+                        </div>
+                    </div>
+                </div>
+                <div class="mui-input-row radio">
                     <label>内场权限</label>
                     <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
                         <div class="mui-radio mui-left">
                             <label>有</label>
-                            <input name="permissions" type="radio" value="4">
+                            <input name="infieldPermission" type="radio" value="1" checked>
                         </div>
                         <div class="mui-radio mui-left">
                             <label>无</label>
-                            <input name="permissions" value="2" type="radio" checked="">
+                            <input name="infieldPermission" value="0" type="radio" >
                         </div>
                     </div>
                     
                 </div>
-                <h5>备注</h5>
-                <div class="mui-input-row" style="height: 135px;">
-                    <textarea class="form" rows="5" placeholder="请输入备注内容(选填)"></textarea>
-                </div>
             </div>
-          
+          <input type="hidden" name="parkingType" value="1" >
         </form>
         <div class="mui-content-padded">
             <div class="btncont">
@@ -106,11 +99,10 @@
     </div>
 </body>
 
-<script src="../assets/js/common.js"></script>
+<script src="/js/h5/mobile/common.js"></script>
 <script>
-
     // 日期
-    var date = new Date;
+    var date = new Date("2100/1/1");
     var picker = new mui.DtPicker({
         beginYear: (1960),
         type: "date", //设置日历初始视图模式
@@ -131,14 +123,30 @@
 
     // 提交(非最后一步提交成功的验证，用“自动消失提示框”)
     $("#alertBtn").click(function() {
-        if ($("#name").val() == '') {
-            mui.toast('用户名不能为空');
-            $("#name").focus();//定位
-            $("#name").css("caret-color", "orangered")//光标变色
-            return;
-        }else{
-            window.location.href='state.html';
+        if ($("#number").val() == '') {
+            toast("车牌号不能为空");
+        }else if ($("#beginDate").val() == '') {
+            toast("起始日期不能为空");
+        }else if ($("#beginDate").val() == '') {
+            toast("失效日期不能为空");
+        }else {
+            $.post("/sys/car/long/save",$('#signupForm').serialize(),function(data) {
+                toast(data.msg) ;
+                if(data.code == 0) {
+                    window.location.href='/mobile/car/long';
+                }
+            },"json");
         }
     });
+    $.getJSON("/mobile/getParking",function (data) {
+        $("#parking label").text(data.data[0].name) ;
+        $("#parking input").val(data.data[0].id) ;
+    })
+    function toast(msg) {
+        mui.toast(msg);
+        $("#name").focus();//定位
+        $("#name").css("caret-color", "orangered")//光标变色
+        return;
+    }
 </script>
 </html>

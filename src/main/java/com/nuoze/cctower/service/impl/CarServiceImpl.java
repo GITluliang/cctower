@@ -153,6 +153,10 @@ public class CarServiceImpl implements CarService {
             carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()));
             carDTO.setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
         }
+        Parking parking = parkingDAO.selectByPrimaryKey(car.getParkingId());
+        if (parking != null) {
+            carDTO.setParkingName(parking.getName());
+        }
         return carDTO;
     }
 

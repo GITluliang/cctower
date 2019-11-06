@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>商户车辆</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-    <link rel="stylesheet" href="../assets/css/common.css"/>
+    <link rel="stylesheet" href="/css/h5/mobile/common.css"/>
 </head>
 
 <body>
@@ -20,7 +20,7 @@
             <h5>MERCHANT MANAGEMENT</h5>
         </div>
         <ul class="mui-table-view longlist" id="listShanghu"></ul>
-        <a href="addShanghu.html" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
+        <a href="/mobile/car/business/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
     </div>
 
      <!-- 自开发弹出层：选择内容过多，需要滚动 -->
@@ -37,27 +37,33 @@
         </div>
     </div> 
 </body>
-<script src="../assets/js/common.js"></script>
+<script src="/js/h5/mobile/common.js"></script>
 <script>
   
     $.ajax({
-        url: "http://list",
+        url: "/sys/car/business/list",
         dataType: "json",
         async: false,
-        data: {},
+        data: {
+            limit: 10,
+            offset: 0,
+            sort: 'update_time',
+            order: 'desc',
+        },
         type: "GET",
         success: function(data) {
             var json = "";
-            for (i in data.listShanghu) {
+            for (i in data.rows) {
                 json += `
                     <li class="mui-table-view-cell">
-                        <a href="detailShanghu.html">
-                            <h3><span class="mui-ellipsis">车牌号：${data.listShanghu[i].title}</span>
+                        <a href="/mobile/car/business/detail/${data.rows[i].id}">
+                            <h3><span class="mui-ellipsis">车牌号：${data.rows[i].number}</span>
                 `
                 json +=`</h3>
-                            <p><span>免费时长(分钟)：${data.listShanghu[i].t1}分钟</span></p>
+                            <p><span>免费时长(分钟)：${data.rows[i].freeTime}分钟</span><span>费用：${data.rows[i].cost}</span></p>
+                            <p>停车场：${data.rows[i].parkingName}</p>
                         </a>
-                        <i class="iconfont icon-shanchu" id="delete"></i>
+                        <i class="iconfont icon-shanchu" id="delete" value=${data.rows[i].id}></i>
                     </li> 
                 `
             }
@@ -65,5 +71,14 @@
         },        
     });
     $("#delete").click(function () { $("#popup").fadeIn(); $("body").css("overflow", "hidden"); });
+    $("#yes").click(function () {
+        $.post("/sys/car/business/remove",{id:$("#delete").attr("value")},function (data) {
+            if(data.code == 0){
+                window.location.reload();
+            }else {
+                layer.msg(data.msg);
+            }
+        },"json");
+    });
 </script>
 </html>

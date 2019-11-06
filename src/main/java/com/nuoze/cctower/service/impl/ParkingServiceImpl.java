@@ -36,6 +36,11 @@ public class ParkingServiceImpl implements ParkingService {
     private AccountDAO accountDAO;
 
     @Override
+    public List<Parking> findParkingByUser(Long userId) {
+        return parkingDAO.findParkingByUser(userId);
+    }
+
+    @Override
     public List<Parking> list(Map<String, Object> map) {
         Long userId = idComponent.getUserId();
         if (userId != null) {

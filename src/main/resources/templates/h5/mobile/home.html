@@ -17,7 +17,7 @@
         <div class="mui-slider" style="margin: 4%; width: 92%; border-radius: 16px;">
             <div class="mui-slider-group mui-slider-loop">
                 <!--支持循环，需要重复图片节点-->
-                <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="../assets/images/banner01.jpg" /></a></div>
+                <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="/img/h5/mobile/banner01.jpg" /></a></div>
                 <div class="mui-slider-item"><a href="#"><img src="/img/h5/mobile/banner01.jpg" /></a></div>
                 <div class="mui-slider-item"><a href="#"><img src="/img/h5/mobile/banner01.jpg" /></a></div>
                 <!--支持循环，需要重复图片节点-->
@@ -48,26 +48,25 @@
 <script>
     $(function () {
         $("#longCar").click(function () {
-            authz("/mobile/car/long");
+            authz("/mobile/car/long/authz","/mobile/car/long");
         }) ;
         $("#businessCar").click(function () {
-            authz("/mobile/car/business");
+            authz("/mobile/car/business/authz","/mobile/car/business");
         }) ;
         $("#vipCar").click(function () {
-            authz("/mobile/car/vip");
+            authz("/mobile/car/vip/authz","/mobile/car/vip");
         }) ;
     });
 
     //权限校验
-    function authz(url) {
+    function authz(url,replace) {
         $.getJSON(url, function(data){
             console.log("JSON Data: " + JSON.stringify(data));
-            if(data.code == 200 && data.msg.equals("SUCCESS")) {
-
+            if(data.code == 200 && data.msg == "SUCCESS") {
+                window.location.replace(replace);
             }else {
                 layer.msg(data.msg);
             }
-
         });
     }
 

@@ -3,40 +3,43 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>商户车辆详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-    <link rel="stylesheet" href="../assets/css/common.css"/>
+    <link rel="stylesheet" href="/css/h5/mobile/common.css"/>
 </head>
 
 <body>
-    <header class="mui-bar mui-bar-nav">
-        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-        <h1 class="mui-title">详情</h1>
-    </header>
-    <div class="mui-content">
-    
-        <div class="detail" id="detail">
-            <h3>{{title}}</h3>
-            <h5><span>车牌号：{{time}}</span></h5>
-            <div class="cont">{{content}}</div>
-        </div>
-       
-      <img src="../assets/images/CCTowerLogo.png" class="bot-bg">
-
-    </div>
-
-   
-
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">VIP车辆详情</h1>
+</header>
+<div class="mui-content">
+    <div class="detail" id="detail"></div>
+    <img src="/img/h5/mobile/CCTowerLogo.png" class="bot-bg">
+</div>
+<span hidden id="id" th:text="${id}"></span>
 </body>
-<script src="../assets/js/common.js"></script>
+<script src="/js/h5/mobile/common.js"></script>
 <script>
+
     $.ajax({
-        url: "http://detail",
+        url: "/mobile/parking/" + $("#id").text(),
         dataType: "json",
+        type: "GET",
         success: function(data) {
-            $("#detail").html(escapeStringHTML(template("detail", data)));
-            $("#shortDetail").html(escapeStringHTML(template("shortDetail", data)));
-            $("#top").html(template("top", data));
+            var json = "";
+            json += `
+                <h3>${data.data.number}</h3>
+                <h5><span>${data.data.parkingName}</span></h5>
+                 <div class="cont">
+                    <p>车主姓名<span>${data.data.name}</span></p>
+                    <p>联系方式<span>${data.data.phone}</span></p>
+                    <p>公司名称<span>${data.data.corporateName}</span></p>
+                    <p>月租车分类<span>${data.data.classification}</span></p>
+                    <p>备注<span>${data.data.remarks}</span></p>
+                </div>
+            `
+            $("#detail").html(json);
         },
     });
 

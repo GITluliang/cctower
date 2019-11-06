@@ -65,7 +65,7 @@ public class LongCarController {
     @RequiresPermissions("sys:car:car")
     public PageUtils list(@RequestParam Map<String, Object> params) {
         log.info("[LONG CAR CONTROLLER] check long car list, the params: {}", params.toString());
-        params.put(params.get("query").toString(), "%" + params.get("value") + "%");
+        params.put(String.valueOf(params.get("query")), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
