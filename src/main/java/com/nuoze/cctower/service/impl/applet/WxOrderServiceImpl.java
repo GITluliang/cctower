@@ -155,6 +155,7 @@ public class WxOrderServiceImpl implements WxOrderService {
             if (parkingRecord == null && topUpRecord == null && renewRecord == null) {
                 log.error("[PAY NOTIFY PARKING-RECORD] 订单不存在 orderSn: {}", orderSn);
             }
+            BigDecimal serviceCharge = new BigDecimal(0) ;
             if (parkingRecord != null) {
                 log.info("[PAY NOTIFY PARKING-RECORD] id: {}, pay_id: {}", parkingRecord.getId(), result.getTransactionId());
                 parkingRecord.setOrderSn(orderSn);
@@ -168,10 +169,10 @@ public class WxOrderServiceImpl implements WxOrderService {
                 Car car = carDAO.findByParkingIdAndCarNumber(parkingId, parkingRecord.getCarNumber());
                 Account account = accountService.findByParkingId(parkingId);
                 if(account != null) {
-                    BigDecimal serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
-                    parkingRecord.setServiceCharge(serviceCharge);
+                    serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
                     money = money.subtract(serviceCharge) ;
                 }
+                parkingRecord.setServiceCharge(serviceCharge);
                 //如果是待出门，通过mq发送出门指令
                 if (status == READY_TO_LEAVE) {
                     GoOutVO goOutVO = new GoOutVO();
@@ -206,12 +207,13 @@ public class WxOrderServiceImpl implements WxOrderService {
             //小程序长租续费
             if (renewRecord != null) {
                 log.info("[PAY NOTIFY RENEW-RECORD] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
+                renewRecord.setCost(money);
                 Account account = accountService.findByParkingId(renewRecord.getParkingId());
                 if(account != null) {
-                    BigDecimal serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
-                    renewRecord.setServiceCharge(serviceCharge);
+                    serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
                     money = money.subtract(serviceCharge) ;
                 }
+                renewRecord.setServiceCharge(serviceCharge);
                 renewRecord.setPayId(payId);
                 renewRecord.setPayStatus(1);
                 int monthCount = renewRecord.getMonthCount();

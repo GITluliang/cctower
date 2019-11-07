@@ -63,19 +63,20 @@
                             <p><span>生效日期：${data.rows[i].beginDate}</span><span>失效日期：${data.rows[i].endDate}</span></p>
                             <p>停车场：${data.rows[i].parkingName}</p>
                         </a>
-                        <i class="iconfont icon-shanchu" id="delete" value=${data.rows[i].id}></i>
+                        <i class="iconfont icon-shanchu delete" value=${data.rows[i].id}></i>
                     </li>
                 `
             }
             $("#longList").html(json);
         },
     });
-    $("#delete").click(function () {
+    $(".delete").click(function () {
         $("#popup").fadeIn();
         $("body").css("overflow", "hidden");
+        $("#yes").attr("value",$(this).attr("value")) ;
     });
     $("#yes").click(function () {
-        $.post("/sys/car/business/remove",{id:$("#delete").attr("value")},function (data) {
+        $.post("/sys/car/business/remove",{id:$(this).attr("value")},function (data) {
             if(data.code == 0){
                 window.location.reload();
             }else {

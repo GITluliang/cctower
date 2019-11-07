@@ -37,7 +37,7 @@ public class MobileLoginController {
         if (getSubject().getPrincipal() == null) {
             return prefix + "userBind";
         }
-        return "redirect:/mobile/home";
+        return "forward:/mobile/home";
     }
 
     @RequestMapping("home")

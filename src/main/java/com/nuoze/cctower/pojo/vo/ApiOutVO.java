@@ -2,6 +2,8 @@ package com.nuoze.cctower.pojo.vo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author JiaShun
  * @date 2019-03-20 00:03
@@ -32,4 +34,8 @@ public class ApiOutVO {
      * 全局唯一标识符
      */
     private String uuid;
+    /**
+     * 服务费
+     */
+    private String serviceCharge;
 }

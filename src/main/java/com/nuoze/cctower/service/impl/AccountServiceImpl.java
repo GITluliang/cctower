@@ -5,6 +5,7 @@ import com.nuoze.cctower.dao.AccountDAO;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.ParkingRecordDAO;
 import com.nuoze.cctower.pojo.entity.Account;
+import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
 import com.nuoze.cctower.pojo.vo.AccountVO;
 import com.nuoze.cctower.service.AccountService;
@@ -56,9 +57,12 @@ public class AccountServiceImpl implements AccountService {
                 AccountVO vo = new AccountVO();
                 BeanUtils.copyProperties(account, vo);
                 Long parkingId = account.getParkingId();
-                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-                if (StringUtils.isNotBlank(parkingName)) {
-                    vo.setParkingName(parkingName);
+                Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
+                if(parking != null) {
+                    String parkingName = parking.getName();
+                    if (StringUtils.isNotBlank(parkingName)) {
+                        vo.setParkingName(parkingName);
+                    }
                 }
                 BigDecimal withdrawalAmount = paymentComponent.balanceToWithdrawalAmount(account.getBalance(), account.getServiceCharge());
                 vo.setWithdrawalAmount(withdrawalAmount);
