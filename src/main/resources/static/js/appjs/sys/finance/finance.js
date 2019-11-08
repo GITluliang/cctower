@@ -53,7 +53,13 @@ function load() {
 								},
 																{
 									field : 'cost',
-									title : '停车费'
+									title : '停车费',
+									align : 'center'
+								},
+								{
+									field : 'costTime',
+									title : '停车时长（分钟）',
+									align : 'center'
 								},
 																{
 									field : 'payType',

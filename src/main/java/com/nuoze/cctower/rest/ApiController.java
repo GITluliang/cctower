@@ -75,10 +75,10 @@ public class ApiController {
         //解决月租车与vip重复入厂
         Parking parking = parkingService.findById(apiDTO.getParkingId());
         Car car = carService.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
-        if(parking != null && car != null) {
-            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType() ;
-            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd()) ;
-            if(vipStatic || rentStatic) {
+        if (parking != null && car != null) {
+            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType();
+            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
+            if (vipStatic || rentStatic) {
                 return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
             }
         }

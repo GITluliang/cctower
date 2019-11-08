@@ -6,14 +6,25 @@
     <title>商户车辆</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <link rel="stylesheet" href="/css/h5/mobile/common.css"/>
+    <style type="text/css">
+        .bar{
+            background: #eee;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 .4rem;
+            height: 1.25rem;
+            line-height: 1.25rem;
+        }
+        .bar a{color: #333;}
+    </style>
 </head>
 
 <body>
-    <header class="mui-bar mui-bar-nav">
-        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-        <h1 class="mui-title">商户车辆</h1>
-    </header>
     <div class="mui-content">
+        <header class="bar">
+            <div><a href="/mobile/login"><i class="iconfont icon-shouye"></i>首页</a></div>
+            <div><a href="/mobile/setting"><i class="iconfont icon-shezhi"></i>设置</a></div>
+        </header>
          <div class="user bantop" style="background: linear-gradient(-320deg,#1296db 40%,rgba(18, 150, 219,0.6));border-bottom: 10px solid #2189bf;">
             <i class="iconfont icon-shanghu"></i>
             <h3>商户车辆</h3>
@@ -22,7 +33,7 @@
         <ul class="mui-table-view longlist" id="listShanghu"></ul>
         <a href="/mobile/car/business/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
     </div>
-
+    <p class="list-bot">加载更多内容</p>
      <!-- 自开发弹出层：选择内容过多，需要滚动 -->
     <div class="popup" id="popup">
         <div class="pop-container">
@@ -38,51 +49,81 @@
     </div> 
 </body>
 <script src="/js/h5/mobile/common.js"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
 <script>
-  
-    $.ajax({
-        url: "/sys/car/business/list",
-        dataType: "json",
-        async: false,
-        data: {
-            limit: 10,
-            offset: 0,
-            sort: 'update_time',
-            order: 'desc',
-        },
-        type: "GET",
-        success: function(data) {
-            var json = "";
-            for (i in data.rows) {
-                json += `
+    $(function () {
+        limit = 5 ;
+        offset = 0 ;
+        length = 0 ;
+        list(limit, offset) ;
+        bind();
+        remove();
+        listAdd(limit, offset);
+    }) ;
+    function listAdd(limit,offset) {
+        $(".list-bot").click(function () {
+            limit = limit + 5 ;
+            list(limit, offset)
+        }) ;
+    }
+
+    function list(limit, offset) {
+        $.ajax({
+            url: "/sys/car/business/list",
+            dataType: "json",
+            async: false,
+            data: {
+                limit: limit,
+                offset: offset,
+                sort: 'update_time',
+                order: 'desc',
+            },
+            type: "GET",
+            success: function(data) {
+                if(data.rows.length == length) {
+                    $(".list-bot").off("click") ;
+                    $(".list-bot").text("没有更多内容啦")
+                    layer.msg("无更多内容");
+                }
+                var json = "";
+                for (i in data.rows) {
+                    json += `
                     <li class="mui-table-view-cell">
                         <a href="/mobile/car/business/detail/${data.rows[i].id}">
                             <h3><span class="mui-ellipsis">车牌号：${data.rows[i].number}</span>
                 `
-                json +=`</h3>
+                    json +=`</h3>
                             <p><span>免费时长(分钟)：${data.rows[i].freeTime}分钟</span><span>费用：${data.rows[i].cost}</span></p>
                             <p>停车场：${data.rows[i].parkingName}</p>
                         </a>
                         <i class="iconfont icon-shanchu delete" value=${data.rows[i].id}></i>
-                    </li> 
+                    </li>
                 `
-            }
-            $("#listShanghu").html(json);  
-        },        
-    });
-    $(".delete").click(function () {
-        $("#popup").fadeIn();
-        $("body").css("overflow", "hidden");
-        $("#yes").attr("value",$(this).attr("value")) ;
-    });
-    $("#yes").click(function () {
-        $.post("/sys/car/business/remove",{id:$(this).attr("value")},function (data) {
-            if(data.code == 0){
-                window.location.reload();
-            }else {
-                layer.msg(data.msg);
-            }
-        },"json");
-    });
+                }
+                $("#listShanghu").html(json);
+                length = data.rows.length ;
+            },
+        });
+    }
+
+    function bind() {
+        $(".delete").click(function () {
+            $("#popup").fadeIn();
+            $("body").css("overflow", "hidden");
+            $("#yes").attr("value",$(this).attr("value")) ;
+        });
+    }
+
+    function remove() {
+        $("#yes").click(function () {
+            $.post("/sys/car/business/remove",{id:$(this).attr("value")},function (data) {
+                if(data.code == 0){
+                    window.location.reload();
+                }else {
+                    layer.msg(data.msg);
+                }
+            },"json");
+        });
+    }
 </script>
 </html>

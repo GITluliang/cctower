@@ -58,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
                 BeanUtils.copyProperties(account, vo);
                 Long parkingId = account.getParkingId();
                 Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
-                if(parking != null) {
+                if (parking != null) {
                     String parkingName = parking.getName();
                     if (StringUtils.isNotBlank(parkingName)) {
                         vo.setParkingName(parkingName);

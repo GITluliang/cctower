@@ -188,11 +188,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public int remove(Long id) {
         Car car = carDAO.selectByPrimaryKey(id);
-        if(car != null) {
+        if (car != null) {
             if (MONTHLY_CAR == car.getParkingType()) {
                 mqSendComponent.sendRentCar(ApiDataEnum.DELETE, car);
             }
-            if(BUSINESS_CAR == car.getParkingType()) {
+            if (BUSINESS_CAR == car.getParkingType()) {
                 Long userId = ShiroUtils.getUserId();
                 User user = userDAO.selectByPrimaryKey(userId);
                 BigDecimal balance = user.getBalance().add(car.getCost());
@@ -479,16 +479,6 @@ public class CarServiceImpl implements CarService {
             }
         }
         return car;
-    }
-
-    @Override
-    public int saveVipCar(Car car) {
-        car.setParkingType(2);
-        car.setStatus(1);
-        car.setInfieldPermission(1);
-        car.setCreateTime(new Date());
-        car.setUpdateTime(new Date());
-        return carDAO.insert(car);
     }
 
     @Override
