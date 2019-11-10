@@ -40,7 +40,7 @@ public class VipCarController {
     @Autowired
     private IdComponent idComponent;
     @Autowired
-    private ParkingDAO parkingDAO ;
+    private ParkingDAO parkingDAO;
 
     @GetMapping()
     @RequiresPermissions("sys:car:vip")
@@ -59,11 +59,9 @@ public class VipCarController {
             return new PageUtils(EMPTY_LIST, 0);
         }
         //停车场查询
-        if("parkingName".equals(params.get("query"))) {
-            Parking value = parkingDAO.findByParkingName(params.get("value").toString());
-            System.out.println(value + "***");
+        if ("parkingName".equals(params.get("query"))) {
+            Parking value = parkingDAO.findByParkingName(String.valueOf(params.get("value")));
             params.put("parkingId", value == null ? 0 : value.getId());
-
         }
         //查询列表数据
         params.put("parkingType", 2);
@@ -100,7 +98,7 @@ public class VipCarController {
     public R save(CarDTO dto) {
         Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
         if (car != null) {
-            return ResponseResult.addCarCheck(car) ;
+            return ResponseResult.addCarCheck(car);
         }
         return carService.save(dto) > 0 ? R.ok() : R.error();
     }

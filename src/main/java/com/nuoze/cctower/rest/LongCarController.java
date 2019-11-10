@@ -52,7 +52,7 @@ public class LongCarController {
     @Autowired
     private CarDAO carDAO;
     @Autowired
-    private ParkingDAO parkingDAO ;
+    private ParkingDAO parkingDAO;
 
     @GetMapping()
     @RequiresPermissions("sys:car:car")
@@ -71,7 +71,7 @@ public class LongCarController {
             return new PageUtils(EMPTY_LIST, 0);
         }
         //停车场查询
-        if("parkingName".equals(params.get("query"))) {
+        if ("parkingName".equals(params.get("query"))) {
             Parking value = parkingDAO.findByParkingName(params.get("value").toString());
             params.put("parkingId", value == null ? 0 : value.getId());
 
@@ -111,7 +111,7 @@ public class LongCarController {
     public R save(CarDTO dto) {
         Car car = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
         if (car != null) {
-            return ResponseResult.addCarCheck(car) ;
+            return ResponseResult.addCarCheck(car);
         }
         return carService.save(dto) > 0 ? R.ok() : R.error();
     }

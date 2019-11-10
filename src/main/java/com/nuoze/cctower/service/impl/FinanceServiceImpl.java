@@ -76,14 +76,10 @@ public class FinanceServiceImpl implements FinanceService {
                 if (outTime != null) {
                     fv.setOutTime(DateUtils.formatDateTime(outTime));
                 }
+                fv.setCost(ps.getCost() != null ? ps.getCost() : EMPTY_MONEY);
+                fv.setCostTime(ps.getCostTime() != null ? String.valueOf(ps.getCostTime()) : String.valueOf(0));
                 fv.setPayType(ps.getPayType());
                 fv.setCarNumber(ps.getCarNumber());
-                BigDecimal cost = ps.getCost();
-                if (cost != null) {
-                    fv.setCost(cost);
-                } else {
-                    fv.setCost(EMPTY_MONEY);
-                }
                 financeVOS.add(fv);
             }
         }

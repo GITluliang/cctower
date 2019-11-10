@@ -18,4 +18,5 @@ public class FinanceVO {
     private String outTime;
     private Integer payType;
     private BigDecimal cost;
+    private String costTime;
 }

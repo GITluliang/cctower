@@ -33,7 +33,7 @@
 $(function() {
     var title = $('header h1').text();
     if (title == "") {
-        $("title").text("才源科技");
+        $("title").text("诺泽科技");
     } else {
         $("title").html(title);
     }

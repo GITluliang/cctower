@@ -5,6 +5,8 @@ logging:
   file: ./data/log/cctower.log
 
 spring:
+  thymeleaf:
+    cache: false
   profiles:
     active: dev
 
