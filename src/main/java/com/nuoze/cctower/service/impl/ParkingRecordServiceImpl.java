@@ -25,9 +25,9 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
     @Autowired
     private ParkingRecordDAO parkingRecordDAO;
     @Autowired
-    private ParkingService parkingService ;
+    private ParkingService parkingService;
     @Autowired
-    private PassagewayService passagewayService ;
+    private PassagewayService passagewayService;
 
     @Override
     public ParkingRecord findByCarNumberAndStatus(String carNumber) {
@@ -52,16 +52,16 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
     @Override
     public ParkingRecordVO findByParkingIdAndIp(Long parkingId, Long exitId) {
         ParkingRecordVO parkingRecordVO = new ParkingRecordVO();
-        if(parkingService.findById(parkingId) != null && passagewayService.findById(exitId) != null) {
+        if (parkingService.findById(parkingId) != null && passagewayService.findById(exitId) != null) {
             ParkingRecord parkingRecord = parkingRecordDAO.findByParkingIdAndIp(parkingId, exitId);
-            if(parkingRecord != null) {
+            if (parkingRecord != null) {
                 parkingRecordVO.setRecordId(parkingRecord.getId());
                 parkingRecordVO.setCost(parkingRecord.getCost() == null ? "0.0" : parkingRecord.getCost().toString());
                 parkingRecordVO.setInTime(DateUtils.formatDateTime(parkingRecord.getInTime()));
                 parkingRecordVO.setOutTime(DateUtils.formatDateTime(new Date()));
                 Integer costTime = parkingRecord.getCostTime();
                 parkingRecordVO.setTakeMinutes(costTime);
-                parkingRecordVO.setTakeMinutesStr(costTime/60 >=1 ? costTime/60 + "小时" + costTime%60 + "分钟" : costTime + "分钟");
+                parkingRecordVO.setTakeMinutesStr(costTime / 60 >= 1 ? costTime / 60 + "小时" + costTime % 60 + "分钟" : costTime + "分钟");
                 parkingRecordVO.setCarNumber(parkingRecord.getCarNumber());
                 Parking parking = parkingService.findById(parkingRecord.getParkingId());
                 if (parking != null) {
@@ -69,6 +69,6 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
                 }
             }
         }
-        return parkingRecordVO ;
+        return parkingRecordVO;
     }
 }

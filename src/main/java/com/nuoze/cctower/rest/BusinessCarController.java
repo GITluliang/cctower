@@ -86,7 +86,7 @@ public class BusinessCarController {
         dto.setParkingId(userDAO.selectByPrimaryKey(userId).getParkingId());
         Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
         if (car != null) {
-            return ResponseResult.addCarCheck(car) ;
+            return ResponseResult.addCarCheck(car);
         }
         return carService.saveBusinessCar(dto) > 0 ? R.ok() : R.error();
     }

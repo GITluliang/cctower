@@ -75,16 +75,16 @@ public class ApiController {
         //解决月租车与vip重复入厂
         Parking parking = parkingService.findById(apiDTO.getParkingId());
         Car car = carService.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
-        if(parking != null && car != null) {
-            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType() ;
-            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd()) ;
-            if(vipStatic || rentStatic) {
+        if (parking != null && car != null) {
+            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType();
+            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
+            if (vipStatic || rentStatic) {
                 return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
             }
         }
         ParkingRecord record = parkingRecordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
         if (record != null) {
-            log.error("车辆重复入场：parking id:{}, car number:{} ", apiDTO.getParkingId(), apiDTO.getCarNumber());
+            log.error("该车辆已在停车场内，不能重复进入：parking id:{}, car number:{} ", apiDTO.getParkingId(), apiDTO.getCarNumber());
             return ResponseResult.fail(201, "该车辆已在停车场内，不能重复进入");
         }
         return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
@@ -106,7 +106,7 @@ public class ApiController {
         }
         ApiOutVO apiOutVO = apiService.out(apiDTO);
         if (apiOutVO == null) {
-            log.error("调用出口，但原停车记录无此车辆：parking id:{},  car number:{}", apiDTO.getParkingId(), apiDTO.getCarNumber());
+            log.error("停车场内无此车辆：parking id:{},  car number:{}", apiDTO.getParkingId(), apiDTO.getCarNumber());
             return ResponseResult.fail(202, "停车场内无此车辆");
         }
         return ResponseResult.success(apiOutVO);

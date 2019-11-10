@@ -283,7 +283,7 @@
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
-        order by ${sort} ${order}
+        order by create_time desc , ${sort} ${order}
       </when>
       <otherwise>
         order by create_time desc
@@ -423,7 +423,7 @@
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
-        order by ${sort} ${order}
+        order by create_time desc, ${sort} ${order}
       </when>
       <otherwise>
         order by create_time desc

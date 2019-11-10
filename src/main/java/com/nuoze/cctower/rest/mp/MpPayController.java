@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -25,6 +26,7 @@ public class MpPayController {
 
     @Autowired
     private WxOrderService wxOrderService;
+
     /**
      * 微信支付
      *
@@ -38,11 +40,6 @@ public class MpPayController {
         log.info("[公众号支付 WX PAY CONTROLLER] Applet submit payment: {}", dto);
         return wxOrderService.wxPrePayH5(dto, request);
     }
-
-
-
-
-
 
 
 }

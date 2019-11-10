@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>个人设置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css?v1.2" />
+    <style type="text/css">
+        .bar{background: #f6f6f6;display: flex;justify-content: space-between;padding: 0 .4rem;height: 1.25rem;line-height: 1.25rem;}
+        .bar a{color: #333;}
+        .bar .iconfont{margin-right: .2rem;}
+    </style>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">个人设置</h1>
+    </header>
+    <div class="mui-content">
+        <header class="bar">
+                <div><a href="/mobile/login"><i class="iconfont icon-shouye"></i>首页</a></div>
+        </header>
+        <form>
+            <div class="mui-input-group">
+                <div class="mui-input-row">
+                    <label>当前账号</label>
+                    <input type="text" class="mui-input-clear mui-input" id="username">
+                </div>
+                <div class="mui-input-row">
+                    <label>公司名称</label>
+                    <input type="text" class="mui-input-clear mui-input" id="name">
+                </div>
+                <div class="mui-input-row">
+                    <label>联系地址</label>
+                    <input type="text" class="mui-input-clear mui-input" id="address">
+                </div>
+                <div class="mui-input-row">
+                    <label>负责人</label>
+                    <input type="text" class="mui-input-clear mui-input" id="principal">
+                </div>
+                <div class="mui-input-row">
+                    <label>联系方式</label>
+                    <input type="text" class="mui-input-clear mui-input" id="phone">
+                </div>
+            </div>
+          
+        </form>
+        <div class="mui-content-padded">
+            <div class="btncont">
+                <a class="mui-btn mui-btn-block mui-btn-primary" href="/mobile/logout">退出登录</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="/js/h5/mobile/common.js"></script>
+<script>
+    $.getJSON("/mobile/getSetting",function (data) {
+        $("#username").text(data.data.username) ;
+        $("#name").val(data.data.name) ;
+        $("#address").val(data.data.address) ;
+        $("#principal").val(data.data.principal) ;
+        $("#phone").val(data.data.phone) ;
+    })
+</script>
+</html>

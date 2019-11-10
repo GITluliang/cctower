@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.nuoze</groupId>
     <artifactId>cctower</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <name>cctower</name>
     <description>CCTower</description>
 
@@ -148,7 +148,11 @@
             <artifactId>velocity</artifactId>
             <version>1.7</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>

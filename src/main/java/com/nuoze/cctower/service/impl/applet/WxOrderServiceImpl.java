@@ -68,9 +68,9 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Autowired
     private BillingComponent billingComponent;
     @Autowired
-    private OrderNumberDAO orderNumberDAO ;
+    private OrderNumberDAO orderNumberDAO;
     @Autowired
-    private AccountService accountService ;
+    private AccountService accountService;
 
     @Override
     public WxPayMpOrderResult wxPrePay(WxPayDTO dto, HttpServletRequest request) {
@@ -92,7 +92,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 orderNumber.setParkingRecordId(parkingRecord.getId());
                 orderNumber.setOrderSn(orderRequest.getOutTradeNo());
                 orderNumber.setCreateTime(new Date());
-                orderNumberDAO.insert(orderNumber) ;
+                orderNumberDAO.insert(orderNumber);
             }
             parkingRecord.setPrepayId(prepayId);
             parkingRecord.setOpenId(openId);
@@ -117,14 +117,14 @@ public class WxOrderServiceImpl implements WxOrderService {
             prepayId = prepayId.replace("prepay_id=", "");
             ParkingRecord parkingRecord = parkingRecordService.findById(dto.getRecordId());
             //*** 保存小程序支付订单号,如果是第一次保存在parkingRecord中，如果是第二次保存在OrderNumber中 ***
-            if(StringUtils.isEmpty(parkingRecord.getAppletOrderSn())) {
+            if (StringUtils.isEmpty(parkingRecord.getAppletOrderSn())) {
                 parkingRecord.setAppletOrderSn(orderRequest.getOutTradeNo());
-            }else {
+            } else {
                 OrderNumber orderNumber = new OrderNumber();
                 orderNumber.setParkingRecordId(parkingRecord.getId());
                 orderNumber.setOrderSn(orderRequest.getOutTradeNo());
                 orderNumber.setCreateTime(new Date());
-                orderNumberDAO.insert(orderNumber) ;
+                orderNumberDAO.insert(orderNumber);
             }
             parkingRecord.setPrepayId(prepayId);
             parkingRecord.setOpenId(dto.getOpenId());
@@ -144,10 +144,10 @@ public class WxOrderServiceImpl implements WxOrderService {
             BigDecimal money = new BigDecimal(BaseWxPayResult.fenToYuan(result.getTotalFee()));
             //根据订单，查询停车记录
             ParkingRecord parkingRecord = parkingRecordService.findByOrderSn(orderSn);
-            if(parkingRecord == null) {
+            if (parkingRecord == null) {
                 OrderNumber orderNumber = orderNumberDAO.findByorderSn(orderSn);
-                if(orderNumber != null) {
-                    parkingRecord = parkingRecordService.findById(orderNumber.getParkingRecordId()) ;
+                if (orderNumber != null) {
+                    parkingRecord = parkingRecordService.findById(orderNumber.getParkingRecordId());
                 }
             }
             TopUpRecord topUpRecord = topUpRecordService.findByOrderSn(orderSn);
@@ -155,6 +155,7 @@ public class WxOrderServiceImpl implements WxOrderService {
             if (parkingRecord == null && topUpRecord == null && renewRecord == null) {
                 log.error("[PAY NOTIFY PARKING-RECORD] 订单不存在 orderSn: {}", orderSn);
             }
+            BigDecimal serviceCharge = new BigDecimal(0);
             if (parkingRecord != null) {
                 log.info("[PAY NOTIFY PARKING-RECORD] id: {}, pay_id: {}", parkingRecord.getId(), result.getTransactionId());
                 parkingRecord.setOrderSn(orderSn);
@@ -167,11 +168,11 @@ public class WxOrderServiceImpl implements WxOrderService {
                 Long parkingId = parkingRecord.getParkingId();
                 Car car = carDAO.findByParkingIdAndCarNumber(parkingId, parkingRecord.getCarNumber());
                 Account account = accountService.findByParkingId(parkingId);
-                if(account != null) {
-                    BigDecimal serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
-                    parkingRecord.setServiceCharge(serviceCharge);
-                    money = money.subtract(serviceCharge) ;
+                if (account != null) {
+                    serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
+                    money = money.subtract(serviceCharge);
                 }
+                parkingRecord.setServiceCharge(serviceCharge);
                 //如果是待出门，通过mq发送出门指令
                 if (status == READY_TO_LEAVE) {
                     GoOutVO goOutVO = new GoOutVO();
@@ -197,7 +198,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 }
                 //商户车辆状态修改
                 if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                    carDAO.deleteByPrimaryKey(car.getId()) ;
+                    carDAO.deleteByPrimaryKey(car.getId());
                 }
                 billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE);
                 billingComponent.addAccountBalance(money, parkingId);
@@ -206,12 +207,13 @@ public class WxOrderServiceImpl implements WxOrderService {
             //小程序长租续费
             if (renewRecord != null) {
                 log.info("[PAY NOTIFY RENEW-RECORD] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
+                renewRecord.setCost(money);
                 Account account = accountService.findByParkingId(renewRecord.getParkingId());
-                if(account != null) {
-                    BigDecimal serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
-                    renewRecord.setServiceCharge(serviceCharge);
-                    money = money.subtract(serviceCharge) ;
+                if (account != null) {
+                    serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
+                    money = money.subtract(serviceCharge);
                 }
+                renewRecord.setServiceCharge(serviceCharge);
                 renewRecord.setPayId(payId);
                 renewRecord.setPayStatus(1);
                 int monthCount = renewRecord.getMonthCount();
