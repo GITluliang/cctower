@@ -129,7 +129,7 @@ public class ApiServiceImpl implements ApiService {
 
             //如果已支付，paid设为1：已支付，status设为已出门
             if (record.getPayStatus() == 1) {
-                return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? String.valueOf(EMPTY_MONEY) : String.valueOf(car), String.valueOf(record.getServiceCharge()));
+                return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? String.valueOf(EMPTY_MONEY) : String.valueOf(cost), String.valueOf(record.getServiceCharge()));
             }
             //停车时长（分钟）
             int costTime = DateUtils.diffMin(record.getInTime());

@@ -47,7 +47,7 @@ public class UserController {
     PageUtils list(@RequestParam Map<String, Object> params) {
         // 查询列表数据
         Query query = new Query(params);
-        List<User> userList = userService.list(query);
+        List<UserVO> userList = userService.list(query);
         int total = userService.count(query);
         return new PageUtils(userList, total);
     }
