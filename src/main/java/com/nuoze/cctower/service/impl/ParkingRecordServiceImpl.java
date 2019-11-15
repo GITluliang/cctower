@@ -1,14 +1,9 @@
 package com.nuoze.cctower.service.impl;
 
-import com.nuoze.cctower.common.result.ResponseResult;
-import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.util.DateUtils;
-import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.ParkingRecordDAO;
-import com.nuoze.cctower.dao.PassagewayDAO;
 import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
-import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.pojo.vo.ParkingRecordVO;
 import com.nuoze.cctower.service.ParkingRecordService;
 import com.nuoze.cctower.service.ParkingService;
@@ -17,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
-import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
-import static com.nuoze.cctower.common.constant.Constant.PARKING_TRADING_RECORD_EXPEND_TYPE;
 
 /**
  * @author JiaShun
