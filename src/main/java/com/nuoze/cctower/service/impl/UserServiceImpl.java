@@ -1,11 +1,9 @@
 package com.nuoze.cctower.service.impl;
 
 import com.nuoze.cctower.common.util.MD5Utils;
-import com.nuoze.cctower.dao.BusinessTransactionRecordDAO;
-import com.nuoze.cctower.dao.ParkingDAO;
-import com.nuoze.cctower.dao.UserDAO;
-import com.nuoze.cctower.dao.UserRoleDAO;
+import com.nuoze.cctower.dao.*;
 import com.nuoze.cctower.pojo.entity.BusinessTransactionRecord;
+import com.nuoze.cctower.pojo.entity.Role;
 import com.nuoze.cctower.pojo.entity.User;
 import com.nuoze.cctower.pojo.entity.UserRole;
 import com.nuoze.cctower.pojo.vo.TenantTopUpVO;
@@ -40,17 +38,30 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;
-
     @Autowired
     private UserRoleDAO userRoleDAO;
     @Autowired
     private ParkingDAO parkingDAO;
     @Autowired
     private BusinessTransactionRecordDAO businessTransactionRecordDAO;
+    @Autowired
+    private RoleDAO roleDAO;
 
     @Override
-    public List<User> list(Map<String, Object> map) {
-        return userDAO.list(map);
+    public List<UserVO> list(Map<String, Object> map) {
+        List<UserVO> userVOList = new ArrayList<>();
+        List<User> list = userDAO.list(map);
+        for(User user : list) {
+            UserVO userVO = new UserVO();
+            BeanUtils.copyProperties(user, userVO);
+            List<Role> roleList = new ArrayList<>();
+            for (Long roleId : userRoleDAO.listRoleByUserId(user.getId())) {
+                roleList.add(roleDAO.selectByPrimaryKey(roleId));
+            }
+            userVO.setRoleList(roleList);
+            userVOList.add(userVO);
+        }
+        return userVOList ;
     }
 
     @Override

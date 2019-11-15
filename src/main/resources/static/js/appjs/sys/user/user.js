@@ -63,8 +63,16 @@ function load() {
 						title : '负责人'
 					},
 					{
-						field : 'phone',
-						title : '联系方式'
+						field : 'roleList',
+						title : '类型',
+						align : 'center',
+						formatter : function(value, row, index) {
+							var str = "";
+							for(i in value){
+								str += value[i].name ;
+							}
+							return '<span class="label label-default">'+ str + '</span>';
+						}
 					},
 					{
 						field : 'status',

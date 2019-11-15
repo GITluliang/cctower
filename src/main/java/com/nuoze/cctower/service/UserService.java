@@ -22,7 +22,7 @@ public interface UserService {
      * @param map 条件
      * @return list
      */
-    List<User> list(Map<String, Object> map);
+    List<UserVO> list(Map<String, Object> map);
 
     /**
      * 总个数

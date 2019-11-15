@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-import static com.nuoze.cctower.common.constant.Constant.PARKING_TRADING_RECORD_EXPEND_TYPE;
-
 /**
  * @author JiaShun
  * @date 2019-04-06 12:58

@@ -1,5 +1,6 @@
 package com.nuoze.cctower.pojo.vo;
 
+import com.nuoze.cctower.pojo.entity.Role;
 import com.nuoze.cctower.pojo.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,4 +22,6 @@ public class UserVO extends User {
     private String newPwd;
 
     private String parkingName;
+
+    private List<Role> roleList;
 }
