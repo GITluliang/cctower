@@ -303,6 +303,12 @@
     <include refid="Base_Column_List" />
     from parking_record
     <where>
+      <if test="statues != null and statues != ''">
+        and status in
+        <foreach item="status" collection="statues" open="(" separator="," close=")">
+          #{status}
+        </foreach>
+      </if>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
       <if test="parkingIds != null and parkingIds.size > 0 ">
         and parking_id in
@@ -320,6 +326,12 @@
   <select id="countByParkingId" resultType="int">
     select count(id) from parking_record
     <where>
+      <if test="statues != null and statues != ''">
+        and status in
+        <foreach item="status" collection="statues" open="(" separator="," close=")">
+          #{status}
+        </foreach>
+      </if>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
       <if test="parkingIds != null and parkingIds.size > 0 ">
         and parking_id in

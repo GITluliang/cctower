@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
  * @author JiaShun
  */
 @Data
+@Accessors(chain = true)
 public class RoleMenu implements Serializable {
     private Long id;
 

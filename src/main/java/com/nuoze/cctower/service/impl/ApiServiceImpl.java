@@ -108,8 +108,7 @@ public class ApiServiceImpl implements ApiService {
             boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
             if (vipStatic || rentStatic) {
                 if (record != null) {
-                    record.setOutTime(new Date());
-                    record.setPayType(VIP_CAR == car.getParkingType() ? PAYMENT_VIP : PAYMENT_MONTHLY);
+                    record.setOutTime(new Date()).setPayType(VIP_CAR == car.getParkingType() ? PAYMENT_VIP : PAYMENT_MONTHLY);
                     if (passageway != null) {
                         record.setExitId(passageway.getId());
                     }
@@ -176,8 +175,7 @@ public class ApiServiceImpl implements ApiService {
 
             //计算车费
             cost = billingComponent.cost(costTime, parkingId, null);
-            record.setCostTime(costTime);
-            record.setCost(cost);
+            record.setCostTime(costTime).setCost(cost);
             //计算服务费
             BigDecimal serviceCharge = EMPTY_MONEY;
             Account account = accountService.findByParkingId(parkingId);
@@ -192,21 +190,20 @@ public class ApiServiceImpl implements ApiService {
                 //如果余额 > 车费，直接从余额扣除。
                 if (member.getBalance().compareTo(cost) >= 0) {
                     BigDecimal balance = member.getBalance().subtract(cost);
-                    TopUpRecord upRecord = new TopUpRecord();
-                    upRecord.setParkingId(parkingId);
-                    upRecord.setBalance(balance);
-                    upRecord.setAmount(cost);
-                    upRecord.setPayStatus(1);
-                    upRecord.setBillingType(0);
-                    upRecord.setCreateTime(new Date());
-                    upRecord.setUpdateTime(new Date());
-                    upRecord.setOpenId(openId);
-                    topUpRecordDAO.insert(upRecord);
-                    member.setBalance(balance);
-                    member.setUpdateTime(new Date());
-                    memberDAO.updateByPrimaryKeySelective(member);
+                    topUpRecordDAO.insert(new TopUpRecord()
+                            .setParkingId(parkingId)
+                            .setBalance(balance)
+                            .setAmount(cost)
+                            .setPayStatus(1)
+                            .setBillingType(0)
+                            .setCreateTime(new Date())
+                            .setUpdateTime(new Date())
+                            .setOpenId(openId)
+                    );
+                    memberDAO.updateByPrimaryKeySelective(member.setBalance(balance).setUpdateTime(new Date())
+                    );
                     record.setPayType(PAYMENT_WECHAT);
-                    billingComponent.addTradingRecord(cost.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE);
+                    billingComponent.addTradingRecord(cost.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, car.getNumber());
                     billingComponent.addAccountBalance(cost.subtract(serviceCharge), parkingId);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, String.valueOf(cost), String.valueOf(serviceCharge));
                 }
@@ -242,11 +239,10 @@ public class ApiServiceImpl implements ApiService {
             if (StringUtils.isEmpty(record.getQrCodeOrderSn())) {
                 record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
             } else {
-                OrderNumber orderNumber = new OrderNumber();
-                orderNumber.setParkingRecordId(record.getId());
-                orderNumber.setOrderSn(orderRequest.getOutTradeNo());
-                orderNumber.setCreateTime(new Date());
-                orderNumberDAO.insert(orderNumber);
+                orderNumberDAO.insert(new OrderNumber()
+                        .setParkingRecordId(record.getId())
+                        .setOrderSn(orderRequest.getOutTradeNo())
+                        .setCreateTime(new Date()));
             }
             codeUrl = result.getCodeURL();
         } catch (WxPayException e) {
@@ -270,18 +266,9 @@ public class ApiServiceImpl implements ApiService {
     private ApiOutVO buildApiOutVO(ApiOutVO apiVO, ParkingRecord record, int paid, int status, int parkingType, String carNumber, String cost, String serviceCharge) {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         if (record != null) {
-            record.setStatus(status);
-            record.setUuid(uuid);
-            record.setServiceCharge(new BigDecimal(serviceCharge));
-            recordDAO.updateByPrimaryKeySelective(record);
+            recordDAO.updateByPrimaryKeySelective(record.setStatus(status).setUuid(uuid).setServiceCharge(new BigDecimal(serviceCharge)));
         }
-        apiVO.setPaid(paid);
-        apiVO.setCarNumber(carNumber);
-        apiVO.setType(parkingType);
-        apiVO.setCost(cost);
-        apiVO.setServiceCharge(serviceCharge);
-        apiVO.setUuid(uuid);
-        return apiVO;
+        return apiVO.setPaid(paid).setCarNumber(carNumber).setType(parkingType).setCost(cost).setServiceCharge(serviceCharge).setUuid(uuid);
     }
 
     /**
@@ -300,12 +287,7 @@ public class ApiServiceImpl implements ApiService {
         }
         ParkingRecord record = recordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getCarNumber());
         if (record != null) {
-            record.setPayType(PAYMENT_OFFLINE);
-            record.setPayStatus(1);
-            record.setStatus(LEAVE_YET);
-            record.setPayTime(new Date());
-            record.setOutTime(new Date());
-            return recordDAO.updateByPrimaryKeySelective(record) > 0;
+            return recordDAO.updateByPrimaryKeySelective(record.setPayType(PAYMENT_OFFLINE).setPayStatus(1).setStatus(LEAVE_YET).setPayTime(new Date()).setOutTime(new Date())) > 0;
         }
         return false;
     }
@@ -325,8 +307,7 @@ public class ApiServiceImpl implements ApiService {
                     vo.setPayStatus(payStatus);
                 }
             }
-            vo.setUuid(uuid);
-            return vo;
+            return vo.setUuid(uuid);
         }
         return null;
     }
@@ -368,9 +349,7 @@ public class ApiServiceImpl implements ApiService {
     public boolean changeCarNumber(ApiDTO apiDTO) {
         ParkingRecord record = recordDAO.findByParkingIdAndCarNumberAndStatus(apiDTO.getParkingId(), apiDTO.getOldCarNumber());
         if (record != null) {
-            record.setCarNumber(apiDTO.getCarNumber());
-            recordDAO.updateByPrimaryKeySelective(record);
-            return true;
+            return recordDAO.updateByPrimaryKeySelective(record.setCarNumber(apiDTO.getCarNumber())) > 0;
         }
         return false;
     }

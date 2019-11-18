@@ -1,5 +1,5 @@
 
-var prefix = "/sys/trading"
+var prefix = "/sys/record/out"
 $(function() {
 	load();
 });
@@ -33,9 +33,7 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								parkingId: $('#parkingId').val()
-					           // name:$('#searchName').val(),
-					           // username:$('#searchName').val()
+                                parkingId: $('#parkingId').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -47,36 +45,88 @@ function load() {
 						columns : [
 																{
 									field : 'parkingName',
-									title : '停车场'
-								},
-								{
-									field: 'carNumber',
-									title: '车牌号'
+									title : '停车场名称' 
 								},
 																{
-									field : 'amount',
-									title : '交易金额'
+									field : 'carNumber',
+									title : '车牌号'
+								},
+																{
+									field : 'cost',
+									title : '停车费',
+									align : 'center'
 								},
 								{
-									field : 'type',
-									title : '交易类别',
+									field : 'costTime',
+									title : '停车时长（分钟）',
+									align : 'center'
+								},
+																{
+									field : 'payType',
+									title : '缴费类型',
 									align : 'center',
+									//0：线下 1：微信 2：支付宝 3:vip 4：月租车、5：商户车辆
 									formatter : function(value, row, index) {
 										if (value == '0') {
-											return '<span class="label label-danger">提现</span>';
+											return '<span class="label label-danger">线下支付</span>';
 										} else if (value == '1') {
-											return '<span class="label label-primary">收入</span>';
+											return '<span class="label label-success">微信支付</span>';
+										} else if (value == '2') {
+											return '<span class="label label-success">支付宝支付</span>';
+										} else if (value == '3') {
+											return '<span class="label label-primary">VIP</span>';
+										}else if (value == '4') {
+											return '<span class="label label-warning">月租车</span>';
+										}else if (value == '5') {
+											return '<span class="label label-info">商户车辆</span>';
+										}else if (value == '6') {
+											return '<span class="label label-default">无需支付</span>';
 										}
 									}
 								},
 																{
-									field : 'incomeTypeValue',
-									title : '收入类型'
+									field : 'entranceName',
+									title : '车辆入口'
 								},
 																{
-									field : 'createDate',
-									title : '交易时间'
-								} ]
+									field : 'exitName',
+									title : '车辆出口'
+								},
+
+																{
+									field : 'inTime',
+									title : '进场时间'
+								},
+																{
+									field : 'outTime',
+									title : '出场时间'
+								},
+								{
+									field : 'status',
+									title : '是否出厂',
+									align : 'center',
+									formatter : function(value, row, index) {
+										if (value == '0') {
+											return '<span class="label label-danger">否</span>';
+										} else if (value == '1') {
+											return '<span class="label label-success">是</span>';
+										} else if (value == '2') {
+											return '<span class="label label-danger">待出场</span>';
+										}
+									}
+								},
+								{
+									field : 'status',
+									title : '是否支付',
+									align : 'center',
+									formatter : function(value, row, index) {
+										if (value == '0') {
+											return '<span class="label label-danger">未支付</span>';
+										} else if (value == '1') {
+											return '<span class="label label-success">已支付</span>';
+										}
+									}
+								}]
 					});
 }
 function reLoad() {

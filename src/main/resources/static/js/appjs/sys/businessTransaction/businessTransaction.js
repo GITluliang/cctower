@@ -50,6 +50,11 @@ function load() {
                         title: '客户车牌'
                     },
                     {
+                        field: 'freeTime',
+                        title: '免费时长(分钟)',
+                        align: 'center'
+                    },
+                    {
                         field: 'type',
                         title: '交易类型',
                         align: 'center',

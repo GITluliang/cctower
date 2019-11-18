@@ -99,6 +99,32 @@ function load() {
 																{
 									field : 'outTime',
 									title : '出场时间'
+								},
+								{
+									field : 'status',
+									title : '是否出厂',
+									align : 'center',
+									formatter : function(value, row, index) {
+										if (value == '0') {
+											return '<span class="label label-danger">否</span>';
+										} else if (value == '1') {
+											return '<span class="label label-success">是</span>';
+										} else if (value == '2') {
+											return '<span class="label label-danger">待出场</span>';
+										}
+									}
+								},
+								{
+									field : 'status',
+									title : '是否支付',
+									align : 'center',
+									formatter : function(value, row, index) {
+										if (value == '0') {
+											return '<span class="label label-danger">未支付</span>';
+										} else if (value == '1') {
+											return '<span class="label label-success">已支付</span>';
+										}
+									}
 								}]
 					});
 }

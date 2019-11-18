@@ -96,6 +96,7 @@ CREATE TABLE `business_transaction_record` (
   `amount` decimal(12,2) NOT NULL COMMENT '交易金额',
   `balance` decimal(12,2) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
+  `free_time` int(11) DEFAULT NULL COMMENT '商户车辆免费时长',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
@@ -380,6 +381,7 @@ CREATE TABLE `parking_trading_record` (
   `type` tinyint(2) DEFAULT NULL COMMENT '0:提现 1:收入',
   `income_type` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '交易类型',
   `pay_time` datetime DEFAULT NULL COMMENT '交易时间',
+  `car_number` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_parking_id` (`parking_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='停车场交易记录\n';

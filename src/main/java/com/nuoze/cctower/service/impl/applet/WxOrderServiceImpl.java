@@ -158,12 +158,7 @@ public class WxOrderServiceImpl implements WxOrderService {
             BigDecimal serviceCharge = new BigDecimal(0);
             if (parkingRecord != null) {
                 log.info("[PAY NOTIFY PARKING-RECORD] id: {}, pay_id: {}", parkingRecord.getId(), result.getTransactionId());
-                parkingRecord.setOrderSn(orderSn);
-                parkingRecord.setCost(money);
-                parkingRecord.setPayId(payId);
-                parkingRecord.setPayType(PAYMENT_WECHAT);
-                parkingRecord.setPayTime(new Date());
-                parkingRecord.setPayStatus(1);
+                parkingRecord.setOrderSn(orderSn).setCost(money).setPayId(payId).setPayType(PAYMENT_WECHAT).setPayTime(new Date()).setPayStatus(1);
                 int status = parkingRecord.getStatus();
                 Long parkingId = parkingRecord.getParkingId();
                 Car car = carDAO.findByParkingIdAndCarNumber(parkingId, parkingRecord.getCarNumber());
@@ -200,7 +195,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
                     carDAO.deleteByPrimaryKey(car.getId());
                 }
-                billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE);
+                billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber());
                 billingComponent.addAccountBalance(money, parkingId);
                 parkingRecordService.update(parkingRecord);
             }
@@ -223,7 +218,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 car.setUpdateTime(new Date());
                 carDAO.updateByPrimaryKeySelective(car);
                 renewRecordDAO.updateByPrimaryKeySelective(renewRecord);
-                billingComponent.addTradingRecord(money, renewRecord.getParkingId(), IncomeType.PARKING_CHARGE);
+                billingComponent.addTradingRecord(money, renewRecord.getParkingId(), IncomeType.PARKING_CHARGE, renewRecord.getCarNumber());
                 billingComponent.addAccountBalance(money, renewRecord.getParkingId());
             }
             //小程序余额充值

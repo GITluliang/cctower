@@ -4,6 +4,7 @@ import com.nuoze.cctower.pojo.entity.Role;
 import com.nuoze.cctower.pojo.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 public class UserVO extends User {
 
     private List<Long> roleIds;

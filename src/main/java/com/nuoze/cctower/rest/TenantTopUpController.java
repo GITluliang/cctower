@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
 
 /**
  * @author JiaShun
@@ -76,20 +77,19 @@ public class TenantTopUpController {
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:edit")
     public R update(TenantTopUpVO vo) {
+        if (EMPTY_MONEY.compareTo(vo.getBalance()) >= 0 ) {
+            return R.error(201, "充值金额必须大于0");
+        }
         return userService.updateBalance(vo) > 0 ? R.ok() : R.error();
     }
 
 
     private TenantTopUpVO userToTopUpVO(Long id) {
         User user = userService.findById(id);
-        TenantTopUpVO vo = new TenantTopUpVO();
-        String parkingName = parkingDAO.selectByPrimaryKey(user.getParkingId()).getName();
-        String businessName = user.getName();
-        BigDecimal balance = user.getBalance();
-        vo.setUserId(id);
-        vo.setParkingName(parkingName);
-        vo.setBusinessName(businessName);
-        vo.setBalance(balance);
-        return vo;
+        return new TenantTopUpVO()
+                .setUserId(id)
+                .setParkingName(parkingDAO.selectByPrimaryKey(user.getParkingId()).getName())
+                .setBusinessName(user.getName())
+                .setBalance(user.getBalance());
     }
 }

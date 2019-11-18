@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.dto;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -8,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
  * @date 2019-03-19 23:11
  */
 @Data
+@Accessors(chain = true)
 public class ApiDTO {
     /**
      * 停车场id

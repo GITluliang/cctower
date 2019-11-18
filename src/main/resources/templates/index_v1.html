@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,7 +171,7 @@
                     seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">CCTower</div>
+            <div class="pull-right" th:text="${username}">CCTower</div>
         </div>
     </div>
     <!--右侧部分结束-->

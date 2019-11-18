@@ -44,10 +44,6 @@ function load() {
 						// 返回false将会终止请求
 						columns : [
 																{
-									field : 'amount', 
-									title : '提现金额' 
-								},
-																{
 									field : 'userName',
 									title : '用户名'
 								},
@@ -63,6 +59,10 @@ function load() {
 									field : 'bankAddress', 
 									title : '开户行' 
 								},
+								{
+									field : 'amount',
+									title : '提现金额'
+								},
 																{
 									field : 'status',
 									title : '状态',
@@ -74,6 +74,14 @@ function load() {
 											return '<span class="label label-primary">转账完成</span>';
 										}
 									}
+								},
+								{
+									field : 'createTimeStr',
+									title : '提现时间'
+								},
+								{
+									field : 'transferTimeStr',
+									title : '转账时间'
 								},
 																{
 									title : '操作',

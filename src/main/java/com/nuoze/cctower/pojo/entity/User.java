@@ -2,6 +2,7 @@ package com.nuoze.cctower.pojo.entity;
 
 import java.math.BigDecimal;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author JiaShun
  */
 @Data
+@Accessors(chain = true)
 public class User implements Serializable {
     private Long id;
 

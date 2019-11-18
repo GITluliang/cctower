@@ -1,5 +1,6 @@
 package com.nuoze.cctower.service.impl;
 
+import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.component.PaymentComponent;
 import com.nuoze.cctower.dao.*;
@@ -40,8 +41,6 @@ public class DepositRecordServiceImpl implements DepositRecordService {
     private ParkingDAO parkingDAO;
     @Autowired
     private ParkingTradingRecordDAO tradingRecordDAO;
-    @Autowired
-    private PaymentComponent paymentComponent;
 
     @Override
     public DepositRecord get(Long id) {
@@ -66,7 +65,7 @@ public class DepositRecordServiceImpl implements DepositRecordService {
                     Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
                     vo.setParkingName(parking != null ? parking.getName() : "");
                 }
-                vos.add(vo);
+                vos.add(vo.setCreateTimeStr(DateUtils.formatDateTime(depositRecord.getCreateTime())).setTransferTimeStr(DateUtils.formatDateTime(depositRecord.getTransferTime())));
             }
         }
         return vos;
@@ -81,24 +80,18 @@ public class DepositRecordServiceImpl implements DepositRecordService {
     public int save(DepositRecordDTO depositRecordDTO) {
         DepositRecord depositRecord = new DepositRecord();
         BeanUtils.copyProperties(depositRecordDTO, depositRecord);
-        Long userId = ShiroUtils.getUserId();
-        depositRecord.setUserId(userId);
-        depositRecord.setStatus(0);
-        depositRecord.setCreateTime(new Date());
         BigDecimal amount = depositRecord.getAmount();
         Account account = accountDAO.selectByPrimaryKey(depositRecord.getAccountId());
         BigDecimal balance = account.getBalance().subtract(amount).setScale(2, 1);
         //更新交易记录
-        ParkingTradingRecord tradingRecord = new ParkingTradingRecord();
-        tradingRecord.setParkingId(depositRecord.getParkingId());
-        tradingRecord.setType(PARKING_TRADING_RECORD_EXPEND_TYPE);
-        tradingRecord.setAmount(amount);
-        tradingRecord.setPayTime(new Date());
-        tradingRecordDAO.insert(tradingRecord);
+        tradingRecordDAO.insert(new ParkingTradingRecord()
+                .setParkingId(depositRecord.getParkingId())
+                .setType(PARKING_TRADING_RECORD_EXPEND_TYPE)
+                .setAmount(amount)
+                .setPayTime(new Date()));
         //停车场余额更新
-        account.setBalance(balance);
-        accountDAO.updateByPrimaryKeySelective(account);
-        return depositRecordDAO.insert(depositRecord);
+        accountDAO.updateByPrimaryKeySelective(account.setBalance(balance));
+        return depositRecordDAO.insert(depositRecord.setUserId(ShiroUtils.getUserId()).setStatus(0).setCreateTime(new Date()));
     }
 
     @Override

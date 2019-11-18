@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author JiaShun
  */
 @Data
+@Accessors(chain = true)
 public class ParkingTradingRecord implements Serializable {
     /**
      * 主键
@@ -41,6 +43,10 @@ public class ParkingTradingRecord implements Serializable {
      * 交易时间
      */
     private Date payTime;
+    /**
+     * 车牌号
+     */
+    private String carNumber;
 
     private static final long serialVersionUID = 1L;
 

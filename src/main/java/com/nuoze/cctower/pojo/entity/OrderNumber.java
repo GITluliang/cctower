@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @Date 2019-10-21 15:57
  */
 @Data
+@Accessors(chain = true)
 public class OrderNumber implements Serializable {
     /**
      * 主键

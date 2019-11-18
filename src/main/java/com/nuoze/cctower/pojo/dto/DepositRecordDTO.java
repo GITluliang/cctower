@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.dto;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * @date 2019-04-30 00:37
  */
 @Data
+@Accessors(chain = true)
 public class DepositRecordDTO {
 
     private Long accountId;

@@ -3,6 +3,7 @@ package com.nuoze.cctower.pojo.vo;
 import com.nuoze.cctower.pojo.entity.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 public class RoleVO extends Role {
 
     private List<Long> menuIds;

@@ -1,12 +1,14 @@
 package com.nuoze.cctower.pojo.vo;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author JiaShun
  * @date 2019-04-06 14:50
  */
 @Data
+@Accessors(chain = true)
 public class ParkingRecordVO {
     //ParkingRecord 停车记录ID
     private Long recordId;

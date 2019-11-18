@@ -95,10 +95,7 @@ public class CarServiceImpl implements CarService {
             CarDTO carDTO = new CarDTO();
             BeanUtils.copyProperties(car, carDTO);
             if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
-                String beginDate = DateUtils.toTimeString(car.getMonthlyParkingStart());
-                String endDate = DateUtils.toTimeString(car.getMonthlyParkingEnd());
-                carDTO.setBeginDate(beginDate);
-                carDTO.setEndDate(endDate);
+                carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart())).setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
             }
             if (car.getParkingId() != null) {
                 String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
@@ -122,8 +119,7 @@ public class CarServiceImpl implements CarService {
             CarDTO carDTO = new CarDTO();
             BeanUtils.copyProperties(car, carDTO);
             if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
-                carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()));
-                carDTO.setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
+                carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart())).setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
             }
             if (car.getParkingId() != null) {
                 String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
@@ -150,8 +146,8 @@ public class CarServiceImpl implements CarService {
         Car car = carDAO.selectByPrimaryKey(id);
         BeanUtils.copyProperties(car, carDTO);
         if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
-            carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()));
-            carDTO.setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
+            carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()))
+                    .setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
         }
         Parking parking = parkingDAO.selectByPrimaryKey(car.getParkingId());
         if (parking != null) {
@@ -162,11 +158,11 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public int save(CarDTO dto) {
-        Car car = dtoToCar(dto);
         Long userId = ShiroUtils.getUserId();
-        car.setCreateId(userId);
-        car.setCreateTime(new Date());
-        car.setUpdateTime(new Date());
+        Car car = dtoToCar(dto)
+                .setCreateId(userId)
+                .setCreateTime(new Date())
+                .setUpdateTime(new Date());
         int i = carDAO.insert(car);
         if (1 == car.getParkingType()) {
             Car vo = carDAO.findByParkingIdAndCarNumber(car.getParkingId(), car.getNumber());
@@ -194,17 +190,18 @@ public class CarServiceImpl implements CarService {
             }
             if (BUSINESS_CAR == car.getParkingType()) {
                 Long userId = ShiroUtils.getUserId();
-                User user = userDAO.selectByPrimaryKey(userId);
+                User user = userDAO.selectByPrimaryKey(userId)
+                        .setUpdateTime(new Date());
                 BigDecimal balance = user.getBalance().add(car.getCost());
                 user.setBalance(balance);
-                user.setUpdateTime(new Date());
-                BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord();
-                businessTransactionRecord.setUserId(userId);
-                businessTransactionRecord.setAmount(car.getCost());
-                businessTransactionRecord.setBalance(balance);
-                businessTransactionRecord.setCarNumber(car.getNumber());
-                businessTransactionRecord.setType(2);
-                businessTransactionRecord.setCreateTime(new Date());
+                BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord()
+                        .setUserId(userId)
+                        .setAmount(car.getCost())
+                        .setBalance(balance)
+                        .setCarNumber(car.getNumber())
+                        .setType(2)
+                        .setCreateTime(new Date())
+                        .setFreeTime(car.getFreeTime());
                 userDAO.updateByPrimaryKeySelective(user);
                 businessTransactionRecordDAO.insert(businessTransactionRecord);
             }
@@ -252,12 +249,12 @@ public class CarServiceImpl implements CarService {
             if (parking != null) {
                 parkingRecordVO.setParkingName(parking.getName());
             }
-            parkingRecordVO.setCarNumber(parkingRecord.getCarNumber());
-            parkingRecordVO.setRecordId(parkingRecord.getId());
-            parkingRecordVO.setInTime(inTime);
-            parkingRecordVO.setOutTime(outTime);
-            parkingRecordVO.setTakeMinutes(takeMinutes);
-            parkingRecordVO.setCost(cost.toString());
+            parkingRecordVO.setCarNumber(parkingRecord.getCarNumber())
+                    .setRecordId(parkingRecord.getId())
+                    .setInTime(inTime)
+                    .setOutTime(outTime)
+                    .setTakeMinutes(takeMinutes)
+                    .setCost(cost.toString());
         } else {
             parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
         }
@@ -324,18 +321,16 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void addWxCar(Member member, Car car) {
-        car.setParkingType(0);
-        car.setCreateTime(new Date());
-        car.setUpdateTime(new Date());
-        carDAO.insert(car);
+        carDAO.insert(car.setParkingType(0)
+                .setCreateTime(new Date())
+                .setUpdateTime(new Date()));
         Long carId = carDAO.selectByNumberAndOpenId(car.getNumber(), car.getOpenId());
         Long memberId = member.getId();
-        MemberCar memberCar = new MemberCar();
-        memberCar.setCarId(carId);
-        memberCar.setMemberId(memberId);
-        memberCar.setCreateTime(new Date());
-        memberCar.setUpdateTime(new Date());
-        memberCarDAO.insert(memberCar);
+        memberCarDAO.insert(new MemberCar()
+                .setCarId(carId)
+                .setMemberId(memberId)
+                .setCreateTime(new Date())
+                .setUpdateTime(new Date()));
     }
 
     @Override
@@ -362,23 +357,21 @@ public class CarServiceImpl implements CarService {
         }
         BigDecimal cost = billingComponent.cost(freeTime, parkingId, null);
         Long userId = ShiroUtils.getUserId();
-        User user = userDAO.selectByPrimaryKey(userId);
+        User user = userDAO.selectByPrimaryKey(userId)
+                .setUpdateTime(new Date());
         BigDecimal balance = user.getBalance().subtract(cost);
         user.setBalance(balance);
-        user.setUpdateTime(new Date());
         userDAO.updateByPrimaryKeySelective(user);
-        BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord();
-        businessTransactionRecord.setUserId(userId);
-        businessTransactionRecord.setAmount(cost);
-        businessTransactionRecord.setBalance(balance);
-        businessTransactionRecord.setCarNumber(dto.getNumber());
-        businessTransactionRecord.setType(0);
-        businessTransactionRecord.setCreateTime(new Date());
+        BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord()
+                .setUserId(userId)
+                .setAmount(cost)
+                .setBalance(balance)
+                .setType(0)
+                .setCreateTime(new Date())
+                .setCarNumber(dto.getNumber())
+                .setFreeTime(dto.getFreeTime());
         businessTransactionRecordDAO.insert(businessTransactionRecord);
-        car.setCreateId(userId);
-        car.setCost(cost);
-        car.setCreateTime(new Date());
-        car.setUpdateTime(new Date());
+        car.setCreateId(userId).setCost(cost).setCreateTime(new Date()).setUpdateTime(new Date());
         return carDAO.insert(car);
     }
 
@@ -395,17 +388,12 @@ public class CarServiceImpl implements CarService {
     @Override
     public RenewCarVO renewCarDetail(String renewCarNumber) {
         Car car = carDAO.findByCarNumberAndParkingType(renewCarNumber, MONTHLY_CAR);
-        RenewCarVO vo = new RenewCarVO();
-        Long parkingId = car.getParkingId();
-        String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-        vo.setCarId(car.getId());
-        vo.setParkingId(parkingId);
-        vo.setParkingName(parkingName);
-        String startDate = DateUtils.formatMonthly(car.getMonthlyParkingStart());
-        String endDate = DateUtils.formatMonthly(car.getMonthlyParkingEnd());
-        vo.setMonthlyParkingStart(startDate);
-        vo.setMonthlyParkingEnd(endDate);
-        return vo;
+        return new RenewCarVO()
+                .setCarId(car.getId())
+                .setParkingId(car.getParkingId())
+                .setParkingName(parkingDAO.selectByPrimaryKey(car.getParkingId()).getName())
+                .setMonthlyParkingStart(DateUtils.formatMonthly(car.getMonthlyParkingStart()))
+                .setMonthlyParkingEnd(DateUtils.formatMonthly(car.getMonthlyParkingEnd()));
     }
 
     @Override
@@ -430,17 +418,16 @@ public class CarServiceImpl implements CarService {
             result = wxPayService.createOrder(orderRequest);
             String prepayId = result.getPackageValue();
             prepayId = prepayId.replace("prepay_id=", "");
-            RenewRecord renewRecord = new RenewRecord();
-            renewRecord.setOpenId(dto.getOpenId());
-            renewRecord.setCost(actualPrice);
-            renewRecord.setParkingId(dto.getParkingId());
-            renewRecord.setCarNumber(carDAO.selectByPrimaryKey(dto.getCarId()).getNumber());
-            renewRecord.setOrderSn(orderRequest.getOutTradeNo());
-            renewRecord.setPrepayId(prepayId);
-            renewRecord.setPayStatus(0);
-            renewRecord.setMonthCount(dto.getMonthCount());
-            renewRecord.setCreateTime(new Date());
-            renewRecordDAO.insertSelective(renewRecord);
+            renewRecordDAO.insertSelective(new RenewRecord()
+                    .setOpenId(dto.getOpenId())
+                    .setCost(actualPrice)
+                    .setParkingId(dto.getParkingId())
+                    .setCarNumber(carDAO.selectByPrimaryKey(dto.getCarId()).getNumber())
+                    .setOrderSn(orderRequest.getOutTradeNo())
+                    .setPrepayId(prepayId)
+                    .setPayStatus(0)
+                    .setMonthCount(dto.getMonthCount())
+                    .setCreateTime(new Date()));
         } catch (WxPayException e) {
             log.error("[RENEW CAR ] pre pay has exception: {}", e.getMessage());
         }
@@ -454,12 +441,12 @@ public class CarServiceImpl implements CarService {
         if (!CollectionUtils.isEmpty(list)) {
             renewCarRecordVOS = new ArrayList<>();
             for (RenewRecord record : list) {
-                RenewCarRecordVO vo = new RenewCarRecordVO();
-                String parkingName = parkingDAO.selectByPrimaryKey(record.getParkingId()).getName();
-                vo.setParkingCar(parkingName + ": " + record.getCarNumber());
-                vo.setCost(record.getCost().toString());
-                vo.setTime(DateUtils.formatDateTime(record.getCreateTime()));
-                renewCarRecordVOS.add(vo);
+                String parkingName = parkingDAO.selectByPrimaryKey(record.getParkingId()).getName();;
+                renewCarRecordVOS.add(new RenewCarRecordVO()
+                        .setParkingCar(parkingName + ": " + record.getCarNumber())
+                        .setCost(record.getCost().toString())
+                        .setTime(DateUtils.formatDateTime(record.getCreateTime()))
+                );
             }
         }
         return renewCarRecordVOS;

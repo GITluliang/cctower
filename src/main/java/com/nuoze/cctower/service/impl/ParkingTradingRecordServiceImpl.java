@@ -40,20 +40,15 @@ public class ParkingTradingRecordServiceImpl implements ParkingTradingRecordServ
             for (ParkingTradingRecord record : list) {
                 ParkingTradingRecordVO vo = new ParkingTradingRecordVO();
                 BeanUtils.copyProperties(record, vo);
-                Long parkingId = record.getParkingId();
-                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-                String createDate = DateUtils.formatDateTime(record.getPayTime());
-                String incomeType = record.getIncomeType();
-                if (StringUtils.isNotBlank(incomeType)) {
+                if (StringUtils.isNotBlank(record.getIncomeType())) {
                     for (IncomeType income : IncomeType.values()) {
-                        if (incomeType.equals(income.name())) {
+                        if (record.getIncomeType().equals(income.name())) {
                             String incomeTypeValue = income.getValue();
                             vo.setIncomeTypeValue(incomeTypeValue);
                         }
                     }
                 }
-                vo.setParkingName(parkingName);
-                vo.setCreateDate(createDate);
+                vo.setParkingName(parkingDAO.selectByPrimaryKey(record.getParkingId()).getName()).setCreateDate(DateUtils.formatDateTime(record.getPayTime()));
                 recordVOS.add(vo);
             }
         }

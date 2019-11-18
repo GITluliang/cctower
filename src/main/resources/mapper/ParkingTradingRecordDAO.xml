@@ -8,9 +8,10 @@
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="income_type" jdbcType="VARCHAR" property="incomeType" />
     <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="car_number" jdbcType="VARCHAR" property="carNumber" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parking_id, amount, `type`, income_type, pay_time
+    id, parking_id, amount, `type`, income_type, pay_time, car_number
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,10 +25,10 @@
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
     insert into parking_trading_record (id, parking_id, amount, 
-      `type`, income_type, pay_time
+      `type`, income_type, pay_time, car_number
       )
     values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
-      #{type,jdbcType=TINYINT}, #{incomeType,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}
+      #{type,jdbcType=TINYINT}, #{incomeType,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{carNumber,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
@@ -51,6 +52,9 @@
       <if test="payTime != null">
         pay_time,
       </if>
+      <if test="carNumber != null">
+        car_number,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -70,6 +74,9 @@
       </if>
       <if test="payTime != null">
         #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carNumber != null">
+        #{carNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -91,6 +98,9 @@
       <if test="payTime != null">
         pay_time = #{payTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="carNumber != null">
+        car_number = #{carNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -100,11 +110,10 @@
       amount = #{amount,jdbcType=DECIMAL},
       `type` = #{type,jdbcType=TINYINT},
       income_type = #{incomeType,jdbcType=VARCHAR},
-      pay_time = #{payTime,jdbcType=TIMESTAMP}
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      car_number = #{carNumber,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
-
   <select id="listByParkingId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

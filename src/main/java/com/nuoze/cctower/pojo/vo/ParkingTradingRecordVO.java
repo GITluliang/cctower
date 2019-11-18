@@ -2,12 +2,14 @@ package com.nuoze.cctower.pojo.vo;
 
 import com.nuoze.cctower.pojo.entity.ParkingTradingRecord;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author JiaShun
  * @date 2019-05-16 00:09
  */
 @Data
+@Accessors(chain = true)
 public class ParkingTradingRecordVO extends ParkingTradingRecord {
 
     private String incomeTypeValue;

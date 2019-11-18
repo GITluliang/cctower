@@ -2,12 +2,16 @@ package com.nuoze.cctower.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * @author JiaShun
  * @date 2019-04-15 11:47
  */
 @Data
+@Accessors(chain = true)
+@NoArgsConstructor
 @AllArgsConstructor
 public class ApiCheckCarVO {
 

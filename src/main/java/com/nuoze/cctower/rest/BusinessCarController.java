@@ -11,6 +11,8 @@ import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.dao.UserDAO;
 import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
+import com.nuoze.cctower.pojo.entity.User;
+import com.nuoze.cctower.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.nuoze.cctower.service.CarService;
+
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
 
 
 /**
@@ -39,9 +43,8 @@ public class BusinessCarController {
 
     @Autowired
     private CarService carService;
-
     @Autowired
-    private UserDAO userDAO;
+    private UserService userService;
 
     @GetMapping()
     @RequiresPermissions("sys:car:business")
@@ -83,7 +86,11 @@ public class BusinessCarController {
     @RequiresPermissions("sys:car:business:add")
     public R save(CarDTO dto) {
         Long userId = ShiroUtils.getUserId();
-        dto.setParkingId(userDAO.selectByPrimaryKey(userId).getParkingId());
+        User user = userService.findById(userId);
+        if (EMPTY_MONEY.compareTo(user.getBalance()) >= 0 ) {
+            return R.error(201, "账户余额" + user.getBalance() + "元 ,请充值");
+        }
+        dto.setParkingId(user.getParkingId());
         Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
         if (car != null) {
             return ResponseResult.addCarCheck(car);

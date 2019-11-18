@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
  * @author JiaShun
  */
 @Data
+@Accessors(chain = true)
 public class Billing implements Serializable {
 
     private Long id;

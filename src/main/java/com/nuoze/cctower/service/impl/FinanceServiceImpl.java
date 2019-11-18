@@ -41,48 +41,47 @@ public class FinanceServiceImpl implements FinanceService {
 
     @Override
     public Pair<Integer, List<FinanceVO>> list(Map<String, Object> map) {
+        return new MutablePair<>(parkingRecordDAO.countByParkingId(map), map(parkingRecordDAO.listByParkingId(map)));
+    }
+
+    private List map(List<ParkingRecord> list) {
         List<FinanceVO> financeVOS = new ArrayList<>();
-        List<ParkingRecord> list = parkingRecordDAO.listByParkingId(map);
-        int count = parkingRecordDAO.countByParkingId(map);
         if (!CollectionUtils.isEmpty(list)) {
             for (ParkingRecord ps : list) {
                 FinanceVO fv = new FinanceVO();
-                Long parkingId = ps.getParkingId();
-                if (parkingId != null) {
-                    Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
+                if (ps.getParkingId() != null) {
+                    Parking parking = parkingDAO.selectByPrimaryKey(ps.getParkingId());
                     if (parking != null && parking.getName() != null) {
                         fv.setParkingName(parking.getName());
                     }
                 }
-                Long entranceId = ps.getEntranceId();
-                if (entranceId != null) {
-                    Passageway passageway = passagewayDAO.selectByPrimaryKey(entranceId);
+                if (ps.getEntranceId() != null) {
+                    Passageway passageway = passagewayDAO.selectByPrimaryKey(ps.getEntranceId());
                     if (passageway != null && passageway.getName() != null) {
                         fv.setEntranceName(passageway.getName());
                     }
                 }
-                Long exitId = ps.getExitId();
-                if (exitId != null) {
-                    Passageway passageway = passagewayDAO.selectByPrimaryKey(exitId);
+                if (ps.getExitId() != null) {
+                    Passageway passageway = passagewayDAO.selectByPrimaryKey(ps.getExitId());
                     if (passageway != null && passageway.getName() != null) {
                         fv.setExitName(passageway.getName());
                     }
                 }
-                Date inTime = ps.getInTime();
-                if (inTime != null) {
-                    fv.setInTime(DateUtils.formatDateTime(inTime));
+                if (ps.getInTime() != null) {
+                    fv.setInTime(DateUtils.formatDateTime(ps.getInTime()));
                 }
-                Date outTime = ps.getOutTime();
-                if (outTime != null) {
-                    fv.setOutTime(DateUtils.formatDateTime(outTime));
+                if (ps.getOutTime() != null) {
+                    fv.setOutTime(DateUtils.formatDateTime(ps.getOutTime()));
                 }
-                fv.setCost(ps.getCost() != null ? ps.getCost() : EMPTY_MONEY);
-                fv.setCostTime(ps.getCostTime() != null ? String.valueOf(ps.getCostTime()) : String.valueOf(0));
-                fv.setPayType(ps.getPayType());
-                fv.setCarNumber(ps.getCarNumber());
-                financeVOS.add(fv);
+                financeVOS.add(fv.setCost(ps.getCost() != null ? ps.getCost() : EMPTY_MONEY)
+                        .setCostTime(ps.getCostTime() != null ? String.valueOf(ps.getCostTime()) : String.valueOf(0))
+                        .setPayType(ps.getPayType())
+                        .setCarNumber(ps.getCarNumber())
+                        .setStatus(ps.getStatus())
+                        .setPayType(ps.getPayType())
+                );
             }
         }
-        return new MutablePair<>(count, financeVOS);
+        return financeVOS;
     }
 }

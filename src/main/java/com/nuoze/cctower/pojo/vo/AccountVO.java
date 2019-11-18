@@ -2,6 +2,7 @@ package com.nuoze.cctower.pojo.vo;
 
 import com.nuoze.cctower.pojo.entity.Account;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
  * @date 2019-04-28 01:09
  */
 @Data
+@Accessors(chain = true)
 public class AccountVO extends Account {
 
     private String parkingName;

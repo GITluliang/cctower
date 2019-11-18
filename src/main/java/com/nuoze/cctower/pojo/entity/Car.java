@@ -2,6 +2,7 @@ package com.nuoze.cctower.pojo.entity;
 
 import java.math.BigDecimal;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author JiaShun
  */
 @Data
+@Accessors(chain = true)
 public class Car implements Serializable {
     /**
      * 主键
@@ -61,7 +63,7 @@ public class Car implements Serializable {
      */
     private String openId;
     /**
-     * 商户车辆免费时长
+     * 车辆免费时长
      */
     private Integer freeTime;
     /**

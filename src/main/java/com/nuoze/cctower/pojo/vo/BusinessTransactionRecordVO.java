@@ -2,6 +2,7 @@ package com.nuoze.cctower.pojo.vo;
 
 import com.nuoze.cctower.pojo.entity.BusinessTransactionRecord;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @author JiaShun
  */
 @Data
+@Accessors(chain = true)
 public class BusinessTransactionRecordVO extends BusinessTransactionRecord {
 
     private String createTimeStr;

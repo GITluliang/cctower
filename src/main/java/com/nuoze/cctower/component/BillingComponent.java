@@ -40,14 +40,14 @@ public class BillingComponent {
      * @param parkingId 停车场ID
      * @param type 收入类型
      */
-    public void addTradingRecord(BigDecimal money, Long parkingId, IncomeType type) {
-        ParkingTradingRecord tradingRecord = new ParkingTradingRecord();
-        tradingRecord.setAmount(money);
-        tradingRecord.setType(PARKING_TRADING_RECORD_INCOME_TYPE);
-        tradingRecord.setParkingId(parkingId);
-        tradingRecord.setPayTime(new Date());
-        tradingRecord.setIncomeType(type.name());
-        tradingRecordDAO.insert(tradingRecord);
+    public void addTradingRecord(BigDecimal money, Long parkingId, IncomeType type, String carNumber) {
+        tradingRecordDAO.insert(new ParkingTradingRecord()
+                .setAmount(money)
+                .setType(PARKING_TRADING_RECORD_INCOME_TYPE)
+                .setParkingId(parkingId)
+                .setPayTime(new Date())
+                .setIncomeType(type.name())
+                .setCarNumber(carNumber));
     }
 
     /**

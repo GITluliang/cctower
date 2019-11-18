@@ -1,12 +1,14 @@
 package com.nuoze.cctower.pojo.dto;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author JiaShun
  * @date 2019-01-23 00:00
  */
 @Data
+@Accessors(chain = true)
 public class WxPayDTO {
     /**
      * 微信code，一次失效

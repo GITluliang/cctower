@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.vo;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * @date 2019-03-20 00:03
  */
 @Data
+@Accessors(chain = true)
 public class ApiOutVO {
     /**
      * 支付状态：0：未支付 1：支付成功

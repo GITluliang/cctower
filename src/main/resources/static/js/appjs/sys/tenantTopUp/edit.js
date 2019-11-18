@@ -35,14 +35,19 @@ function update() {
 function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
+		errorPlacement: function (error, element) {
+			error.appendTo(element.parent().parent());
+		},
 		rules : {
-			name : {
-				required : true
+			balance : {
+				required : true ,
+				min : 1
 			}
 		},
 		messages : {
-			name : {
-				required : icon + "请输入名字"
+			balance : {
+				required : icon + "请输入金额",
+				min : icon + "充值金额必须大于0"
 			}
 		}
 	})
