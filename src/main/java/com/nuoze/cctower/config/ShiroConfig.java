@@ -20,10 +20,9 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author bootdo 1992lcg@163.com
@@ -186,7 +185,7 @@ public class ShiroConfig {
         //5天:432000000
         sessionManager.setGlobalSessionTimeout(432000000);
         sessionManager.setSessionDAO(sessionDAO());
-        Collection<SessionListener> listeners = new ArrayList<SessionListener>();
+        Collection<SessionListener> listeners = new CopyOnWriteArrayList<SessionListener>();
         listeners.add(new BDSessionListener());
         sessionManager.setSessionListeners(listeners);
         return sessionManager;

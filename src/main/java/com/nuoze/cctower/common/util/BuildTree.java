@@ -1,11 +1,10 @@
 package com.nuoze.cctower.common.util;
 
 import com.nuoze.cctower.common.domain.Tree;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.MAP_INIT_CAPACITY;
 
@@ -42,7 +41,7 @@ public class BuildTree {
         if (nodes == null) {
             return null;
         }
-        List<Tree<T>> topNodes = new ArrayList<Tree<T>>();
+        List<Tree<T>> topNodes = new CopyOnWriteArrayList<Tree<T>>();
         for (Tree<T> children : nodes) {
             String pid = children.getParentId();
             if (pid == null || idParam.equals(pid)) {

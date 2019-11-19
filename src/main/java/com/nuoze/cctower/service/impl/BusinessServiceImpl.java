@@ -17,12 +17,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 
 /**
  * @author JiaShun
@@ -35,24 +34,19 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Autowired
     private UserDAO userDAO;
-
     @Autowired
     private ParkingDAO parkingDAO;
-
     @Autowired
     private UserRoleDAO userRoleDAO;
-
     @Autowired
     private RoleDAO roleDAO;
 
-    @Autowired
-    private IdComponent idComponent;
 
     @Override
     public List<UserVO> list(Map<String, Object> map) {
         map.put("type", 1);
         List<User> list = userDAO.list(map);
-        List<UserVO> userVOS = new ArrayList<>();
+        List<UserVO> userVOS = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
             for (User user : list) {
                 UserVO userVO = new UserVO();

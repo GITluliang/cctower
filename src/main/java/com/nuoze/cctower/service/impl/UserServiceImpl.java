@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
 import static com.nuoze.cctower.common.util.ShiroUtils.getUser;
@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserVO> list(Map<String, Object> map) {
-        List<UserVO> userVOList = new ArrayList<>();
+        List<UserVO> userVOList = new CopyOnWriteArrayList<>();
         List<User> list = userDAO.list(map);
         for(User user : list) {
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(user, userVO);
-            List<Role> roleList = new ArrayList<>();
+            List<Role> roleList = new CopyOnWriteArrayList<>();
             for (Long roleId : userRoleDAO.listRoleByUserId(user.getId())) {
                 roleList.add(roleDAO.selectByPrimaryKey(roleId));
             }
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
     public Pair<Integer, List<TenantTopUpVO>> tenantTopUpList(Map<String, Object> map) {
         List<User> list = userDAO.list(map);
         int count = userDAO.count(map);
-        Pair<Integer, List<TenantTopUpVO>> pair = new MutablePair<>(count, new ArrayList<>());
+        Pair<Integer, List<TenantTopUpVO>> pair = new MutablePair<>(count, new CopyOnWriteArrayList<>());
         if (!CollectionUtils.isEmpty(list)) {
             for (User user : list) {
                 Long parkingId = user.getParkingId();
@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
     private void insertUserRole(UserVO vo) {
         List<Long> roleIds = vo.getRoleIds();
         userRoleDAO.removeByUserId(vo.getId());
-        List<UserRole> list = new ArrayList<>();
+        List<UserRole> list = new CopyOnWriteArrayList<>();
         for (Long roleId : roleIds) {
             UserRole userRole = new UserRole();
             userRole.setUserId(vo.getId());

@@ -1,17 +1,16 @@
 $().ready(function() {
 	validateRule();
 });
-
 $.validator.setDefaults({
 	submitHandler : function() {
-		save();
+		update();
 	}
 });
-function save() {
+function update() {
 	$.ajax({
 		cache : true,
 		type : "POST",
-		url : "/sys/car/business/save",
+		url : "/sys/car/special/update",
 		data : $('#signupForm').serialize(),// 你的formid
 		async : false,
 		error : function(request) {
@@ -35,25 +34,41 @@ function save() {
 function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
-		errorPlacement: function (error, element) {
+		errorPlacement: function(error, element) {
 			error.appendTo(element.parent().parent());
 		},
 		rules : {
+			parkingId : {
+				required : true
+			} ,
 			number : {
 				required : true
-			},
-			freeTime : {
-				required : true ,
-				min : 1
+			} ,
+			beginDate : {
+				required : true
+			} ,
+			endDate : {
+				required : true
+			} ,
+			cost : {
+				min : 0
 			}
 		},
 		messages : {
+			parkingId : {
+				required : icon + "请选择停车场"
+			} ,
 			number : {
-				required : icon + "请输入姓名"
-			},
-			freeTime : {
-				required : icon + "请输入时长",
-				min : icon + "免费时长不能为0"
+				required : icon + "请输入车牌号"
+			} ,
+			beginDate : {
+				required : icon + "请选择生效日期"
+			} ,
+			endDate : {
+				required : icon + "请选择失效日期"
+			} ,
+			cost : {
+				required : icon + "请输入停车费"
 			}
 		}
 	})

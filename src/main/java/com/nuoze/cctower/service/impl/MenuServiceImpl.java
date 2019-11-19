@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.MAP_INIT_CAPACITY;
 
@@ -43,7 +44,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Tree<Menu>> listMenuTree(Long userId) {
-        List<Tree<Menu>> trees = new ArrayList<>();
+        List<Tree<Menu>> trees = new CopyOnWriteArrayList<>();
         List<Menu> menus = menuDAO.listMenuByUserId(userId);
         for (Menu menu : menus) {
             Tree<Menu> tree = new Tree<>();
@@ -89,7 +90,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Tree<Menu> getTree(Long roleId) {
-        List<Tree<Menu>> trees = new ArrayList<>();
+        List<Tree<Menu>> trees = new CopyOnWriteArrayList<>();
         List<Menu> menus = menuDAO.list(new HashMap<>(MAP_INIT_CAPACITY));
         if (null == roleId) {
             for (Menu menu : menus) {

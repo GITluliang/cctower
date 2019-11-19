@@ -47,7 +47,7 @@ function validateRule() {
 		messages : {
 			balance : {
 				required : icon + "请输入金额",
-				min : icon + "充值金额必须大于0"
+				min : icon + "充值金额不能为0"
 			}
 		}
 	})

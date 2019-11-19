@@ -16,10 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
 
@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountVO> list(Map<String, Object> map) {
         List<Account> list = accountDAO.list(map);
-        List<AccountVO> vos = new ArrayList<>();
+        List<AccountVO> vos = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
             for (Account account : list) {
                 AccountVO vo = new AccountVO();

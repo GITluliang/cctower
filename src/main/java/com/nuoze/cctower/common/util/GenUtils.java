@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -28,7 +29,7 @@ import java.util.zip.ZipOutputStream;
 public class GenUtils {
 
     public static List<String> getTemplates() {
-        List<String> templates = new ArrayList<String>();
+        List<String> templates = new CopyOnWriteArrayList<>();
         templates.add("templates/common/generator/domain.java.vm");
         templates.add("templates/common/generator/Dao.java.vm");
         templates.add("templates/common/generator/Mapper.xml.vm");
@@ -61,7 +62,7 @@ public class GenUtils {
         tableDO.setClassname(StringUtils.uncapitalize(className));
 
         //列信息
-        List<ColumnDTO> columnList = new ArrayList<>();
+        List<ColumnDTO> columnList = new CopyOnWriteArrayList<>();
         for (Map<String, String> column : columns) {
             ColumnDTO columnDO = new ColumnDTO();
             columnDO.setColumnName(column.get("columnName"));

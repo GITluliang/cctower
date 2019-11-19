@@ -100,6 +100,7 @@ public class ApiServiceImpl implements ApiService {
         Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
         Passageway passageway = passagewayDAO.findByParkingIdAndIp(apiDTO.getParkingId(), apiDTO.getIp());
         ApiOutVO apiVO = new ApiOutVO();
+        Account account = accountService.findByParkingId(parkingId);
 
         //解决月租车与vip重复出厂
         Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
@@ -137,19 +138,25 @@ public class ApiServiceImpl implements ApiService {
                 //VIP_CAR：VIP车辆
                 if (VIP_CAR == car.getParkingType()) {
                     record.setPayType(PAYMENT_VIP);
-                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
+                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, VIP_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
+                }
+                //SPECIAL_CAR：特殊车辆
+                if (SPECIAL_CAR == car.getParkingType()) {
+                    record.setCostTime(costTime).setCost(new BigDecimal(5));
+                    apiVO.setCodeUrl(getCodeUrl(record, car.getCost() == null ? new BigDecimal(5) : car.getCost()));
+                    return buildApiOutVO(apiVO, record, 0, READY_TO_LEAVE, SPECIAL_CAR, carNumber, String.valueOf(car.getCost() == null ? 5 : car.getCost()), String.valueOf(paymentComponent.getServiceCharge(car.getCost() == null ? new BigDecimal(5) : car.getCost(), account.getServiceCharge())));
                 }
                 //MONTHLY_CAR:包月
                 if (MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
                     record.setPayType(PAYMENT_MONTHLY);
-                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
+                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, MONTHLY_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
                 }
                 //BUSINESS_CAR：商户车辆
                 if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
                     if (car.getFreeTime() >= costTime) {
                         carDAO.deleteByPrimaryKey(car.getId());
                         record.setPayType(PAYMENT_VBUSINESS);
-                        return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
+                        return buildApiOutVO(apiVO, record, 1, LEAVE_YET, BUSINESS_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
                     } else {
                         costTime = costTime - car.getFreeTime();
                     }
@@ -178,7 +185,6 @@ public class ApiServiceImpl implements ApiService {
             record.setCostTime(costTime).setCost(cost);
             //计算服务费
             BigDecimal serviceCharge = EMPTY_MONEY;
-            Account account = accountService.findByParkingId(parkingId);
             if (account != null) {
                 serviceCharge = paymentComponent.getServiceCharge(cost, account.getServiceCharge());
             }
@@ -205,7 +211,7 @@ public class ApiServiceImpl implements ApiService {
                     record.setPayType(PAYMENT_WECHAT);
                     billingComponent.addTradingRecord(cost.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, car.getNumber());
                     billingComponent.addAccountBalance(cost.subtract(serviceCharge), parkingId);
-                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, String.valueOf(cost), String.valueOf(serviceCharge));
+                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, String.valueOf(cost), String.valueOf(serviceCharge));
                 }
             }
             //如果依旧不是微信会员临时车辆或者微信余额不足，返回的apiOutVO中添加二维码url

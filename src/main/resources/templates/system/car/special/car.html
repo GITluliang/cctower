@@ -9,10 +9,10 @@
 				<div class="ibox-body">
 					<div class="fixed-table-toolbar">
 						<div class="columns pull-left">
-							<button shiro:hasPermission="sys:car:vip:add" type="button" class="btn  btn-primary" onclick="add()">
+							<button shiro:hasPermission="sys:car:special:add" type="button" class="btn  btn-primary" onclick="add()">
 								<i class="fa fa-plus" aria-hidden="true"></i>添加
 							</button>
-							<button shiro:hasPermission="sys:car:vip:batchRemove" type="button" class="btn  btn-danger"
+							<button shiro:hasPermission="sys:car:special:batchRemove" type="button" class="btn  btn-danger"
 								onclick="batchRemove()">
 								<i class="fa fa-trash" aria-hidden="true"></i>删除
 							</button>
@@ -49,23 +49,23 @@
 				var s_resetPwd_h = 'hidden';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:car:vip:edit">
+		<div shiro:hasPermission="sys:car:special:edit">
 			<script type="text/javascript">
 				s_edit_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:car:vip:remove">
+		<div shiro:hasPermission="sys:car:special:remove">
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:car:vip:resetPwd">
+		<div shiro:hasPermission="sys:car:special:resetPwd">
 			<script type="text/javascript">
 				var s_resetPwd_h = '';
 			</script>
 		</div>
 	</div>
 	<div th:include="include :: footer"></div>
-	<script type="text/javascript" src="/js/appjs/sys/car/vip/car.js"></script>
+	<script type="text/javascript" src="/js/appjs/sys/car/special/car.js"></script>
 </body>
 </html>

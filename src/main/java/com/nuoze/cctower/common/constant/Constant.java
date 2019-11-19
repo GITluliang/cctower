@@ -1,11 +1,12 @@
 package com.nuoze.cctower.common.constant;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 常量
+ *
  * @author JiaShun
  * @date 2019-03-01 01:57
  */
@@ -29,7 +30,7 @@ public class Constant {
 
     /**
      * 车辆出场状态
-     *      是否出场 0：否 1：是 2：待出场
+     * 是否出场 0：否 1：是 2：待出场
      */
     public static final int NOT_LEAVE = 0;
     public static final int LEAVE_YET = 1;
@@ -37,12 +38,13 @@ public class Constant {
 
     /**
      * 车辆类型
-     *  0:临时车 1:包月 2:VIP 3:商户车辆
+     * 0:临时车 1:包月 2:VIP 3:商户车辆 4:特殊车辆
      */
     public static final int TEMPORARY_CAR = 0;
     public static final int MONTHLY_CAR = 1;
     public static final int VIP_CAR = 2;
     public static final int BUSINESS_CAR = 3;
+    public static final int SPECIAL_CAR = 4;
 
     /**
      * 车辆状态
@@ -58,7 +60,7 @@ public class Constant {
     public static final String RENT_CAR_TYPE = "RENT_CAR";
     public static final String BILLING_CAR_TYPE = "BILLING_CAR";
 
-    public static final List EMPTY_LIST = new ArrayList<>(0);
+    public static final List EMPTY_LIST = new CopyOnWriteArrayList<>();
 
     /**
      * role id
@@ -78,7 +80,7 @@ public class Constant {
     /**
      * 付款类型
      * pay type 0：线下 1：微信 2：支付宝 3:vip
-     *      4：月租车、5：商户车辆、6：无需支付
+     * 4：月租车、5：商户车辆、6：无需支付
      */
     public static final Integer PAYMENT_OFFLINE = 0;
     public static final Integer PAYMENT_WECHAT = 1;

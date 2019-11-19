@@ -11,10 +11,10 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * ToC用户表
@@ -32,20 +32,20 @@ public class TcpMemberServiceImpl implements TcpMemberService {
         if (map.get("nickName") != null) {
             map.put("nickName", "%" + map.get("nickName") + "%");
         }
-        List<MemberVO> memberVOS = new ArrayList<>();
+        List<MemberVO> memberVOS = new CopyOnWriteArrayList<>();
         int count = memberDao.count(map);
         List<Member> list = memberDao.list(map);
         if (!CollectionUtils.isEmpty(list)) {
             for (Member member : list) {
-                MemberVO memberVO = new MemberVO();
-                memberVO.setAvatarUrl(member.getAvatarUrl());
-                memberVO.setBalance(member.getBalance());
-                memberVO.setCity(member.getCity());
-                memberVO.setId(member.getId());
-                memberVO.setNickName(member.getNickName());
-                memberVO.setOpenId(member.getOpenId());
-                memberVO.setPhone(member.getPhone());
-                memberVO.setProvince(member.getProvince());
+                MemberVO memberVO = new MemberVO()
+                        .setAvatarUrl(member.getAvatarUrl())
+                        .setBalance(member.getBalance())
+                        .setCity(member.getCity())
+                        .setId(member.getId())
+                        .setNickName(member.getNickName())
+                        .setOpenId(member.getOpenId())
+                        .setPhone(member.getPhone())
+                        .setProvince(member.getProvince());
 
                 Date createTime = member.getCreateTime();
                 if (createTime != null) {

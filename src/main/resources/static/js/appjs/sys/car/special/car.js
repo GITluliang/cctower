@@ -1,5 +1,5 @@
 
-var prefix = "/sys/car/vip"
+var prefix = "/sys/car/special"
 $(function() {
 	load();
 });
@@ -60,6 +60,10 @@ function load() {
 									title : '车牌号'
 								},
 								{
+									field : 'cost',
+									title : '停车费(元)'
+								},
+								{
 									field : 'name',
 									title : '车主姓名'
 								},
@@ -77,7 +81,7 @@ function load() {
 								},
 								{
 									field : 'classification',
-									title : '月租车分类',
+									title : '特殊车分类',
 									align : 'center',
 									formatter : function(value, row, index) {
 										if(value == null) {

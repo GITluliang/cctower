@@ -14,9 +14,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JiaShun
@@ -32,17 +32,17 @@ public class BusinessTransactionRecordServiceImpl implements BusinessTransaction
 
     @Override
     public Pair<Integer, List<BusinessTransactionRecordVO>> list(Map<String, Object> map) {
-        List<BusinessTransactionRecordVO> voList = new ArrayList<>();
+        List<BusinessTransactionRecordVO> voList = new CopyOnWriteArrayList<>();
         List<BusinessTransactionRecord> list = businessTransactionRecordDAO.list(map);
         if (!CollectionUtils.isEmpty(list)) {
             for (BusinessTransactionRecord btr : list) {
                 BusinessTransactionRecordVO vo = new BusinessTransactionRecordVO();
                 BeanUtils.copyProperties(btr, vo);
-                vo.setCreateTimeStr(DateUtils.formatDateTime(btr.getCreateTime()));
                 User user = userDAO.selectByPrimaryKey(btr.getUserId());
                 if (user != null) {
                     vo.setBusinessName(user.getName());
                 }
+                vo.setCreateTimeStr(DateUtils.formatDateTime(btr.getCreateTime()));
                 voList.add(vo);
             }
         }

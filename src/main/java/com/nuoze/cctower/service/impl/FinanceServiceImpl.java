@@ -11,11 +11,9 @@ import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.pojo.vo.FinanceVO;
 import com.nuoze.cctower.service.FinanceService;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,11 +39,13 @@ public class FinanceServiceImpl implements FinanceService {
 
     @Override
     public Pair<Integer, List<FinanceVO>> list(Map<String, Object> map) {
-        return new MutablePair<>(parkingRecordDAO.countByParkingId(map), map(parkingRecordDAO.listByParkingId(map)));
+        Integer count = parkingRecordDAO.countByParkingId(map);
+        List list = map(parkingRecordDAO.listByParkingId(map));
+        return new MutablePair<>(count, list);
     }
 
     private List map(List<ParkingRecord> list) {
-        List<FinanceVO> financeVOS = new ArrayList<>();
+        List<FinanceVO> financeVOS = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
             for (ParkingRecord ps : list) {
                 FinanceVO fv = new FinanceVO();

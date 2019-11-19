@@ -51,7 +51,7 @@ function load() {
                     },
                     {
                         field: 'freeTime',
-                        title: '免费时长(分钟)',
+                        title: '免费时长(小时)',
                         align: 'center'
                     },
                     {

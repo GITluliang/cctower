@@ -11,10 +11,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JiaShun
@@ -36,7 +36,7 @@ public class PassagewayServiceImpl implements PassagewayService {
     @Override
     public List<PassagewayDTO> list(Map<String, Object> map) {
         List<Passageway> list = passagewayDAO.list(map);
-        List<PassagewayDTO> passagewayDTOS = new ArrayList<>();
+        List<PassagewayDTO> passagewayDTOS = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
             for (Passageway vo : list) {
                 PassagewayDTO dto = new PassagewayDTO();

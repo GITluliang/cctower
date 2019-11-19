@@ -17,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.*;
 
@@ -50,7 +50,7 @@ public class DepositRecordServiceImpl implements DepositRecordService {
     @Override
     public List<DepositRecordVO> list(Map<String, Object> map) {
         List<DepositRecord> list = depositRecordDAO.list(map);
-        List<DepositRecordVO> vos = new ArrayList<>();
+        List<DepositRecordVO> vos = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
             for (DepositRecord depositRecord : list) {
                 DepositRecordVO vo = new DepositRecordVO();

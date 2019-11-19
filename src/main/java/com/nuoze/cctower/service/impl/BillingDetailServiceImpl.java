@@ -17,9 +17,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JiaShun
@@ -46,7 +46,7 @@ public class BillingDetailServiceImpl implements BillingDetailService {
             query.put("userId", userId);
         }
         List<BillingDetail> list = billingDetailDAO.list(query);
-        List<BillingDetailDTO> dtoList = new ArrayList<>();
+        List<BillingDetailDTO> dtoList = new CopyOnWriteArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (BillingDetail billing : list) {
                 BillingDetailDTO dto = new BillingDetailDTO();

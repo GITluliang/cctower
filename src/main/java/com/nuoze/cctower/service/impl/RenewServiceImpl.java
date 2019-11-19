@@ -12,10 +12,9 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JiaShun
@@ -31,7 +30,7 @@ public class RenewServiceImpl implements RenewService {
 
     @Override
     public Pair<Integer, List<RenewRecordVO>> list(Map<String, Object> map) {
-        List<RenewRecordVO> recordVOS = new ArrayList<>();
+        List<RenewRecordVO> recordVOS = new CopyOnWriteArrayList<>();
         List<RenewRecord> list = renewRecordDAO.listByParkingId(map);
         int count = renewRecordDAO.countByParkingId(map);
         if (!CollectionUtils.isEmpty(list)) {

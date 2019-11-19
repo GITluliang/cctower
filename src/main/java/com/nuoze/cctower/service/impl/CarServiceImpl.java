@@ -23,7 +23,6 @@ import com.nuoze.cctower.pojo.vo.RenewCarVO;
 import com.nuoze.cctower.service.BillingService;
 import com.nuoze.cctower.service.CarService;
 import com.nuoze.cctower.service.ParkingRecordService;
-
 import com.nuoze.cctower.service.ParkingService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.util.CollectionUtils;
@@ -36,6 +35,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.*;
 
@@ -84,37 +84,24 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<CarDTO> list(Map<String, Object> map) {
-        Long userId = idComponent.getUserId();
-        List<Long> roleIds = userRoleDAO.listRoleByUserId(userId);
+        List<Long> roleIds = userRoleDAO.listRoleByUserId(idComponent.getUserId());
         if (roleIds.contains(BUSINESS_ROLE_ID)) {
-            map.put("createId", userId);
+            map.put("createId", idComponent.getUserId());
         }
-        List<Car> list = carDAO.list(map);
-        List<CarDTO> carDTOList = new ArrayList<>();
-        for (Car car : list) {
-            CarDTO carDTO = new CarDTO();
-            BeanUtils.copyProperties(car, carDTO);
-            if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
-                carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart())).setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
-            }
-            if (car.getParkingId() != null) {
-                String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
-                carDTO.setParkingName(parkingName);
-            }
-            carDTOList.add(carDTO);
-        }
-        return carDTOList;
+        return mapList(carDAO.list(map));
     }
 
     @Override
     public List<CarDTO> listLike(Map<String, Object> map) {
-        Long userId = idComponent.getUserId();
-        List<Long> roleIds = userRoleDAO.listRoleByUserId(userId);
+        List<Long> roleIds = userRoleDAO.listRoleByUserId(idComponent.getUserId());
         if (roleIds.contains(BUSINESS_ROLE_ID)) {
-            map.put("createId", userId);
+            map.put("createId", idComponent.getUserId());
         }
-        List<Car> list = carDAO.listLike(map);
-        List<CarDTO> carDTOList = new ArrayList<>();
+        return mapList(carDAO.listLike(map));
+    }
+
+    private List mapList(List<Car> list) {
+        List<CarDTO> carDTOList = new CopyOnWriteArrayList<>();
         for (Car car : list) {
             CarDTO carDTO = new CarDTO();
             BeanUtils.copyProperties(car, carDTO);
@@ -124,6 +111,9 @@ public class CarServiceImpl implements CarService {
             if (car.getParkingId() != null) {
                 String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
                 carDTO.setParkingName(parkingName);
+            }
+            if(car.getFreeTime() != null && car.getParkingType() == SPECIAL_CAR) {
+                carDTO.setFreeTime(car.getFreeTime()/60);
             }
             carDTOList.add(carDTO);
         }
@@ -152,6 +142,9 @@ public class CarServiceImpl implements CarService {
         Parking parking = parkingDAO.selectByPrimaryKey(car.getParkingId());
         if (parking != null) {
             carDTO.setParkingName(parking.getName());
+        }
+        if(car.getFreeTime() != null && car.getParkingType() == SPECIAL_CAR) {
+            carDTO.setFreeTime(car.getFreeTime()/60);
         }
         return carDTO;
     }
@@ -201,7 +194,7 @@ public class CarServiceImpl implements CarService {
                         .setCarNumber(car.getNumber())
                         .setType(2)
                         .setCreateTime(new Date())
-                        .setFreeTime(car.getFreeTime());
+                        .setFreeTime(car.getFreeTime()/60);
                 userDAO.updateByPrimaryKeySelective(user);
                 businessTransactionRecordDAO.insert(businessTransactionRecord);
             }
@@ -227,29 +220,34 @@ public class CarServiceImpl implements CarService {
             BigDecimal cost = parkingRecord.getCost();
             takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
             Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
-            if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                int freeTime = car.getFreeTime();
-                if (freeTime >= takeMinutes) {
-                    cost = EMPTY_MONEY;
-                } else {
-                    cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
-                    if (billing.getWechatDiscount() != null) {
-                        cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
+            if (car != null) {
+                if(car.getParkingType() == SPECIAL_CAR) {
+                        cost = car.getCost() == null ? new BigDecimal(5) : car.getCost();
+                }else if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                    int freeTime = car.getFreeTime();
+                    if (freeTime >= takeMinutes) {
+                        cost = EMPTY_MONEY;
+                    } else {
+                        cost = billingComponent.cost(takeMinutes, parkingId, carNumber);
+                        if (billing.getWechatDiscount() != null) {
+                            cost = paymentComponent.wechatDiscounted(cost, billing.getWechatDiscount());
+                        }
                     }
-                }
-            } else {
-                Integer freeTime = billing.getFreeTime();
-                if (freeTime != null && freeTime >= takeMinutes) {
-                    cost = EMPTY_MONEY;
                 } else {
-                    cost = billingComponent.cost(takeMinutes, parkingId, null);
+                    Integer freeTime = billing.getFreeTime();
+                    if (freeTime != null && freeTime >= takeMinutes) {
+                        cost = EMPTY_MONEY;
+                    } else {
+                        cost = billingComponent.cost(takeMinutes, parkingId, null);
+                    }
                 }
             }
             Parking parking = parkingService.findById(parkingRecord.getParkingId());
             if (parking != null) {
                 parkingRecordVO.setParkingName(parking.getName());
             }
-            parkingRecordVO.setCarNumber(parkingRecord.getCarNumber())
+            parkingRecordVO
+                    .setCarNumber(parkingRecord.getCarNumber())
                     .setRecordId(parkingRecord.getId())
                     .setInTime(inTime)
                     .setOutTime(outTime)
@@ -306,7 +304,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public String[] wxCarList(String openId) {
         Member member = memberDAO.selectByOpenId(openId);
-        List<String> strings = new ArrayList<>();
+        List<String> strings = new CopyOnWriteArrayList<>();
         if (member != null) {
             List<Long> list = memberCarDAO.selectCarIdByMemberId(member.getId());
             if (list != null && !list.isEmpty()) {
@@ -349,7 +347,7 @@ public class CarServiceImpl implements CarService {
     public int saveBusinessCar(CarDTO dto) {
         Car car = new Car();
         BeanUtils.copyProperties(dto, car);
-        Integer freeTime = dto.getFreeTime();
+        Integer freeTime = dto.getFreeTime() * 60;
         Long parkingId = dto.getParkingId();
         Billing billing = billingDAO.selectByParkingId(parkingId);
         if (billing != null) {
@@ -371,8 +369,7 @@ public class CarServiceImpl implements CarService {
                 .setCarNumber(dto.getNumber())
                 .setFreeTime(dto.getFreeTime());
         businessTransactionRecordDAO.insert(businessTransactionRecord);
-        car.setCreateId(userId).setCost(cost).setCreateTime(new Date()).setUpdateTime(new Date());
-        return carDAO.insert(car);
+        return carDAO.insert(car.setCreateId(userId).setCost(cost).setCreateTime(new Date()).setUpdateTime(new Date()).setFreeTime(dto.getFreeTime() * 60));
     }
 
     @Override
@@ -439,9 +436,10 @@ public class CarServiceImpl implements CarService {
         List<RenewRecord> list = renewRecordDAO.findByOpenId(map);
         List<RenewCarRecordVO> renewCarRecordVOS = null;
         if (!CollectionUtils.isEmpty(list)) {
-            renewCarRecordVOS = new ArrayList<>();
+            renewCarRecordVOS = new CopyOnWriteArrayList<>();
             for (RenewRecord record : list) {
-                String parkingName = parkingDAO.selectByPrimaryKey(record.getParkingId()).getName();;
+                String parkingName = parkingDAO.selectByPrimaryKey(record.getParkingId()).getName();
+                ;
                 renewCarRecordVOS.add(new RenewCarRecordVO()
                         .setParkingCar(parkingName + ": " + record.getCarNumber())
                         .setCost(record.getCost().toString())
@@ -455,7 +453,8 @@ public class CarServiceImpl implements CarService {
     private Car dtoToCar(CarDTO dto) {
         Car car = new Car();
         BeanUtils.copyProperties(dto, car);
-        if (dto.getBeginDate() != null && dto.getEndDate() != null) {
+        car.setNumber(dto.getNumber().toUpperCase());
+        if (dto.getParkingType() == MONTHLY_CAR && dto.getBeginDate() != null && dto.getEndDate() != null) {
             try {
                 Date monthlyParkingStart = DateUtils.toDateTime(dto.getBeginDate());
                 Date monthlyParkingEnd = DateUtils.toDateTime(dto.getEndDate());

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.MAP_INIT_CAPACITY;
 
@@ -106,7 +107,7 @@ public class RoleServiceImpl implements RoleService {
     private void saveRoleMenu(RoleVO vo) {
         List<Long> menuIds = vo.getMenuIds();
         Long roleId = vo.getId();
-        List<RoleMenu> rms = new ArrayList<>();
+        List<RoleMenu> rms = new CopyOnWriteArrayList<>();
         for (Long menuId : menuIds) {
             RoleMenu rm = new RoleMenu();
             rm.setRoleId(roleId);

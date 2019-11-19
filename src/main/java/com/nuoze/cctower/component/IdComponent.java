@@ -4,14 +4,15 @@ import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.UserRoleDAO;
 import com.nuoze.cctower.pojo.entity.Parking;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.Map;
+
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.*;
 
@@ -29,6 +30,7 @@ public class IdComponent {
     /**
      * 当返回null代表角色是管理员，可以查看所有。
      * 当返回[]代表是普通角色，并且没有拥有的parking。
+     *
      * @return List
      */
     public List<Parking> getParkingList() {
@@ -38,7 +40,7 @@ public class IdComponent {
         if (!roleIds.contains(SUPER_ROLE_ID) && !roleIds.contains(ADMIN_ROLE_ID)) {
             parkingList = parkingDAO.findParkingByUser(userId);
             if (CollectionUtils.isEmpty(parkingList)) {
-                return new ArrayList<>(0);
+                return new CopyOnWriteArrayList<>();
             }
         }
         return parkingList;
@@ -56,7 +58,7 @@ public class IdComponent {
         if (!roleIds.contains(SUPER_ROLE_ID) && !roleIds.contains(ADMIN_ROLE_ID)) {
             parkingIds = parkingDAO.findByUserId(userId);
             if (CollectionUtils.isEmpty(parkingIds)) {
-                return new ArrayList<>(0);
+                return new CopyOnWriteArrayList<>();
             }
         }
         return parkingIds;

@@ -14,9 +14,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JiaShun
@@ -39,7 +38,7 @@ public class BillingServiceImpl implements BillingService {
             query.put("userId", userId);
         }
         List<Billing> list = billingDAO.list(query);
-        List<BillingDTO> dtoList = new ArrayList<>();
+        List<BillingDTO> dtoList = new CopyOnWriteArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (Billing billing : list) {
                 BillingDTO dto = new BillingDTO();

@@ -24,10 +24,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JiaShun
@@ -81,7 +80,7 @@ public class WalletServiceImpl implements WalletService {
         List<TopUpRecord> list = topUpRecordService.findByOpenId(map);
         List<TopUpRecordVO> topUpRecordVOS = null;
         if (!CollectionUtils.isEmpty(list)) {
-            topUpRecordVOS = new ArrayList<>();
+            topUpRecordVOS = new CopyOnWriteArrayList<>();
             for (TopUpRecord top : list) {
                 TopUpRecordVO vo = new TopUpRecordVO();
                 int billingType = top.getBillingType();
