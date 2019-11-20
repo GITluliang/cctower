@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${car.id}"  type="hidden">
+							<input id="parkingType" name="parkingType" value="5" type="hidden">
+							<input id="infieldPermission" name="infieldPermission" value="1" type="hidden">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">停车场</label>
+								<div class="col-sm-8">
+									<label th:each="parking:${parkingList}" class="radio-inline">
+										<input  name="parkingId" type="radio" th:value="${parking.id}"
+												th:text="${parking.name}" th:field="*{car.parkingId}">
+									</label>
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">车牌号：</label>
+								<div class="col-sm-8">
+									<label><input id="number" name="number" th:value="${car.number}" class="form-control" type="text"></label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">车主姓名：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${car.name}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系方式：</label>
+								<div class="col-sm-8">
+									<input id="phone" name="phone" th:value="${car.phone}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">公司名称：</label>
+								<div class="col-sm-8">
+									<input id="corporateName" name="corporateName" th:value="${car.corporateName}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">备注：</label>
+								<div class="col-sm-8">
+									<input id="remarks" name="remarks" th:value="${car.remarks}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">VIP分类：</label>
+								<div class="col-sm-8">
+									<input id="sort" name="classification" th:value="${car.classification}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">状态:</label>
+								<div class="col-sm-8">
+									<label class="radio-inline"> <input
+											th:field="*{car.status}" type="radio" name="status" value="1" />
+										正常
+									</label> <label class="radio-inline"> <input
+										th:field="*{car.status}" type="radio" name="status" value="0" />
+									禁用
+								</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/sys/car/singleVip/edit.js">
+	</script>
+	<script src="/js/appjs/common/laydate/laydate.js"></script>
+	<script>
+		lay('#version').html('-v'+ laydate.v);
+
+		//执行一个laydate实例
+		laydate.render({
+			elem: '#beginDate'
+			,theme: 'molv'
+		});
+		laydate.render({
+			elem: '#endDate'
+			,theme: 'molv'
+		});
+	</script>
+</body>
+</html>

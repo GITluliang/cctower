@@ -102,9 +102,9 @@ public class ApiServiceImpl implements ApiService {
         ApiOutVO apiVO = new ApiOutVO();
         Account account = accountService.findByParkingId(parkingId);
 
-        //解决月租车与vip重复出厂
+        //解决月租车与永久月租重复出厂
         Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
-        if (parking != null && car != null) {
+        if (parking != null && car != null && car.getStatus() == BUSINESS_NORMAL_CAR) {
             boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType();
             boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
             if (vipStatic || rentStatic) {
@@ -114,6 +114,7 @@ public class ApiServiceImpl implements ApiService {
                         record.setExitId(passageway.getId());
                     }
                 }
+                record.setPayStatus(PAY_STATUS_NORMAL);
                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
             }
         }
@@ -134,10 +135,16 @@ public class ApiServiceImpl implements ApiService {
             //停车时长（分钟）
             int costTime = DateUtils.diffMin(record.getInTime());
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
-            if (car != null) {
-                //VIP_CAR：VIP车辆
+            if (car != null && car.getStatus() == BUSINESS_NORMAL_CAR) {
+                //SINGLEVIP_CAR：单次VIP
+                if (SINGLEVIP_CAR == car.getParkingType()) {
+                    record.setPayType(PAYMENT_VIP).setPayStatus(PAY_STATUS_NORMAL);
+                    carDAO.updateByPrimaryKey(car.setStatus(BUSINESS_FORBIDDEN_CAR).setUpdateTime(new Date()));
+                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, SINGLEVIP_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
+                }
+                //VIP_CAR：永久月租
                 if (VIP_CAR == car.getParkingType()) {
-                    record.setPayType(PAYMENT_VIP);
+                    record.setPayType(PAYMENT_MONTHLY).setPayStatus(PAY_STATUS_NORMAL);;
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, VIP_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
                 }
                 //SPECIAL_CAR：特殊车辆
@@ -148,14 +155,14 @@ public class ApiServiceImpl implements ApiService {
                 }
                 //MONTHLY_CAR:包月
                 if (MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd())) {
-                    record.setPayType(PAYMENT_MONTHLY);
+                    record.setPayType(PAYMENT_MONTHLY).setPayStatus(PAY_STATUS_NORMAL);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, MONTHLY_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
                 }
                 //BUSINESS_CAR：商户车辆
                 if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
                     if (car.getFreeTime() >= costTime) {
                         carDAO.deleteByPrimaryKey(car.getId());
-                        record.setPayType(PAYMENT_VBUSINESS);
+                        record.setPayType(PAYMENT_VBUSINESS).setPayStatus(PAY_STATUS_NORMAL);
                         return buildApiOutVO(apiVO, record, 1, LEAVE_YET, BUSINESS_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
                     } else {
                         costTime = costTime - car.getFreeTime();
@@ -166,18 +173,15 @@ public class ApiServiceImpl implements ApiService {
             Billing billing = billingDAO.selectByParkingId(parkingId);
             //免费停车时间
             Integer freeTime = billing.getFreeTime();
-            if (freeTime != null) {
-                if (freeTime >= costTime) {
-                    if (car != null) {
-                        if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                            carDAO.deleteByPrimaryKey(car.getId());
-                            record.setPayType(PAYMENT_VBUSINESS);
-                        }
-                    } else {
-                        record.setPayType(PAYMENT_NOT);
-                    }
-                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
-                }
+            if (freeTime != null && freeTime >= costTime) {
+                 if (car != null) {
+                     if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                         carDAO.deleteByPrimaryKey(car.getId());
+                         record.setPayType(PAYMENT_VBUSINESS);
+                     }
+                 }
+                 record.setPayType(PAYMENT_NOT).setPayStatus(PAY_STATUS_NORMAL);
+                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
             }
 
             //计算车费

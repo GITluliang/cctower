@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
+import static com.nuoze.cctower.common.constant.Constant.SPECIAL_CAR;
 
 /**
  * VIP车辆
@@ -62,8 +63,7 @@ public class SpecialCarController {
             Parking value = parkingDAO.findByParkingName(String.valueOf(params.get("value")));
             params.put("parkingId", value == null ? 0 : value.getId());
         }
-        //0:临时车 1:包月 2:VIP 3:商户车辆 4:特殊车辆
-        params.put("parkingType", 4);
+        params.put("parkingType", SPECIAL_CAR);
         Query query = new Query(params);
         List<CarDTO> carList = carService.listLike(query);
         int total = carService.count(query);

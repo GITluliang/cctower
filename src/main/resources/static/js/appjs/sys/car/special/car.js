@@ -1,5 +1,4 @@
-
-var prefix = "/sys/car/special"
+var prefix = "/sys/car/special";
 $(function() {
 	load();
 });

@@ -115,7 +115,7 @@ function load() {
 									}
 								},
 								{
-									field : 'status',
+									field : 'payStatus',
 									title : '是否支付',
 									align : 'center',
 									formatter : function(value, row, index) {

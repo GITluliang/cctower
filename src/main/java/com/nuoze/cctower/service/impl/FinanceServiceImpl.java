@@ -78,7 +78,7 @@ public class FinanceServiceImpl implements FinanceService {
                         .setPayType(ps.getPayType())
                         .setCarNumber(ps.getCarNumber())
                         .setStatus(ps.getStatus())
-                        .setPayType(ps.getPayType())
+                        .setPayStatus(ps.getPayStatus())
                 );
             }
         }

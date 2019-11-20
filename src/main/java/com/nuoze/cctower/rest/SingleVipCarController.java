@@ -5,7 +5,6 @@ import com.nuoze.cctower.common.util.PageUtils;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
 import com.nuoze.cctower.component.IdComponent;
-import com.nuoze.cctower.dao.CarDAO;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
@@ -21,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-import static com.nuoze.cctower.common.constant.Constant.*;
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
+import static com.nuoze.cctower.common.constant.Constant.SINGLEVIP_CAR;
 
 /**
  * VIP车辆
@@ -31,9 +31,9 @@ import static com.nuoze.cctower.common.constant.Constant.*;
  */
 @Slf4j
 @Controller
-@RequestMapping("/sys/car/vip")
-public class VipCarController {
-    private String prefix = "system/car/vip/";
+@RequestMapping("/sys/car/singleVip")
+public class SingleVipCarController {
+    private String prefix = "system/car/singleVip/";
 
     @Autowired
     private CarService carService;
@@ -43,16 +43,16 @@ public class VipCarController {
     private ParkingDAO parkingDAO;
 
     @GetMapping()
-    @RequiresPermissions("sys:car:vip")
+    @RequiresPermissions("sys:car:singleVip")
     String car() {
-        return "system/car/vip/car";
+        return prefix + "car";
     }
 
     @ResponseBody
     @GetMapping("/list")
-    @RequiresPermissions("sys:car:vip")
+    @RequiresPermissions("sys:car:singleVip")
     public PageUtils list(@RequestParam Map<String, Object> params) {
-        log.info("[LONG CAR CONTROLLER] check vip car list, the params: {}", params.toString());
+        log.info("[LONG CAR CONTROLLER] check singleVip car list, the params: {}", params.toString());
         params.put(String.valueOf(params.get("query")), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
@@ -63,8 +63,7 @@ public class VipCarController {
             Parking value = parkingDAO.findByParkingName(String.valueOf(params.get("value")));
             params.put("parkingId", value == null ? 0 : value.getId());
         }
-        //查询列表数据
-        params.put("parkingType", VIP_CAR);
+        params.put("parkingType", SINGLEVIP_CAR);
         Query query = new Query(params);
         List<CarDTO> carList = carService.listLike(query);
         int total = carService.count(query);
@@ -72,7 +71,7 @@ public class VipCarController {
     }
 
     @GetMapping("/edit/{id}")
-    @RequiresPermissions("sys:car:vip:edit")
+    @RequiresPermissions("sys:car:singleVip:edit")
     String edit(@PathVariable Long id, Model model) {
         Car car = carService.findById(id);
         model.addAttribute("car", car);
@@ -82,7 +81,7 @@ public class VipCarController {
     }
 
     @GetMapping("/add")
-    @RequiresPermissions("sys:car:vip:add")
+    @RequiresPermissions("sys:car:singleVip:add")
     String add(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
@@ -94,7 +93,7 @@ public class VipCarController {
      */
     @ResponseBody
     @PostMapping("/save")
-    @RequiresPermissions("sys:car:vip:add")
+    @RequiresPermissions("sys:car:singleVip:add")
     public R save(CarDTO dto) {
         Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
         if (car != null) {
@@ -108,7 +107,7 @@ public class VipCarController {
      */
     @ResponseBody
     @RequestMapping("/update")
-    @RequiresPermissions("sys:car:vip:edit")
+    @RequiresPermissions("sys:car:singleVip:edit")
     public R update(CarDTO dto) {
         carService.update(dto);
         return R.ok();
@@ -119,7 +118,7 @@ public class VipCarController {
      */
     @PostMapping("/remove")
     @ResponseBody
-    @RequiresPermissions("sys:car:vip:remove")
+    @RequiresPermissions("sys:car:singleVip:remove")
     public R remove(Long id) {
         return carService.remove(id) > 0 ? R.ok() : R.error();
     }
@@ -129,7 +128,7 @@ public class VipCarController {
      */
     @PostMapping("/batchRemove")
     @ResponseBody
-    @RequiresPermissions("sys:car:vip:batchRemove")
+    @RequiresPermissions("sys:car:singleVip:batchRemove")
     public R remove(@RequestParam("ids[]") Long[] ids) {
         carService.batchRemove(ids);
         return R.ok();

@@ -43,9 +43,13 @@ public class ResponseResult {
         if (MONTHLY_CAR == car.getParkingType()) {
             return R.error(201, "此车牌号月租车中已存在");
         } else if (VIP_CAR == car.getParkingType()) {
-            return R.error(201, "此车牌号VIP车中已存在");
+            return R.error(201, "此车牌号永久月租中已存在");
         }else if (BUSINESS_CAR == car.getParkingType()) {
             return R.error(201, "此车牌号商户车中已存在");
+        }else if (SPECIAL_CAR == car.getParkingType()) {
+            return R.error(201, "此车牌号特殊车俩中已存在");
+        }else if (SINGLEVIP_CAR == car.getParkingType()) {
+            return R.error(201, "此车牌号VIP车俩中已存在");
         } else {
             return R.error(201, "此停车场已有此车牌号，不能重复添加");
         }

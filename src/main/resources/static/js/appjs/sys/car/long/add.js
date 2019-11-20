@@ -1,3 +1,4 @@
+var prefix = "/sys/car/long";
 $().ready(function () {
     validateRule();
 });
@@ -12,7 +13,7 @@ function save() {
     $.ajax({
         cache: true,
         type: "POST",
-        url: "/sys/car/long/save",
+        url: prefix + "/save",
         data: $('#signupForm').serialize(),// 你的formid
         async: false,
         error: function (request) {

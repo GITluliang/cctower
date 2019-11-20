@@ -38,13 +38,14 @@ public class Constant {
 
     /**
      * 车辆类型
-     * 0:临时车 1:包月 2:VIP 3:商户车辆 4:特殊车辆
+     * 0:临时车 1:包月 2:永久月租 3:商户车辆 4:特殊车辆 5:单次VIP
      */
     public static final int TEMPORARY_CAR = 0;
     public static final int MONTHLY_CAR = 1;
     public static final int VIP_CAR = 2;
     public static final int BUSINESS_CAR = 3;
     public static final int SPECIAL_CAR = 4;
+    public static final int SINGLEVIP_CAR = 5;
 
     /**
      * 车辆状态
@@ -52,6 +53,12 @@ public class Constant {
      */
     public static final int BUSINESS_FORBIDDEN_CAR = 0;
     public static final int BUSINESS_NORMAL_CAR = 1;
+    /**
+     * 支付状态
+     * 0:未支付 1：支付成功
+     */
+    public static final int PAY_STATUS_FORBIDDEN = 0;
+    public static final int PAY_STATUS_NORMAL = 1;
 
     /**
      * mq信息类型

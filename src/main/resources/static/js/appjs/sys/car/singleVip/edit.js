@@ -1,18 +1,17 @@
-var prefix = "/sys/car/vip";
+var prefix = "/sys/car/singleVip"
 $().ready(function() {
 	validateRule();
 });
-
 $.validator.setDefaults({
 	submitHandler : function() {
-		save();
+		update();
 	}
 });
-function save() {
+function update() {
 	$.ajax({
 		cache : true,
 		type : "POST",
-		url : prefix + "/save",
+		url : prefix + "/update",
 		data : $('#signupForm').serialize(),// 你的formid
 		async : false,
 		error : function(request) {

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.nuoze.cctower.service.CarService;
 
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
+import static com.nuoze.cctower.common.constant.Constant.MONTHLY_CAR;
 
 
 /**
@@ -77,7 +78,7 @@ public class LongCarController {
 
         }
         //查询列表数据
-        params.put("parkingType", 1);
+        params.put("parkingType", MONTHLY_CAR);
         Query query = new Query(params);
         List<CarDTO> carList = carService.listLike(query);
         int total = carService.countLike(query);

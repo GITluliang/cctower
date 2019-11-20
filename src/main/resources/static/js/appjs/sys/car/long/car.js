@@ -1,4 +1,3 @@
-
 var prefix = "/sys/car/long"
 $(function() {
 	load();

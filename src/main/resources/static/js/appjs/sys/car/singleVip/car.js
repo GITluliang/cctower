@@ -1,4 +1,4 @@
-var prefix = "/sys/car/vip"
+var prefix = "/sys/car/singleVip"
 $(function() {
 	load();
 });
@@ -76,7 +76,7 @@ function load() {
 								},
 								{
 									field : 'classification',
-									title : '月租车分类',
+									title : 'VIP分类',
 									align : 'center',
 									formatter : function(value, row, index) {
 										if(value == null) {

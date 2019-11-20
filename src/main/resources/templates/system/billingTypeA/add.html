@@ -15,7 +15,7 @@
 								<div class="col-sm-8">
 									<label th:each="parking:${parkingList}" class="radio-inline">
 										<input name="parkingId" type="radio" th:value="${parking.id}"
-											   th:text="${parking.name}">
+											   th:text="${parking.name}" checked>
 									</label>
 								</div>
 							</div>

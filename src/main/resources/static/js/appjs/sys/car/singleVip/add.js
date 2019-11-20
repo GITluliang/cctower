@@ -1,4 +1,4 @@
-var prefix = "/sys/car/vip";
+var prefix = "/sys/car/singleVip"
 $().ready(function() {
 	validateRule();
 });
