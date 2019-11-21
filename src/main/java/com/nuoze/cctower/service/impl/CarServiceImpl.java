@@ -188,16 +188,16 @@ public class CarServiceImpl implements CarService {
                         .setUpdateTime(new Date());
                 BigDecimal balance = user.getBalance().add(car.getCost());
                 user.setBalance(balance);
-                BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord()
+                userDAO.updateByPrimaryKeySelective(user);
+                businessTransactionRecordDAO.insert(new BusinessTransactionRecord()
                         .setUserId(userId)
                         .setAmount(car.getCost())
                         .setBalance(balance)
                         .setCarNumber(car.getNumber())
                         .setType(2)
                         .setCreateTime(new Date())
-                        .setFreeTime(car.getFreeTime()/60);
-                userDAO.updateByPrimaryKeySelective(user);
-                businessTransactionRecordDAO.insert(businessTransactionRecord);
+                        .setFreeTime(car.getFreeTime()/60)
+                        .setStatus(0));
             }
         }
         return carDAO.deleteByPrimaryKey(id);
@@ -362,15 +362,15 @@ public class CarServiceImpl implements CarService {
         BigDecimal balance = user.getBalance().subtract(cost);
         user.setBalance(balance);
         userDAO.updateByPrimaryKeySelective(user);
-        BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord()
+        businessTransactionRecordDAO.insert(new BusinessTransactionRecord()
                 .setUserId(userId)
                 .setAmount(cost)
                 .setBalance(balance)
                 .setType(0)
                 .setCreateTime(new Date())
                 .setCarNumber(dto.getNumber())
-                .setFreeTime(dto.getFreeTime());
-        businessTransactionRecordDAO.insert(businessTransactionRecord);
+                .setFreeTime(dto.getFreeTime())
+                .setStatus(0));
         return carDAO.insert(car.setCreateId(userId).setCost(cost).setCreateTime(new Date()).setUpdateTime(new Date()).setFreeTime(dto.getFreeTime() * 60));
     }
 

@@ -1,4 +1,4 @@
-var prefix = "/sys/businessTransaction"
+var prefix = "/sys/timeCouponDetails"
 $(function () {
     load();
 });
@@ -30,7 +30,7 @@ function load() {
                 queryParams: function (params) {
                     return {
                         //说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
-                        status: 0,
+                        status: 1,
                         limit: params.limit,
                         offset: params.offset
                     };

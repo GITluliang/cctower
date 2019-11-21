@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public List<UserVO> list(Map<String, Object> map) {
         List<UserVO> userVOList = new CopyOnWriteArrayList<>();
         List<User> list = userDAO.list(map);
-        for(User user : list) {
+        for (User user : list) {
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(user, userVO);
             List<Role> roleList = new CopyOnWriteArrayList<>();
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             userVO.setRoleList(roleList);
             userVOList.add(userVO);
         }
-        return userVOList ;
+        return userVOList;
     }
 
     @Override
@@ -78,10 +78,7 @@ public class UserServiceImpl implements UserService {
     public int save(UserVO vo) {
         User user = new User();
         BeanUtils.copyProperties(vo, user);
-        user.setBalance(EMPTY_MONEY);
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        int count = userDAO.insert(user);
+        int count = userDAO.insert(user.setBalance(EMPTY_MONEY).setCreateTime(new Date()).setUpdateTime(new Date()));
         vo.setId(userDAO.findByUsername(vo.getUsername()).getId());
         insertUserRole(vo);
         return count;
@@ -157,15 +154,7 @@ public class UserServiceImpl implements UserService {
         Pair<Integer, List<TenantTopUpVO>> pair = new MutablePair<>(count, new CopyOnWriteArrayList<>());
         if (!CollectionUtils.isEmpty(list)) {
             for (User user : list) {
-                Long parkingId = user.getParkingId();
-                String parkingName = parkingDAO.selectByPrimaryKey(parkingId).getName();
-                String businessName = user.getName();
-                TenantTopUpVO vo = new TenantTopUpVO();
-                vo.setUserId(user.getId());
-                vo.setParkingName(parkingName);
-                vo.setBusinessName(businessName);
-                vo.setBalance(user.getBalance());
-                pair.getRight().add(vo);
+                pair.getRight().add(new TenantTopUpVO().setUserId(user.getId()).setParkingName(parkingDAO.selectByPrimaryKey(user.getParkingId()).getName()).setBusinessName(user.getName()).setBalance(user.getBalance()).setTimeCoupon(user.getTimeCoupon()));
             }
         }
         return pair;
@@ -175,16 +164,15 @@ public class UserServiceImpl implements UserService {
     public int updateBalance(TenantTopUpVO vo) {
         User user = userDAO.selectByPrimaryKey(vo.getUserId());
         BigDecimal balance = user.getBalance().add(vo.getBalance());
-        BusinessTransactionRecord businessTransactionRecord = new BusinessTransactionRecord();
-        businessTransactionRecord.setAmount(vo.getBalance());
-        businessTransactionRecord.setType(1);
-        businessTransactionRecord.setUserId(vo.getUserId());
-        businessTransactionRecord.setCreateTime(new Date());
-        businessTransactionRecord.setBalance(balance);
-        businessTransactionRecordDAO.insert(businessTransactionRecord);
-        user.setBalance(balance);
-        user.setUpdateTime(new Date());
-        return userDAO.updateByPrimaryKeySelective(user);
+        businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setAmount(vo.getBalance()).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setBalance(balance).setStatus(0));
+        return userDAO.updateByPrimaryKeySelective(user.setBalance(balance).setUpdateTime(new Date()));
+    }
+
+    @Override
+    public int updateTimeCoupon(TenantTopUpVO vo) {
+        User user = userDAO.selectByPrimaryKey(vo.getUserId());
+        businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(new BigDecimal(0)).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setStatus(1));
+        return userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(user.getTimeCoupon() + vo.getTimeCoupon()).setUpdateTime(new Date()));
     }
 
     private void insertUserRole(UserVO vo) {
@@ -192,10 +180,7 @@ public class UserServiceImpl implements UserService {
         userRoleDAO.removeByUserId(vo.getId());
         List<UserRole> list = new CopyOnWriteArrayList<>();
         for (Long roleId : roleIds) {
-            UserRole userRole = new UserRole();
-            userRole.setUserId(vo.getId());
-            userRole.setRoleId(roleId);
-            list.add(userRole);
+            list.add(new UserRole().setUserId(vo.getId()).setRoleId(roleId));
         }
         if (!list.isEmpty()) {
             userRoleDAO.batchSave(list);

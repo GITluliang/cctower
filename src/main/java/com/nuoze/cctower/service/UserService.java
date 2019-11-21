@@ -108,5 +108,17 @@ public interface UserService {
 
     Pair<Integer, List<TenantTopUpVO>> tenantTopUpList(Map<String, Object> map);
 
+    /**
+     * 更新商户余额
+     * @param vo
+     * @return
+     */
     int updateBalance(TenantTopUpVO vo);
+
+    /**
+     * 更新时长劵
+     * @param vo
+     * @return
+     */
+    int updateTimeCoupon(TenantTopUpVO vo);
 }

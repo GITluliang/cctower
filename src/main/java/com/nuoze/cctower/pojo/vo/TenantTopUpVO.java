@@ -16,4 +16,5 @@ public class TenantTopUpVO {
     private String parkingName;
     private String businessName;
     private BigDecimal balance;
+    private Integer timeCoupon;
 }

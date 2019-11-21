@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.entity;
 
 import java.math.BigDecimal;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 
 /**
  * user
+ *
  * @author JiaShun
  */
 @Data
@@ -29,7 +31,7 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 物业公司名字
+     * 名字
      */
     private String name;
 
@@ -49,7 +51,7 @@ public class User implements Serializable {
     private String district;
 
     /**
-     * 物业公司地址
+     * 地址
      */
     private String address;
 
@@ -77,10 +79,18 @@ public class User implements Serializable {
      * 状态: 0:禁用 1:正常
      */
     private Integer status;
-
+    /**
+     * 创建时间
+     */
     private Date createTime;
-
+    /**
+     * 更新时间
+     */
     private Date updateTime;
+    /**
+     * 商户剩余时长劵
+     */
+    private Integer timeCoupon;
 
     private static final long serialVersionUID = 1L;
 

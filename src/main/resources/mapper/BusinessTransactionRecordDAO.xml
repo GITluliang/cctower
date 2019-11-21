@@ -10,9 +10,10 @@
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="free_time" jdbcType="INTEGER" property="freeTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, `type`, car_number, amount, balance, create_time, free_time
+    id, user_id, `type`, car_number, amount, balance, create_time, free_time, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,10 +27,10 @@
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.BusinessTransactionRecord">
     insert into business_transaction_record (id, user_id, `type`, 
-      car_number, amount, balance, create_time, free_time
+      car_number, amount, balance, create_time, free_time, status
       )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
-      #{carNumber,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{freeTime,jdbcType=INTEGER}
+      #{carNumber,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{freeTime,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.BusinessTransactionRecord">
@@ -59,6 +60,9 @@
       <if test="freeTime != null">
         free_time,
       </if>
+      <if test="status != null">
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -84,6 +88,9 @@
       </if>
       <if test="freeTime != null">
         #{freeTime,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -111,6 +118,9 @@
       <if test="freeTime != null">
         free_time = #{freeTime,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -122,7 +132,8 @@
       amount = #{amount,jdbcType=DECIMAL},
       balance = #{balance,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      free_time = #{freeTime,jdbcType=INTEGER}
+      free_time = #{freeTime,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -132,6 +143,7 @@
     from business_transaction_record
     <where>
       <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+      <if test="status != null and status != ''">and status = #{status}</if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -150,6 +162,7 @@
     select count(id) from business_transaction_record
     <where>
       <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+      <if test="status != null and status != ''">and status = #{status}</if>
     </where>
   </select>
 </mapper>

@@ -18,9 +18,10 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="time_coupon" jdbcType="INTEGER" property="timeCoupon" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, balance, username, `password`, `name`, province, city, district, address, principal, phone, type, parking_id, status, create_time, update_time
+    id, balance, username, `password`, `name`, province, city, district, address, principal, phone, type, parking_id, status, create_time, update_time, time_coupon
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -35,11 +36,11 @@
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.User">
     insert into user (id, balance, username, `password`,
       `name`, province, city, district, address, principal,
-      phone, type, parking_id, status, create_time, update_time
+      phone, type, parking_id, status, create_time, update_time, time_coupon
       )
     values (#{id,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
-      #{principal,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{parkingId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{principal,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{parkingId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{timeCoupon,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.User">
@@ -93,6 +94,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="timeCoupon != null">
+        time_coupon,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -142,6 +146,9 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeCoupon != null">
+        #{timeCoupon,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -193,6 +200,9 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="timeCoupon != null">
+        time_coupon = #{timeCoupon,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -212,7 +222,8 @@
       parking_id = #{parkingId,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      time_coupon = #{timeCoupon,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -243,6 +254,7 @@
       <if test="status != null and status != ''">and status = #{status}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="timeCoupon != null and timeCoupon != ''">and time_coupon = #{timeCoupon}</if>
       <if test="keyword != null and keyword != ''">
         AND (username LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')
@@ -287,6 +299,7 @@
       <if test="status != null and status != ''">and status = #{status}</if>
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+      <if test="timeCoupon != null and timeCoupon != ''">and time_coupon = #{timeCoupon}</if>
       <if test="keyword != null and keyword != ''">
         AND (username LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')

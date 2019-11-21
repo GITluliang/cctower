@@ -738,7 +738,7 @@ CREATE TABLE `user` (
   `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '负责人联系方式',
   `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '用户类型：0：物业公司 1：商户',
   `parking_id` bigint(20) DEFAULT NULL COMMENT '商户对应的停车场ID',
-  `remaining_time` int(20) DEFAULT NULL COMMENT '商户剩余停车时长',
+  `time_coupon` int(20) DEFAULT NULL COMMENT '商户剩余时长劵',
   `status` tinyint(2) DEFAULT NULL COMMENT '状态：0：禁用 1：启用',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
