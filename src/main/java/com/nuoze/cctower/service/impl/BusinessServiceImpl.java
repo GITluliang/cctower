@@ -31,6 +31,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class BusinessServiceImpl implements BusinessService {
 
     private static final String BUSINESS_ROLE_NAME = "商户";
+    private static final String BUSINESS_TIMECOUPON = "时长劵商户";
 
     @Autowired
     private UserDAO userDAO;
@@ -70,11 +71,9 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public int save(User user) {
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        int count = userDAO.insertSelective(user);
         UserVO vo = new UserVO();
         BeanUtils.copyProperties(user, vo);
+        int count = userDAO.insertSelective(user.setCreateTime(new Date()).setUpdateTime(new Date()).setTimeCoupon(0).setType(1));
         vo.setId(userDAO.findByUsername(user.getUsername()).getId());
         insertUserRole(vo);
         return count;
@@ -82,10 +81,9 @@ public class BusinessServiceImpl implements BusinessService {
 
     private void insertUserRole(UserVO vo) {
         userRoleDAO.removeByUserId(vo.getId());
-        Role role = roleDAO.findByRoleName(BUSINESS_ROLE_NAME);
-        UserRole userRole = new UserRole();
-        userRole.setUserId(vo.getId());
-        userRole.setRoleId(role.getId());
-        userRoleDAO.insert(userRole);
+        Role role = roleDAO.findByRoleName(vo.getType() ==1 ? BUSINESS_ROLE_NAME : BUSINESS_TIMECOUPON);
+        if (role != null) {
+            userRoleDAO.insert(new UserRole().setUserId(vo.getId()).setRoleId(role.getId()));
+        }
     }
 }

@@ -40,7 +40,8 @@
       )
     values (#{id,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
-      #{principal,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{parkingId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{timeCoupon,jdbcType=INTEGER}
+      #{principal,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{parkingId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER},
+       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{timeCoupon,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.User">

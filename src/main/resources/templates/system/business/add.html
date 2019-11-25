@@ -10,14 +10,20 @@
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" id="signupForm">
 							<input id="id" name="id" type="hidden">
-							<input id="type" name="type" value="1" type="hidden">
 							<div class="form-group">
 								<label class="col-sm-3 control-label">停车场</label>
 								<div class="col-sm-8">
 									<label th:each="parking:${parkingList}" class="radio-inline">
 										<input name="parkingId" id="parkingId" type="radio" th:value="${parking.id}"
-											   th:text="${parking.name}">
+											   th:text="${parking.name}" checked>
 									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">商户类型：</label>
+								<div class="col-sm-8">
+									<label><input id="type" name="type" value="1" type="radio" checked>普通商户</label>
+									<label><input id="type" name="type" value="2" type="radio">时长劵商户</label>
 								</div>
 							</div>
 							<div class="form-group">

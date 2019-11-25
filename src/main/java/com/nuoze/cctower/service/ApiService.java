@@ -1,6 +1,9 @@
 package com.nuoze.cctower.service;
 
+import com.nuoze.cctower.pojo.dto.ApiCarLongDTO;
 import com.nuoze.cctower.pojo.dto.ApiDTO;
+import com.nuoze.cctower.pojo.dto.CarDTO;
+import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.Passageway;
 import com.nuoze.cctower.pojo.vo.ApiCheckCarVO;
 import com.nuoze.cctower.pojo.vo.ApiOutVO;
@@ -35,4 +38,32 @@ public interface ApiService {
     boolean initData(ApiDTO apiDTO, String rentCarType);
 
     ApiPayStatusVO checkPayStatus(String uuid);
+
+    /**
+     * 线下：月租车录入
+     * @param dto
+     * @return
+     */
+    int saveCarLong(ApiCarLongDTO dto);
+
+    /**
+     * 线下：根据UUID进行修改,月租车
+     * @param dto
+     * @return
+     */
+    int updateCarLong(ApiCarLongDTO dto);
+
+    /**
+     * 线下：根据UUID进行删除月租车
+     * @param ids
+     * @return
+     */
+    int batchRemoveCarLong(String[] uuids) ;
+
+    /**
+     * 线下：根据UUID进行查询
+     * @param uuid
+     * @return
+     */
+    Car findByUuid(String uuid) ;
 }

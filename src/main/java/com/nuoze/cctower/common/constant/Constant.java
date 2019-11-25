@@ -38,7 +38,7 @@ public class Constant {
 
     /**
      * 车辆类型
-     * 0:临时车 1:包月 2:永久月租 3:商户车辆 4:特殊车辆 5:单次VIP
+     * 0:临时车 1:包月 2:永久月租 3:商户车辆 4:特殊车辆 5:单次VIP 6:时长劵商户车辆
      */
     public static final int TEMPORARY_CAR = 0;
     public static final int MONTHLY_CAR = 1;
@@ -46,6 +46,7 @@ public class Constant {
     public static final int BUSINESS_CAR = 3;
     public static final int SPECIAL_CAR = 4;
     public static final int SINGLEVIP_CAR = 5;
+    public static final int TIMECOUPON_CAR = 6;
 
     /**
      * 车辆状态

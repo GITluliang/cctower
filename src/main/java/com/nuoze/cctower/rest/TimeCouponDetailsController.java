@@ -35,7 +35,7 @@ public class TimeCouponDetailsController {
     @GetMapping()
     @RequiresPermissions("sys:timeCouponDetails:timeCouponDetails")
     String timeCouponDetails() {
-        return "system/businessTransaction/timeCouponDetails";
+        return "system/timeCoupon/timeCouponDetails";
     }
 
     @ResponseBody

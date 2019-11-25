@@ -50,6 +50,8 @@ public class ResponseResult {
             return R.error(201, "此车牌号特殊车俩中已存在");
         }else if (SINGLEVIP_CAR == car.getParkingType()) {
             return R.error(201, "此车牌号VIP车俩中已存在");
+        }else if (TIMECOUPON_CAR == car.getParkingType()) {
+            return R.error(201, "此车牌号时长劵商户车辆中已存在");
         } else {
             return R.error(201, "此停车场已有此车牌号，不能重复添加");
         }

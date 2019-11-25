@@ -171,8 +171,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateTimeCoupon(TenantTopUpVO vo) {
         User user = userDAO.selectByPrimaryKey(vo.getUserId());
-        businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(new BigDecimal(0)).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setStatus(1));
-        return userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(user.getTimeCoupon() + vo.getTimeCoupon()).setUpdateTime(new Date()));
+        Integer timeCoupon = user.getTimeCoupon() != null ? (user.getTimeCoupon() + vo.getTimeCoupon()) : vo.getTimeCoupon();
+        businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(BigDecimal.valueOf(vo.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setStatus(1));
+        return userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(timeCoupon).setUpdateTime(new Date()));
     }
 
     private void insertUserRole(UserVO vo) {

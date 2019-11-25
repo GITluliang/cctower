@@ -3,78 +3,88 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="ibox float-e-margins">
-					<div class="ibox-content">
-						<form class="form-horizontal m-t" id="signupForm">
-							<!--<div class="form-group">	-->
-								<!--<label class="col-sm-3 control-label">：</label>-->
-								<!--<div class="col-sm-8">-->
-									<!--<input id="parkingId" name="parkingId" class="form-control" type="text">-->
-								<!--</div>-->
-							<!--</div>-->
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <!--<div class="form-group">	-->
+                        <!--<label class="col-sm-3 control-label">：</label>-->
+                        <!--<div class="col-sm-8">-->
+                        <!--<input id="parkingId" name="parkingId" class="form-control" type="text">-->
+                        <!--</div>-->
+                        <!--</div>-->
 
-							<div class="form-group">
-								<label class="col-sm-3 control-label">停车场</label>
-								<div class="col-sm-8">
-									<label th:each="parking:${parkingList}" class="radio-inline">
-										<input id="parkingId" name="parkingId" type="radio" th:value="${parking.id}"
-											   th:text="${parking.name}" checked>
-									</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">月租费用：</label>
-								<div class="col-sm-8">
-									<label><input id="monthlyPrice" name="monthlyPrice" class="form-control" type="text"></label>
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">免费停车时间(分钟)：</label>
-								<div class="col-sm-8">
-									<label><input id="freeTime" name="freeTime" class="form-control" type="text"></label>
-								</div>
-							</div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">停车场</label>
+                            <div class="col-sm-8">
+                                <label th:each="parking:${parkingList}" class="radio-inline">
+                                    <input id="parkingId" name="parkingId" type="radio" th:value="${parking.id}"
+                                           th:text="${parking.name}" checked>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">月租费用：</label>
+                            <div class="col-sm-8">
+                                <label><input id="monthlyPrice" name="monthlyPrice" class="form-control"
+                                              type="text"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">免费停车时间(分钟)：</label>
+                            <div class="col-sm-8">
+                                <label><input id="freeTime" name="freeTime" class="form-control" type="text"></label>
+                            </div>
+                        </div>
 
-							<div class="form-group">
-								<label class="col-sm-3 control-label">出厂预留时间(分钟)：</label>
-								<div class="col-sm-8">
-									<label><input id="paidFreeTime" name="paidFreeTime" class="form-control" type="text"></label>
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">微信折扣百分比：</label>
-								<div class="col-sm-8">
-									<label><input id="wechatDiscount" name="wechatDiscount" class="form-control" type="text"></label>
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">支付宝折扣百分比：</label>
-								<div class="col-sm-8">
-									<label><input id="alipayDiscount" name="alipayDiscount" class="form-control" type="text"></label>
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">24小时最高收费：</label>
-								<div class="col-sm-8">
-									<label><input id="dayCost" name="dayCost" class="form-control" type="text"></label>
-								</div>
-							</div>
-																					<div class="form-group">
-								<div class="col-sm-8 col-sm-offset-3">
-									<button type="submit" class="btn btn-primary">提交</button>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-	</div>
-	</div>
-	<div th:include="include::footer"></div>
-	<script type="text/javascript" src="/js/appjs/sys/billing/add.js">
-	</script>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">出厂预留时间(分钟)：</label>
+                            <div class="col-sm-8">
+                                <label><input id="paidFreeTime" name="paidFreeTime" class="form-control"
+                                              type="text"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">微信折扣百分比：</label>
+                            <div class="col-sm-8">
+                                <label><input id="wechatDiscount" name="wechatDiscount" class="form-control"
+                                              type="text"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">支付宝折扣百分比：</label>
+                            <div class="col-sm-8">
+                                <label><input id="alipayDiscount" name="alipayDiscount" class="form-control"
+                                              type="text"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">24小时最高收费：</label>
+                            <div class="col-sm-8">
+                                <label><input id="dayCost" name="dayCost" class="form-control" type="text"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">时长劵时间(分钟)：</label>
+                            <div class="col-sm-8">
+                                <label><input id="couponTime" name="couponTime" class="form-control" type="text"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/sys/billing/add.js">
+</script>
 </body>
 </html>

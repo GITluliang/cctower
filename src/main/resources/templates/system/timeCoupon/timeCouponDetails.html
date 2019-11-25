@@ -34,23 +34,23 @@
 				var s_resetPwd_h = 'hidden';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:timeCouponDetails:edit">
+		<div shiro:hasPermission="sys:timeCoupon:edit">
 			<script type="text/javascript">
 				s_edit_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:timeCouponDetails:remove">
+		<div shiro:hasPermission="sys:timeCoupon:remove">
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:timeCouponDetails:resetPwd">
+		<div shiro:hasPermission="sys:timeCoupon:resetPwd">
 			<script type="text/javascript">
 				var s_resetPwd_h = '';
 			</script>
 		</div>
 	</div>
 	<div th:include="include :: footer"></div>
-	<script type="text/javascript" src="/js/appjs/sys/businessTransaction/timeCouponDetails.js"></script>
+	<script type="text/javascript" src="/js/appjs/sys/timeCoupon/timeCouponDetails.js"></script>
 </body>
 </html>

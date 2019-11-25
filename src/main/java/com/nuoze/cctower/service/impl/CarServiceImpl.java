@@ -10,7 +10,6 @@ import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.component.BillingComponent;
 import com.nuoze.cctower.component.IdComponent;
-import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.component.MqSendComponent;
 import com.nuoze.cctower.component.PaymentComponent;
 import com.nuoze.cctower.dao.*;
@@ -29,15 +28,19 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.nio.cs.US_ASCII;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.nuoze.cctower.common.constant.Constant.*;
+import static com.nuoze.cctower.common.util.ShiroUtils.getUserId;
 
 /**
  * @author JiaShun
@@ -109,11 +112,10 @@ public class CarServiceImpl implements CarService {
                 carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart())).setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
             }
             if (car.getParkingId() != null) {
-                String parkingName = parkingDAO.selectByPrimaryKey(car.getParkingId()).getName();
-                carDTO.setParkingName(parkingName);
+                carDTO.setParkingName(parkingDAO.selectByPrimaryKey(car.getParkingId()).getName());
             }
-            if(car.getFreeTime() != null && car.getParkingType() == SPECIAL_CAR) {
-                carDTO.setFreeTime(car.getFreeTime()/60);
+            if (car.getFreeTime() != null && car.getParkingType() == BUSINESS_CAR) {
+                carDTO.setFreeTime(car.getFreeTime() / 60);
             }
             carDTOList.add(carDTO);
         }
@@ -136,27 +138,22 @@ public class CarServiceImpl implements CarService {
         Car car = carDAO.selectByPrimaryKey(id);
         BeanUtils.copyProperties(car, carDTO);
         if (car.getMonthlyParkingStart() != null && car.getMonthlyParkingEnd() != null) {
-            carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart()))
-                    .setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
+            carDTO.setBeginDate(DateUtils.toTimeString(car.getMonthlyParkingStart())).setEndDate(DateUtils.toTimeString(car.getMonthlyParkingEnd()));
         }
         Parking parking = parkingDAO.selectByPrimaryKey(car.getParkingId());
         if (parking != null) {
             carDTO.setParkingName(parking.getName());
         }
-        if(car.getFreeTime() != null && car.getParkingType() == SPECIAL_CAR) {
-            carDTO.setFreeTime(car.getFreeTime()/60);
+        if (car.getFreeTime() != null && car.getParkingType() == BUSINESS_CAR) {
+            carDTO.setFreeTime(car.getFreeTime() / 60);
         }
         return carDTO;
     }
 
     @Override
     public int save(CarDTO dto) {
-        dto.setNumber(dto.getNumber().toUpperCase()) ;
-        Long userId = ShiroUtils.getUserId();
-        Car car = dtoToCar(dto)
-                .setCreateId(userId)
-                .setCreateTime(new Date())
-                .setUpdateTime(new Date());
+        Long userId = getUserId();
+        Car car = dtoToCar(dto).setCreateId(userId).setCreateTime(new Date()).setUpdateTime(new Date());
         int i = carDAO.insert(car);
         if (1 == car.getParkingType()) {
             Car vo = carDAO.findByParkingIdAndCarNumber(car.getParkingId(), car.getNumber());
@@ -183,21 +180,16 @@ public class CarServiceImpl implements CarService {
                 mqSendComponent.sendRentCar(ApiDataEnum.DELETE, car);
             }
             if (BUSINESS_CAR == car.getParkingType()) {
-                Long userId = ShiroUtils.getUserId();
-                User user = userDAO.selectByPrimaryKey(userId)
-                        .setUpdateTime(new Date());
+                User user = userDAO.selectByPrimaryKey(car.getCreateId());
                 BigDecimal balance = user.getBalance().add(car.getCost());
-                user.setBalance(balance);
-                userDAO.updateByPrimaryKeySelective(user);
-                businessTransactionRecordDAO.insert(new BusinessTransactionRecord()
-                        .setUserId(userId)
-                        .setAmount(car.getCost())
-                        .setBalance(balance)
-                        .setCarNumber(car.getNumber())
-                        .setType(2)
-                        .setCreateTime(new Date())
-                        .setFreeTime(car.getFreeTime()/60)
-                        .setStatus(0));
+                userDAO.updateByPrimaryKeySelective(user.setBalance(balance).setUpdateTime(new Date()));
+                businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(getUserId()).setAmount(car.getCost()).setBalance(balance).setCarNumber(car.getNumber()).setType(2).setCreateTime(new Date()).setFreeTime(car.getFreeTime() / 60).setStatus(0));
+            }
+            if (TIMECOUPON_CAR == car.getParkingType()) {
+                User user = userDAO.selectByPrimaryKey(car.getCreateId());
+                Integer timeCoupon = user.getTimeCoupon() + car.getTimeCoupon();
+                userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(timeCoupon).setUpdateTime(new Date()));
+                businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(getUserId()).setAmount(BigDecimal.valueOf(car.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setCarNumber(car.getNumber()).setType(2).setCreateTime(new Date()).setFreeTime(car.getFreeTime() / 60).setStatus(1));
             }
         }
         return carDAO.deleteByPrimaryKey(id);
@@ -220,11 +212,11 @@ public class CarServiceImpl implements CarService {
             BigDecimal cost = parkingRecord.getCost();
             Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
             if (car != null && car.getStatus() == BUSINESS_NORMAL_CAR) {
-                if(MONTHLY_CAR == car.getParkingType() || TEMPORARY_CAR == car.getParkingType() || SINGLEVIP_CAR == car.getParkingType() || parkingRecord.getPayStatus() == 1) {
-                    cost = EMPTY_MONEY ;
-                }else if(SPECIAL_CAR == car.getParkingType()) {
-                        cost = car.getCost() == null ? new BigDecimal(5) : car.getCost();
-                }else if (BUSINESS_CAR == car.getParkingType()) {
+                if (MONTHLY_CAR == car.getParkingType() || TEMPORARY_CAR == car.getParkingType() || SINGLEVIP_CAR == car.getParkingType() || parkingRecord.getPayStatus() == 1) {
+                    cost = EMPTY_MONEY;
+                } else if (SPECIAL_CAR == car.getParkingType()) {
+                    cost = car.getCost() == null ? new BigDecimal(5) : car.getCost();
+                } else if (BUSINESS_CAR == car.getParkingType()) {
                     int freeTime = car.getFreeTime();
                     if (freeTime >= takeMinutes) {
                         cost = EMPTY_MONEY;
@@ -272,7 +264,7 @@ public class CarServiceImpl implements CarService {
                 case VIP_CAR:
                     return ResponseResult.fail(201, "你是长租车辆，无需付款");
                 case SINGLEVIP_CAR:
-                    if(BUSINESS_NORMAL_CAR == car.getStatus()) {
+                    if (BUSINESS_NORMAL_CAR == car.getStatus()) {
                         return ResponseResult.fail(201, "你是VIP车辆，无需付款");
                     }
                     break;
@@ -346,7 +338,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public int saveBusinessCar(CarDTO dto) {
-        dto.setNumber(dto.getNumber().toUpperCase());
+        dto.setNumber(dto.getNumber().toUpperCase()).setParkingType(BUSINESS_CAR);
         Car car = new Car();
         BeanUtils.copyProperties(dto, car);
         Integer freeTime = dto.getFreeTime() * 60;
@@ -356,22 +348,33 @@ public class CarServiceImpl implements CarService {
             freeTime = freeTime + billing.getFreeTime();
         }
         BigDecimal cost = billingComponent.cost(freeTime, parkingId, null);
-        Long userId = ShiroUtils.getUserId();
-        User user = userDAO.selectByPrimaryKey(userId)
-                .setUpdateTime(new Date());
+        Long userId = getUserId();
+        User user = userDAO.selectByPrimaryKey(userId).setUpdateTime(new Date());
         BigDecimal balance = user.getBalance().subtract(cost);
-        user.setBalance(balance);
-        userDAO.updateByPrimaryKeySelective(user);
-        businessTransactionRecordDAO.insert(new BusinessTransactionRecord()
-                .setUserId(userId)
-                .setAmount(cost)
-                .setBalance(balance)
-                .setType(0)
-                .setCreateTime(new Date())
-                .setCarNumber(dto.getNumber())
-                .setFreeTime(dto.getFreeTime())
-                .setStatus(0));
+        userDAO.updateByPrimaryKeySelective(user.setBalance(balance));
+        businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(userId).setAmount(cost).setBalance(balance).setType(0).setCreateTime(new Date()).setCarNumber(dto.getNumber()).setFreeTime(dto.getFreeTime()).setStatus(0));
         return carDAO.insert(car.setCreateId(userId).setCost(cost).setCreateTime(new Date()).setUpdateTime(new Date()).setFreeTime(dto.getFreeTime() * 60));
+    }
+
+    @Override
+    public int saveTimeCouponCar(CarDTO dto) {
+        dto.setNumber(dto.getNumber().toUpperCase()).setParkingType(TIMECOUPON_CAR);
+        Car car = new Car();
+        BeanUtils.copyProperties(dto, car);
+        Long parkingId = dto.getParkingId();
+        Billing billing = billingDAO.selectByParkingId(parkingId);
+        if(billing != null && billing.getCouponTime() != null) {
+            Long userId = getUserId();
+            User user = userDAO.selectByPrimaryKey(userId).setUpdateTime(new Date());
+            Integer timeCoupon = user.getTimeCoupon() - dto.getFreeTime();
+            userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(timeCoupon));
+
+            Integer freeTime = billing.getCouponTime() * dto.getFreeTime();
+            businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(userId).setAmount(BigDecimal.valueOf(dto.getFreeTime())).setBalance(BigDecimal.valueOf(timeCoupon)).setType(0).setCreateTime(new Date()).setCarNumber(dto.getNumber()).setFreeTime(freeTime).setStatus(1));
+            return carDAO.insert(car.setCreateId(userId).setCreateTime(new Date()).setUpdateTime(new Date()).setFreeTime(freeTime).setTimeCoupon(dto.getFreeTime()));
+        }else {
+            return 0;
+        }
     }
 
     @Override

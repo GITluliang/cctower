@@ -52,7 +52,7 @@ function load() {
                     },
                     {
                         field: 'freeTime',
-                        title: '免费时长(小时)',
+                        title: '免费时长(分钟)',
                         align: 'center'
                     },
                     {
@@ -63,19 +63,21 @@ function load() {
                             if (value == '0') {
                                 return '<span class="label label-primary">停车费</span>';
                             } else if (value == '1') {
-                                return '<span class="label abel-success">余额充值</span>';
+                                return '<span class="label abel-success">时长劵充值</span>';
                             }else if (value == '2') {
-                                return '<span class="label label-warning">停车费退回</span>';
+                                return '<span class="label label-warning">时长劵退回</span>';
                             }
                         }
                     },
                     {
                         field: 'amount',
-                        title: '交易金额'
+                        title: '时长劵(张)',
+                        align: 'center'
                     },
                     {
                         field: 'balance',
-                        title: '账户余额'
+                        title: '剩余时长劵(张)',
+                        align: 'center'
                     },
                     {
                         field : 'createTimeStr',

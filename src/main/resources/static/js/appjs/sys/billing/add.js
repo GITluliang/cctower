@@ -59,6 +59,10 @@ function validateRule() {
 			} ,
 			dayCost : {
 				required : true
+			} ,
+			couponTime : {
+				required : true ,
+				min : 0
 			}
 		},
 		messages : {
@@ -82,6 +86,10 @@ function validateRule() {
 			} ,
 			dayCost : {
 				required : icon + "请输入24小时最高收费"
+			} ,
+			couponTime : {
+				required : icon + "请输入时长劵时间" ,
+				min : icon + "请输入时长劵时间"
 			}
 		}
 	})

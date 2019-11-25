@@ -52,6 +52,12 @@ public class Billing implements Serializable {
      * 所属物业公司ID(新加字段)
      */
     private Long userId ;
+
+    /**
+     * 商户车辆时长劵
+     */
+    private Integer couponTime;
+
     private static final long serialVersionUID = 1L;
 
 }

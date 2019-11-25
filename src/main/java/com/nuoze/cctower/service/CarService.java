@@ -60,7 +60,17 @@ public interface CarService {
 
     void deleteWxCar(Car car);
 
+    /**
+     * 商户车辆添加：
+     * 1. 进行商户账户金额的扣除
+     * 2. 进行商户流水的添加
+     * 3. 进行商户车辆的添加
+     * @param dto
+     * @return
+     */
     int saveBusinessCar(CarDTO dto);
+
+    int saveTimeCouponCar(CarDTO dto);
 
     Result renewByNumber(String carNumber);
 

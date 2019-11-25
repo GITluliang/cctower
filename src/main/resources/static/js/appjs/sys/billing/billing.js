@@ -80,6 +80,10 @@ function load() {
 									field : 'dayCost', 
 									title : '24小时最高收费' 
 								},
+								{
+									field : 'couponTime',
+									title : '时长劵时间'
+								},
 																{
 									title : '操作',
 									field : 'id',

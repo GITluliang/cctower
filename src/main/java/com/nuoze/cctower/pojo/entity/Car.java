@@ -30,7 +30,7 @@ public class Car implements Serializable {
     private Long parkingId;
 
     /**
-     * 0:临时车 1:包月 2:VIP 3:商户车辆
+     * 0:临时车 1:包月 2:永久月租 3:商户车辆 4:特殊车辆 5:单次VIP 6:时长劵商户车辆
      */
     private Integer parkingType;
 
@@ -107,6 +107,15 @@ public class Car implements Serializable {
      */
     private String classification;
 
+    /**
+     * 商户剩余时长劵
+     */
+    private Integer timeCoupon;
+
+    /**
+     * 线下车牌唯一标识
+     */
+    private String uuid;
     private static final long serialVersionUID = 1L;
 
 }

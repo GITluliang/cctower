@@ -4,11 +4,14 @@ import com.nuoze.cctower.common.constant.Constant;
 import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.result.ResultEnum;
+import com.nuoze.cctower.common.util.R;
 import com.nuoze.cctower.dao.CarDAO;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.dao.ParkingRecordDAO;
 import com.nuoze.cctower.dao.PassagewayDAO;
+import com.nuoze.cctower.pojo.dto.ApiCarLongDTO;
 import com.nuoze.cctower.pojo.dto.ApiDTO;
+import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.pojo.entity.ParkingRecord;
@@ -18,6 +21,7 @@ import com.nuoze.cctower.pojo.vo.ApiPayStatusVO;
 import com.nuoze.cctower.service.ApiService;
 import com.nuoze.cctower.service.CarService;
 import com.nuoze.cctower.service.ParkingService;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-import static com.nuoze.cctower.common.constant.Constant.MONTHLY_CAR;
-import static com.nuoze.cctower.common.constant.Constant.VIP_CAR;
+import static com.nuoze.cctower.common.constant.Constant.*;
 
 /**
  * @author JiaShun
@@ -72,11 +75,11 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        //解决月租车与vip重复入厂
+        //解决月租车与永久月租重复入厂
         Parking parking = parkingService.findById(apiDTO.getParkingId());
         Car car = carService.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
         if (parking != null && car != null) {
-            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType();
+            boolean vipStatic = parking.getVipStatic() == 0 && BUSINESS_NORMAL_CAR == car.getParkingType();
             boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
             if (vipStatic || rentStatic) {
                 return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
@@ -129,6 +132,12 @@ public class ApiController {
         return apiService.paid(apiDTO) ? ResponseResult.success() : ResponseResult.fail(202, "停车场内无此车辆");
     }
 
+    /**
+     * 检查支付状态
+     * @param uuid
+     * @param auth
+     * @return
+     */
     @GetMapping("check-pay-status")
     public Result checkPayStatus(@RequestParam("uuid") String uuid, @RequestHeader("authorization") String auth) {
         log.info("[API CONTROLLER] check pay status by uuid: {}", uuid);
@@ -156,7 +165,12 @@ public class ApiController {
         return ResponseResult.success(apiService.changeCarNumber(apiDTO) ? ResponseResult.success() : ResponseResult.fail(202, "停车场内无此车辆"));
     }
 
-
+    /**
+     * 是否是月租车
+     * @param apiDTO
+     * @param auth
+     * @return
+     */
     @PostMapping("is-free-car")
     public Result isFreeCar(@RequestBody ApiDTO apiDTO, @RequestHeader("authorization") String auth) {
         log.info("[API CONTROLLER] isFreeCar getOldCarNumber: {} CarNumber: {} parking id: {}", apiDTO.getOldCarNumber(), apiDTO.getCarNumber(), apiDTO.getParkingId());
@@ -271,5 +285,82 @@ public class ApiController {
                 break;
         }
         return flag ? null : ResponseResult.fail(ResultEnum.INVALID_PARAM);
+    }
+
+    /**
+     * 线下月租车录入
+     * @param dto
+     * @param auth
+     * @return
+     */
+    @PostMapping("carLong/save")
+    public Result save(@RequestBody ApiCarLongDTO dto, @RequestHeader("authorization") String auth) {
+        log.info("[API CONTROLLER] carLong/save auth: {} CarDTO:{}", auth, dto);
+        Result result = checkParamLongCar(dto, auth);
+        Result carExist = isCarExist(dto);
+        if (result != null ) { return result; }
+        if (carExist != null ) { return carExist; }
+        return apiService.saveCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车添加失败");
+    }
+
+    /**
+     * 线下月租车更新
+     * @param dto
+     * @param auth
+     * @return
+     */
+    @PostMapping("carLong/update")
+    public Result update(@RequestBody ApiCarLongDTO dto, @RequestHeader("authorization") String auth) {
+        log.info("[API CONTROLLER] carLong/update auth: {} CarDTO:{}", auth, dto);
+        Result result = checkParamLongCar(dto, auth);
+        if (result != null ) { return result; }
+        Car byUuid = apiService.findByUuid(dto.getUuid());
+        if (byUuid == null) { return ResponseResult.fail(203, "月租车更新失败,不存在"); }
+        if (! dto.getCarNumber().equalsIgnoreCase(byUuid.getNumber())) {
+            Result carExist = isCarExist(dto);
+            if (carExist != null) {return  carExist;}
+        }
+        return apiService.updateCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车更新失败");
+    }
+
+    /**
+     * 线下月租车删除
+     * @param ids
+     * @param auth
+     * @return
+     */
+    @PostMapping("carLong/batchRemove")
+    public Result remove(@RequestBody String[] uuids, @RequestHeader("authorization") String auth) {
+        log.info("[API CONTROLLER] carLong/batchRemove auth: {} uuids:{}", auth, uuids);
+        if (!token.equals(auth)) { return ResponseResult.fail(ResultEnum.PERMISSION_DENIED); }
+        if (uuids.length == 0) {
+            return ResponseResult.fail(ResultEnum.INVALID_PARAM);
+        }
+        return apiService.batchRemoveCarLong(uuids) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车删除失败");
+    }
+
+    private Result checkParamLongCar(ApiCarLongDTO dto, String auth) {
+        if (!token.equals(auth)) { return ResponseResult.fail(ResultEnum.PERMISSION_DENIED); }
+        if (StringUtils.isEmpty(dto.getUuid()) || dto.getParkingId() == null  || StringUtils.isEmpty(dto.getCarNumber()) ||
+                StringUtils.isEmpty(dto.getBeginDate()) || StringUtils.isEmpty(dto.getEndDate())) {
+            return ResponseResult.fail(ResultEnum.INVALID_PARAM);
+        }
+        String regex = "\\d{4}-\\d{2}-\\d{2}";
+        if(!(dto.getBeginDate().matches(regex) || dto.getEndDate().matches(regex))) {return ResponseResult.fail(ResultEnum.INVALID_PARAM);}
+        return null ;
+    }
+    private Result isCarExist(ApiCarLongDTO dto) {
+        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
+        if (car != null) {
+            String msg = "此停车场已有此车牌号，不能重复添加";
+            if (MONTHLY_CAR == car.getParkingType()) { msg = "此车牌号月租车中已存在"; }
+            if (VIP_CAR == car.getParkingType()) { msg = "此车牌号永久月租中已存在"; }
+            if (BUSINESS_CAR == car.getParkingType()) { msg = "此车牌号商户车中已存在"; }
+            if (SPECIAL_CAR == car.getParkingType()) { msg = "此车牌号特殊车俩中已存在"; }
+            if (SINGLEVIP_CAR == car.getParkingType()) { msg = "此车牌号VIP车俩中已存在"; }
+            if (TIMECOUPON_CAR == car.getParkingType()) { msg = "此车牌号时长劵商户车辆中已存在"; }
+            return ResponseResult.fail(203, msg);
+        }
+        return null;
     }
 }

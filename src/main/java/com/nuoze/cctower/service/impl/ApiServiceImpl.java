@@ -12,7 +12,9 @@ import com.nuoze.cctower.component.BillingComponent;
 import com.nuoze.cctower.component.MqSendComponent;
 import com.nuoze.cctower.component.PaymentComponent;
 import com.nuoze.cctower.dao.*;
+import com.nuoze.cctower.pojo.dto.ApiCarLongDTO;
 import com.nuoze.cctower.pojo.dto.ApiDTO;
+import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.*;
 import com.nuoze.cctower.pojo.vo.ApiCheckCarVO;
 import com.nuoze.cctower.pojo.vo.ApiOutVO;
@@ -22,6 +24,7 @@ import com.nuoze.cctower.service.ApiService;
 import com.nuoze.cctower.service.PassagewayService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.util.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -32,6 +35,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.nuoze.cctower.common.constant.Constant.*;
+import static com.nuoze.cctower.common.util.ShiroUtils.getUserId;
 
 /**
  * @author JiaShun
@@ -81,12 +85,7 @@ public class ApiServiceImpl implements ApiService {
             Long entranceId = passageway.getId();
             record.setEntranceId(entranceId);
         }
-        record.setParkingId(apiDTO.getParkingId());
-        record.setCarNumber(apiDTO.getCarNumber());
-        record.setStatus(NOT_LEAVE);
-        record.setInTime(new Date());
-        record.setPayStatus(0);
-        recordDAO.insert(record);
+        recordDAO.insert(record.setParkingId(apiDTO.getParkingId()).setCarNumber(apiDTO.getCarNumber()).setStatus(NOT_LEAVE).setInTime(new Date()).setPayStatus(0));
         return true;
     }
 
@@ -158,8 +157,8 @@ public class ApiServiceImpl implements ApiService {
                     record.setPayType(PAYMENT_MONTHLY).setPayStatus(PAY_STATUS_NORMAL);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, MONTHLY_CAR, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
                 }
-                //BUSINESS_CAR：商户车辆
-                if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                //BUSINESS_CAR：商户车辆 TIMECOUPON_CAR：时长劵商户车辆
+                if (BUSINESS_CAR == car.getParkingType() && TIMECOUPON_CAR == car.getParkingType()) {
                     if (car.getFreeTime() >= costTime) {
                         carDAO.deleteByPrimaryKey(car.getId());
                         record.setPayType(PAYMENT_VBUSINESS).setPayStatus(PAY_STATUS_NORMAL);
@@ -200,15 +199,7 @@ public class ApiServiceImpl implements ApiService {
                 //如果余额 > 车费，直接从余额扣除。
                 if (member.getBalance().compareTo(cost) >= 0) {
                     BigDecimal balance = member.getBalance().subtract(cost);
-                    topUpRecordDAO.insert(new TopUpRecord()
-                            .setParkingId(parkingId)
-                            .setBalance(balance)
-                            .setAmount(cost)
-                            .setPayStatus(1)
-                            .setBillingType(0)
-                            .setCreateTime(new Date())
-                            .setUpdateTime(new Date())
-                            .setOpenId(openId)
+                    topUpRecordDAO.insert(new TopUpRecord().setParkingId(parkingId).setBalance(balance).setAmount(cost).setPayStatus(1).setBillingType(0).setCreateTime(new Date()).setUpdateTime(new Date()).setOpenId(openId)
                     );
                     memberDAO.updateByPrimaryKeySelective(member.setBalance(balance).setUpdateTime(new Date())
                     );
@@ -249,10 +240,7 @@ public class ApiServiceImpl implements ApiService {
             if (StringUtils.isEmpty(record.getQrCodeOrderSn())) {
                 record.setQrCodeOrderSn(orderRequest.getOutTradeNo());
             } else {
-                orderNumberDAO.insert(new OrderNumber()
-                        .setParkingRecordId(record.getId())
-                        .setOrderSn(orderRequest.getOutTradeNo())
-                        .setCreateTime(new Date()));
+                orderNumberDAO.insert(new OrderNumber().setParkingRecordId(record.getId()).setOrderSn(orderRequest.getOutTradeNo()).setCreateTime(new Date()));
             }
             codeUrl = result.getCodeURL();
         } catch (WxPayException e) {
@@ -323,6 +311,26 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    public int saveCarLong(ApiCarLongDTO dto) {
+        return carDAO.insert(dtoToCar(dto).setCreateId(0L).setCreateTime(new Date()).setUpdateTime(new Date()));
+    }
+
+    @Override
+    public int updateCarLong(ApiCarLongDTO dto) {
+        return carDAO.updateByUuid(dtoToCar(dto).setUpdateTime(new Date()));
+    }
+
+    @Override
+    public int batchRemoveCarLong(String[] uuids) {
+        return carDAO.batchRemoveByUuid(uuids);
+    }
+
+    @Override
+    public Car findByUuid(String uuid) {
+        return carDAO.findByUuid(uuid);
+    }
+
+    @Override
     public ApiCheckCarVO isRentFreeCar(ApiDTO apiDTO) {
         Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
         int status = 0;
@@ -387,5 +395,16 @@ public class ApiServiceImpl implements ApiService {
         }
         return true;
     }
-
+    private Car dtoToCar(ApiCarLongDTO dto) {
+        dto.setCarNumber(dto.getCarNumber().toUpperCase());
+        Car car = new Car();
+        BeanUtils.copyProperties(dto, car);
+        car.setNumber(dto.getCarNumber()).setParkingType(1).setStatus(1).setInfieldPermission(1);
+        try {
+            car.setMonthlyParkingStart(DateUtils.toDateTime(dto.getBeginDate())).setMonthlyParkingEnd(DateUtils.toDateTime(dto.getEndDate()));
+        } catch (Exception e) {
+            log.error("Time format error: {}", e.getMessage());
+        }
+        return car;
+    }
 }

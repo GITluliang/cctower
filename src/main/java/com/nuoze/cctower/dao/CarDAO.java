@@ -58,4 +58,25 @@ public interface CarDAO extends BaseDAO<Car> {
     Car findByCarNumberAndParkingType(@Param("carNumber") String carNumber, @Param("parkingType") Integer parkingType);
 
     List<Car> findByParkingIdAndParkingType(@Param("parkingId") Long parkingId, @Param("parkingType") Integer parkingType);
+
+    /**
+     * 根据UUID进行更新
+     * @param car
+     * @return
+     */
+    int updateByUuid(Car car);
+
+    /**
+     * 根据UUID进行删除
+     * @param ids
+     * @return
+     */
+    int batchRemoveByUuid(String[] uuids);
+
+    /**
+     * 根据UUID进行查询
+     * @param uuid
+     * @return
+     */
+    Car findByUuid(String uuid);
 }
