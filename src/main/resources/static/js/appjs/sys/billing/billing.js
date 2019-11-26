@@ -82,7 +82,7 @@ function load() {
 								},
 								{
 									field : 'couponTime',
-									title : '时长劵时间'
+									title : '时长劵时间(分钟)'
 								},
 																{
 									title : '操作',

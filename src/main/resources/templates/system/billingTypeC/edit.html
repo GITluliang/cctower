@@ -24,22 +24,27 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">计费标准:</label>
                             <div class="col-sm-8">
-                                <label class="radio-inline"> <input
+                                <!--<label class="radio-inline"> <input
                                         th:field="*{detail.unitType}" type="radio" name="unitType" value="1"/>
-                                    小时
+                                    小时-->
                                 </label> <label class="radio-inline"> <input
                                     th:field="*{detail.unitType}" type="radio" name="unitType" value="0" checked/>
                                 分钟
                             </label>
                             </div>
                         </div>
-
-
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">时段:</label>
+                            <div class="col-sm-8">
+                                <label><input id="timeInterval" name="timeInterval" th:value="${detail.timeInterval}"
+                                              class="form-control" type="text"></label>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">单价(元):</label>
                             <div class="col-sm-8">
-                                <input id="unitPrice" name="unitPrice" th:value="${detail.unitPrice}"
-                                       class="form-control" type="text">
+                                <label><input id="unitPrice" name="unitPrice" th:value="${detail.unitPrice}"
+                                              class="form-control" type="text"></label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -54,7 +59,7 @@
     </div>
 </div>
 <div th:include="include::footer"></div>
-<script type="text/javascript" src="/js/appjs/sys/billingTypeA/edit.js">
+<script type="text/javascript" src="/js/appjs/sys/billingTypeC/edit.js">
 </script>
 </body>
 </html>

@@ -15,7 +15,7 @@ public class ApiMqVO {
      *  GO_OUT_CAR、RENT_CAR、BILLING_CAR
      */
     private String type;
-        private GoOutVO goOutVO;
+    private GoOutVO goOutVO;
     private BillingVO billingVO;
     private RentCarVO rentCarVO;
 }

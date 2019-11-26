@@ -16,6 +16,7 @@ import static com.nuoze.cctower.common.constant.Constant.*;
 
 /**
  * BillingComponent 计费组件类
+ *
  * @author JiaShun
  * @date 2019-07-07 09:14
  */
@@ -36,9 +37,10 @@ public class BillingComponent {
 
     /**
      * 增加交易流水
-     * @param money 流水金额
+     *
+     * @param money     流水金额
      * @param parkingId 停车场ID
-     * @param type 收入类型
+     * @param type      收入类型
      */
     public void addTradingRecord(BigDecimal money, Long parkingId, IncomeType type, String carNumber) {
         tradingRecordDAO.insert(new ParkingTradingRecord()
@@ -52,7 +54,8 @@ public class BillingComponent {
 
     /**
      * 更新停车场账户余额
-     * @param money 金额
+     *
+     * @param money     金额
      * @param parkingId 停车场ID
      */
     public void addAccountBalance(BigDecimal money, Long parkingId) {
@@ -77,13 +80,13 @@ public class BillingComponent {
     public R billingParamsCheck(BillingDetail detail) {
         switch (detail.getType()) {
             case 1:
-                if (detail.getParkingId() == null || detail.getUnitType() == null || detail.getUnitPrice() == null ) {
+                if (detail.getParkingId() == null || detail.getUnitType() == null || detail.getUnitPrice() == null) {
                     return R.error(201, "参数不能为空");
                 }
                 break;
             case 2:
                 if (detail.getParkingId() == null || detail.getOne() == null || detail.getTwo() == null || detail.getThree() == null || detail.getFour() == null ||
-                        detail.getFive() == null || detail.getSix() == null || detail.getSeven() == null || detail.getEight()== null || detail.getNine() == null ||
+                        detail.getFive() == null || detail.getSix() == null || detail.getSeven() == null || detail.getEight() == null || detail.getNine() == null ||
                         detail.getTen() == null || detail.getEleven() == null || detail.getTwelve() == null || detail.getThirteen() == null || detail.getFourteen() == null ||
                         detail.getFifteen() == null || detail.getSixteen() == null || detail.getSeventeen() == null || detail.getEighteen() == null ||
                         detail.getNineteen() == null || detail.getTwenty() == null || detail.getTwentyOne() == null || detail.getTwentyTwo() == null ||
@@ -99,7 +102,8 @@ public class BillingComponent {
 
     /**
      * 计费费用
-     * @param costTime 停车时长（分钟）
+     *
+     * @param costTime  停车时长（分钟）
      * @param parkingId 停车场id
      * @param carNumber 车牌号
      * @return BigDecimal 停车费
@@ -140,6 +144,16 @@ public class BillingComponent {
                 }
                 BigDecimal hourCost = hourToCost(detail, hour);
                 return dayCost.add(hourCost);
+            case 3:
+                if (billing.getFreeTime() != null) {
+                    costTime = costTime - billing.getFreeTime();
+                }
+                if (detail.getUnitType() == 0) {
+                    return detail.getUnitPrice().multiply(BigDecimal.valueOf(costTime % detail.getTimeInterval() > 0 ? costTime / detail.getTimeInterval() + 1 : costTime / detail.getTimeInterval()));
+                } else {
+                    costTime = DateUtils.minToHour(costTime);
+                    return detail.getUnitPrice().multiply(BigDecimal.valueOf(costTime % detail.getTimeInterval() > 0 ? costTime / detail.getTimeInterval() + 1 : costTime / detail.getTimeInterval()));
+                }
             default:
                 break;
         }
@@ -148,8 +162,9 @@ public class BillingComponent {
 
     /**
      * 获取小时费用
+     *
      * @param detail BillingDetail  收费规则详情表
-     * @param hour int 停车时长（小时）
+     * @param hour   int 停车时长（小时）
      * @return
      */
     private BigDecimal hourToCost(BillingDetail detail, int hour) {

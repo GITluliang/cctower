@@ -34,12 +34,13 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="time_interval" jdbcType="TINYINT" property="timeInterval" />
   </resultMap>
   <sql id="Base_Column_List">
     id, parking_id, `type`, unit_type, unit_price, one, two, three, four, five, six, 
     seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen,
     eighteen, nineteen, twenty, twenty_one, twenty_two, twenty_three, twenty_four, create_time,
-    update_time, user_id
+    update_time, user_id, time_interval
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -61,7 +62,7 @@
       sixteen, seventeen, eighteen,
       nineteen, twenty, twenty_one,
       twenty_two, twenty_three, twenty_four,
-      create_time, update_time, user_id)
+      create_time, update_time, user_id, time_interval)
     values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
       #{unitType,jdbcType=TINYINT}, #{unitPrice,jdbcType=DECIMAL}, #{one,jdbcType=DECIMAL}, 
       #{two,jdbcType=DECIMAL}, #{three,jdbcType=DECIMAL}, #{four,jdbcType=DECIMAL}, #{five,jdbcType=DECIMAL}, 
@@ -71,7 +72,7 @@
       #{sixteen,jdbcType=DECIMAL}, #{seventeen,jdbcType=DECIMAL}, #{eighteen,jdbcType=DECIMAL},
       #{nineteen,jdbcType=DECIMAL}, #{twenty,jdbcType=DECIMAL}, #{twentyOne,jdbcType=DECIMAL}, 
       #{twentyTwo,jdbcType=DECIMAL}, #{twentyThree,jdbcType=DECIMAL}, #{twentyFour,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{timeInterval,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.BillingDetail">
     insert into billing_detail
@@ -170,7 +171,10 @@
         update_time,
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
+        user_Id,
+      </if>
+      <if test="timeInterval != null">
+        time_interval,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -268,7 +272,10 @@
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="timeInterval != null">
+        #{timeInterval,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -368,6 +375,9 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
       </if>
+      <if test="timeInterval != null">
+        time_interval = #{timeInterval,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -403,7 +413,8 @@
       twenty_four = #{twentyFour,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      user_id = #{userId,jdbcType=BIGINT}
+      user_id = #{userId,jdbcType=BIGINT},
+      time_interval = #{timeInterval,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -444,6 +455,7 @@
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
       <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+      <if test="timeInterval != null and timeInterval != ''">and time_interval = #{timeInterval}</if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -471,7 +483,7 @@
       <if test="id != null and id != ''">and id = #{id}</if>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
       <if test="type != null and type != ''">and type = #{type}</if>
-      <if test="unitType != null and unitType != ''">and parking_id = #{unitType}</if>
+      <if test="unitType != null and unitType != ''">and unit_type = #{unitType}</if>
       <if test="unitPrice != null and unitPrice != ''">and unit_type = #{unitPrice}</if>
       <if test="one != null and one != ''">and one = #{one}</if>
       <if test="two != null and two != ''">and two = #{two}</if>
@@ -500,6 +512,7 @@
       <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
       <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
       <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+      <if test="timeInterval != null and timeInterval != ''">and time_interval = #{timeInterval}</if>
     </where>
   </select>
 

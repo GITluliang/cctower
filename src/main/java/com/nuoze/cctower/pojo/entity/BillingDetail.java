@@ -89,6 +89,11 @@ public class BillingDetail implements Serializable {
      * 所属物业公司ID(新加字段)
      */
     private Long userId ;
+    /**
+     * 时段
+     * 例如：15分钟/3元
+     */
+    private Integer timeInterval;
 
     private static final long serialVersionUID = 1L;
 }

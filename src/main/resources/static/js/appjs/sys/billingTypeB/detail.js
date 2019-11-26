@@ -47,11 +47,6 @@ function load() {
 								{
 									checkbox : true
 								},
-																{
-									field : 'id', 
-									title : '' 
-								},
-
 								{
 									field : 'parkingName',
 									title : '停车场'
