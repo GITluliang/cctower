@@ -50,7 +50,7 @@ function load() {
                         field: 'parkingName',
                         title: '停车场'
                     },
-                    {
+/*                    {
                         field: 'unitType',
                         title: '分段计费',
                         align: 'center',
@@ -61,14 +61,14 @@ function load() {
                                 return '<span class="label label-primary">小时</span>';
                             }
                         }
-                    },
+                    },*/
                     {
                         field: 'unitPrice',
                         title: '单价(元)'
                     },
                     {
                         field: 'timeInterval',
-                        title: '时段'
+                        title: '时段(分钟)'
                     },
                     {
                         title: '操作',

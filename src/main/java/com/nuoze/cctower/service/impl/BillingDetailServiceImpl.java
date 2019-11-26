@@ -71,18 +71,16 @@ public class BillingDetailServiceImpl implements BillingDetailService {
 
     @Override
     public int save(BillingDetail detail) {
+        int insert = billingDetailDAO.insert(detail.setCreateTime(new Date()).setUpdateTime(new Date()).setUserId(ShiroUtils.getUser().getId()));
         mqSendComponent.sendBilling(ApiDataEnum.ADD, findBillingByDetail(detail), detail);
-        detail.setCreateTime(new Date());
-        detail.setUpdateTime(new Date());
-        detail.setUserId(ShiroUtils.getUser().getId());
-        return billingDetailDAO.insert(detail);
+        return insert;
     }
 
     @Override
     public int update(BillingDetail detail) {
+        int i = billingDetailDAO.updateByPrimaryKeySelective(detail.setUpdateTime(new Date()));
         mqSendComponent.sendBilling(ApiDataEnum.UPDATE, findBillingByDetail(detail), detail);
-        detail.setUpdateTime(new Date());
-        return billingDetailDAO.updateByPrimaryKeySelective(detail);
+        return i;
     }
 
     @Override

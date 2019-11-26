@@ -165,11 +165,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public int update(CarDTO dto) {
         Car car = dtoToCar(dto);
-        car.setUpdateTime(new Date());
+        int i = carDAO.updateByPrimaryKeySelective(car.setUpdateTime(new Date()));
         if (1 == car.getParkingType()) {
             mqSendComponent.sendRentCar(ApiDataEnum.UPDATE, carDAO.selectByPrimaryKey(car.getId()));
         }
-        return carDAO.updateByPrimaryKeySelective(car);
+        return i;
     }
 
     @Override
