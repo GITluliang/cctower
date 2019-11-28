@@ -9,9 +9,9 @@ function load() {
             {
                 method: 'get', // 服务器数据的请求方式 get or post
                 url: prefix + "/list", // 服务器数据的加载地址
-                //	showRefresh : true,
-                //	showToggle : true,
-                //	showColumns : true,
+                showRefresh : true,
+                showToggle : true,
+                showColumns : true,
                 iconSize: 'outline',
                 toolbar: '#exampleToolbar',
                 striped: true, // 设置为true会有隔行变色效果
@@ -93,7 +93,10 @@ function load() {
                                 + '\')"><i class="fa fa-key"></i></a> ';
                                 return e + d;
                         }
-                    }]
+                    }],
+                //********************
+                showExport: true,
+                exportTypes: ['excel'],
             });
 }
 
