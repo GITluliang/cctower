@@ -2,70 +2,76 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+<style>
+    .input-right{position: absolute;right: 200px;}
+</style>
 <body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div class="col-sm-12">
-			<div class="ibox">
-				<div class="ibox-body">
-					<div class="fixed-table-toolbar">
-						<div class="columns pull-left">
-							<button shiro:hasPermission="sys:car:vip:add" type="button" class="btn  btn-primary" onclick="add()">
-								<i class="fa fa-plus" aria-hidden="true"></i>添加
-							</button>
-							<button shiro:hasPermission="sys:car:vip:batchRemove" type="button" class="btn  btn-danger"
-								onclick="batchRemove()">
-								<i class="fa fa-trash" aria-hidden="true"></i>删除
-							</button>
-						</div>
-						<div class="columns pull-right">
-							<button class="btn btn-success" onclick="reLoad()">查询</button>
-						</div>
-						<div class="columns pull-right col-md-2 nopadding">
-							<input id="searchName" type="text" class="form-control"
-								placeholder="请输入">
-						</div>
-						<div class="pull-right search col-md-2 nopadding">
-							<select id="query" name="query" class="form-control">
-								<option value="">请选择查询</option>
-								<option value="number">车牌号</option>
-								<option value="name">车主姓名</option>
-								<option value="phone">联系方式</option>
-								<option value="corporateName">公司名称</option>
-								<option value="classification">月租车分类</option>
-								<option value="parkingName">停车场名称</option>
-							</select>
-						</div>
-					<table id="exampleTable" data-mobile-responsive="true">
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
-		<div>
-			<script type="text/javascript">
-				var s_edit_h = 'hidden';
-				var s_remove_h = 'hidden';
-				var s_resetPwd_h = 'hidden';
-			</script>
-		</div>
-		<div shiro:hasPermission="sys:car:vip:edit">
-			<script type="text/javascript">
-				s_edit_h = '';
-			</script>
-		</div>
-		<div shiro:hasPermission="sys:car:vip:remove">
-			<script type="text/javascript">
-				var s_remove_h = '';
-			</script>
-		</div>
-		<div shiro:hasPermission="sys:car:vip:resetPwd">
-			<script type="text/javascript">
-				var s_resetPwd_h = '';
-			</script>
-		</div>
-	</div>
-	<div th:include="include :: footer"></div>
-	<script type="text/javascript" src="/js/appjs/sys/car/vip/car.js"></script>
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar" style="position: relative;">
+                    <div class="columns pull-left">
+                        <button shiro:hasPermission="sys:car:vip:add" type="button" class="btn  btn-primary"
+                                onclick="add()">
+                            <i class="fa fa-plus" aria-hidden="true"></i>添加
+                        </button>
+                        <button shiro:hasPermission="sys:car:vip:batchRemove" type="button" class="btn  btn-danger"
+                                onclick="batchRemove()">
+                            <i class="fa fa-trash" aria-hidden="true"></i>删除
+                        </button>
+                    </div>
+                    <div class="input-right">
+                        <div class="columns pull-right">
+                            <button class="btn btn-success" onclick="reLoad()">查询</button>
+                        </div>
+                        <div class="columns pull-right col-md-2 nopadding">
+                            <input id="searchName" type="text" class="form-control"
+                                   placeholder="请输入">
+                        </div>
+                        <div class="columns pull-right nopadding">
+                            <select id="query" name="query" class="form-control">
+                                <option value="">请选择查询</option>
+                                <option value="number">车牌号</option>
+                                <option value="name">车主姓名</option>
+                                <option value="phone">联系方式</option>
+                                <option value="corporateName">公司名称</option>
+                                <option value="classification">月租车分类</option>
+                                <option value="parkingName">停车场名称</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table id="exampleTable" data-mobile-responsive="true">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+    <div>
+        <script type="text/javascript">
+            var s_edit_h = 'hidden';
+            var s_remove_h = 'hidden';
+            var s_resetPwd_h = 'hidden';
+        </script>
+    </div>
+    <div shiro:hasPermission="sys:car:vip:edit">
+        <script type="text/javascript">
+            s_edit_h = '';
+        </script>
+    </div>
+    <div shiro:hasPermission="sys:car:vip:remove">
+        <script type="text/javascript">
+            var s_remove_h = '';
+        </script>
+    </div>
+    <div shiro:hasPermission="sys:car:vip:resetPwd">
+        <script type="text/javascript">
+            var s_resetPwd_h = '';
+        </script>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/sys/car/vip/car.js"></script>
 </body>
 </html>

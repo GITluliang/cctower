@@ -180,7 +180,7 @@ public class ApiServiceImpl implements ApiService {
                      }
                  }
                  record.setPayType(PAYMENT_NOT).setPayStatus(PAY_STATUS_NORMAL);
-                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
+                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET,0, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
             }
 
             //计算车费
