@@ -2,12 +2,15 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+<style>
+	.input-right{position: absolute;right: 200px;}
+</style>
 <body class="gray-bg">
 	<div class="wrapper wrapper-content ">
 		<div class="col-sm-12">
 			<div class="ibox">
 				<div class="ibox-body">
-					<div class="fixed-table-toolbar">
+					<div class="fixed-table-toolbar" style="position: relative;">
 						<div class="columns pull-left">
 							<button shiro:hasPermission="sys:billingDetail:add" type="button" class="btn  btn-primary" onclick="add()">
 								<i class="fa fa-plus" aria-hidden="true"></i>添加
