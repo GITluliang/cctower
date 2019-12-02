@@ -58,7 +58,7 @@
 <script src="/js/h5/mobile/common.js"></script>
 <script>
     $.getJSON("/mobile/getSetting",function (data) {
-        $("#username").text(data.data.username) ;
+        $("#username").val(data.data.username) ;
         $("#name").val(data.data.name) ;
         $("#address").val(data.data.address) ;
         $("#principal").val(data.data.principal) ;

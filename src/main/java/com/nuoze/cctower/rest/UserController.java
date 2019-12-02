@@ -157,18 +157,4 @@ public class UserController {
 
     }
 
-//    @GetMapping("/treeView")
-//    String treeView() {
-//        return  prefix + "/userTree";
-//    }
-//
-//    @GetMapping("/personal")
-//    String personal(Model model) {
-//        User user  = userService.findById(getUserId());
-//        model.addAttribute("user",user);
-//        model.addAttribute("hobbyList",dictService.getHobbyList(user));
-//        model.addAttribute("sexList",dictService.getSexList());
-//        return prefix + "/personal";
-//    }
-
 }

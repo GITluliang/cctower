@@ -54,25 +54,20 @@
 <script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
 <script>
     $(function () {
-        $("#longCar").click(function () {
-            authz("/mobile/car/long/authz","/mobile/car/long");
-        }) ;
-        $("#businessCar").click(function () {
-            authz("/mobile/car/business/authz","/mobile/car/business");
-        }) ;
-        $("#vipCar").click(function () {
-            authz("/mobile/car/vip/authz","/mobile/car/vip");
-        }) ;
+        displayHide("/mobile/car/long/authz", "#longCar");
+        displayHide("/mobile/car/business/authz", "#businessCar");
+        displayHide("/mobile/car/vip/authz", "#vipCar");
+        $("#longCar").click(function () {   window.location.replace("/mobile/car/long");}) ;
+        $("#businessCar").click(function () {   window.location.replace("/mobile/car/business");}) ;
+        $("#vipCar").click(function () {    window.location.replace("/mobile/car/vip");}) ;
     });
-
-    //权限校验
-    function authz(url,replace) {
+    //权限校验，显示影藏
+    function displayHide(url, elementId) {
         $.getJSON(url, function(data){
-            console.log("JSON Data: " + JSON.stringify(data));
             if(data.code == 200 && data.msg == "SUCCESS") {
-                window.location.replace(replace);
+                $(elementId).show();
             }else {
-                layer.msg(data.msg);
+                $(elementId).hide();
             }
         });
     }
@@ -82,7 +77,6 @@
         var gallery = mui('.mui-slider');
         gallery.slider({interval:3000});
     }
-
 </script>
 </html>
 

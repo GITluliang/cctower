@@ -63,75 +63,9 @@ public class MobileLoginController {
     }
 
     @ResponseBody
-    @RequestMapping("car/long/authz")
-    public Result carLongAuthZ() {
-        return getSubject().isPermitted("sys:car:car") ? ResponseResult.success() : ResponseResult.fail(401, "没有权限");
-    }
-
-    @ResponseBody
-    @RequestMapping("car/business/authz")
-    public Result carBusinessAuthZ() {
-        return getSubject().isPermitted("sys:car:business") ? ResponseResult.success() : ResponseResult.fail(401, "没有权限");
-    }
-
-    @ResponseBody
-    @RequestMapping("car/vip/authz")
-    public Result carVIPAuthZ() {
-        return getSubject().isPermitted("sys:car:vip") ? ResponseResult.success() : ResponseResult.fail(401, "没有权限");
-    }
-
-    @RequestMapping("car/long")
-    public String carLong() {
-        return prefix + "listYuezu";
-    }
-
-    @RequestMapping("car/business")
-    public String carBusiness() {
-        return prefix + "listShanghu";
-    }
-
-    @RequestMapping("car/vip")
-    public String carVIP() {
-        return prefix + "listVip";
-    }
-
-    @RequestMapping("car/long/detail/{id}")
-    public String carLongDetail(@PathVariable Long id, Model model) {
-        model.addAttribute(id);
-        return prefix + "detailYuezu";
-    }
-
-    @RequestMapping("car/business/detail/{id}")
-    public String carBusinessDetail(@PathVariable Long id, Model model) {
-        model.addAttribute(id);
-        return prefix + "detailShanghu";
-    }
-
-    @RequestMapping("car/vip/detail/{id}")
-    public String carVIPDetail(@PathVariable Long id, Model model) {
-        model.addAttribute(id);
-        return prefix + "detailVip";
-    }
-
-    @ResponseBody
     @RequestMapping("parking/{id}")
     public Result findById(@PathVariable Long id) {
         return ResponseResult.success(carService.findById(id));
-    }
-
-    @RequestMapping("car/long/add")
-    public String carLongAdd() {
-        return prefix + "addYuezu";
-    }
-
-    @RequestMapping("car/business/add")
-    public String carBusinessAdd() {
-        return prefix + "addShanghu";
-    }
-
-    @RequestMapping("car/vip/add")
-    public String carVIPAdd() {
-        return prefix + "addVip";
     }
 
     @ResponseBody
