@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>商户充值</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css" />
+    <style>
+
+        .longlist .em{position: absolute;top: .8rem;right: .4rem;font-size: .66rem;}
+        .bigtit.h3{font-size: 0.52rem;}
+        .longlist.recode .iconfont{position: relative;background: #e4787c;width: 1.2rem;height: 1.2rem;display: inline-block;text-align: center;line-height: 1.2rem;font-size: .6rem;color: #fff;float: left;border-radius: 100px;top: 0;left: 0;}
+        .recode .mid{width: 5.4rem;margin-left: 1.5rem;}
+        .pay{background: #fff;margin: -1.6rem .4rem 1rem;z-index: 999;color: #e4787c;text-align: center;padding: .4rem 0 0;box-shadow: 0 0 16px rgba(228, 120, 124,.4);border-radius: .16rem;}
+        .pay span{color: #666;}
+        .pay .btn{height: 1.2rem;line-height: 1.2rem;background: linear-gradient(-320deg,#e4787c 40%,rgba(228, 120, 124,0.8));display: block;border-radius: .16rem;border: none;margin-top: .4rem;}
+    </style>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">商户充值</h1>
+    </header>
+    <div class="mui-content">
+         <div class="user bantop" style="background: linear-gradient(-320deg,#e4787c 40%,rgba(228, 120, 124,0.8));border-bottom:0px;z-index: -1;">
+            <i class="iconfont icon-chongzhi" style="font-size: 7.4rem;transform: rotate(-168deg);opacity:.1;"></i>
+        </div>
+        <div class="pay">
+            <h1><i style="font-size: .44rem;">￥</i><i id="balance">200</i></h1>
+            <span>账户余额</span>
+            <a href="/mobile/recharge/addRecharge" class="btn">去充值</a>
+        </div>
+        <h3 class="bigtit h3">充值记录</h3>
+        <ul class="mui-table-view longlist recode">
+            <!--默认显示4条-->
+            <li class="mui-table-view-cell">
+                <a href="detailVip.html">
+                    <i class="iconfont icon-shanghu"></i>
+                    <div class="mid">
+                        <h3><span class="mui-ellipsis">充值成功</span></h3>
+                        <p>2019-08-12 18:20</p>
+                    </div>
+                </a>
+                <em class="em">+8.6</em>
+            </li>
+            <li class="mui-table-view-cell">
+                <a href="detailVip.html">
+                    <i class="iconfont icon-shanghu"></i>
+                    <div class="mid">
+                        <h3><span class="mui-ellipsis">充值成功</span></h3>
+                        <p>2019-08-12 18:20</p>
+                    </div>
+                </a>
+                <em class="em">+12.6</em>
+            </li>
+        </ul>
+        <p class="list-bot">没有更多记录</p>
+    </div>
+
+
+
+</body>
+<script src="/js/h5/mobile/common.js"></script>
+<script>
+    $.getJSON("/mobile/recharge/rechargeStream",{status: 0, limit:5, offset: 0}, function (data) {
+        console.log(data);
+        $("#balance").text(data.data.user.balance);
+
+    })
+</script>
+</html>
