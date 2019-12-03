@@ -49,9 +49,10 @@
         </form>
         <div class="mui-content-padded">
             <div class="btncont">
-                <a class="mui-btn mui-btn-block mui-btn-primary" href="/mobile/logout">退出登录</a>
+                <a class="mui-btn mui-btn-block mui-btn-primary" id="logout">退出登录</a>
             </div>
         </div>
+
     </div>
 </body>
 
@@ -64,5 +65,8 @@
         $("#principal").val(data.data.principal) ;
         $("#phone").val(data.data.phone) ;
     })
+    $("#logout").click(function(){
+        $(location).attr('href' , '/mobile/logout');
+    });
 </script>
 </html>

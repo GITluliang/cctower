@@ -1,5 +1,8 @@
 
-
+a:link,
+a:visited,
+a:hover,
+a:active{background: none;}
 /* 选项卡简约重写 */
 .tab.mui-segmented-control{border:none;border-bottom:1px solid #ccc;border-radius:0;padding:.15rem 0 0;background:#fff;font-size:.4rem}
 .tab.mui-segmented-control .mui-control-item{color:#666;border:none;line-height:1rem}
@@ -20,11 +23,17 @@
 .mui-table-view em.btn{position:absolute;right:.22rem;top:.48rem;width:.88rem;height:.88rem;line-height:.88rem;text-align:center;border-radius:100%;border:1px solid #4EACDA;color:#4EACDA}
 
 /* 长字段列表 */
-.longlist li{padding:18px 15px;}
-.longlist .iconfont{position: absolute;top: .5rem;font-size: .48rem;right: .4rem;z-index: 999;}
-.longlist .mui-table-view-cell>a:not(.mui-btn){ margin:-18px -15px;}
+.longlist{padding-bottom: .4rem;}
+.longlist li{padding:18px 15px 0;background: #fff;margin: .4rem;border-radius: 8px;}
+.longlist .iconfont{font-size: .48rem;right: .4rem;z-index: 999;}
+.longlist .mui-table-view-cell>a:not(.mui-btn){ margin:-18px -15px;padding: .4rem;}
 .longlist .mui-table-view-cell:after{height: 0;}
-.longlist li:last-child{border: none}
+.longlist li:last-child{border: none;margin-bottom: 0;}
+
+.longlist .btn-bot{height: 1.2rem;line-height: 1.2rem;display: flex;justify-content: space-around;
+    border-top: 1px solid #f6f6f6;margin:.4rem 0 .2rem;font-size: .4rem;color: #666;}
+.longlist .btn-bot .iconfont{margin-right:.2rem;}
+.longlist .btn-bot a{color: #666;}
 
 /* 短字段列表 */
 .shortlist .mui-table-view-cell:after{height: 0;}
