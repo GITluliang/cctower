@@ -17,25 +17,23 @@ import static com.nuoze.cctower.common.util.ShiroUtils.getSubject;
 @Controller
 @RequestMapping("/mobile/car/vip")
 public class MobileCarVipController {
-    private String prefix = "h5/mobile/carVIP/";
-
-    @ResponseBody
-    @RequestMapping("authz")
-    public Result carVIPAuthZ() {
-        return getSubject().isPermitted("sys:car:vip") ? ResponseResult.success() : ResponseResult.fail(401, "没有权限");
-    }
+    private String prefix = "h5/mobile/carVip/";
 
     @RequestMapping()
     public String carVIP() {
         return prefix + "listVip";
     }
 
+    @ResponseBody
+    @RequestMapping("authz")
+    public Result carVIPAuthZ() {
+        return getSubject().isPermitted("sys:car:vip") ? ResponseResult.success() : ResponseResult.fail(401, "没有权限");
+    }
     @RequestMapping("detail/{id}")
     public String carVIPDetail(@PathVariable Long id, Model model) {
         model.addAttribute(id);
         return prefix + "detailVip";
     }
-
     @RequestMapping("add")
     public String carVIPAdd() {
         return prefix + "addVip";

@@ -69,6 +69,7 @@ public class RechargeController {
     public Result rechargeStream(@RequestParam Map<String, Object> params) {
         HashMap<String, Object> map = new HashMap<>(2);
         map.put("user", getUser());
+        params.put("userId", getUserId());
         map.put("record",recordService.list(new Query(params)));
         return ResponseResult.success(map);
     }
