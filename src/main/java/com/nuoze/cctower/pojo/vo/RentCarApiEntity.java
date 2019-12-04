@@ -17,4 +17,5 @@ public class RentCarApiEntity {
     private String rentCarEnd;
     private Integer status;
     private Integer infieldPermission;
+    private String uuid;
 }

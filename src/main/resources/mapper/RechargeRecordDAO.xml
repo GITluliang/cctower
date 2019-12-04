@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nuoze.cctower.dao.RechargeRecordDAO">
+    <resultMap id="BaseResultMap" type="com.nuoze.cctower.pojo.entity.RechargeRecord">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="open_id" jdbcType="VARCHAR" property="openId" />
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+        <result column="prepay_id" jdbcType="VARCHAR" property="prepayId" />
+        <result column="pay_id" jdbcType="VARCHAR" property="payId" />
+        <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="cost" jdbcType="DECIMAL" property="cost" />
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="service_charge" jdbcType="DECIMAL" property="serviceCharge" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`,`open_id`,`order_sn`,`prepay_id`,`pay_id`,`parking_id`,`user_id`,`cost`,`pay_status`,`create_time`,`service_charge`
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from recharge_record where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from recharge_record where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.RechargeRecord">
+    insert into recharge_record (`id`,`open_id`,`order_sn`,`prepay_id`,`pay_id`,`parking_id`,`user_id`,`cost`,`pay_status`,`create_time`,`service_charge`)
+    values (#{id,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{orderSn,jdbcType=VARCHAR},
+      #{prepayId,jdbcType=VARCHAR}, #{payId,jdbcType=VARCHAR},#{parkingId,jdbcType=BIGINT},
+      #{userId,jdbcType=BIGINT}, #{cost,jdbcType=DECIMAL}, #{payStatus,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{serviceCharge,jdbcType=DECIMAL})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.RenewRecord">
+        insert into recharge_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="orderSn != null">
+                order_sn,
+            </if>
+            <if test="prepayId != null">
+                prepay_id,
+            </if>
+            <if test="payId != null">
+                pay_id,
+            </if>
+            <if test="parkingId != null">
+                parking_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="cost != null">
+                cost,
+            </if>
+            <if test="payStatus != null">
+                pay_status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="serviceCharge != null">
+                service_charge,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderSn != null">
+                #{orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="prepayId != null">
+                #{prepayId,jdbcType=VARCHAR},
+            </if>
+            <if test="payId != null">
+                #{payId,jdbcType=VARCHAR},
+            </if>
+            <if test="parkingId != null">
+                #{parkingId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="cost != null">
+                #{cost,jdbcType=DECIMAL},
+            </if>
+            <if test="payStatus != null">
+                #{payStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceCharge != null">
+                #{serviceCharge,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.nuoze.cctower.pojo.entity.RenewRecord">
+        update recharge_record
+        <set>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderSn != null">
+                order_sn = #{orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="prepayId != null">
+                prepay_id = #{prepayId,jdbcType=VARCHAR},
+            </if>
+            <if test="payId != null">
+                pay_id = #{payId,jdbcType=VARCHAR},
+            </if>
+            <if test="parkingId != null">
+                parking_id = #{parkingId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{parkingId,jdbcType=BIGINT},
+            </if>
+            <if test="cost != null">
+                cost = #{cost,jdbcType=DECIMAL},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.nuoze.cctower.pojo.entity.RenewRecord">
+        update recharge_record
+        set open_id = #{openId,jdbcType=VARCHAR},
+          order_sn = #{orderSn,jdbcType=VARCHAR},
+          prepay_id = #{prepayId,jdbcType=VARCHAR},
+          pay_id = #{payId,jdbcType=VARCHAR},
+          parking_id = #{parkingId,jdbcType=BIGINT},
+          user_id = #{userId,jdbcType=BIGINT},
+          cost = #{cost,jdbcType=DECIMAL},
+          pay_status = #{payStatus,jdbcType=TINYINT},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          service_charge = #{serviceCharge,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="findByOrderSn" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from recharge_record
+        where order_sn = #{orderSn}
+    </select>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from recharge_record
+        <where>
+            <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+            <if test="payStatus != null and payStatus != ''">and pay_status = #{payStatus}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by create_time desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+</mapper>

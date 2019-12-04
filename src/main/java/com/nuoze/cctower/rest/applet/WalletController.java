@@ -9,6 +9,7 @@ import com.nuoze.cctower.service.applet.MemberService;
 import com.nuoze.cctower.service.applet.WalletService;
 import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.result.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import static com.nuoze.cctower.common.result.ResultEnum.PERMISSION_DENIED;
  * @date 2019-01-15 23:21
  * 微信钱包
  */
+@Slf4j
 @RestController
 @RequestMapping("applet/wallet")
 public class WalletController {
@@ -58,6 +60,7 @@ public class WalletController {
      */
     @PostMapping("prepay")
     public WxPayMpOrderResult walletPrepay(@RequestBody WalletDTO dto, HttpServletRequest request) {
+        log.info("[微信小程序钱包充值 walletPrepay] Applet submit payment: {}", dto);
         String openId = dto.getOpenId();
         String amount = dto.getAmount();
         if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(amount)) {

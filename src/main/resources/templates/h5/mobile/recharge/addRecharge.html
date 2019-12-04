@@ -18,26 +18,24 @@
             <div class="mui-input-group">
             <div class="mui-input-row">
                 <label>停车场名称</label>
-                <input type="text" id="name" class="mui-input" value="珠江绿洲停车场" disabled>
+                <input type="text" id="name" class="mui-input" th:value="${userVO.parkingName}" disabled>
             </div>   
             <div class="mui-input-row">
                 <label>商户名称</label>
-                <input type="text" class="mui-input" value="陆良" disabled>
-                
+                <input type="text" class="mui-input" th:value="${userVO.name}" disabled>
             </div>
             <div class="mui-input-row">
                 <label>账户余额</label>
-                <input type="number" class="mui-input" value="200" disabled>
-                
+                <input type="number" class="mui-input" th:value="${userVO.balance}" disabled>
             </div>
             <div class="mui-input-row">
                 <label>充值金额</label>
-                <input type="number" class="mui-input-clear mui-input" placeholder="请输入充值金额">
-                
+                <input type="number" id="cost" class="mui-input-clear mui-input" placeholder="请输入充值金额">
             </div>
-
         </div>
-        
+            <span hidden id="openId" th:value="${openId}"></span>
+            <span hidden id="userId" th:value="${userVO.id}"></span>
+            <span hidden id="parkingId" th:value="${userVO.parkingId}"></span>
     </form>
     <div class="mui-content-padded">
         <div class="btncont">
@@ -48,16 +46,82 @@
 </body>
 <script src="/js/h5/mobile/common.js"></script>
 <script>
-    // 提交(非最后一步提交成功的验证，用“自动消失提示框”)
-    $("#alertBtn").click(function() {
-        if ($("#name").val() == '') {
-            mui.toast('用户名不能为空');
+    $(function () {
+        $("#alertBtn").click(function () {check();});
+    })
+
+    function check() {
+        if ($("#cost").val() == '' || $("#cost").val() <= 0) {
+            mui.toast('金额不能为空或0');
             $("#name").focus();//定位
             $("#name").css("caret-color", "orangered")//光标变色
             return;
         }else{
-            window.location.href='/mobile/recharge/state';
+            payOrder();
         }
-    });
+    }
+
+    function payOrder() {
+        openId = $("#openId").val();
+        userId = $("#userId").val();
+        parkingId = $("#parkingId").val();
+        cost = $("#cost").val();
+        console.log("点击支付传过来的值：" + openId + ',' + recordId + "," + money)
+        if(typeof(openId) == "undefined" || openId == "") {
+            alert("请退出重新登录！");
+        }else {
+            if(typeof(openId) != "undefined" && typeof(userId) != "undefined" && typeof(parkingId) != "undefined" && typeof(cost) != "undefined") {
+                $.ajax({
+                    url : '/mp/wx-pay/prepay' ,
+                    type: 'POST',
+                    dataType : 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify({openId: openId, userId: userId, parkingId: parkingId, cost: cost }),
+                    success: function (data) {
+                        console.log("[Json payOrder Data: ]" + JSON.stringify(data))
+                        doBridgeReady(data);
+                    },
+                    error: function (res) {
+                        console.log("ajax请求失败,res:" + res.toString());
+                    }
+                }) ;
+            }
+        }
+    }
+    //判断浏览器是否支持JSAPI，只用微信内置浏览器可用。
+    function doBridgeReady(data){
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        }else{
+            onBridgeReady(data);
+        }
+    }
+
+    //真实支付请求
+    function onBridgeReady(data){
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+                "appId": data.appId,     //公众号名称，由商户传入
+                "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
+                "nonceStr": data.nonceStr, //随机串
+                "package": data.packageValue,
+                "signType": data.signType,         //微信签名方式：
+                "paySign": data.paySign //微信签名
+            },
+            function(res){
+                if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                    self.location.href="/mobile/recharge/state" ;
+                }else{
+                    console.log("支付失败，提示【" + res.err_msg + "】")
+                    alert("支付失败，请重新支付！");
+                }
+            }
+        );
+    }
 </script>
 </html>

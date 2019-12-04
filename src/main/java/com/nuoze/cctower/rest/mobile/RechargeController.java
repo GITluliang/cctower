@@ -1,45 +1,51 @@
 package com.nuoze.cctower.rest.mobile;
 
+import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.util.Query;
+import com.nuoze.cctower.common.util.WxUtils;
+import com.nuoze.cctower.pojo.dto.RechargeDTO;
+import com.nuoze.cctower.pojo.dto.RenewCarPayDTO;
 import com.nuoze.cctower.pojo.vo.BusinessTransactionRecordVO;
 import com.nuoze.cctower.service.BusinessTransactionRecordService;
+import com.nuoze.cctower.service.RechargeRecordService;
+import com.nuoze.cctower.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nuoze.cctower.common.util.ShiroUtils.getSubject;
-import static com.nuoze.cctower.common.util.ShiroUtils.getUser;
+import static com.nuoze.cctower.common.util.ShiroUtils.*;
 
 /**
  * @Author luliang
  * @Date 2019-12-03 10:29
  * 时长劵商户充值
  */
+@Slf4j
 @Controller
-@RequestMapping("/mobile/recharge")
-    public class RechargeController {
+public class RechargeController {
     private String prefix = "h5/mobile/recharge/";
 
     @Autowired
-    private BusinessTransactionRecordService businessTransactionRecordService;
+    private WxUtils wxUtils;
+    @Autowired
+    private RechargeRecordService recordService;
+    @Autowired
+    private UserService userService;
 
-    @RequestMapping()
+    @RequestMapping("/mobile/recharge")
     public String listRecharge() {
         return prefix + "listRecharge";
-    }
-
-    @RequestMapping("/addRecharge")
-    public String addRecharge() {
-        return prefix + "addRecharge";
     }
 
     @RequestMapping("/state")
@@ -48,7 +54,7 @@ import static com.nuoze.cctower.common.util.ShiroUtils.getUser;
     }
 
     @ResponseBody
-    @RequestMapping("authz")
+    @RequestMapping("/mobile/recharge/authz")
     public Result carBusinessAuthZ() {
         return getSubject().isPermitted("sys:car:business") ? ResponseResult.success() : ResponseResult.fail(401, "没有权限");
     }
@@ -59,11 +65,45 @@ import static com.nuoze.cctower.common.util.ShiroUtils.getUser;
      * @return
      */
     @ResponseBody
-    @RequestMapping("rechargeStream")
+    @RequestMapping("/mobile/recharge/rechargeStream")
     public Result rechargeStream(@RequestParam Map<String, Object> params) {
         HashMap<String, Object> map = new HashMap<>(2);
         map.put("user", getUser());
+        map.put("record",recordService.list(new Query(params)));
         return ResponseResult.success(map);
+    }
+
+    /**
+     * 去充值
+     * @return
+     */
+    @RequestMapping("/mp/recharge/addRecharge")
+    public String addRecharge(String code,  Model model) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(code)) {
+            return prefix + "code";
+        }
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(code)) {
+            model.addAttribute("openId", wxUtils.getUserInfoAccessToken(code).get("openid"));
+        }
+        model.addAttribute("userVO", userService.findByIdVO(getUserId()));
+        return prefix + "addRecharge";
+    }
+
+    /**
+     * 商户充值，生成支付信息
+     * @param dto
+     * @param request
+     * @return
+     */
+    @PostMapping("/mp/recharge/prepay")
+    public WxPayMpOrderResult businessrRechargePrePay(@RequestBody RechargeDTO dto, HttpServletRequest request) {
+        log.info("[商户充值 WX PAY businessrRechargePrePay] Applet submit payment: {}", dto);
+        String openId = dto.getOpenId();
+        String cost = dto.getCost();
+        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(cost)) {
+            return WxPayMpOrderResult.builder().build();
+        }
+        return recordService.businessrRechargePrePay(dto, request);
     }
 
 }

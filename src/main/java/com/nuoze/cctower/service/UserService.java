@@ -24,6 +24,7 @@ public interface UserService {
      */
     List<UserVO> list(Map<String, Object> map);
 
+    UserVO findByIdVO(Long id);
     /**
      * 总个数
      *

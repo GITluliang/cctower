@@ -65,6 +65,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserVO findByIdVO(Long id) {
+        User user = userDAO.selectByPrimaryKey(id);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+        return userVO.setParkingName(parkingDAO.selectByPrimaryKey(user.getParkingId()).getName());
+    }
+
+    @Override
     public int count(Map<String, Object> map) {
         return userDAO.count(map);
     }

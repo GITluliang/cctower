@@ -115,7 +115,7 @@
 		}else {
 			if(typeof(openId) != "undefined" && typeof(recordId) != "undefined" && typeof(money) != "undefined") {
 				$.ajax({
-					url : '/mp/wx-pay/prepay' ,
+					url : '/mp/recharge/prepay' ,
 					type: 'POST',
 					dataType : 'json',
 					contentType: "application/json;charset=UTF-8",
@@ -167,13 +167,6 @@
 		);
 	}
 
-	function getQueryString(name) {
-		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-		var r = window.location.search.substr(1).match(reg);
-		if (r != null)
-			return unescape(r[2]);
-		return null;
-	}
 	//检查车辆
 	function checkCost(carNumber) {
 		flag = 1 ;

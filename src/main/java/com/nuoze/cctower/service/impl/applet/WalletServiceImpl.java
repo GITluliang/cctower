@@ -58,17 +58,9 @@ public class WalletServiceImpl implements WalletService {
             result = wxPayService.createOrder(orderRequest);
             String prepayId = result.getPackageValue();
             prepayId = prepayId.replace("prepay_id=", "");
-            TopUpRecord topUpRecord = new TopUpRecord();
-            topUpRecord.setAmount(actualPrice);
-            topUpRecord.setBillingType(1);
-            topUpRecord.setOpenId(openId);
-            topUpRecord.setOrderSn(orderRequest.getOutTradeNo());
-            topUpRecord.setPrepayId(prepayId);
-            topUpRecord.setPayStatus(0);
             Member member = memberService.findByOpenId(openId);
             BigDecimal balance = member.getBalance().add(actualPrice);
-            topUpRecord.setBalance(balance);
-            topUpRecordService.save(topUpRecord);
+            topUpRecordService.save(new TopUpRecord().setAmount(actualPrice).setBillingType(1).setOpenId(openId).setOrderSn(orderRequest.getOutTradeNo()).setPrepayId(prepayId).setPayStatus(0).setBalance(balance));
         } catch (WxPayException e) {
             log.error("pre pay has exception: {}", e.getMessage());
         }

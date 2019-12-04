@@ -26,7 +26,7 @@ public interface BaseDAO<T> {
     int insert(T record);
 
     /**
-     * 添加数据
+     * 选择性添加数据
      *
      * @param record 实体
      * @return int
@@ -42,7 +42,7 @@ public interface BaseDAO<T> {
     T selectByPrimaryKey(Long id);
 
     /**
-     * 更新数据
+     * 选择性更新数据
      *
      * @param record 实体
      * @return 个数

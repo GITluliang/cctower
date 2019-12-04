@@ -363,7 +363,7 @@ public class CarServiceImpl implements CarService {
         BeanUtils.copyProperties(dto, car);
         Long parkingId = dto.getParkingId();
         Billing billing = billingDAO.selectByParkingId(parkingId);
-        if(billing != null && billing.getCouponTime() != null) {
+        if (billing != null && billing.getCouponTime() != null) {
             Long userId = getUserId();
             User user = userDAO.selectByPrimaryKey(userId).setUpdateTime(new Date());
             Integer timeCoupon = user.getTimeCoupon() - dto.getFreeTime();
@@ -372,7 +372,7 @@ public class CarServiceImpl implements CarService {
             Integer freeTime = billing.getCouponTime() * dto.getFreeTime();
             businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(userId).setAmount(BigDecimal.valueOf(dto.getFreeTime())).setBalance(BigDecimal.valueOf(timeCoupon)).setType(0).setCreateTime(new Date()).setCarNumber(dto.getNumber()).setFreeTime(freeTime).setStatus(1));
             return carDAO.insert(car.setCreateId(userId).setCreateTime(new Date()).setUpdateTime(new Date()).setFreeTime(freeTime).setTimeCoupon(dto.getFreeTime()));
-        }else {
+        } else {
             return 0;
         }
     }
@@ -422,16 +422,7 @@ public class CarServiceImpl implements CarService {
             result = wxPayService.createOrder(orderRequest);
             String prepayId = result.getPackageValue();
             prepayId = prepayId.replace("prepay_id=", "");
-            renewRecordDAO.insertSelective(new RenewRecord()
-                    .setOpenId(dto.getOpenId())
-                    .setCost(actualPrice)
-                    .setParkingId(dto.getParkingId())
-                    .setCarNumber(carDAO.selectByPrimaryKey(dto.getCarId()).getNumber())
-                    .setOrderSn(orderRequest.getOutTradeNo())
-                    .setPrepayId(prepayId)
-                    .setPayStatus(0)
-                    .setMonthCount(dto.getMonthCount())
-                    .setCreateTime(new Date()));
+            renewRecordDAO.insertSelective(new RenewRecord().setOpenId(dto.getOpenId()).setCost(actualPrice).setParkingId(dto.getParkingId()).setCarNumber(carDAO.selectByPrimaryKey(dto.getCarId()).getNumber()).setOrderSn(orderRequest.getOutTradeNo()).setPrepayId(prepayId).setPayStatus(0).setMonthCount(dto.getMonthCount()).setCreateTime(new Date()));
         } catch (WxPayException e) {
             log.error("[RENEW CAR ] pre pay has exception: {}", e.getMessage());
         }

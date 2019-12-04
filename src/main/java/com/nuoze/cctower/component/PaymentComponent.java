@@ -85,9 +85,9 @@ public class PaymentComponent {
     }
 
     /**
-     * 计算扣掉服务费的金额
+     * 计算服务费
      * @param amount 金额
-     * @param serviceCharge 服务费
+     * @param serviceCharge 服务费折扣
      * @return
      */
     public BigDecimal getServiceCharge(BigDecimal amount, Integer serviceCharge) {

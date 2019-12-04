@@ -65,9 +65,11 @@ function load() {
                             if (value == '0') {
                                 return '<span class="label label-primary">停车费</span>';
                             } else if (value == '1') {
-                                return '<span class="label abel-success">余额充值</span>';
+                                return '<span class="label abel-success">物业充值</span>';
                             }else if (value == '2') {
                                 return '<span class="label label-warning">停车费退回</span>';
+                            }else if (value == '3') {
+                                return '<span class="label abel-success">微信充值</span>';
                             }
                         }
                     },

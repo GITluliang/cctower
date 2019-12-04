@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 /**
- * 扫码支付
+ * 待出场车辆扫码支付
  *
  * @Author luliang
  * @Date 2019-10-14 16:10

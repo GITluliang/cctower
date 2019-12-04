@@ -71,6 +71,12 @@ public class WxOrderServiceImpl implements WxOrderService {
     private OrderNumberDAO orderNumberDAO;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private RechargeRecordDAO rechargeRecordDAO;
+    @Autowired
+    private BusinessTransactionRecordDAO businessTransactionRecordDAO;
+    @Autowired
+    private UserDAO userDAO;
 
     @Override
     public WxPayMpOrderResult wxPrePay(WxPayDTO dto, HttpServletRequest request) {
@@ -139,7 +145,8 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             TopUpRecord topUpRecord = topUpRecordService.findByOrderSn(orderSn);
             RenewRecord renewRecord = renewRecordDAO.findByOrderSn(orderSn);
-            if (parkingRecord == null && topUpRecord == null && renewRecord == null) {
+            RechargeRecord rechargeRecord = rechargeRecordDAO.findByOrderSn(orderSn);
+            if (parkingRecord == null && topUpRecord == null && renewRecord == null && rechargeRecord == null) {
                 log.error("[PAY NOTIFY PARKING-RECORD] 订单不存在 orderSn: {}", orderSn);
             }
             BigDecimal serviceCharge = new BigDecimal(0);
@@ -185,24 +192,36 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             //小程序长租续费
             if (renewRecord != null) {
-                log.info("[PAY NOTIFY RENEW-RECORD] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
+                log.info("[PAY NOTIFY Long rent renewals] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
 
                 Account account = accountService.findByParkingId(renewRecord.getParkingId());
                 if (account != null) {
                     serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
-                    money = money.subtract(serviceCharge);
                 }
                 Car car = carDAO.findByCarNumberAndParkingType(renewRecord.getCarNumber(), MONTHLY_CAR);
                 carDAO.updateByPrimaryKeySelective(car.setMonthlyParkingEnd(DateUtils.addMonthByDate(car.getMonthlyParkingEnd(), renewRecord.getMonthCount())).setUpdateTime(new Date()));
                 renewRecordDAO.updateByPrimaryKeySelective(renewRecord.setServiceCharge(serviceCharge).setCost(money).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL));
-                billingComponent.addTradingRecord(money, renewRecord.getParkingId(), IncomeType.PARKING_CHARGE, renewRecord.getCarNumber());
-                billingComponent.addAccountBalance(money, renewRecord.getParkingId());
+                billingComponent.addTradingRecord(money.subtract(serviceCharge), renewRecord.getParkingId(), IncomeType.PARKING_CHARGE, renewRecord.getCarNumber());
+                billingComponent.addAccountBalance(money.subtract(serviceCharge), renewRecord.getParkingId());
             }
             //小程序余额充值
             if (topUpRecord != null) {
-                log.info("[PAY NOTIFY TOP-UP-RECORD] id: {}, pay_id: {}", topUpRecord.getId(), topUpRecord.getPayId());
+                log.info("[PAY NOTIFY Recharge of balance] id: {}, pay_id: {}", topUpRecord.getId(), topUpRecord.getPayId());
                 topUpRecordService.update(topUpRecord.setPayId(payId).setPayStatus(PAY_STATUS_NORMAL).setUpdateTime(new Date()));
                 memberService.update(memberService.findByOpenId(topUpRecord.getOpenId()).setBalance(topUpRecord.getBalance()));
+            }
+            //商户充值
+            if(rechargeRecord != null) {
+                log.info("[PAY NOTIFY Merchant recharge] id: {}, pay_id: {}", topUpRecord.getId(), topUpRecord.getPayId());
+                Account account = accountService.findByParkingId(renewRecord.getParkingId());
+                if (account != null) {
+                    serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
+                }
+                User user = userDAO.selectByPrimaryKey(rechargeRecord.getUserId());
+                rechargeRecordDAO.updateByPrimaryKey(rechargeRecord.setCost(money).setServiceCharge(serviceCharge).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL).setCreateTime(new Date()));
+                businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(money).setBalance(money.add(user.getBalance())).setType(3).setUserId(rechargeRecord.getUserId()).setCreateTime(new Date()).setStatus(0));
+                billingComponent.addTradingRecord(money.subtract(serviceCharge), rechargeRecord.getParkingId(), IncomeType.BUSINESS_RENEW, "");
+                billingComponent.addAccountBalance(money.subtract(serviceCharge), rechargeRecord.getParkingId());
             }
         } catch (Exception e) {
             log.error("pay notify has exception: {}", e.getMessage());

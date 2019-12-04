@@ -29,33 +29,11 @@
         </div>
         <div class="pay">
             <h1><i style="font-size: .44rem;">￥</i><i id="balance">200</i></h1>
-            <span>账户余额</span>
-            <a href="/mobile/recharge/addRecharge" class="btn">去充值</a>
+            <span id="name">账户余额</span>
+            <a href="/mp/recharge/addRecharge" class="btn">去充值</a>
         </div>
         <h3 class="bigtit h3">充值记录</h3>
-        <ul class="mui-table-view longlist recode">
-            <!--默认显示4条-->
-            <li class="mui-table-view-cell">
-                <a href="detailVip.html">
-                    <i class="iconfont icon-shanghu"></i>
-                    <div class="mid">
-                        <h3><span class="mui-ellipsis">充值成功</span></h3>
-                        <p>2019-08-12 18:20</p>
-                    </div>
-                </a>
-                <em class="em">+8.6</em>
-            </li>
-            <li class="mui-table-view-cell">
-                <a href="detailVip.html">
-                    <i class="iconfont icon-shanghu"></i>
-                    <div class="mid">
-                        <h3><span class="mui-ellipsis">充值成功</span></h3>
-                        <p>2019-08-12 18:20</p>
-                    </div>
-                </a>
-                <em class="em">+12.6</em>
-            </li>
-        </ul>
+        <ul class="mui-table-view longlist recode" id="longList"></ul>
         <p class="list-bot">没有更多记录</p>
     </div>
 
@@ -63,11 +41,59 @@
 
 </body>
 <script src="/js/h5/mobile/common.js"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
 <script>
-    $.getJSON("/mobile/recharge/rechargeStream",{status: 0, limit:5, offset: 0}, function (data) {
-        console.log(data);
-        $("#balance").text(data.data.user.balance);
-
+    $(function () {
+        limit = 5 ;
+        offset = 0 ;
+        length = 0 ;
+        list(limit, offset) ;
+        listAdd(limit, offset);
     })
+
+    function listAdd(limit,offset) {
+        $(".list-bot").click(function () {
+            limit = limit + 5 ;
+            list(limit, offset)
+        }) ;
+    }
+
+    function list(limit, offset) {
+        $.ajax({
+            url: "/mobile/recharge/rechargeStream",
+            dataType: "json",
+            async: false,
+            data: {payStatus: 1, limit:5, offset: 0},
+            type: "GET",
+            success: function(data) {
+                console.log(data.data.record.length)
+                $("#balance").text(data.data.user.balance);
+                $("#name").text(data.data.user.name + "账户余额");
+                if (data.data.record.length == length) {
+                    $(".list-bot").off("click");
+                    $(".list-bot").text("没有更多内容啦")
+                    layer.msg("无更多内容");
+                }
+                var json = "";
+                for (i in data.data.record) {
+                    json += `
+                        <li class="mui-table-view-cell">
+                            <i class="iconfont icon-shanghu"></i>
+                            <div class="mid">
+                                <h3><span class="mui-ellipsis">充值成功</span></h3>
+                                <p>${data.data.record[i].createTimeStr}</p>
+                            </div>
+                            <em class="em">+${data.data.record[i].cost}</em>
+                        </li>
+                    `
+                }
+                $("#longList").html(json);
+                length = data.data.record.length;
+            }
+        })
+
+    }
+
+
 </script>
 </html>

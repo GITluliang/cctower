@@ -10,8 +10,8 @@ public enum IncomeType {
      * 充值类型
      */
     PARKING_CHARGE("停车费"),
-
-    RENT_RENEW("月租充值");
+    RENT_RENEW("月租充值"),
+    BUSINESS_RENEW("商户充值");
 
     private String value;
 
