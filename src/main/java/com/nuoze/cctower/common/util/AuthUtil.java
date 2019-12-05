@@ -29,7 +29,7 @@ public class AuthUtil {
             sb.append(s);
         }
         //4.sha1加密,网上均有现成代码
-        String temp = getSha(sb.toString());
+        String temp = getSha(String.valueOf(sb));
         //5.将加密后的字符串，与微信传来的加密签名比较，返回结果
         return temp.equals(signature);
     }

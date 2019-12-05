@@ -109,13 +109,13 @@
 		openId = $("#openId").text() ;
 		recordId = $("#recordId").text() ;
 		money = $("#cost").text() ;
-		console.log("点击支付传过来的值：" + openId + ',' + recordId + "," + money)
+		console.log("点击支付传过来的值：" + openId + ',' +  + "," + money)
 		if(money == 0 || typeof(openId) == "undefined") {
 			alert("无需支付！");
 		}else {
 			if(typeof(openId) != "undefined" && typeof(recordId) != "undefined" && typeof(money) != "undefined") {
 				$.ajax({
-					url : '/mp/recharge/prepay' ,
+					url : '/mp/wx-pay/prepay' ,
 					type: 'POST',
 					dataType : 'json',
 					contentType: "application/json;charset=UTF-8",
@@ -167,6 +167,13 @@
 		);
 	}
 
+	function getQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return unescape(r[2]);
+		return null;
+	}
 	//检查车辆
 	function checkCost(carNumber) {
 		flag = 1 ;
@@ -216,7 +223,8 @@
 					$(".inTime").text(json.data.inTime) ;
 					$(".cost").text(json.data.cost) ;
 					$("#cost").text(json.data.cost) ;
-					$(".carNumber").text(json.data.carNumber) ;
+					$("#carNumber").text(json.data.carNumber) ;
+					$("#recordId").text(json.data.recordId) ;
 				}
 			}
 		}) ;

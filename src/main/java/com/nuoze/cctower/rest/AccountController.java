@@ -123,7 +123,7 @@ public class AccountController {
     @RequiresPermissions("sys:account:edit")
     public R update(Account account) {
         Integer serviceCharge = account.getServiceCharge();
-        if (serviceCharge != null && !SERVICE_CHARGE_PATTERN.matcher(serviceCharge.toString()).matches()) {
+        if (serviceCharge != null && !SERVICE_CHARGE_PATTERN.matcher(String.valueOf(serviceCharge)).matches()) {
             return R.error(201, "服务费必须为1-100之间的正整数");
         }
         accountService.update(account);

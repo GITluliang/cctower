@@ -29,7 +29,7 @@ import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 @RequestMapping("/sys/billing/typeC")
 public class BillingTypeCController {
 
-    private String prefix = "system/billingtypeC/";
+    private String prefix = "system/billingTypeC/";
 
     @Autowired
     private BillingDetailService billingService;

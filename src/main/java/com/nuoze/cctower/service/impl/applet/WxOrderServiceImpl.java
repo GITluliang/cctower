@@ -192,7 +192,7 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             //小程序长租续费
             if (renewRecord != null) {
-                log.info("[PAY NOTIFY Long rent renewals] id: {}, pay_id: {}", renewRecord.getId(), renewRecord.getPayId());
+                log.info("[PAY NOTIFY Long rent renewals] id: {}, pay_id: {}", renewRecord.getId(), payId);
 
                 Account account = accountService.findByParkingId(renewRecord.getParkingId());
                 if (account != null) {
@@ -206,20 +206,22 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             //小程序余额充值
             if (topUpRecord != null) {
-                log.info("[PAY NOTIFY Recharge of balance] id: {}, pay_id: {}", topUpRecord.getId(), topUpRecord.getPayId());
+                log.info("[PAY NOTIFY Recharge of balance] id: {}, pay_id: {}", topUpRecord.getId(), payId);
                 topUpRecordService.update(topUpRecord.setPayId(payId).setPayStatus(PAY_STATUS_NORMAL).setUpdateTime(new Date()));
                 memberService.update(memberService.findByOpenId(topUpRecord.getOpenId()).setBalance(topUpRecord.getBalance()));
             }
             //商户充值
             if(rechargeRecord != null) {
-                log.info("[PAY NOTIFY Merchant recharge] id: {}, pay_id: {}", topUpRecord.getId(), topUpRecord.getPayId());
-                Account account = accountService.findByParkingId(renewRecord.getParkingId());
+                log.info("[PAY NOTIFY Merchant recharge] id: {}, pay_id: {}", rechargeRecord.getId(), payId);
+                Account account = accountService.findByParkingId(rechargeRecord.getParkingId());
                 if (account != null) {
                     serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
                 }
                 User user = userDAO.selectByPrimaryKey(rechargeRecord.getUserId());
-                rechargeRecordDAO.updateByPrimaryKey(rechargeRecord.setCost(money).setServiceCharge(serviceCharge).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL).setCreateTime(new Date()));
-                businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(money).setBalance(money.add(user.getBalance())).setType(3).setUserId(rechargeRecord.getUserId()).setCreateTime(new Date()).setStatus(0));
+                //1.更新商户账户余额；2.更新商户微信充值记录；3.增加商户流水；4.更新物业账号流水；5.更新物业账号余额
+                userDAO.updateByPrimaryKey(user.setBalance(user.getBalance().add(money)).setUpdateTime(new Date()));
+                rechargeRecordDAO.updateByPrimaryKey(rechargeRecord.setServiceCharge(serviceCharge).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL).setCreateTime(new Date()));
+                businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setUserId(rechargeRecord.getUserId()).setType(3).setAmount(money).setBalance(user.getBalance()).setCreateTime(new Date()).setStatus(0));
                 billingComponent.addTradingRecord(money.subtract(serviceCharge), rechargeRecord.getParkingId(), IncomeType.BUSINESS_RENEW, "");
                 billingComponent.addAccountBalance(money.subtract(serviceCharge), rechargeRecord.getParkingId());
             }

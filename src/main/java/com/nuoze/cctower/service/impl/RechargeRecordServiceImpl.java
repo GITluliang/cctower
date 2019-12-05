@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
+
 /**
  * @Author luliang
  * @Date 2019-12-04 12:03
@@ -50,7 +52,8 @@ public class RechargeRecordServiceImpl implements RechargeRecordService {
             result = wxPayService.createOrder(orderRequest);
             String prepayId = result.getPackageValue();
             prepayId = prepayId.replace("prepay_id=", "");
-            rechargeRecordDAO.insertSelective(new RechargeRecord().setOpenId(dto.getOpenId()).setOrderSn(orderRequest.getOutTradeNo()).setPrepayId(prepayId).setUserId(dto.getUserId()).setCost(actualPrice).setPayStatus(0).setCreateTime(new Date()));
+            rechargeRecordDAO.insertSelective(new RechargeRecord().setOpenId(dto.getOpenId()).setOrderSn(orderRequest.getOutTradeNo()).setPrepayId(prepayId)
+                    .setUserId(dto.getUserId()).setCost(actualPrice).setPayStatus(0).setCreateTime(new Date()).setServiceCharge(EMPTY_MONEY).setParkingId(dto.getParkingId()));
         } catch (WxPayException e) {
             log.error("[RENEW CAR ] pre pay has exception: {}", e.getMessage());
         }

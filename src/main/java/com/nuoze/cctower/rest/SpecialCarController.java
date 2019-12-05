@@ -52,7 +52,7 @@ public class SpecialCarController {
     @GetMapping("/list")
     @RequiresPermissions("sys:car:special")
     public PageUtils list(@RequestParam Map<String, Object> params) {
-        log.info("[LONG CAR CONTROLLER] check special car list, the params: {}", params.toString());
+        log.info("[LONG CAR CONTROLLER] check special car list, the params: {}", String.valueOf(params));
         params.put(String.valueOf(params.get("query")), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>添加月租</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css?v1.2" />
+</head>
+
+<body>
+    <header class="bar">
+        <div><a href="/mobile/login"><i class="iconfont icon-shouye"></i>首页</a></div>
+        <div><a href="/mobile/setting"><i class="iconfont icon-shezhi"></i>设置</a></div>
+    </header>
+    <div class="mui-content">
+        <form id="signupForm">
+            <div class="mui-input-group">
+                <div class="mui-input-row">
+                    <label>车牌号</label>
+                    <input id="number" name="number" type="text" class="mui-input-clear mui-input" placeholder="请输入车牌号" th:value="${carDTO.number}">
+                </div>
+                <div class="mui-input-row">
+                    <label>生效日期</label>
+                    <span class="mui-navigate-right"></span>
+                    <input inlist="beginDate" name="beginDate" id="date" readonly placeholder="请选择生效日期" th:value="${carDTO.beginDate}">
+                </div>
+
+                <div class="mui-input-row">
+                    <label>失效日期</label>
+                    <span class="mui-navigate-right"></span>
+                    <input inlist="endDate" name="endDate" id="date01" readonly placeholder="请选择失效日期" th:value="${carDTO.endDate}">
+                </div>
+                <div class="mui-input-row">
+                    <label>车主姓名</label>
+                    <input name="name" type="text" class="mui-input-clear mui-input" placeholder="请输入车主姓名" th:value="${carDTO.name}">
+                </div>
+                <div class="mui-input-row">
+                    <label>联系方式</label>
+                    <input name="phone" type="number" class="mui-input-clear mui-input" placeholder="请输入联系方式" th:value="${carDTO.phone}">
+                    
+                </div>
+                <div class="mui-input-row">
+                    <label>公司姓名</label>
+                    <input name="corporateName" type="text" class="mui-input-clear mui-input" placeholder="请输入公司姓名" th:value="${carDTO.corporateName}">
+                </div>
+                 <div class="mui-input-row">
+                    <label>月租车分类</label>
+                    <input name="classification" type="text" class="mui-input-clear mui-input" placeholder="请输入分类" th:value="${carDTO.classification}">
+                </div>
+                <div class="mui-input-row">
+                    <label>备注</label>
+                    <input name="remarks" type="text" class="mui-input-clear mui-input" placeholder="请输入备注" th:value="${carDTO.remarks}">
+                </div>
+                <div class="mui-input-row radio">
+                    <label>状态</label>
+                    <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
+                        <div class="mui-radio mui-left">
+                            <label>正常</label>
+                            <input name="status" type="radio" value="1" checked="" th:attr="checked=${carDTO.status == 1?true:false}">
+                        </div>
+                        <div class="mui-radio mui-left">
+                            <label>禁用</label>
+                            <input name="status" value="0" type="radio" th:attr="checked=${carDTO.status == 0?true:false}">
+                        </div>
+                    </div>
+                </div>
+                <div class="mui-input-row radio">
+                    <label>内场权限</label>
+                    <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
+                        <div class="mui-radio mui-left">
+                            <label>有</label>
+                            <input name="infieldPermission" type="radio" value="1" th:attr="checked=${carDTO.status == 1?true:false}">
+                        </div>
+                        <div class="mui-radio mui-left">
+                            <label>无</label>
+                            <input name="infieldPermission" value="0" type="radio" th:attr="checked=${carDTO.status == 0?true:false}">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <input type="hidden" name="parkingType" value="1" >
+            <input type="hidden" name="id" th:value=${carDTO.id} >
+            <input type="hidden" name="parkingId" th:value=${carDTO.parkingId} >
+        </form>
+        <div class="mui-content-padded">
+            <div class="btncont">
+                <a class="mui-btn mui-btn-block mui-btn-primary" id="alertBtn">提交</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="/js/h5/mobile/common.js"></script>
+<script>
+    // 日期
+    var date = new Date("2100/1/1");
+    var picker = new mui.DtPicker({
+        beginYear: (1960),
+        type: "date", //设置日历初始视图模式
+        endDate: date,
+    });
+           
+    $('#date').on('tap', function() {
+        picker.show(function(selectItems) {
+            $('#date').val(selectItems.text);
+        })
+    })
+
+    $('#date01').on('tap', function() {
+        picker.show(function(selectItems) {
+            $('#date01').val(selectItems.text);
+        })
+    })
+
+    // 提交(非最后一步提交成功的验证，用“自动消失提示框”)
+    $("#alertBtn").click(function() {
+        if ($("#number").val() == '') {
+            toast("车牌号不能为空");
+        }else if ($("#beginDate").val() == '') {
+            toast("起始日期不能为空");
+        }else if ($("#beginDate").val() == '') {
+            toast("失效日期不能为空");
+        }else {
+            $.post("/sys/car/long/update",$('#signupForm').serialize(),function(data) {
+                toast(data.msg) ;
+                if(data.code == 0) {
+                    window.location.href='/mobile/car/long';
+                }
+            },"json");
+        }
+    });
+    function toast(msg) {
+        mui.toast(msg);
+        $("#name").focus();//定位
+        $("#name").css("caret-color", "orangered")//光标变色
+        return;
+    }
+</script>
+</html>

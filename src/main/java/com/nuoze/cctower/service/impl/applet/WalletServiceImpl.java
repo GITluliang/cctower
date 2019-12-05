@@ -80,10 +80,10 @@ public class WalletServiceImpl implements WalletService {
                     Long parkingId = top.getParkingId();
                     String parkingName = parkingService.findById(parkingId).getName();
                     vo.setType("停车费: " + parkingName);
-                    vo.setAmount("- " + top.getAmount().toString());
+                    vo.setAmount("- " + top.getAmount());
                 } else if (1 == billingType) {
                     vo.setType("充值:");
-                    vo.setAmount("+ " + top.getAmount().toString());
+                    vo.setAmount("+ " + top.getAmount());
                 }
                 vo.setTime(DateUtils.formatDateTime(top.getCreateTime()));
                 topUpRecordVOS.add(vo);

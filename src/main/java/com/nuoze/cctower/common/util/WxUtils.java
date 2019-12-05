@@ -70,8 +70,8 @@ public class WxUtils {
             Gson token_gson = new Gson();
             object = token_gson.fromJson(tokens, JsonObject.class);
             log.info("request accessToken success. [result={}]", object);
-            data.put("openid", object.get("openid").toString().replaceAll("\"", ""));
-            data.put("access_token", object.get("access_token").toString().replaceAll("\"", ""));
+            data.put("openid", String.valueOf(object.get("openid")).replaceAll("\"", ""));
+            data.put("access_token",String.valueOf(object.get("access_token")).replaceAll("\"", ""));
         } catch (Exception ex) {
             log.error("fail to request wechat access token. [error={}]", ex);
         }

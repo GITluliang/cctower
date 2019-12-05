@@ -124,7 +124,7 @@ public class GenUtils {
             try {
                 //添加到zip
                 zip.putNextEntry(new ZipEntry(getFileName(template, tableDO.getClassname(), tableDO.getClassName(), config.getString("package").substring(config.getString("package").lastIndexOf(".") + 1))));
-                IOUtils.write(sw.toString(), zip, "UTF-8");
+                IOUtils.write(String.valueOf(sw), zip, "UTF-8");
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
             } catch (IOException e) {

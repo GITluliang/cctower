@@ -48,8 +48,8 @@ public class MenuServiceImpl implements MenuService {
         List<Menu> menus = menuDAO.listMenuByUserId(userId);
         for (Menu menu : menus) {
             Tree<Menu> tree = new Tree<>();
-            tree.setId(menu.getId().toString());
-            tree.setParentId(menu.getParentId().toString());
+            tree.setId(String.valueOf(menu.getId()));
+            tree.setParentId(String.valueOf(menu.getParentId()));
             tree.setText(menu.getName());
             Map<String, Object> attributes = new HashMap<>(MAP_INIT_CAPACITY);
             attributes.put("url", menu.getUrl());
@@ -122,8 +122,8 @@ public class MenuServiceImpl implements MenuService {
 
     private Tree<Menu> buildTree(Menu menu) {
         Tree<Menu> tree = new Tree<>();
-        tree.setId(menu.getId().toString());
-        tree.setParentId(menu.getParentId().toString());
+        tree.setId(String.valueOf(menu.getId()));
+        tree.setParentId(String.valueOf(menu.getParentId()));
         tree.setText(menu.getName());
         return tree;
     }

@@ -33,9 +33,9 @@
                 <input type="number" id="cost" class="mui-input-clear mui-input" placeholder="请输入充值金额">
             </div>
         </div>
-            <span hidden id="openId" th:value="${openId}"></span>
-            <span hidden id="userId" th:value="${userVO.id}"></span>
-            <span hidden id="parkingId" th:value="${userVO.parkingId}"></span>
+            <span hidden id="openId" th:text="${openId}"></span>
+            <span hidden id="userId" th:text="${userVO.id}"></span>
+            <span hidden id="parkingId" th:text="${userVO.parkingId}"></span>
     </form>
     <div class="mui-content-padded">
         <div class="btncont">
@@ -62,17 +62,17 @@
     }
 
     function payOrder() {
-        openId = $("#openId").val();
-        userId = $("#userId").val();
-        parkingId = $("#parkingId").val();
+        openId = $("#openId").text();
+        userId = $("#userId").text();
+        parkingId = $("#parkingId").text();
         cost = $("#cost").val();
-        console.log("点击支付传过来的值：" + openId + ',' + recordId + "," + money)
+        console.log("点击支付传过来的值：" + openId + ',' + userId + "," + parkingId + ',' + cost)
         if(typeof(openId) == "undefined" || openId == "") {
             alert("请退出重新登录！");
         }else {
             if(typeof(openId) != "undefined" && typeof(userId) != "undefined" && typeof(parkingId) != "undefined" && typeof(cost) != "undefined") {
                 $.ajax({
-                    url : '/mp/wx-pay/prepay' ,
+                    url : '/mp/recharge/prepay' ,
                     type: 'POST',
                     dataType : 'json',
                     contentType: "application/json;charset=UTF-8",

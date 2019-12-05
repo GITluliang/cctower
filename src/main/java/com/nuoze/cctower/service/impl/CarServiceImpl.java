@@ -221,13 +221,13 @@ public class CarServiceImpl implements CarService {
                     if (freeTime >= takeMinutes) {
                         cost = EMPTY_MONEY;
                     }
+                }
+            }else {
+                Integer freeTime = billing.getFreeTime();
+                if (freeTime != null && freeTime >= takeMinutes) {
+                    cost = EMPTY_MONEY;
                 } else {
-                    Integer freeTime = billing.getFreeTime();
-                    if (freeTime != null && freeTime >= takeMinutes) {
-                        cost = EMPTY_MONEY;
-                    } else {
-                        cost = billingComponent.cost(takeMinutes, parkingId, null);
-                    }
+                    cost = billingComponent.cost(takeMinutes, parkingId, null);
                 }
             }
             Parking parking = parkingService.findById(parkingRecord.getParkingId());
@@ -238,7 +238,7 @@ public class CarServiceImpl implements CarService {
                     .setInTime(DateUtils.formatDateTime(parkingRecord.getInTime()))
                     .setOutTime(DateUtils.formatDateTime(new Date()))
                     .setTakeMinutes(takeMinutes)
-                    .setCost(cost.toString());
+                    .setCost(String.valueOf(cost));
         } else {
             parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
         }
@@ -406,7 +406,7 @@ public class CarServiceImpl implements CarService {
         BigDecimal monthlyPrice = billing.getMonthlyPrice();
         RenewCarVO vo = new RenewCarVO();
         if (monthlyPrice != null) {
-            vo.setMonthlyPrice(monthlyPrice.toString());
+            vo.setMonthlyPrice(String.valueOf(monthlyPrice));
         }
         return vo;
     }
@@ -440,7 +440,7 @@ public class CarServiceImpl implements CarService {
                 ;
                 renewCarRecordVOS.add(new RenewCarRecordVO()
                         .setParkingCar(parkingName + ": " + record.getCarNumber())
-                        .setCost(record.getCost().toString())
+                        .setCost(String.valueOf(record.getCost()))
                         .setTime(DateUtils.formatDateTime(record.getCreateTime()))
                 );
             }

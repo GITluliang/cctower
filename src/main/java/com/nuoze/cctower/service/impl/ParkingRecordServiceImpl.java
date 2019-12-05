@@ -54,7 +54,7 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
             ParkingRecord parkingRecord = parkingRecordDAO.findByParkingIdAndIp(parkingId, exitId);
             if (parkingRecord != null) {
                 parkingRecordVO.setRecordId(parkingRecord.getId());
-                parkingRecordVO.setCost(parkingRecord.getCost() == null ? "0.0" : parkingRecord.getCost().toString());
+                parkingRecordVO.setCost(parkingRecord.getCost() == null ? "0.0" : String.valueOf(parkingRecord.getCost()));
                 parkingRecordVO.setInTime(DateUtils.formatDateTime(parkingRecord.getInTime()));
                 parkingRecordVO.setOutTime(DateUtils.formatDateTime(new Date()));
                 Integer costTime = parkingRecord.getCostTime();

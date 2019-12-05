@@ -6,22 +6,17 @@ import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.WxUtils;
 import com.nuoze.cctower.pojo.dto.RechargeDTO;
-import com.nuoze.cctower.pojo.dto.RenewCarPayDTO;
-import com.nuoze.cctower.pojo.vo.BusinessTransactionRecordVO;
-import com.nuoze.cctower.service.BusinessTransactionRecordService;
 import com.nuoze.cctower.service.RechargeRecordService;
 import com.nuoze.cctower.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.nuoze.cctower.common.util.ShiroUtils.*;
@@ -48,7 +43,7 @@ public class RechargeController {
         return prefix + "listRecharge";
     }
 
-    @RequestMapping("/state")
+    @RequestMapping("/mobile/recharge/state")
     public String state() {
         return prefix + "state";
     }
@@ -80,10 +75,10 @@ public class RechargeController {
      */
     @RequestMapping("/mp/recharge/addRecharge")
     public String addRecharge(String code,  Model model) {
-        if (org.apache.commons.lang.StringUtils.isEmpty(code)) {
+        if (StringUtils.isEmpty(code)) {
             return prefix + "code";
         }
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(code)) {
+        if (StringUtils.isNotEmpty(code)) {
             model.addAttribute("openId", wxUtils.getUserInfoAccessToken(code).get("openid"));
         }
         model.addAttribute("userVO", userService.findByIdVO(getUserId()));
@@ -96,6 +91,7 @@ public class RechargeController {
      * @param request
      * @return
      */
+    @ResponseBody
     @PostMapping("/mp/recharge/prepay")
     public WxPayMpOrderResult businessrRechargePrePay(@RequestBody RechargeDTO dto, HttpServletRequest request) {
         log.info("[商户充值 WX PAY businessrRechargePrePay] Applet submit payment: {}", dto);
