@@ -2,6 +2,7 @@ package com.nuoze.cctower.component;
 
 import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.dao.ParkingDAO;
+import com.nuoze.cctower.dao.UserDAO;
 import com.nuoze.cctower.dao.UserRoleDAO;
 import com.nuoze.cctower.pojo.entity.Parking;
 
@@ -26,6 +27,8 @@ public class IdComponent {
     private ParkingDAO parkingDAO;
     @Autowired
     private UserRoleDAO userRoleDAO;
+    @Autowired
+    private UserDAO userDAO;
 
     /**
      * 当返回null代表角色是管理员，可以查看所有。
@@ -58,7 +61,11 @@ public class IdComponent {
         if (!roleIds.contains(SUPER_ROLE_ID) && !roleIds.contains(ADMIN_ROLE_ID)) {
             parkingIds = parkingDAO.findByUserId(userId);
             if (CollectionUtils.isEmpty(parkingIds)) {
-                return new CopyOnWriteArrayList<>();
+                CopyOnWriteArrayList<Long> list = new CopyOnWriteArrayList<>();
+                Parking parking = parkingDAO.selectByPrimaryKey(userDAO.selectByPrimaryKey(userId).getParkingId());
+                System.out.println("****" + ShiroUtils.getUser());
+                if (parking != null) {list.add(parking.getId()); }
+                return list;
             }
         }
         return parkingIds;

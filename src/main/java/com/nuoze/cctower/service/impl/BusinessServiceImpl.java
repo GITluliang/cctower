@@ -45,7 +45,6 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public List<UserVO> list(Map<String, Object> map) {
-        map.put("type", 1);
         List<User> list = userDAO.list(map);
         List<UserVO> userVOS = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
@@ -65,7 +64,6 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public int count(Map<String, Object> map) {
-        map.put("type", 1);
         return userDAO.count(map);
     }
 
@@ -73,7 +71,7 @@ public class BusinessServiceImpl implements BusinessService {
     public int save(User user) {
         UserVO vo = new UserVO();
         BeanUtils.copyProperties(user, vo);
-        int count = userDAO.insertSelective(user.setCreateTime(new Date()).setUpdateTime(new Date()).setTimeCoupon(0).setType(1));
+        int count = userDAO.insertSelective(user.setCreateTime(new Date()).setUpdateTime(new Date()).setTimeCoupon(0));
         vo.setId(userDAO.findByUsername(user.getUsername()).getId());
         insertUserRole(vo);
         return count;

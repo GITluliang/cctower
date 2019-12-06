@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,7 @@ public class BusinessController {
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
         }
+        params.put("typeArr" , Arrays.asList(1,2));
         Query query = new Query(params);
         return new PageUtils(businessService.list(query), businessService.count(query));
     }

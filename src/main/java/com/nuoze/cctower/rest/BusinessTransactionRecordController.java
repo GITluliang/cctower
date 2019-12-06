@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Map;
 
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
+
 /**
  * @author JiaShun
  * @date 2019-05-05 01:25
@@ -42,9 +44,9 @@ public class BusinessTransactionRecordController {
     @GetMapping("/list")
     @RequiresPermissions("sys:businessTransaction:businessTransaction")
     public PageUtils list(@RequestParam Map<String, Object> params) {
-        Long userId = ShiroUtils.getUserId();
-        if (idComponent.isNotAdmin(userId)) {
-            params.put("userId", userId);
+        params = idComponent.buildParams(params);
+        if (params.isEmpty()) {
+            return new PageUtils(EMPTY_LIST, 0);
         }
         //查询列表数据
         Query query = new Query(params);

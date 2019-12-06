@@ -268,6 +268,12 @@
           #{parkingId}
         </foreach>
       </if>
+      <if test="typeArr != null and typeArr.size > 0 ">
+        and type in
+        <foreach item="type" collection="typeArr" open="(" separator="," close=")">
+          #{type}
+        </foreach>
+      </if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -311,6 +317,12 @@
         and parking_id in
         <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
           #{parkingId}
+        </foreach>
+      </if>
+      <if test="typeArr != null and typeArr.size > 0 ">
+        and type in
+        <foreach item="type" collection="typeArr" open="(" separator="," close=")">
+          #{type}
         </foreach>
       </if>
     </where>

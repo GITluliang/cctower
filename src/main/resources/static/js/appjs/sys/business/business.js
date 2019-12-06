@@ -77,6 +77,22 @@ function load() {
                         title : '余额'
                     },
 					{
+						field : 'timeCoupon',
+						title : '时长劵'
+					},
+					{
+						field : 'type',
+						title : '商户类型',
+						align : 'center',
+						formatter : function(value, row, index) {
+							if (value == '1') {
+								return '<span class="label label-danger">普通商户</span>';
+							} else if (value == '2') {
+								return '<span class="label label-primary">时长劵商户</span>';
+							}
+						}
+					},
+					{
 						field : 'status',
 						title : '状态',
 						align : 'center',

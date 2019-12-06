@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Map;
 
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
+
 /**
  * 时长劵商户流水
  * @author JiaShun
@@ -42,9 +44,9 @@ public class TimeCouponDetailsController {
     @GetMapping("/list")
     @RequiresPermissions("sys:timeCouponDetails:timeCouponDetails")
     public PageUtils list(@RequestParam Map<String, Object> params) {
-        Long userId = ShiroUtils.getUserId();
-        if (idComponent.isNotAdmin(userId)) {
-            params.put("userId", userId);
+        params = idComponent.buildParams(params);
+        if (params.isEmpty()) {
+            return new PageUtils(EMPTY_LIST, 0);
         }
         //查询列表数据
         Query query = new Query(params);

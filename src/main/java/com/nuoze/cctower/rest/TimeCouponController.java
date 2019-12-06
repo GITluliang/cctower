@@ -54,7 +54,7 @@ public class TimeCouponController {
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
         }
-        params.put("type", 1);
+        params.put("type", 2);
         //查询列表数据
         Pair<Integer, List<TenantTopUpVO>> pair = userService.tenantTopUpList(new Query(params));
         return new PageUtils(pair.getRight(), pair.getLeft());
