@@ -48,6 +48,10 @@ public class BusinessTransactionRecord implements Serializable {
      * 商户状态: 0:时长商户 1:时长劵商户
      */
     private Integer status;
+    /**
+     * 停车场ID
+     */
+    private Long parkingId;
 
     private static final long serialVersionUID = 1L;
 

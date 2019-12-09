@@ -17,6 +17,7 @@ import static com.nuoze.cctower.common.constant.Constant.*;
 
 /**
  * mq消息发送组件
+ *
  * @author JiaShun
  * @date 2019-04-27 00:52
  */
@@ -31,6 +32,7 @@ public class MqSendComponent {
 
     /**
      * 发送出厂车辆
+     *
      * @param parkingId
      * @param goOutVO
      */
@@ -43,6 +45,7 @@ public class MqSendComponent {
 
     /**
      * 发送收費规则
+     *
      * @param dataEnum
      * @param billing
      * @param detail
@@ -66,28 +69,22 @@ public class MqSendComponent {
 
     /**
      * 发送月租车
+     *
      * @param dataEnum
      * @param vo
      */
     public void sendRentCar(ApiDataEnum dataEnum, Car vo) {
         RentCarVO rentCarVO = new RentCarVO();
-        RentCarApiEntity apiEntity = new RentCarApiEntity();
-        apiEntity.setCloudId(vo.getId());
-        apiEntity.setNumber(vo.getNumber());
-        apiEntity.setRentCarStart(DateUtils.formatDateTime(vo.getMonthlyParkingStart()));
-        apiEntity.setRentCarEnd(DateUtils.formatDateTime(vo.getMonthlyParkingEnd()));
-        apiEntity.setStatus(vo.getStatus());
-        apiEntity.setInfieldPermission(vo.getInfieldPermission());
-        rentCarVO.setRentCarApiEntity(apiEntity);
+        rentCarVO.setRentCarApiEntity(new RentCarApiEntity().setCloudId(vo.getId()).setNumber(vo.getNumber()).setRentCarStart(DateUtils.formatDateTime(vo.getMonthlyParkingStart()))
+                        .setRentCarEnd(DateUtils.formatDateTime(vo.getMonthlyParkingEnd())).setStatus(vo.getStatus()).setInfieldPermission(vo.getInfieldPermission()).setUuid(vo.getUuid()));
         rentCarVO.setType(dataEnum.name());
-        ApiMqVO mqVO = new ApiMqVO();
-        mqVO.setType(RENT_CAR_TYPE);
-        mqVO.setRentCarVO(rentCarVO);
+        ApiMqVO mqVO = new ApiMqVO().setType(RENT_CAR_TYPE).setRentCarVO(rentCarVO);
         sendMq(mqVO, vo.getParkingId());
     }
 
     /**
      * 通过RabbitTemplate发送mq指令
+     *
      * @param mqVO
      * @param parkingId
      */

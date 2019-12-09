@@ -11,9 +11,10 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="free_time" jdbcType="INTEGER" property="freeTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, `type`, car_number, amount, balance, create_time, free_time, status
+    id, user_id, `type`, car_number, amount, balance, create_time, free_time, status, parking_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -27,11 +28,11 @@
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.BusinessTransactionRecord">
     insert into business_transaction_record (id, user_id, `type`, 
-      car_number, amount, balance, create_time, free_time, status
+      car_number, amount, balance, create_time, free_time, status, parking_id
       )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
       #{carNumber,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{freeTime,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}
-      )
+      ,#{parkingId,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.BusinessTransactionRecord">
     insert into business_transaction_record
@@ -63,6 +64,9 @@
       <if test="status != null">
         status,
       </if>
+      <if test="parkingId != null">
+        parking_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -91,6 +95,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="parkingId != null">
+        #{parkingId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -121,6 +128,9 @@
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
       </if>
+      <if test="parkingId != null">
+        parking_id = #{parkingId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -133,7 +143,8 @@
       balance = #{balance,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       free_time = #{freeTime,jdbcType=INTEGER},
-      status = #{status,jdbcType=TINYINT}
+      status = #{status,jdbcType=TINYINT}.
+      parking_id = #{parkingId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -144,6 +155,13 @@
     <where>
       <if test="userId != null and userId != ''">and user_id = #{userId}</if>
       <if test="status != null and status != ''">and status = #{status}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -163,6 +181,16 @@
     <where>
       <if test="userId != null and userId != ''">and user_id = #{userId}</if>
       <if test="status != null and status != ''">and status = #{status}</if>
+      <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="parkingIds != null and parkingIds.size > 0 ">
+        and parking_id in
+        <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
+          #{parkingId}
+        </foreach>
+      </if>
     </where>
+    <if test="offset != null and limit != null">
+      limit #{offset}, #{limit}
+    </if>
   </select>
 </mapper>

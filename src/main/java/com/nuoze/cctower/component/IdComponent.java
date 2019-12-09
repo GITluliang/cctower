@@ -63,7 +63,6 @@ public class IdComponent {
             if (CollectionUtils.isEmpty(parkingIds)) {
                 CopyOnWriteArrayList<Long> list = new CopyOnWriteArrayList<>();
                 Parking parking = parkingDAO.selectByPrimaryKey(userDAO.selectByPrimaryKey(userId).getParkingId());
-                System.out.println("****" + ShiroUtils.getUser());
                 if (parking != null) {list.add(parking.getId()); }
                 return list;
             }

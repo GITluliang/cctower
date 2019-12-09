@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
     public int updateBalance(TenantTopUpVO vo) {
         User user = userDAO.selectByPrimaryKey(vo.getUserId());
         BigDecimal balance = user.getBalance().add(vo.getBalance());
-        businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setAmount(vo.getBalance()).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setBalance(balance).setStatus(0));
+        businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setAmount(vo.getBalance()).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setBalance(balance).setStatus(0).setParkingId(user.getParkingId()));
         return userDAO.updateByPrimaryKeySelective(user.setBalance(balance).setUpdateTime(new Date()));
     }
 
@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
     public int updateTimeCoupon(TenantTopUpVO vo) {
         User user = userDAO.selectByPrimaryKey(vo.getUserId());
         Integer timeCoupon = user.getTimeCoupon() != null ? (user.getTimeCoupon() + vo.getTimeCoupon()) : vo.getTimeCoupon();
-        businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(BigDecimal.valueOf(vo.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setStatus(1));
+        businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(BigDecimal.valueOf(vo.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setStatus(1).setParkingId(user.getParkingId()));
         return userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(timeCoupon).setUpdateTime(new Date()));
     }
 

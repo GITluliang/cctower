@@ -44,6 +44,7 @@
         <div class="grid dribbble" >
             <a class="mui-col-xs-4" id="longCar" ><i class="iconfont icon-yuezu"></i>月租车辆</a>
             <a class="mui-col-xs-4" id="businessCar" ><i class="iconfont icon-Vip"></i>商户车辆</a>
+            <a class="mui-col-xs-4" id="timeCouponCar" ><i class="iconfont icon-Vip"></i>时长劵车辆</a>
             <a class="mui-col-xs-4" id="vipCar" ><i class="iconfont icon-shanghu"></i>VIP车辆</a>
             <a class="mui-col-xs-4" id="recharge"><i class="iconfont icon-Vip"></i>商户充值</a>
         </div>
@@ -58,10 +59,12 @@
     $(function () {
         displayHide("/mobile/car/long/authz", "#longCar");
         displayHide("/mobile/car/business/authz", "#businessCar");
+        displayHide("/mobile/car/timeCoupon/authz", "#timeCouponCar");
         displayHide("/mobile/car/vip/authz", "#vipCar");
         displayHide("/mobile/recharge/authz", "#recharge");
         $("#longCar").click(function () {   window.location.replace("/mobile/car/long");}) ;
         $("#businessCar").click(function () {   window.location.replace("/mobile/car/business");}) ;
+        $("#timeCouponCar").click(function () {   window.location.replace("/mobile/car/timeCoupon");}) ;
         $("#vipCar").click(function () {    window.location.replace("/mobile/car/vip");}) ;
         $("#recharge").click(function () {    window.location.replace("/mobile/recharge");}) ;
     });

@@ -20,6 +20,11 @@ import java.util.Map;
  * @date 2019-03-15 00:23
  */
 public interface CarService {
+    /**
+     * 商户车辆和时长劵车辆调用
+     * @param map
+     * @return
+     */
     List<CarDTO> list(Map<String, Object> map);
 
     List<CarDTO> listLike(Map<String, Object> map);

@@ -44,6 +44,7 @@ public class BusinessTransactionRecordController {
     @GetMapping("/list")
     @RequiresPermissions("sys:businessTransaction:businessTransaction")
     public PageUtils list(@RequestParam Map<String, Object> params) {
+        params.put("userId", idComponent.getUserId());
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);

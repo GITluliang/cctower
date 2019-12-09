@@ -21,11 +21,11 @@
         </header>
          <div class="user bantop" style="background: linear-gradient(-320deg,#1296db 40%,rgba(18, 150, 219,0.6));border-bottom: 10px solid #2189bf;">
             <i class="iconfont icon-shanghu"></i>
-            <h3>商户车辆</h3>
+            <h3>时长劵车辆</h3>
             <h5>MERCHANT MANAGEMENT</h5>
         </div>
         <ul class="mui-table-view longlist" id="listShanghu"></ul>
-        <a href="/mobile/car/business/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
+        <a href="/mobile/car/timeCoupon/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
     </div>
     <p class="list-bot">加载更多内容</p>
      <!-- 自开发弹出层：选择内容过多，需要滚动 -->
@@ -63,7 +63,7 @@
 
     function list(limit, offset) {
         $.ajax({
-            url: "/sys/car/business/list",
+            url: "/sys/car/timeCoupon/list",
             dataType: "json",
             async: false,
             data: {
@@ -83,15 +83,15 @@
                 for (i in data.rows) {
                     json += `
                     <li class="mui-table-view-cell">
-                        <a href="/mobile/car/business/detail/${data.rows[i].id}">
+                        <a href="/mobile/car/timeCoupon/detail/${data.rows[i].id}">
                             <h3><span class="mui-ellipsis">车牌号：${data.rows[i].number}</span>
                 `
                     json +=`</h3>
-                            <p><span>免费时长(分钟)：${data.rows[i].freeTime}分钟</span><span>费用：${data.rows[i].cost}</span></p>
+                            <p><span>时长劵：${data.rows[i].timeCoupon}</span><span>免费时长(分钟)：${data.rows[i].freeTime}分钟</span></p>
                             <p><span>停车场：${data.rows[i].parkingName}</span><span>商户名称：${data.rows[i].userName}</span></p>
                         </a>
                         <div class="btn-bot">
-                            <a href="/mobile/car/business/edit/${data.rows[i].id}" id="eidt"><i class="iconfont icon-edit"></i>编辑</a>
+                            <a href="/mobile/car/timeCoupon/edit/${data.rows[i].id}" id="eidt"><i class="iconfont icon-edit"></i>编辑</a>
                             <span id="delete"><i class="iconfont icon-shanchu delete" value=${data.rows[i].id}></i>删除</span>
                         </div>
                     </li>
@@ -113,7 +113,7 @@
 
     function remove() {
         $("#yes").click(function () {
-            $.post("/sys/car/business/remove",{id:$(this).attr("value")},function (data) {
+            $.post("/sys/car/timeCoupon/remove",{id:$(this).attr("value")},function (data) {
                 if(data.code == 0){
                     window.location.reload();
                 }else {

@@ -52,6 +52,10 @@ function load() {
                         title: '停车场名称'
                     },
                     {
+                        field: 'userName',
+                        title: '商户名称'
+                    },
+                    {
                         field: 'number',
                         title: '车牌号'
                     },

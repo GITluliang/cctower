@@ -16,4 +16,5 @@ public class CarDTO extends Car {
     private String beginDate;
     private String endDate;
     private String parkingName;
+    private String userName;
 }

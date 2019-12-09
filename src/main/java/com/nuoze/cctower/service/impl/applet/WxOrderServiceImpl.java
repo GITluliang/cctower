@@ -221,7 +221,7 @@ public class WxOrderServiceImpl implements WxOrderService {
                 //1.更新商户账户余额；2.更新商户微信充值记录；3.增加商户流水；4.更新物业账号流水；5.更新物业账号余额
                 userDAO.updateByPrimaryKey(user.setBalance(user.getBalance().add(money)).setUpdateTime(new Date()));
                 rechargeRecordDAO.updateByPrimaryKey(rechargeRecord.setServiceCharge(serviceCharge).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL).setCreateTime(new Date()));
-                businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setUserId(rechargeRecord.getUserId()).setType(3).setAmount(money).setBalance(user.getBalance()).setCreateTime(new Date()).setStatus(0));
+                businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setUserId(rechargeRecord.getUserId()).setType(3).setAmount(money).setBalance(user.getBalance()).setCreateTime(new Date()).setStatus(0).setParkingId(rechargeRecord.getParkingId()));
                 billingComponent.addTradingRecord(money.subtract(serviceCharge), rechargeRecord.getParkingId(), IncomeType.BUSINESS_RENEW, "");
                 billingComponent.addAccountBalance(money.subtract(serviceCharge), rechargeRecord.getParkingId());
             }

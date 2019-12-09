@@ -8,6 +8,7 @@ import com.nuoze.cctower.common.util.PageUtils;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
 import com.nuoze.cctower.common.util.ShiroUtils;
+import com.nuoze.cctower.component.IdComponent;
 import com.nuoze.cctower.dao.UserDAO;
 import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
@@ -25,11 +26,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.nuoze.cctower.service.CarService;
 
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
 
 
 /**
- * 车辆表
+ * 普通商户车辆
  *
  * @author JiaShun
  * @date 2019-03-15 00:19:28
@@ -45,6 +47,8 @@ public class BusinessCarController {
     private CarService carService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private IdComponent idComponent;
 
     @GetMapping()
     @RequiresPermissions("sys:car:business")
@@ -56,6 +60,11 @@ public class BusinessCarController {
     @GetMapping("/list")
     @RequiresPermissions("sys:car:business")
     public PageUtils list(@RequestParam Map<String, Object> params) {
+        params.put("createId", idComponent.getUserId());
+        params = idComponent.buildParams(params);
+        if (params.isEmpty()) {
+            return new PageUtils(EMPTY_LIST, 0);
+        }
         //查询列表数据
         params.put("parkingType", 3);
         Query query = new Query(params);

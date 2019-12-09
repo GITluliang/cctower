@@ -5,6 +5,7 @@ import com.nuoze.cctower.common.util.PageUtils;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
 import com.nuoze.cctower.common.util.ShiroUtils;
+import com.nuoze.cctower.component.IdComponent;
 import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.User;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 import static com.nuoze.cctower.common.constant.Constant.EMPTY_MONEY;
 import static com.nuoze.cctower.common.util.ShiroUtils.getUserId;
 
@@ -40,6 +42,8 @@ public class TimeCouponCarController {
     private CarService carService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private IdComponent idComponent;
 
     @GetMapping()
     @RequiresPermissions("sys:car:timeCoupon")
@@ -51,6 +55,12 @@ public class TimeCouponCarController {
     @GetMapping("/list")
     @RequiresPermissions("sys:car:timeCoupon")
     public PageUtils list(@RequestParam Map<String, Object> params) {
+        params.put("createId", idComponent.getUserId());
+        params.put("createId", idComponent.getUserId());
+        params = idComponent.buildParams(params);
+        if (params.isEmpty()) {
+            return new PageUtils(EMPTY_LIST, 0);
+        }
         //查询列表数据
         params.put("parkingType", 6);
         Query query = new Query(params);
@@ -84,7 +94,7 @@ public class TimeCouponCarController {
         if (user.getTimeCoupon() <= 0) {
             return R.error(201, "时长劵已用完 ,请联系物业充值");
         }
-        if (user.getTimeCoupon() - dto.getFreeTime() < 0) {
+        if (user.getTimeCoupon() - dto.getTimeCoupon() < 0) {
             return R.error(201, "时长劵还剩" + user.getTimeCoupon() + "张 ,请重新输入");
         }
         dto.setParkingId(user.getParkingId());
