@@ -19,7 +19,12 @@ spring:
     port: 5672
     username: cctower
     password: Cctower00000*
-
+  activemq:
+    broker-url: tcp://47.93.12.69:61616
+    user: cctower
+    password: Cctower00000*
+  jms:
+    pub-sub-domain: false     #false=Queue  true=Topic
 # wx相关信息
 wx:
   app-id: wx84582d8d20ac4deb
