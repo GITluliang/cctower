@@ -217,14 +217,16 @@ public class CarServiceImpl implements CarService {
             BigDecimal cost = parkingRecord.getCost();
             Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
             if (car != null && car.getStatus() == BUSINESS_NORMAL_CAR) {
-                if (MONTHLY_CAR == car.getParkingType() || TEMPORARY_CAR == car.getParkingType() || SINGLEVIP_CAR == car.getParkingType() || parkingRecord.getPayStatus() == 1) {
+                if (MONTHLY_CAR == car.getParkingType() || VIP_CAR == car.getParkingType() || SINGLEVIP_CAR == car.getParkingType() || parkingRecord.getPayStatus() == 1) {
                     cost = EMPTY_MONEY;
                 } else if (SPECIAL_CAR == car.getParkingType()) {
                     cost = car.getCost() == null ? new BigDecimal(5) : car.getCost();
-                } else if (BUSINESS_CAR == car.getParkingType()) {
+                } else if (BUSINESS_CAR == car.getParkingType() || TIMECOUPON_CAR == car.getParkingType()) {
                     int freeTime = car.getFreeTime();
                     if (freeTime >= takeMinutes) {
                         cost = EMPTY_MONEY;
+                    }else {
+                        takeMinutes = takeMinutes - car.getFreeTime();
                     }
                 }
             }else {
@@ -274,6 +276,14 @@ public class CarServiceImpl implements CarService {
                     }
                     break;
                 case BUSINESS_CAR:
+                    if (BUSINESS_NORMAL_CAR == car.getStatus()) {
+                        int takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
+                        if (car.getFreeTime() > takeMinutes) {
+                            return ResponseResult.fail(201, "你是商户车辆，免费时长未用完，无需付款");
+                        }
+                    }
+                    break;
+                case TIMECOUPON_CAR:
                     if (BUSINESS_NORMAL_CAR == car.getStatus()) {
                         int takeMinutes = (int) ChronoUnit.MINUTES.between(parkingRecord.getInTime().toInstant(), Instant.now());
                         if (car.getFreeTime() > takeMinutes) {

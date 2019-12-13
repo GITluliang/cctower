@@ -20,7 +20,7 @@ spring:
     username: cctower
     password: Cctower00000*
   activemq:
-    broker-url: tcp://47.93.12.69:61616
+    broker-url: tcp://47.93.13.31:61616
     user: cctower
     password: Cctower00000*
   jms:
