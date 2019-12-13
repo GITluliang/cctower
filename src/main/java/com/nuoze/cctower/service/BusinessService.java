@@ -16,4 +16,6 @@ public interface BusinessService {
     int count(Map<String, Object> map);
 
     int save(User vo);
+
+    int update(User user);
 }

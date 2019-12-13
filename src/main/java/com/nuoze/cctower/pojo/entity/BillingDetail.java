@@ -19,7 +19,7 @@ public class BillingDetail implements Serializable {
     private Long parkingId;
 
     /**
-     * 1:分时计费 2：分段计费
+     * 1:分时计费 2：分段计费 3: 时段计费，例如：3元15分钟
      */
     private Integer type;
 

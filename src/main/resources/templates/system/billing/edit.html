@@ -58,14 +58,15 @@
                                               class="form-control" type="text"></label>
                             </div>
                         </div>
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label class="col-sm-3 control-label">24小时最高收费：</label>
                             <div class="col-sm-8">
                                 <label><input id="dayCost" name="dayCost" th:value="${billing.dayCost}"
                                               class="form-control"
-                                              type="text"></label>
+                                              type="hidden"></label>
                             </div>
-                        </div>
+                        </div>-->
+                        <input id="dayCost" name="dayCost" class="form-control" type="hidden" value="0">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">时长劵时间(分钟)：</label>
                             <div class="col-sm-8">

@@ -86,8 +86,8 @@ public class BusinessController {
     @RequiresPermissions("sys:user:edit")
     @PostMapping("/update")
     @ResponseBody
-    R update(UserVO vo) {
-        return userService.update(vo) > 0 ? R.ok() : R.error();
+    R update(User vo) {
+        return businessService.update(vo) > 0 ? R.ok() : R.error();
     }
 
     @RequiresPermissions("sys:user:remove")

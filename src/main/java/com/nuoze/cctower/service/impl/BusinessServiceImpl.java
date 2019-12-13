@@ -77,9 +77,18 @@ public class BusinessServiceImpl implements BusinessService {
         return count;
     }
 
+    @Override
+    public int update(User user) {
+        UserVO vo = new UserVO();
+        BeanUtils.copyProperties(user, vo);
+        int count = userDAO.updateByPrimaryKeySelective(user.setCreateTime(new Date()).setUpdateTime(new Date()));
+        insertUserRole(vo);
+        return count;
+    }
+
     private void insertUserRole(UserVO vo) {
         userRoleDAO.removeByUserId(vo.getId());
-        Role role = roleDAO.findByRoleName(vo.getType() ==1 ? BUSINESS_ROLE_NAME : BUSINESS_TIMECOUPON);
+        Role role = roleDAO.findByRoleName(vo.getType() == 1 ? BUSINESS_ROLE_NAME : BUSINESS_TIMECOUPON);
         if (role != null) {
             userRoleDAO.insert(new UserRole().setUserId(vo.getId()).setRoleId(role.getId()));
         }

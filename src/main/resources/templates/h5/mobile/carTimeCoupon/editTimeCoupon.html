@@ -20,10 +20,10 @@
                     <label>车牌号</label>
                     <input id="number" name="number" type="text" class="mui-input-clear mui-input" placeholder="请输入车牌号" th:value="${carDTO.number}">
                 </div>
-                 <div class="mui-input-row">
+<!--                 <div class="mui-input-row">
                     <label>免时长劵(张)</label>
                     <input id="timeCoupon"  name="timeCoupon" type="number" class="mui-input" placeholder="请输入免费时长" th:value="${carDTO.timeCoupon}" readonly>
-                </div>
+                </div>-->
                 <div class="mui-input-row">
                     <label>车主姓名</label>
                     <input name="name" type="text" class="mui-input-clear mui-input" placeholder="请输入车主姓名" th:value="${carDTO.name}">
@@ -47,6 +47,7 @@
                 </div>
             </div>
             <input type="hidden" name="parkingType" value="6" >
+            <input type="timeCoupon" name="timeCoupon" th:value="${carDTO.timeCoupon}" >
             <input type="hidden" name="id" th:value=${carDTO.id} >
             <input type="hidden" name="parkingId" th:value=${carDTO.parkingId} >
         </form>

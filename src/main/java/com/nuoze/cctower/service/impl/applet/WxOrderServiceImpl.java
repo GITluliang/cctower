@@ -183,8 +183,8 @@ public class WxOrderServiceImpl implements WxOrderService {
                     mqSendComponent.sendGoOutCar(parkingId, goOutVO);
                 }
                 //商户车辆状态修改
-                if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                    carDAO.deleteByPrimaryKey(car.getId());
+                if (car != null) {
+                    if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
                 }
                 billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber());
                 billingComponent.addAccountBalance(money, parkingId);

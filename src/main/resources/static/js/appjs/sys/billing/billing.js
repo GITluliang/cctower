@@ -78,10 +78,6 @@ function load() {
 									field : 'alipayDiscount',
 									title : '支付宝折扣百分比' 
 								},
-																{
-									field : 'dayCost', 
-									title : '24小时最高收费' 
-								},
 								{
 									field : 'couponTime',
 									title : '时长劵时间(分钟)'

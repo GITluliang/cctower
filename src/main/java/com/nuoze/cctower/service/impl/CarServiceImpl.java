@@ -188,13 +188,13 @@ public class CarServiceImpl implements CarService {
                 User user = userDAO.selectByPrimaryKey(car.getCreateId());
                 BigDecimal balance = user.getBalance().add(car.getCost());
                 userDAO.updateByPrimaryKeySelective(user.setBalance(balance).setUpdateTime(new Date()));
-                businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(getUserId()).setAmount(car.getCost()).setBalance(balance).setCarNumber(car.getNumber()).setType(2).setCreateTime(new Date()).setFreeTime(car.getFreeTime() / 60).setStatus(0).setParkingId(car.getParkingId()));
+                businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(user.getId()).setAmount(car.getCost()).setBalance(balance).setCarNumber(car.getNumber()).setType(2).setCreateTime(new Date()).setFreeTime(car.getFreeTime() / 60).setStatus(0).setParkingId(car.getParkingId()));
             }
             if (TIMECOUPON_CAR == car.getParkingType()) {
                 User user = userDAO.selectByPrimaryKey(car.getCreateId());
                 Integer timeCoupon = user.getTimeCoupon() + car.getTimeCoupon();
                 userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(timeCoupon).setUpdateTime(new Date()));
-                businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(getUserId()).setAmount(BigDecimal.valueOf(car.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setCarNumber(car.getNumber()).setType(2).setCreateTime(new Date()).setFreeTime(car.getFreeTime() / 60).setStatus(1).setParkingId(car.getParkingId()));
+                businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(user.getId()).setAmount(BigDecimal.valueOf(car.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setCarNumber(car.getNumber()).setType(2).setCreateTime(new Date()).setFreeTime(car.getFreeTime() / 60).setStatus(1).setParkingId(car.getParkingId()));
             }
         }
         return carDAO.deleteByPrimaryKey(id);

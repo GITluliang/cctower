@@ -1,6 +1,44 @@
 var prefix = "/sys/car/long"
 $(function() {
 	load();
+	//下载
+	$('#J_download').on('click', function() {
+		$.ajax({
+			url: prefix + "/excelExport",
+			type: 'post',
+			dataType: 'json',
+			success: function(response) {
+				if (response.code == 1) {
+					window.open(response.download);
+				}else{
+					alert(response.message);
+				}
+			}
+		});
+	});
+	//上传文件
+	var uploader = WebUploader.create({
+		auto: true,
+		server: prefix + '/importExcel',
+		pick: '#J_upload',
+		resize: false,
+		accept: {
+			mimeTypes: '.xlsx,.xls'
+		}
+	});
+	uploader.on('fileQueued', function(file) {
+		parent.layer.alert('上传中...');
+	});
+	uploader.on('uploadSuccess', function(file, response) {
+		console.log('上传成功');
+		parent.layer.alert(response.message);
+	});
+	uploader.on('uploadError', function(file) {
+		parent.layer.alert("上传出错" + response.message);
+	});
+	setTimeout(function(){
+		$('input').hide();
+	},20);
 });
 
 function load() {
@@ -49,9 +87,9 @@ function load() {
 						// sortOrder.
 						// 返回false将会终止请求
 						columns : [
-								{
+/*								{
 									checkbox : true
-								},
+								},*/
 								{
 									field : 'parkingName',
 									title : '停车场名称'
