@@ -44,7 +44,8 @@ public class SingleVipCarController {
 
     @GetMapping()
     @RequiresPermissions("sys:car:singleVip")
-    String car() {
+    String car(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return prefix + "car";
     }
 
@@ -53,15 +54,9 @@ public class SingleVipCarController {
     @RequiresPermissions("sys:car:singleVip")
     public PageUtils list(@RequestParam Map<String, Object> params) {
         log.info("[LONG CAR CONTROLLER] check singleVip car list, the params: {}", String.valueOf(params));
-        params.put(String.valueOf(params.get("query")), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
-        }
-        //停车场查询
-        if ("parkingName".equals(params.get("query"))) {
-            Parking value = parkingDAO.findByParkingName(String.valueOf(params.get("value")));
-            params.put("parkingId", value == null ? 0 : value.getId());
         }
         params.put("parkingType", SINGLEVIP_CAR);
         Query query = new Query(params);

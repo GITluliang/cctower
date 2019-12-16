@@ -26,18 +26,14 @@
                             <button class="btn btn-success" onclick="reLoad()">查询</button>
                         </div>
                         <div class="columns pull-right nopadding">
-                            <input id="searchName" type="text" class="form-control"
-                                   placeholder="请输入">
+                            <input id="number" type="text" class="form-control" placeholder="车牌号">
                         </div>
-                        <div class="columns pull-right nopadding">
-                            <select id="query" name="query" class="form-control">
-                                <option value="">请选择查询</option>
-                                <option value="number">车牌号</option>
-                                <option value="name">车主姓名</option>
-                                <option value="phone">联系方式</option>
-                                <option value="corporateName">公司名称</option>
-                                <option value="classification">月租车分类</option>
-                                <option value="parkingName">停车场名称</option>
+                        <div class="pull-right search nopadding">
+                            <select id="parkingId" name="parkingId" class="form-control">
+                                <option value="">选择停车场</option>
+                                <option th:each="parking:${parkingList}" th:value="${parking.id}"
+                                        th:text="${parking.name}">
+                                </option>
                             </select>
                         </div>
                     </div>

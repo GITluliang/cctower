@@ -12,21 +12,27 @@
 				<div class="ibox-body">
 					<div class="fixed-table-toolbar" style="position: relative;">
 						<div class="columns pull-left">
-							<button shiro:hasPermission="sys:billingDetail:add" type="button" class="btn  btn-primary" onclick="add()">
+							<button shiro:hasPermission="sys:billingDetailA:add" type="button" class="btn  btn-primary" onclick="add()">
 								<i class="fa fa-plus" aria-hidden="true"></i>添加
 							</button>
-							<button shiro:hasPermission="sys:billingDetail:batchRemove" type="button" class="btn  btn-danger"
+							<button shiro:hasPermission="sys:billingDetailA:batchRemove" type="button" class="btn  btn-danger"
 								onclick="batchRemove()">
 								<i class="fa fa-trash" aria-hidden="true"></i>删除
 							</button>
 						</div>
-						<!--<div class="columns pull-right">-->
-							<!--<button class="btn btn-success" onclick="reLoad()">查询</button>-->
-						<!--</div>-->
-						<!--<div class="columns pull-right col-md-2 nopadding">-->
-							<!--<input id="searchName" type="text" class="form-control"-->
-								<!--placeholder="">-->
-						<!--</div>-->
+						<div class="input-right">
+							<div class="columns pull-right">
+								<button class="btn btn-success" onclick="reLoad()">查询</button>
+							</div>
+							<div class="pull-right search nopadding">
+								<select id="parkingId" name="parkingId" class="form-control">
+									<option value="">选择停车场</option>
+									<option th:each="parking:${parkingList}" th:value="${parking.id}"
+											th:text="${parking.name}">
+									</option>
+								</select>
+							</div>
+						</div>
 					</div>
 					<table id="exampleTable" data-mobile-responsive="true">
 					</table>
@@ -42,17 +48,17 @@
 				var s_resetPwd_h = 'hidden';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:billingDetail:edit">
+		<div shiro:hasPermission="sys:billingDetailA:edit">
 			<script type="text/javascript">
 				s_edit_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:billingDetail:remove">
+		<div shiro:hasPermission="sys:billingDetailA:remove">
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
 		</div>
-		<div shiro:hasPermission="sys:billingDetail:resetPwd">
+		<div shiro:hasPermission="sys:billingDetailA:resetPwd">
 			<script type="text/javascript">
 				var s_resetPwd_h = '';
 			</script>

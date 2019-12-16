@@ -54,7 +54,8 @@ public class AccountController {
 
     @GetMapping()
     @RequiresPermissions("sys:account:account")
-    String account() {
+    String account(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return prefix + "account";
     }
 

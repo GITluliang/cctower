@@ -53,7 +53,8 @@ public class BillingController {
 
     @GetMapping()
     @RequiresPermissions("sys:billing:billing")
-    String billing() {
+    String billing(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return prefix + "billing";
     }
 

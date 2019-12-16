@@ -52,7 +52,8 @@ public class DepositRecordController {
 
     @GetMapping()
     @RequiresPermissions("sys:depositRecord:depositRecord")
-    String depositRecord() {
+    String depositRecord(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return "system/depositRecord/depositRecord";
     }
 

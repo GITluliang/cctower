@@ -39,14 +39,15 @@ public class BillingTypeAController {
     private BillingComponent checkComponent;
 
     @GetMapping()
-    @RequiresPermissions("sys:billingDetail:billingDetail")
-    String billingTypeA() {
+    @RequiresPermissions("sys:billingDetailA:billingDetail")
+    String billingTypeA(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return prefix + "detail";
     }
 
     @ResponseBody
     @GetMapping("/list")
-    @RequiresPermissions("sys:billingDetail:billingDetail")
+    @RequiresPermissions("sys:billingDetailA:billingDetail")
     public PageUtils list(@RequestParam Map<String, Object> params) {
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
@@ -61,7 +62,7 @@ public class BillingTypeAController {
     }
 
     @GetMapping("/add")
-    @RequiresPermissions("sys:billingDetail:add")
+    @RequiresPermissions("sys:billingDetailA:add")
     String add(Model model) {
         List<Parking> parkingList = idComponent.getParkingList();
         model.addAttribute("parkingList", parkingList);
@@ -69,7 +70,7 @@ public class BillingTypeAController {
     }
 
     @GetMapping("/edit/{id}")
-    @RequiresPermissions("sys:billingDetail:edit")
+    @RequiresPermissions("sys:billingDetailA:edit")
     String edit(@PathVariable Long id, Model model) {
         BillingDetail billing = billingService.findById(id);
         model.addAttribute("detail", billing);
@@ -83,7 +84,7 @@ public class BillingTypeAController {
      */
     @ResponseBody
     @PostMapping("/save")
-    @RequiresPermissions("sys:billingDetail:add")
+    @RequiresPermissions("sys:billingDetailA:add")
     public R save(BillingDetail billing) {
         billing.setType(1);
         R r = checkComponent.billingParkingIdCheck(billing.getParkingId(), false);
@@ -104,7 +105,7 @@ public class BillingTypeAController {
      */
     @ResponseBody
     @RequestMapping("/update")
-    @RequiresPermissions("sys:billingDetail:edit")
+    @RequiresPermissions("sys:billingDetailA:edit")
     public R update(BillingDetail billing) {
         billingService.update(billing);
         return R.ok();
@@ -115,7 +116,7 @@ public class BillingTypeAController {
      */
     @PostMapping("/remove")
     @ResponseBody
-    @RequiresPermissions("sys:billingDetail:remove")
+    @RequiresPermissions("sys:billingDetailA:remove")
     public R remove(Long id) {
         return billingService.remove(id) > 0 ? R.ok() : R.error();
     }
@@ -125,7 +126,7 @@ public class BillingTypeAController {
      */
     @PostMapping("/batchRemove")
     @ResponseBody
-    @RequiresPermissions("sys:billingDetail:batchRemove")
+    @RequiresPermissions("sys:billingDetailA:batchRemove")
     public R remove(@RequestParam("ids[]") Long[] ids) {
         billingService.batchRemove(ids);
         return R.ok();

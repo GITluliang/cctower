@@ -38,8 +38,7 @@ public class FinanceController {
     @GetMapping()
     @RequiresPermissions("sys:finance:finance")
     String finance(Model model) {
-        List<Parking> parkingList = idComponent.getParkingList();
-        model.addAttribute("parkingList", parkingList);
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return "system/finance/finance";
     }
 

@@ -162,6 +162,7 @@
           #{parkingId}
         </foreach>
       </if>
+      <if test="carNumber != null and carNumber != ''">and car_number LIKE #{carNumber}</if>
     </where>
     <choose>
       <when test="sort != null and sort.trim() != ''">
@@ -188,6 +189,7 @@
           #{parkingId}
         </foreach>
       </if>
+      <if test="carNumber != null and carNumber != ''">and car_number LIKE #{carNumber}</if>
     </where>
     <if test="offset != null and limit != null">
       limit #{offset}, #{limit}

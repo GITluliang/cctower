@@ -44,7 +44,8 @@ public class VipCarController {
 
     @GetMapping()
     @RequiresPermissions("sys:car:vip")
-    String car() {
+    String car(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return "system/car/vip/car";
     }
 
@@ -53,15 +54,9 @@ public class VipCarController {
     @RequiresPermissions("sys:car:vip")
     public PageUtils list(@RequestParam Map<String, Object> params) {
         log.info("[LONG CAR CONTROLLER] check vip car list, the params: {}", String.valueOf(params));
-        params.put(String.valueOf(params.get("query")), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
-        }
-        //停车场查询
-        if ("parkingName".equals(params.get("query"))) {
-            Parking value = parkingDAO.findByParkingName(String.valueOf(params.get("value")));
-            params.put("parkingId", value == null ? 0 : value.getId());
         }
         //查询列表数据
         params.put("parkingType", VIP_CAR);

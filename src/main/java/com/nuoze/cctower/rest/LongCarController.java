@@ -65,7 +65,8 @@ public class LongCarController {
 
     @GetMapping()
     @RequiresPermissions("sys:car:car")
-    String car() {
+    String car(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return "system/car/long/car";
     }
 

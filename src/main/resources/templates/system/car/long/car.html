@@ -3,10 +3,7 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <style>
-    .input-right {
-        position: absolute;
-        right: 200px;
-    }
+    .input-right {position: absolute;right: 200px;}
 </style>
 <body class="gray-bg">
 <div class="wrapper wrapper-content ">
@@ -31,28 +28,29 @@
                         </button>
                     </div>
                     <div class="input-right">
-                        <div class="columns pull-right">
+                        <div class="columns pull-right nopadding">
                             <button class="btn btn-success" onclick="reLoad()">查询</button>
                         </div>
                         <div class="columns pull-right nopadding">
-                            <input id="searchName" type="text" class="form-control"
-                                   placeholder="请输入">
+                            <input id="finalDate" type="text" class="form-control" placeholder="终止日期">
+                        </div>
+                        <div class="columns pull-right nopadding">
+                            <input id="startDate" type="text" class="form-control" placeholder="起始日期">
+                        </div>
+                        <div class="columns pull-right nopadding">
+                            <input id="carNumber" type="text" class="form-control" placeholder="车牌号">
                         </div>
                         <div class="pull-right search nopadding">
-                            <select id="query" name="query" class="form-control">
-                                <option value="">请选择查询</option>
-                                <option value="number">车牌号</option>
-                                <option value="name">车主姓名</option>
-                                <option value="phone">联系方式</option>
-                                <option value="corporateName">公司名称</option>
-                                <option value="classification">月租车分类</option>
-                                <option value="parkingName">停车场名称</option>
+                            <select id="parkingId" name="parkingId" class="form-control">
+                                <option value="">选择停车场</option>
+                                <option th:each="parking:${parkingList}" th:value="${parking.id}"
+                                        th:text="${parking.name}">
+                                </option>
                             </select>
                         </div>
                     </div>
-                    <table id="exampleTable" data-mobile-responsive="true">
-                    </table>
                 </div>
+                <table id="exampleTable" data-mobile-responsive="true"></table>
             </div>
         </div>
     </div>
@@ -82,5 +80,11 @@
 </div>
 <div th:include="include :: footer"></div>
 <script type="text/javascript" src="/js/appjs/sys/car/long/car.js"></script>
+<script src="/js/appjs/common/laydate/laydate.js"></script>
+<script>
+    //执行一个laydate实例
+    laydate.render({elem: '#startDate',theme: 'molv'});
+    laydate.render({elem: '#finalDate',theme: 'molv'});
+</script>
 </body>
 </html>

@@ -44,7 +44,8 @@ public class SpecialCarController {
 
     @GetMapping()
     @RequiresPermissions("sys:car:special")
-    String car() {
+    String car(Model model) {
+        model.addAttribute("parkingList", idComponent.getParkingList());
         return prefix + "car";
     }
 
@@ -53,15 +54,9 @@ public class SpecialCarController {
     @RequiresPermissions("sys:car:special")
     public PageUtils list(@RequestParam Map<String, Object> params) {
         log.info("[LONG CAR CONTROLLER] check special car list, the params: {}", String.valueOf(params));
-        params.put(String.valueOf(params.get("query")), "%" + params.get("value") + "%");
         params = idComponent.buildParams(params);
         if (params.isEmpty()) {
             return new PageUtils(EMPTY_LIST, 0);
-        }
-        //停车场查询
-        if ("parkingName".equals(params.get("query"))) {
-            Parking value = parkingDAO.findByParkingName(String.valueOf(params.get("value")));
-            params.put("parkingId", value == null ? 0 : value.getId());
         }
         params.put("parkingType", SPECIAL_CAR);
         Query query = new Query(params);

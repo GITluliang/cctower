@@ -18,6 +18,15 @@
                         <div class="columns pull-right nopadding">
                             <button class="btn btn-success" onclick="reLoad()">查询</button>
                         </div>
+                        <div class="columns pull-right nopadding">
+                            <input id="finalDate" type="text" class="form-control" placeholder="终止日期">
+                        </div>
+                        <div class="columns pull-right nopadding">
+                            <input id="startDate" type="text" class="form-control" placeholder="起始日期">
+                        </div>
+                        <div class="columns pull-right nopadding">
+                            <input id="carNumber" type="text" class="form-control" placeholder="车牌号">
+                        </div>
                         <div class="pull-right search nopadding">
                             <select id="parkingId" name="parkingId" class="form-control">
                                 <option value="">选择停车场</option>
@@ -60,5 +69,11 @@
 </div>
 <div th:include="include :: footer"></div>
 <script type="text/javascript" src="/js/appjs/sys/record/recordOut.js"></script>
+<script src="/js/appjs/common/laydate/laydate.js"></script>
+<script>
+    //执行一个laydate实例
+    laydate.render({elem: '#startDate',theme: 'molv'});
+    laydate.render({elem: '#finalDate',theme: 'molv'});
+</script>
 </body>
 </html>
