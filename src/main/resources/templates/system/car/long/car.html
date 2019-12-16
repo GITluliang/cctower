@@ -3,15 +3,17 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <style>
-    .input-right {position: absolute;right: 200px;}
+    .pull-left{padding: 0;text-align: left;}
+    .pull-right{float: left!important;}
+    .fixed-table-toolbar .columns-right{position: absolute;top: 1px;right: 15px;}
 </style>
 <body class="gray-bg">
 <div class="wrapper wrapper-content ">
     <div class="col-sm-12">
         <div class="ibox">
             <div class="ibox-body">
-                <div class="fixed-table-toolbar" style="position: relative;">
-                    <div class="columns pull-left">
+                <div class="fixed-table-toolbar" style="position: relative;overflow: hidden;">
+                    <div class="columns pull-left col-md-4">
                         <button shiro:hasPermission="sys:car:add" type="button" class="btn  btn-primary"
                                 onclick="add()">
                             <i class="fa fa-plus" aria-hidden="true"></i>添加
@@ -27,26 +29,27 @@
                             <i class="fa fa-long-arrow-up" aria-hidden="true"></i>导入
                         </button>
                     </div>
-                    <div class="input-right">
-                        <div class="columns pull-right nopadding">
-                            <button class="btn btn-success" onclick="reLoad()">查询</button>
-                        </div>
-                        <div class="columns pull-right nopadding">
-                            <input id="finalDate" type="text" class="form-control" placeholder="终止日期">
-                        </div>
-                        <div class="columns pull-right nopadding">
-                            <input id="startDate" type="text" class="form-control" placeholder="起始日期">
-                        </div>
-                        <div class="columns pull-right nopadding">
-                            <input id="carNumber" type="text" class="form-control" placeholder="车牌号">
-                        </div>
-                        <div class="pull-right search nopadding">
+                    <div class="input-right col-md-7">
+                        <div class="pull-right search nopadding col-md-3">
                             <select id="parkingId" name="parkingId" class="form-control">
                                 <option value="">选择停车场</option>
                                 <option th:each="parking:${parkingList}" th:value="${parking.id}"
                                         th:text="${parking.name}">
                                 </option>
                             </select>
+                        </div>
+                        <div class="columns pull-right nopadding col-md-2">
+                            <input id="finalDate" type="text" class="form-control" placeholder="终止日期">
+                        </div>
+                        <div class="columns pull-right nopadding col-md-2">
+                            <input id="startDate" type="text" class="form-control" placeholder="起始日期">
+                        </div>
+                        <div class="columns pull-right nopadding col-md-2">
+                            <input id="carNumber" type="text" class="form-control" placeholder="车牌号">
+                        </div>
+
+                        <div class="columns pull-right nopadding col-md-2">
+                            <button class="btn btn-success" onclick="reLoad()">查询</button>
                         </div>
                     </div>
                 </div>

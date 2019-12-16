@@ -37,7 +37,8 @@ $(function() {
 		parent.layer.alert("上传出错" + response.message);
 	});
 	setTimeout(function(){
-		$('input').hide();
+		$('#J_download input').hide();
+		$('#J_upload input').hide();
 	},20);
 });
 
