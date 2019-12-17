@@ -39,15 +39,14 @@
                             </select>
                         </div>
                         <div class="columns pull-right nopadding col-md-2">
-                            <input id="finalDate" type="text" class="form-control" placeholder="终止日期">
+                            <input id="number" type="text" class="form-control" placeholder="车牌号">
                         </div>
                         <div class="columns pull-right nopadding col-md-2">
-                            <input id="startDate" type="text" class="form-control" placeholder="起始日期">
+                            <input id="monthlyParkingStart" type="text" class="form-control" placeholder="起始日期">
                         </div>
                         <div class="columns pull-right nopadding col-md-2">
-                            <input id="carNumber" type="text" class="form-control" placeholder="车牌号">
+                            <input id="monthlyParkingEnd" type="text" class="form-control" placeholder="终止日期">
                         </div>
-
                         <div class="columns pull-right nopadding col-md-2">
                             <button class="btn btn-success" onclick="reLoad()">查询</button>
                         </div>
@@ -86,8 +85,8 @@
 <script src="/js/appjs/common/laydate/laydate.js"></script>
 <script>
     //执行一个laydate实例
-    laydate.render({elem: '#startDate',theme: 'molv'});
-    laydate.render({elem: '#finalDate',theme: 'molv'});
+    laydate.render({elem: '#monthlyParkingStart',theme: 'molv'});
+    laydate.render({elem: '#monthlyParkingEnd',theme: 'molv'});
 </script>
 </body>
 </html>

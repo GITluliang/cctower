@@ -75,10 +75,9 @@ function load() {
 								offset:params.offset,
 								sort: 'classification',
 								order: 'desc',
-								query: $('#query').val() ,	   			//查询列
-								value: $.trim($('#searchName').val()),  //查询值
-					           // name:$('#searchName').val(),
-					           // username:$('#searchName').val()
+								number: '%' + $.trim($('#number').val()) + '%',
+								monthlyParkingStart: '%' + $.trim($('#monthlyParkingStart').val())+ '%',
+								monthlyParkingEnd: '%' + $.trim($('#monthlyParkingEnd').val())+ '%'
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
