@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>月租管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="/css/h5/mobile/common.css"/>
+    <style>
+        body, .mui-content,.mui-table-view{background: #f8f8f8;}
+        .longlist .btn-bot{height: 1.2rem;line-height: 1.2rem;display: flex;justify-content: space-around;
+            border-top: 1px solid #f6f6f6;margin:.4rem 0 .2rem;font-size: .4rem;color: #666;}
+        .longlist .btn-bot .iconfont{margin-right:.2rem;}
+        .longlist .btn-bot a{color: #666;}
+
+        /*本页面专有样式*/
+        .longlist li{padding: .48rem .4rem;}
+        .longlist .btn-bot{background: rgba(160, 168, 204, 0.4);color: #5f6eab;width:26%;border-radius: .2rem;margin: .4rem auto .36rem;height: 1rem;line-height: 1rem;position: absolute;top: .3rem;right: 0;font-size: .38rem;border-radius: .6rem 0 0 .6rem;}
+        .longlist .parking{width:6.4rem;overflow: hidden;text-overflow: ellipsis;}
+    </style>
+</head>
+
+<body>
+    <header class="bar">
+        <div><a href="/mobile/login"><i class="iconfont icon-shouye"></i>首页</a></div>
+        <div><a href="/mobile/setting"><i class="iconfont icon-shezhi"></i>设置</a></div>
+    </header>
+    <div class="mui-content">
+         <div class="user bantop" style="background: linear-gradient(-320deg,#5f6eab 40%,rgba(95, 110, 171,0.5));border-bottom: 10px solid #525f94;">
+            <i class="iconfont icon-tongdao"></i>
+            <h3>通道管理</h3>
+            <h5>CHANNEL MANAGEMENT</h5>
+        </div>
+        <ul class="mui-table-view longlist" id="longList"></ul>
+    </div>
+
+     <!-- 自开发弹出层：选择内容过多，需要滚动 -->
+    <div class="popup" id="popup">
+        <div class="pop-container">
+            <h3>开闸</h3>
+             <div class="popcont">
+                 确定要开闸吗？
+             </div>
+            <div class="popbtn">
+                <a class="left cancel">取消</a>
+                <a id="yes">确认</a>
+            </div>
+        </div>
+    </div> 
+</body>
+<script src="/js/h5/mobile/common.js"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script>
+    $(function () {
+        list(100,0);
+        bind();
+        openPassageway();
+    });
+    function list(limit, offset) {
+        $.ajax({
+            url: "/sys/passageway/list",
+            dataType: "json",
+            async: false,
+            data: {limit: limit, offset: offset, sort: 'parking_id', order: 'desc'},
+            type: "GET",
+            success: function (data) {
+                var json = "";
+                for (i in data.rows) {
+                    json += `
+                        <li class="mui-table-view-cell">
+                            <a href="detailYuezu.html">
+                                <h3><span class="mui-ellipsis">通道名称：${data.rows[i].name}</span></h3>
+                                <p class="parking">停车场：${data.rows[i].parkingName}</p>
+                                <p><span>类别：${data.rows[i].type == 0 ? '入口' : '出口'}</span><span>摄像头IP：${data.rows[i].name}</span></p>
+                            </a>
+                            <div class="btn-bot">
+                                <span id="delete" value=${data.rows[i].id}>前去开闸</span>
+                            </div>
+                        </li>
+                    `
+                }
+                $("#longList").html(json);
+            }
+        })
+    }
+    function bind() {
+        $("#delete").click(function () {
+            $("#popup").fadeIn();
+            $("body").css("overflow", "hidden");
+            $("#yes").attr("value",$(this).attr("value")) ;
+        });
+    }
+    function openPassageway() {
+        $("#yes").click(function () {
+            $.post("/mobile/passageway/openPassageway",{id:$(this).attr("value")},function (data) {
+                layer.msg(data.msg);
+            },"json");
+        });
+    }
+</script>
+</html>

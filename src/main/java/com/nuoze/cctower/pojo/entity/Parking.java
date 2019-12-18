@@ -57,13 +57,17 @@ public class Parking implements Serializable {
      */
     private String email;
     /**
-     * 月租车重复出入场：0:可以 1：不可以
+     * 月租车重复出入场：0:禁用 1：启用
      */
     private Integer rentStatic;
     /**
-     * VIP车重复出入场：0:可以 1：不可以
+     * VIP车重复出入场：0:禁用 1：启用
      */
     private Integer vipStatic;
+    /**
+     * 手机开闸：0:禁用 1：启用
+     */
+    private Integer passagewayStatic;
 
     private static final long serialVersionUID = 1L;
 }

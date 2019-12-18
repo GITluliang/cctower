@@ -104,16 +104,16 @@ public class ApiServiceImpl implements ApiService {
         //解决月租车与永久月租重复出厂
         Parking parking = parkingDAO.selectByPrimaryKey(parkingId);
         if (parking != null && car != null && car.getStatus() == BUSINESS_NORMAL_CAR) {
-            boolean vipStatic = parking.getVipStatic() == 0 && VIP_CAR == car.getParkingType();
-            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
+            boolean vipStatic = parking.getVipStatic() == 1 && VIP_CAR == car.getParkingType();
+            boolean rentStatic = parking.getRentStatic() == 1 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
             if (vipStatic || rentStatic) {
                 if (record != null) {
                     record.setOutTime(new Date()).setPayType(PAYMENT_MONTHLY);
                     if (passageway != null) {
                         record.setExitId(passageway.getId());
                     }
+                    record.setPayStatus(PAY_STATUS_NORMAL);
                 }
-                record.setPayStatus(PAY_STATUS_NORMAL);
                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car.getParkingType(), carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
             }
         }

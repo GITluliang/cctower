@@ -13,9 +13,10 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="rent_static" jdbcType="TINYINT" property="rentStatic" />
     <result column="vip_static" jdbcType="TINYINT" property="vipStatic" />
+    <result column="passageway_static" jdbcType="TINYINT" property="passagewayStatic" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, user_id, `location`, phone, create_time,update_time, contacts, email, rent_static, vip_static
+    id, `name`, user_id, `location`, phone, create_time,update_time, contacts, email, rent_static, vip_static, passageway_static
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,10 +29,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Parking">
-    insert into parking (id, `name`, user_id, `location`, phone, create_time, update_time, contacts, email, rent_static, vip_static)
+    insert into parking (id, `name`, user_id, `location`, phone, create_time, update_time, contacts, email, rent_static, vip_static, passageway_static)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
       #{location,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-      #{contacts,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{rentStatic,jdbcType=TINYINT},#{vipStatic,jdbcType=TINYINT}
+      #{contacts,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{rentStatic,jdbcType=TINYINT},#{vipStatic,jdbcType=TINYINT},#{passagewayStatic,jdbcType=TINYINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Parking">
@@ -70,6 +71,9 @@
       <if test="vipStatic != null">
         vip_static,
       </if>
+      <if test="passagewayStatic != null">
+        passageway_static,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -104,6 +108,9 @@
       </if>
       <if test="vipStatic != null">
         #{vipStatic,jdbcType=TINYINT},
+      </if>
+      <if test="passagewayStatic != null">
+        #{passagewayStatic,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -140,6 +147,9 @@
       <if test="vipStatic != null">
         vip_static = #{vipStatic,jdbcType=TINYINT},
       </if>
+      <if test="passagewayStatic != null">
+        passageway_static = #{passagewayStatic,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -154,7 +164,8 @@
       contacts = #{contacts,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       rent_static = #{rentStatic,jdbcType=TINYINT},
-      vip_static = #{vipStatic,jdbcType=TINYINT}
+      vip_static = #{vipStatic,jdbcType=TINYINT},
+      passageway_static = #{passagewayStatic,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -174,6 +185,7 @@
       <if test="email != null and email != ''">and email = #{email}</if>
       <if test="rentStatic != null and rentStatic != ''">and rent_static = #{rentStatic}</if>
       <if test="vipStatic != null and vipStatic != ''">and vip_static = #{vipStatic}</if>
+      <if test="passagewayStatic != null and passagewayStatic != ''">and passageway_static = #{passagewayStatic}</if>
       <if test="keyword != null and keyword != ''">
         AND (location LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')
@@ -207,6 +219,7 @@
       <if test="email != null and email != ''">and email = #{email}</if>
       <if test="rentStatic != null and rentStatic != ''">and rent_static = #{rentStatic}</if>
       <if test="vipStatic != null and vipStatic != ''">and vip_static = #{vipStatic}</if>
+      <if test="passagewayStatic != null and passagewayStatic != ''">and passageway_static = #{passagewayStatic}</if>
       <if test="keyword != null and keyword != ''">
         AND (location LIKE CONCAT('%',#{keyword},'%')
         OR name LIKE CONCAT('%',#{keyword},'%')

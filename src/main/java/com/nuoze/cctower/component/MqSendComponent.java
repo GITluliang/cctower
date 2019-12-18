@@ -40,10 +40,7 @@ public class MqSendComponent {
      * @param goOutVO
      */
     public void sendGoOutCar(Long parkingId, GoOutVO goOutVO) {
-        ApiMqVO mqVO = new ApiMqVO();
-        mqVO.setType(GO_OUT_CAR_TYPE);
-        mqVO.setGoOutVO(goOutVO);
-        sendMq(mqVO, parkingId);
+        sendMq(new ApiMqVO().setType(GO_OUT_CAR_TYPE).setGoOutVO(goOutVO), parkingId);
     }
 
     /**
@@ -85,15 +82,19 @@ public class MqSendComponent {
         sendMq(mqVO, vo.getParkingId());
     }
 
+    public void sendOpenPassageway(Long parkingId, PassagewayVO passagewayVO) {
+        sendMq(new ApiMqVO().setType(OPEN_PASSAGEWAY).setPassagewayVO(passagewayVO),parkingId);
+    }
+
     /**
      * 通过RabbitTemplate发送mq指令
      *
      * @param mqVO
      * @param parkingId
      */
-    public void sendMq(ApiMqVO mqVO, Long parkingId) {
+    private void sendMq(ApiMqVO mqVO, Long parkingId) {
         String queue = mqConfigDAO.selectQueueByParkingId(parkingId);
-        log.info("[Mq Send Component] mq send to queue: {} , parkingId: {}, message: {}", queue, parkingId, JSON.toJSONString(mqVO));
+        log.info("[Mq Send Component] mq send to type: {} queue: {} , parkingId: {}, message: {}", mqVO.getType(),queue, parkingId, JSON.toJSONString(mqVO));
         this.rabbitTemplate.convertAndSend(queue, JSON.toJSONString(mqVO));
         this.jmsMessagingTemplate.convertAndSend(queue == null ? "ceshi" : queue, JSON.toJSONString(mqVO));
     }

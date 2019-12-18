@@ -79,8 +79,8 @@ public class ApiController {
         Parking parking = parkingService.findById(apiDTO.getParkingId());
         Car car = carService.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
         if (parking != null && car != null) {
-            boolean vipStatic = parking.getVipStatic() == 0 && BUSINESS_NORMAL_CAR == car.getParkingType();
-            boolean rentStatic = parking.getRentStatic() == 0 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
+            boolean vipStatic = parking.getVipStatic() == 1 && BUSINESS_NORMAL_CAR == car.getParkingType();
+            boolean rentStatic = parking.getRentStatic() == 1 && MONTHLY_CAR == car.getParkingType() && new Date().before(car.getMonthlyParkingEnd());
             if (vipStatic || rentStatic) {
                 return apiService.in(apiDTO) ? ResponseResult.success() : ResponseResult.fail(ResultEnum.SERVER_ERROR);
             }

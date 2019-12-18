@@ -45,27 +45,44 @@ function load() {
                 // 返回false将会终止请求
                 columns: [
                     {
-                        checkbox: true
-                    },
-                    {
                         field: 'name',
                         title: '停车场名称'
                     },
                     {
-                        field: 'location',
-                        title: '停车场地址'
+                        field: 'rentStatic',
+                        title: '月租车重复出入场',
+                        align: 'center',
+                        formatter : function(value, row, index) {
+                            if (value == '1') {
+                                return '<span class="label label-primary">正常</span>';
+                            } else if (value == '0') {
+                                return '<span class="label label-danger">禁用</span>';
+                            }
+                        }
                     },
                     {
-                        field: 'contacts',
-                        title: '项目联系人'
+                        field: 'vipStatic',
+                        title: 'VIP车重复出入场',
+                        align: 'center',
+                        formatter : function(value, row, index) {
+                            if (value == '1') {
+                                return '<span class="label label-primary">正常</span>';
+                            } else if (value == '0') {
+                                return '<span class="label label-danger">禁用</span>';
+                            }
+                        }
                     },
                     {
-                        field: 'phone',
-                        title: '联系电话'
-                    },
-                    {
-                        field: 'email',
-                        title: '联系邮箱'
+                        field: 'passagewayStatic',
+                        title: '手机开闸',
+                        align: 'center',
+                        formatter : function(value, row, index) {
+                            if (value == '1') {
+                                return '<span class="label label-primary">正常</span>';
+                            } else if (value == '0') {
+                                return '<span class="label label-danger">禁用</span>';
+                            }
+                        }
                     },
                     {
                         title: '操作',
@@ -103,7 +120,7 @@ function edit(id) {
         maxmin: true,
         shadeClose: false, // 点击遮罩关闭层
         area: ['800px', '520px'],
-        content: prefix + '/edit/' + id // iframe的url
+        content: '/sys/parkingSetup/edit/' + id // iframe的url
     });
 }
 

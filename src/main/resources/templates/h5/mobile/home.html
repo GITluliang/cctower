@@ -43,10 +43,11 @@
 
         <div class="grid dribbble" >
             <a class="mui-col-xs-4" id="longCar" ><i class="iconfont icon-yuezu"></i>月租车辆</a>
-            <a class="mui-col-xs-4" id="businessCar" ><i class="iconfont icon-Vip"></i>商户车辆</a>
-            <a class="mui-col-xs-4" id="timeCouponCar" ><i class="iconfont icon-Vip"></i>时长劵车辆</a>
-            <a class="mui-col-xs-4" id="vipCar" ><i class="iconfont icon-shanghu"></i>VIP车辆</a>
-            <a class="mui-col-xs-4" id="recharge"><i class="iconfont icon-Vip"></i>商户充值</a>
+            <a class="mui-col-xs-4" id="businessCar" ><i class="iconfont icon-shanghu"></i>商户车辆</a>
+            <a class="mui-col-xs-4" id="timeCouponCar" ><i class="iconfont icon-shanghu"></i>时长劵车辆</a>
+            <a class="mui-col-xs-4" id="vipCar" ><i class="iconfont icon-Vip"></i>VIP车辆</a>
+            <a class="mui-col-xs-4" id="recharge"><i class="iconfont icon-chongzhi"></i>商户充值</a>
+            <a class="mui-col-xs-4" id="passageway"><i class="iconfont icon-tongdao"></i>通道管理</a>
         </div>
 <!--        <p class="list-bot">没有更多内容啦</p>-->
     </div>
@@ -62,11 +63,13 @@
         displayHide("/mobile/car/timeCoupon/authz", "#timeCouponCar");
         displayHide("/mobile/car/vip/authz", "#vipCar");
         displayHide("/mobile/recharge/authz", "#recharge");
+        displayHide("/mobile/passageway/authz", "#passageway");
         $("#longCar").click(function () {   window.location.replace("/mobile/car/long");}) ;
         $("#businessCar").click(function () {   window.location.replace("/mobile/car/business");}) ;
         $("#timeCouponCar").click(function () {   window.location.replace("/mobile/car/timeCoupon");}) ;
         $("#vipCar").click(function () {    window.location.replace("/mobile/car/vip");}) ;
         $("#recharge").click(function () {    window.location.replace("/mobile/recharge");}) ;
+        $("#passageway").click(function () {    window.location.replace("/mobile/passageway");}) ;
     });
     //权限校验，显示影藏
     function displayHide(url, elementId) {

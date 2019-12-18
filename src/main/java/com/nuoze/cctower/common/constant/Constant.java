@@ -67,6 +67,7 @@ public class Constant {
     public static final String GO_OUT_CAR_TYPE = "GO_OUT_CAR";
     public static final String RENT_CAR_TYPE = "RENT_CAR";
     public static final String BILLING_CAR_TYPE = "BILLING_CAR";
+    public static final String OPEN_PASSAGEWAY = "OPEN_PASSAGEWAY";
 
     public static final List EMPTY_LIST = new CopyOnWriteArrayList<>();
 

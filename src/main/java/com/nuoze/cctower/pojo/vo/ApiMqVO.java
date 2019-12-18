@@ -12,10 +12,11 @@ import lombok.experimental.Accessors;
 public class ApiMqVO {
     /**
      * mq信息类型:
-     *  GO_OUT_CAR、RENT_CAR、BILLING_CAR
+     *  GO_OUT_CAR、RENT_CAR、BILLING_CAR、OPEN_PASSAGEWAY
      */
     private String type;
     private GoOutVO goOutVO;
     private BillingVO billingVO;
     private RentCarVO rentCarVO;
+    private PassagewayVO passagewayVO;
 }

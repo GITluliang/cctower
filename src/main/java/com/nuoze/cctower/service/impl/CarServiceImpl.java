@@ -28,7 +28,6 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.nio.cs.US_ASCII;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;

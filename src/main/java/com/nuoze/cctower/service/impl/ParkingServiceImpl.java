@@ -62,9 +62,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public int save(Parking parking) {
         Long userId = ShiroUtils.getUser().getId();
-        parking.setUserId(userId);
-        parking.setCreateTime(new Date());
-        parking.setUpdateTime(new Date());
+        parking.setUserId(userId).setCreateTime(new Date()).setUpdateTime(new Date()).setRentStatic(0).setVipStatic(0).setPassagewayStatic(0);
         int i = parkingDAO.insertSelective(parking);
         if (i > 0) {
             Account account = new Account();
