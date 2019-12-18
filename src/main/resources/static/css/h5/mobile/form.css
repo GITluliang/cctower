@@ -99,7 +99,7 @@ form .mui-input-group:last-child{margin-bottom: 0;}
 /* 按钮：固定与不固定，多个选项 */
 .mui-content-padded{margin: 0; padding:20px 30px 40px; background: #fff;}
 .mui-content-padded .btncont {display: flex;}
-.mui-btn-primary, .mui-btn-primary:visited{display: block; color: #fff;  margin: 0;padding:.2rem.4rem;border-radius:4px;background:linear-gradient(160deg, #21A3DA 40% ,#29D4BD);
+.mui-btn-primary,.mui-btn-primary:hover, .mui-btn-primary:active, .mui-btn-primary:after{display: block; color: #fff;  margin: 0;padding:.2rem.4rem;border-radius:4px;background:linear-gradient(160deg, #21A3DA 40% ,#29D4BD);
     border:none;font-size: .46rem; transition: 0.5s all; -webkit-transition: 0.5s all; -o-transition: 0.5s all; -moz-transition: 0.5s all; -ms-transition: 0.5s all;
     /* box-shadow: 0 0 20px rgba(33, 162, 218, 0.66)}
 .mui-btn-primary:hover, .mui-btn-primary:active, .mui-btn-primary:focus{color: #fff; box-shadow:0 0 10px rgba(33, 162, 218, 0.33);*/}

@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "58768",
+      "name": "商户",
+      "font_class": "lladdresshome",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
       "icon_id": "294315",
       "name": "add",
       "font_class": "add",
@@ -13,11 +20,46 @@
       "unicode_decimal": 58889
     },
     {
+      "icon_id": "745807",
+      "name": "充值",
+      "font_class": "chongzhi1",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "1066119",
+      "name": "成功",
+      "font_class": "chenggong",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "3050486",
+      "name": "编辑",
+      "font_class": "edit",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "3654567",
+      "name": "充值",
+      "font_class": "chongzhi",
+      "unicode": "e678",
+      "unicode_decimal": 59000
+    },
+    {
       "icon_id": "3849980",
       "name": "设置",
       "font_class": "shezhi",
       "unicode": "e60e",
       "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "5647388",
+      "name": "通道",
+      "font_class": "tongdao",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
     },
     {
       "icon_id": "5835474",
