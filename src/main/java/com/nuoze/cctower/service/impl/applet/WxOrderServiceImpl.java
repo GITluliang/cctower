@@ -181,12 +181,13 @@ public class WxOrderServiceImpl implements WxOrderService {
                     }
                     //通过mq发送出厂消息
                     mqSendComponent.sendGoOutCar(parkingId, goOutVO);
+                    parkingRecord.setStatus(LEAVE_YET);
                 }
                 //商户车辆状态修改
                 if (car != null) {
                     if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
                 }
-                parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(orderSn).setCost(money).setPayId(payId).setPayType(PAYMENT_WECHAT).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setStatus(LEAVE_YET));
+                parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(orderSn).setCost(money).setPayId(payId).setPayType(PAYMENT_WECHAT).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL));
                 billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
                 billingComponent.addAccountBalance(money, parkingId, serviceCharge);
             }

@@ -237,14 +237,14 @@ public class CarServiceImpl implements CarService {
                 }
             }
             Parking parking = parkingService.findById(parkingRecord.getParkingId());
-            parkingRecordVO
-                    .setParkingName(parking != null ? parking.getName() : "")
+            parkingRecordVO.setParkingName(parking != null ? parking.getName() : "")
                     .setCarNumber(parkingRecord.getCarNumber())
                     .setRecordId(parkingRecord.getId())
                     .setInTime(DateUtils.formatDateTime(parkingRecord.getInTime()))
                     .setOutTime(DateUtils.formatDateTime(new Date()))
                     .setTakeMinutes(takeMinutes)
                     .setCost(String.valueOf(cost));
+            parkingRecordService.update(parkingRecord.setCost(cost).setCostTime(takeMinutes));
         } else {
             parkingRecordVO.setTakeMinutes(PARKING_TRADING_RECORD_EXPEND_TYPE);
         }
