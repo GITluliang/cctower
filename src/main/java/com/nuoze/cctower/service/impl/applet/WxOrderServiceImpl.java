@@ -186,9 +186,9 @@ public class WxOrderServiceImpl implements WxOrderService {
                 if (car != null) {
                     if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
                 }
+                parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(orderSn).setCost(money).setPayId(payId).setPayType(PAYMENT_WECHAT).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setStatus(LEAVE_YET));
                 billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
                 billingComponent.addAccountBalance(money, parkingId, serviceCharge);
-                parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(orderSn).setCost(money).setPayId(payId).setPayType(PAYMENT_WECHAT).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setStatus(LEAVE_YET));
             }
             //小程序长租续费
             if (renewRecord != null) {

@@ -26,7 +26,8 @@
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
     insert into parking_trading_record (id, parking_id, amount, `type`, income_type, pay_time, car_number, service_charge)
-    values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, #{incomeType,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{carNumber,jdbcType=VARCHAR})
+    values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT},
+    #{incomeType,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{carNumber,jdbcType=VARCHAR},#{serviceCharge,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
     insert into parking_trading_record

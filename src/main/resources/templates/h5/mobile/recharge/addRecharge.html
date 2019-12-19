@@ -51,13 +51,13 @@
     })
 
     function check() {
-        if ($("#cost").val() == '' || /^[1-9]\d*$/.test($("#cost").val())) {
+        if (/^[1-9]\d*$/.test($("#cost").val())) {
+            payOrder();
+        }else{
             mui.toast('金额必须为正整数');
             $("#name").focus();//定位
             $("#name").css("caret-color", "orangered")//光标变色
             return;
-        }else{
-            payOrder();
         }
     }
 
