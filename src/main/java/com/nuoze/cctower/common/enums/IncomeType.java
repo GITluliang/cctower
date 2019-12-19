@@ -1,6 +1,8 @@
 package com.nuoze.cctower.common.enums;
 
 /**
+ * parking_trading_record：
+ *  income_type交易类型
  * @author JiaShun
  * @date 2019-05-15 23:44
  */

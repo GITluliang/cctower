@@ -43,6 +43,10 @@ public class Account implements Serializable {
      * 创建时间
      */
     private Date createTime;
+    /**
+     * 总服务费
+     */
+    private BigDecimal serviceFee;
 
     private static final long serialVersionUID = 1L;
 

@@ -14,6 +14,7 @@ CREATE TABLE `account` (
   `bank_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '开户行',
   `parking_id` bigint(11) NOT NULL COMMENT '停车场ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `service_fee` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '总服务费',
   PRIMARY KEY (`id`),
   KEY `idx_parking_id` (`parking_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -383,6 +384,7 @@ CREATE TABLE `parking_trading_record` (
   `type` tinyint(2) DEFAULT NULL COMMENT '0:提现 1:收入',
   `income_type` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '交易类型',
   `pay_time` datetime DEFAULT NULL COMMENT '交易时间',
+  `service_charge` decimal(11,2) DEFAULT NULL COMMENT '服务费',
   PRIMARY KEY (`id`),
   KEY `idx_parking_id` (`parking_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='停车场交易记录\n';

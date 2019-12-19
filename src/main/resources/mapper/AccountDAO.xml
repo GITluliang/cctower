@@ -10,9 +10,10 @@
     <result column="bank_address" jdbcType="VARCHAR" property="bankAddress" />
     <result column="parking_id" jdbcType="BIGINT" property="parkingId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="service_fee" jdbcType="DECIMAL" property="serviceFee" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, balance, service_charge, card, bank, bank_address, parking_id, create_time
+    id, balance, service_charge, card, bank, bank_address, parking_id, create_time, service_fee
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -25,12 +26,9 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.Account">
-    insert into account (id, balance, service_charge, card,
-      bank, bank_address, parking_id, 
-      create_time)
+    insert into account (id, balance, service_charge, card, bank, bank_address, parking_id, create_time, service_fee)
     values (#{id,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}, #{serviceCharge,jdbcType=INTEGER}, #{card,jdbcType=VARCHAR},
-      #{bank,jdbcType=VARCHAR}, #{bankAddress,jdbcType=VARCHAR}, #{parkingId,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{bank,jdbcType=VARCHAR}, #{bankAddress,jdbcType=VARCHAR}, #{parkingId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{serviceFee,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.Account">
     insert into account
@@ -59,6 +57,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="serviceFee != null">
+        service_fee,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -84,6 +85,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceFee != null">
+        #{serviceFee,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -111,6 +115,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="serviceFee != null">
+        service_fee = #{serviceFee,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -122,7 +129,8 @@
       bank = #{bank,jdbcType=VARCHAR},
       bank_address = #{bankAddress,jdbcType=VARCHAR},
       parking_id = #{parkingId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      service_fee = #{serviceFee,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -136,6 +144,7 @@
       <if test="card != null and card != ''">and card = #{card}</if>
       <if test="bank != null and bank != ''">and bank = #{bank}</if>
       <if test="bankAddress != null and bankAddress != ''">and bank_address = #{bankAddress}</if>
+      <if test="serviceFee != null and serviceFee != ''">and service_fee = #{serviceFee}</if>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
       <if test="keyword != null and keyword != ''">
         AND (card LIKE CONCAT('%',#{keyword},'%')
@@ -170,6 +179,7 @@
       <if test="card != null and card != ''">and card = #{card}</if>
       <if test="bank != null and bank != ''">and bank = #{bank}</if>
       <if test="bankAddress != null and bankAddress != ''">and bank_address = #{bankAddress}</if>
+      <if test="serviceFee != null and serviceFee != ''">and service_fee = #{serviceFee}</if>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
       <if test="keyword != null and keyword != ''">
         AND (card LIKE CONCAT('%',#{keyword},'%')

@@ -9,9 +9,10 @@
     <result column="income_type" jdbcType="VARCHAR" property="incomeType" />
     <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
     <result column="car_number" jdbcType="VARCHAR" property="carNumber" />
+    <result column="service_charge" jdbcType="DECIMAL" property="serviceCharge" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parking_id, amount, `type`, income_type, pay_time, car_number
+    id, parking_id, amount, `type`, income_type, pay_time, car_number, service_charge
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,12 +25,8 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
-    insert into parking_trading_record (id, parking_id, amount, 
-      `type`, income_type, pay_time, car_number
-      )
-    values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
-      #{type,jdbcType=TINYINT}, #{incomeType,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{carNumber,jdbcType=VARCHAR}
-      )
+    insert into parking_trading_record (id, parking_id, amount, `type`, income_type, pay_time, car_number, service_charge)
+    values (#{id,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, #{incomeType,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{carNumber,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nuoze.cctower.pojo.entity.ParkingTradingRecord">
     insert into parking_trading_record
@@ -55,6 +52,9 @@
       <if test="carNumber != null">
         car_number,
       </if>
+      <if test="serviceCharge != null">
+        service_charge,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -77,6 +77,9 @@
       </if>
       <if test="carNumber != null">
         #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceCharge != null">
+        #{serviceCharge,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -101,6 +104,9 @@
       <if test="carNumber != null">
         car_number = #{carNumber,jdbcType=VARCHAR},
       </if>
+      <if test="serviceCharge != null">
+        service_charge = #{serviceCharge,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -111,7 +117,8 @@
       `type` = #{type,jdbcType=TINYINT},
       income_type = #{incomeType,jdbcType=VARCHAR},
       pay_time = #{payTime,jdbcType=TIMESTAMP},
-      car_number = #{carNumber,jdbcType=VARCHAR}
+      car_number = #{carNumber,jdbcType=VARCHAR},
+      service_charge = #{serviceCharge,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="listByParkingId" resultMap="BaseResultMap">

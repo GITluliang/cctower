@@ -65,12 +65,7 @@ public class ParkingServiceImpl implements ParkingService {
         parking.setUserId(userId).setCreateTime(new Date()).setUpdateTime(new Date()).setRentStatic(0).setVipStatic(0).setPassagewayStatic(0);
         int i = parkingDAO.insertSelective(parking);
         if (i > 0) {
-            Account account = new Account();
-            account.setParkingId(parkingDAO.findByUserIdAndParkingName(userId, parking.getName()).getId());
-            account.setBalance(EMPTY_MONEY);
-            account.setCreateTime(new Date());
-            account.setServiceCharge(0);
-            accountDAO.insert(account);
+            accountDAO.insert(new Account().setParkingId(parkingDAO.findByUserIdAndParkingName(userId, parking.getName()).getId()).setBalance(EMPTY_MONEY).setCreateTime(new Date()).setServiceCharge(0).setServiceFee(EMPTY_MONEY));
         }
         return i;
     }

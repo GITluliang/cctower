@@ -60,6 +60,10 @@ function load() {
 									title : '交易金额'
 								},
 								{
+									field : 'serviceCharge',
+									title : '手续费'
+								},
+								{
 									field : 'type',
 									title : '交易类别',
 									align : 'center',

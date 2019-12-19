@@ -47,6 +47,10 @@ public class ParkingTradingRecord implements Serializable {
      * 车牌号
      */
     private String carNumber;
+    /**
+     * 服务费
+     */
+    private BigDecimal serviceCharge;
 
     private static final long serialVersionUID = 1L;
 

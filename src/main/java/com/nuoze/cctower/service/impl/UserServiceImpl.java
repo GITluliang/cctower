@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
     public int updateTimeCoupon(TenantTopUpVO vo) {
         User user = userDAO.selectByPrimaryKey(vo.getUserId());
         Integer timeCoupon = user.getTimeCoupon() != null ? (user.getTimeCoupon() + vo.getTimeCoupon()) : vo.getTimeCoupon();
-        businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setAmount(BigDecimal.valueOf(vo.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setStatus(1).setParkingId(user.getParkingId()));
+        businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setAmount(BigDecimal.valueOf(vo.getTimeCoupon())).setBalance(BigDecimal.valueOf(timeCoupon)).setType(1).setUserId(vo.getUserId()).setCreateTime(new Date()).setStatus(1).setParkingId(user.getParkingId()).setCarNumber(""));
         return userDAO.updateByPrimaryKeySelective(user.setTimeCoupon(timeCoupon).setUpdateTime(new Date()));
     }
 

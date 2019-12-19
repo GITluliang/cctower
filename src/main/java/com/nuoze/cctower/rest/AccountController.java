@@ -40,7 +40,7 @@ import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 public class AccountController {
 
     private String prefix = "system/account/";
-    private static final String SERVICE_CHEARGE_REGEX = "[1-9][0-9]?";
+    private static final String SERVICE_CHEARGE_REGEX = "\\d{1,3}";
     private static final Pattern SERVICE_CHARGE_PATTERN = Pattern.compile(SERVICE_CHEARGE_REGEX);
 
     @Autowired
@@ -125,7 +125,7 @@ public class AccountController {
     public R update(Account account) {
         Integer serviceCharge = account.getServiceCharge();
         if (serviceCharge != null && !SERVICE_CHARGE_PATTERN.matcher(String.valueOf(serviceCharge)).matches()) {
-            return R.error(201, "服务费必须为1-100之间的正整数");
+            return R.error(201, "服务费必须为0-1000之间的正整数");
         }
         accountService.update(account);
         return R.ok();

@@ -200,13 +200,11 @@ public class ApiServiceImpl implements ApiService {
                 //如果余额 > 车费，直接从余额扣除。
                 if (member.getBalance().compareTo(cost) >= 0) {
                     BigDecimal balance = member.getBalance().subtract(cost);
-                    topUpRecordDAO.insert(new TopUpRecord().setParkingId(parkingId).setBalance(balance).setAmount(cost).setPayStatus(1).setBillingType(0).setCreateTime(new Date()).setUpdateTime(new Date()).setOpenId(openId)
-                    );
-                    memberDAO.updateByPrimaryKeySelective(member.setBalance(balance).setUpdateTime(new Date())
-                    );
+                    topUpRecordDAO.insert(new TopUpRecord().setParkingId(parkingId).setBalance(balance).setAmount(cost).setPayStatus(1).setBillingType(0).setCreateTime(new Date()).setUpdateTime(new Date()).setOpenId(openId));
+                    memberDAO.updateByPrimaryKeySelective(member.setBalance(balance).setUpdateTime(new Date()));
                     record.setPayType(PAYMENT_WECHAT);
-                    billingComponent.addTradingRecord(cost.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, car.getNumber());
-                    billingComponent.addAccountBalance(cost.subtract(serviceCharge), parkingId);
+                    billingComponent.addTradingRecord(cost.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, car.getNumber(), serviceCharge);
+                    billingComponent.addAccountBalance(cost.subtract(serviceCharge), parkingId, serviceCharge);
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, String.valueOf(cost), String.valueOf(serviceCharge));
                 }
             }

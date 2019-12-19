@@ -42,14 +42,8 @@ public class BillingComponent {
      * @param parkingId 停车场ID
      * @param type      收入类型
      */
-    public void addTradingRecord(BigDecimal money, Long parkingId, IncomeType type, String carNumber) {
-        tradingRecordDAO.insert(new ParkingTradingRecord()
-                .setAmount(money)
-                .setType(PARKING_TRADING_RECORD_INCOME_TYPE)
-                .setParkingId(parkingId)
-                .setPayTime(new Date())
-                .setIncomeType(type.name())
-                .setCarNumber(carNumber));
+    public void addTradingRecord(BigDecimal money, Long parkingId, IncomeType type, String carNumber, BigDecimal serviceCharge) {
+        tradingRecordDAO.insert(new ParkingTradingRecord().setAmount(money).setType(PARKING_TRADING_RECORD_INCOME_TYPE).setParkingId(parkingId).setPayTime(new Date()).setIncomeType(type.name()).setCarNumber(carNumber).setServiceCharge(serviceCharge));
     }
 
     /**
@@ -58,10 +52,9 @@ public class BillingComponent {
      * @param money     金额
      * @param parkingId 停车场ID
      */
-    public void addAccountBalance(BigDecimal money, Long parkingId) {
+    public void addAccountBalance(BigDecimal money, Long parkingId, BigDecimal serviceFee) {
         Account account = accountDAO.selectByParkingId(parkingId);
-        account.setBalance(account.getBalance().add(money));
-        accountDAO.updateByPrimaryKeySelective(account);
+        accountDAO.updateByPrimaryKeySelective(account.setBalance(account.getBalance().add(money)).setServiceFee(account.getServiceFee().add(serviceFee)));
     }
 
     public R billingParkingIdCheck(Long parkingId, Boolean isBasicBilling) {

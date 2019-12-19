@@ -49,9 +49,13 @@ function load() {
 									field : 'parkingName',
 									title : '停车场'
 								},
+								{
+									field : 'serviceFee',
+									title : '总服务费(元)'
+								},
 																{
 									field : 'serviceCharge',
-									title : '服务费(千分比)'
+									title : '服务费折扣(千分比)'
 								},
 																{
 									title : '操作',

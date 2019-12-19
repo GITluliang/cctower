@@ -5,10 +5,10 @@ $().ready(function () {
 $.validator.setDefaults({
     submitHandler: function () {
         if($("#serviceCharge").length > 0) {
-            if(/^[1-9][0-9]?$/.test($("#serviceCharge").val())){
+            if(/^\d{1,3}$/.test($("#serviceCharge").val())){
                 update();
             }else {
-                parent.layer.alert("服务费必须为1-100之间的正整数")
+                parent.layer.alert("服务费必须为0-1000之间的正整数")
             }
         }else {
             update();

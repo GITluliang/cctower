@@ -186,8 +186,8 @@ public class WxOrderServiceImpl implements WxOrderService {
                 if (car != null) {
                     if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
                 }
-                billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber());
-                billingComponent.addAccountBalance(money, parkingId);
+                billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
+                billingComponent.addAccountBalance(money, parkingId, serviceCharge);
                 parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(orderSn).setCost(money).setPayId(payId).setPayType(PAYMENT_WECHAT).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setStatus(LEAVE_YET));
             }
             //小程序长租续费
@@ -201,8 +201,8 @@ public class WxOrderServiceImpl implements WxOrderService {
                 Car car = carDAO.findByCarNumberAndParkingType(renewRecord.getCarNumber(), MONTHLY_CAR);
                 carDAO.updateByPrimaryKeySelective(car.setMonthlyParkingEnd(DateUtils.addMonthByDate(car.getMonthlyParkingEnd(), renewRecord.getMonthCount())).setUpdateTime(new Date()));
                 renewRecordDAO.updateByPrimaryKeySelective(renewRecord.setServiceCharge(serviceCharge).setCost(money).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL));
-                billingComponent.addTradingRecord(money.subtract(serviceCharge), renewRecord.getParkingId(), IncomeType.PARKING_CHARGE, renewRecord.getCarNumber());
-                billingComponent.addAccountBalance(money.subtract(serviceCharge), renewRecord.getParkingId());
+                billingComponent.addTradingRecord(money.subtract(serviceCharge), renewRecord.getParkingId(), IncomeType.RENT_RENEW, renewRecord.getCarNumber(),serviceCharge);
+                billingComponent.addAccountBalance(money.subtract(serviceCharge), renewRecord.getParkingId(),serviceCharge);
             }
             //小程序余额充值
             if (topUpRecord != null) {
@@ -221,9 +221,9 @@ public class WxOrderServiceImpl implements WxOrderService {
                 //1.更新商户账户余额；2.更新商户微信充值记录；3.增加商户流水；4.更新物业账号流水；5.更新物业账号余额
                 userDAO.updateByPrimaryKey(user.setBalance(user.getBalance().add(money)).setUpdateTime(new Date()));
                 rechargeRecordDAO.updateByPrimaryKey(rechargeRecord.setServiceCharge(serviceCharge).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL).setCreateTime(new Date()));
-                businessTransactionRecordDAO.insertSelective(new BusinessTransactionRecord().setUserId(rechargeRecord.getUserId()).setType(3).setAmount(money).setBalance(user.getBalance()).setCreateTime(new Date()).setStatus(0).setParkingId(rechargeRecord.getParkingId()));
-                billingComponent.addTradingRecord(money.subtract(serviceCharge), rechargeRecord.getParkingId(), IncomeType.BUSINESS_RENEW, "");
-                billingComponent.addAccountBalance(money.subtract(serviceCharge), rechargeRecord.getParkingId());
+                businessTransactionRecordDAO.insert(new BusinessTransactionRecord().setUserId(rechargeRecord.getUserId()).setType(3).setAmount(money).setBalance(user.getBalance()).setCreateTime(new Date()).setStatus(0).setParkingId(rechargeRecord.getParkingId()).setCarNumber(""));
+                billingComponent.addTradingRecord(money.subtract(serviceCharge), rechargeRecord.getParkingId(), IncomeType.BUSINESS_RENEW, "",serviceCharge);
+                billingComponent.addAccountBalance(money.subtract(serviceCharge), rechargeRecord.getParkingId(),serviceCharge);
             }
         } catch (Exception e) {
             log.error("pay notify has exception: {}", e.getMessage());

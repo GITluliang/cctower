@@ -91,7 +91,7 @@ public class PaymentComponent {
      * @return
      */
     public BigDecimal getServiceCharge(BigDecimal amount, Integer serviceCharge) {
-          return amount.compareTo(new BigDecimal(10)) == -1 ? EMPTY_MONEY_FEN : amount.multiply(dividedOneHundred(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);
+          return serviceCharge <= 0 ? EMPTY_MONEY : amount.compareTo(new BigDecimal(10)) == -1 ? EMPTY_MONEY_FEN : amount.multiply(dividedOneHundred(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);
     }
     public BigDecimal getBalanceByAmountAndServiceCharge(BigDecimal balance, BigDecimal amount, BigDecimal serviceCharge) {
         return balance.subtract(amount.add(serviceCharge)).setScale(2, BigDecimal.ROUND_DOWN);
