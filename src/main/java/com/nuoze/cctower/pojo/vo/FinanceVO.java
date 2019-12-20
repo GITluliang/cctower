@@ -18,8 +18,12 @@ public class FinanceVO {
     private String exitName;
     private String inTime;
     private String outTime;
+    private String payTime;
     private Integer payType;
     private BigDecimal cost;
+    /**
+     * 停车时长
+     */
     private String costTime;
     /**
      * 是否出场 0：否 1：是 2：待出场

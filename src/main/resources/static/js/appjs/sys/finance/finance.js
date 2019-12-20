@@ -101,6 +101,10 @@ function load() {
 									field : 'inTime',
 									title : '进场时间'
 								},
+								{
+									field : 'payTime',
+									title : '付款时间'
+								},
 																{
 									field : 'outTime',
 									title : '出场时间'

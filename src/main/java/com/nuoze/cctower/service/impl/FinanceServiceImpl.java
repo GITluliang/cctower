@@ -57,22 +57,15 @@ public class FinanceServiceImpl implements FinanceService {
                 }
                 if (ps.getEntranceId() != null) {
                     Passageway passageway = passagewayDAO.selectByPrimaryKey(ps.getEntranceId());
-                    if (passageway != null && passageway.getName() != null) {
-                        fv.setEntranceName(passageway.getName());
-                    }
+                    if (passageway != null && passageway.getName() != null) { fv.setEntranceName(passageway.getName()); }
                 }
                 if (ps.getExitId() != null) {
                     Passageway passageway = passagewayDAO.selectByPrimaryKey(ps.getExitId());
-                    if (passageway != null && passageway.getName() != null) {
-                        fv.setExitName(passageway.getName());
-                    }
+                    if (passageway != null && passageway.getName() != null) { fv.setExitName(passageway.getName()); }
                 }
-                if (ps.getInTime() != null) {
-                    fv.setInTime(DateUtils.formatDateTime(ps.getInTime()));
-                }
-                if (ps.getOutTime() != null) {
-                    fv.setOutTime(DateUtils.formatDateTime(ps.getOutTime()));
-                }
+                if (ps.getInTime() != null) { fv.setInTime(DateUtils.formatDateTime(ps.getInTime())); }
+                if (ps.getOutTime() != null) { fv.setOutTime(DateUtils.formatDateTime(ps.getOutTime())); }
+                if (ps.getPayTime() != null) { fv.setPayTime(DateUtils.formatDateTime(ps.getPayTime())); }
                 financeVOS.add(fv.setCost(ps.getCost() != null ? ps.getCost() : EMPTY_MONEY)
                         .setCostTime(ps.getCostTime() != null ? String.valueOf(ps.getCostTime()) : String.valueOf(0))
                         .setPayType(ps.getPayType())

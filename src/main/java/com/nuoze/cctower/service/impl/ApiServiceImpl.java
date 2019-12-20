@@ -14,7 +14,6 @@ import com.nuoze.cctower.component.PaymentComponent;
 import com.nuoze.cctower.dao.*;
 import com.nuoze.cctower.pojo.dto.ApiCarLongDTO;
 import com.nuoze.cctower.pojo.dto.ApiDTO;
-import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.*;
 import com.nuoze.cctower.pojo.vo.ApiCheckCarVO;
 import com.nuoze.cctower.pojo.vo.ApiOutVO;
@@ -35,7 +34,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.nuoze.cctower.common.constant.Constant.*;
-import static com.nuoze.cctower.common.util.ShiroUtils.getUserId;
 
 /**
  * @author JiaShun
@@ -118,6 +116,8 @@ public class ApiServiceImpl implements ApiService {
             }
         }
 
+        //收费规则
+        Billing billing = billingDAO.selectByParkingId(parkingId);
         if (record != null) {
             //cost：车费、passageway：车场通道、Car：车辆表
             BigDecimal cost = record.getCost();
@@ -129,11 +129,14 @@ public class ApiServiceImpl implements ApiService {
 
             //如果已支付，paid设为1：已支付，status设为已出门
             if (record.getPayStatus() == 1) {
-                return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? String.valueOf(EMPTY_MONEY) : String.valueOf(cost), String.valueOf(record.getServiceCharge()));
+                if (billing.getPaidFreeTime() >= DateUtils.diffMin(record.getPayTime())) {
+                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? String.valueOf(EMPTY_MONEY) : String.valueOf(cost), String.valueOf(record.getServiceCharge()));
+                } else {
+                    record.setInTime(new Date(record.getPayTime().getTime() + (billing.getFreeTime() * 100000)));
+                }
             }
             //停车时长（分钟）
             int costTime = DateUtils.diffMin(record.getInTime());
-            log.info(costTime + "****");
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
             if (car != null && car.getStatus() == BUSINESS_NORMAL_CAR) {
                 //SINGLEVIP_CAR：单次VIP
@@ -169,19 +172,17 @@ public class ApiServiceImpl implements ApiService {
                     }
                 }
             }
-            //收费规则
-            Billing billing = billingDAO.selectByParkingId(parkingId);
             //免费停车时间
             Integer freeTime = billing.getFreeTime();
             if (freeTime != null && freeTime >= costTime) {
-                 if (car != null) {
-                     if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
-                         carDAO.deleteByPrimaryKey(car.getId());
-                         record.setPayType(PAYMENT_VBUSINESS);
-                     }
-                 }
-                 record.setPayType(PAYMENT_NOT).setPayStatus(PAY_STATUS_NORMAL).setCostTime(costTime);
-                 return buildApiOutVO(apiVO, record, 1, LEAVE_YET,0, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
+                if (car != null) {
+                    if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
+                        carDAO.deleteByPrimaryKey(car.getId());
+                        record.setPayType(PAYMENT_VBUSINESS);
+                    }
+                }
+                record.setPayType(PAYMENT_NOT).setPayStatus(PAY_STATUS_NORMAL).setCostTime(costTime);
+                return buildApiOutVO(apiVO, record, 1, LEAVE_YET, 0, carNumber, String.valueOf(EMPTY_MONEY), String.valueOf(EMPTY_MONEY));
             }
 
             //计算车费
@@ -394,6 +395,7 @@ public class ApiServiceImpl implements ApiService {
         }
         return true;
     }
+
     private Car dtoToCar(ApiCarLongDTO dto) {
         dto.setCarNumber(dto.getCarNumber().toUpperCase());
         Car car = new Car();
