@@ -325,7 +325,7 @@ public class ApiController {
 
     /**
      * 线下月租车删除
-     * @param ids
+     * @param uuids
      * @param auth
      * @return
      */

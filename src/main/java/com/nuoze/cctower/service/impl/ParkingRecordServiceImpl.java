@@ -69,4 +69,9 @@ public class ParkingRecordServiceImpl implements ParkingRecordService {
         }
         return parkingRecordVO;
     }
+
+    @Override
+    public ParkingRecord findByOrderSnAliPay(String orderSn) {
+        return parkingRecordDAO.findByOrderSnAliPay(orderSn);
+    }
 }

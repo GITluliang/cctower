@@ -43,4 +43,11 @@ public interface ParkingRecordDAO extends BaseDAO<ParkingRecord> {
      * @return
      */
     ParkingRecord findByParkingIdAndIp(@Param("parkingId") Long parkingId, @Param("exitId") Long exitId);
+
+    /**
+     * 查找支付宝订单号
+     * @param orderSn
+     * @return
+     */
+    ParkingRecord findByOrderSnAliPay(@Param("orderSn") String orderSn);
 }

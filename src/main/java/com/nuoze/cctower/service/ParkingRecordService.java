@@ -50,4 +50,12 @@ public interface ParkingRecordService {
      * @return
      */
     ParkingRecordVO findByParkingIdAndIp(Long parkingId, Long exitId);
+
+    /**
+     * 根据订单号查询支付宝订单
+     *
+     * @param orderSn
+     * @return
+     */
+    ParkingRecord findByOrderSnAliPay(String orderSn);
 }

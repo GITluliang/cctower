@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author luliang
  * @date 2019-10-26 23:48
- * 公众号支付
+ * 微信JSAPI支付
  */
 @Slf4j
 @Controller

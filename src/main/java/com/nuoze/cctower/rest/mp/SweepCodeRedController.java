@@ -21,6 +21,8 @@ import java.util.Map;
 
 /**
  * 待出场车辆扫码支付
+ * 1. 微信支付；
+ * 2. 支付宝支付：
  *
  * @Author luliang
  * @Date 2019-10-14 16:10
@@ -48,13 +50,20 @@ public class SweepCodeRedController {
      * @return
      */
     @RequestMapping("sweepCodeRed")
-    public String sweepCodeRed(Long parkingId, Long exitId, String code, Model model) {
-        if (StringUtils.isEmpty(code)) {
-            return prefix + "code";
-        }
-        if (StringUtils.isNotEmpty(code)) {
-            Map<String, String> map = wxUtils.getUserInfoAccessToken(code);
-            model.addAttribute("openId", map.get("openid"));
+    public String sweepCodeRed(Long parkingId, Long exitId, String code, Model model, HttpServletRequest request) {
+        String userAgent = request.getHeader("user-agent");
+       if (userAgent != null && userAgent.contains("MicroMessenger")) {
+            log.info("[From WeChat] 来自微信，code: {}", code);
+           if (StringUtils.isEmpty(code)) {
+               return prefix + "code";
+           }
+           if (StringUtils.isNotEmpty(code)) {
+               model.addAttribute("openId", wxUtils.getUserInfoAccessToken(code).get("openid"));
+           }
+        }else if (userAgent != null && userAgent.contains("AlipayClient")) {
+            log.info("[From Alipay] 来自支付宝");
+        }else{
+            log.info("[From other sources] 未知来源");
         }
         model.addAttribute("parkingRecord", parkingRecordService.findByParkingIdAndIp(parkingId, exitId));
         return prefix + "index";
@@ -69,7 +78,7 @@ public class SweepCodeRedController {
      */
     @RequestMapping("forward")
     public String forward(Long recordId, Model model) {
-        log.info("[支付成功，查询跳转] Applet forward: {}", recordId);
+        log.info("[支付成功，跳转页面查询支付信息] Applet forward: {}", recordId);
         ParkingRecord parkingRecord = parkingRecordService.findById(recordId);
         model.addAttribute("parkingRecord", parkingRecord);
         model.addAttribute("payTime", DateUtils.formatDateTime(parkingRecord.getPayTime()));
@@ -77,7 +86,7 @@ public class SweepCodeRedController {
         return prefix + "success";
     }
 
-    //校验access_token
+    //微信：校验access_token
     @RequestMapping("token")
     public void accessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String signature = request.getParameter("signature");

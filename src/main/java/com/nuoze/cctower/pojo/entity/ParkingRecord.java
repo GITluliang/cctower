@@ -121,6 +121,11 @@ public class ParkingRecord implements Serializable {
      */
     private String qrCodeOrderSn ;
 
+    /**
+     * 支付宝支付订单（后加字段）
+     */
+    private String alPayOrderSn ;
+
     private static final long serialVersionUID = 1L;
 
 }
