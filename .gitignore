@@ -31,7 +31,7 @@
 
 #package files
 
-*.jar
+# *.jar
 *.war
 *.nar
 *.ear
