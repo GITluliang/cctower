@@ -74,7 +74,7 @@
                                 <p><span>类别：${data.rows[i].type == 0 ? '入口' : '出口'}</span><span>摄像头IP：${data.rows[i].name}</span></p>
                             </a>
                             <div class="btn-bot">
-                                <span id="delete" value=${data.rows[i].id}>前去开闸</span>
+                                <span class="delete" value=${data.rows[i].id}>前去开闸</span>
                             </div>
                         </li>
                     `
@@ -84,7 +84,7 @@
         })
     }
     function bind() {
-        $("#delete").click(function () {
+        $(".delete").click(function () {
             $("#popup").fadeIn();
             $("body").css("overflow", "hidden");
             $("#yes").attr("value",$(this).attr("value")) ;

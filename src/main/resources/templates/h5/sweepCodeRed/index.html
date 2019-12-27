@@ -52,13 +52,11 @@
 			</div>
 
 			<p style="height:10px;background: #f7f7f7;"></p>
-			<div class="payway">
+			<div class="payway" id="weixinMethod">
 				<h3 class="tit">支付方式</h3>
 				<div><i class="iconfont icon-wechat" style="color: #3bb034;"></i>微信支付<i class="iconfont icon-danxuan" id="icon-danxuan"></i></div>
 			</div>
-			<div style="margin: 0;">
-				<img src="/img/h5/zhifubao.png" width="100%">
-			</div>
+			<div id="alipayMethod" style="margin: 0;"><img src="/img/h5/zhifubao.png" width="100%"></div>
 			<p style="height:10px;background: #f7f7f7;"></p>
 			<div class="notice">
 				<h3 class="tit">注意事项</h3>
@@ -70,7 +68,7 @@
 
 		<div class="botBtn">
 			<span>还需要支付：<em id="cost" th:text="${parkingRecord.cost}"></em>元</span>
-			<button class="paybtn" onclick="payOrder()">支付</button>
+			<button class="paybtn" id="pay">支付</button>
 		</div>
 	</div>
 
@@ -91,24 +89,32 @@
 <script>
 	var carNumber = $("#carNumber").text() ;
 	$(function(){
+		payMethod();
 		$(".toast").hide();
-		if(carNumber != "" && carNumber != undefined) {
-			detailsShow()
-		}
-		$(".btn").click(function () {
-			detailsShow()
-		});
-		$("div#input-widget").click(function () {
-			detailsHide()
-		});
+		if(carNumber != "" && carNumber != undefined) {detailsShow()}
+		$(".btn").click(function () {detailsShow()});
+		$("div#input-widget").click(function () {detailsHide()});
 		$(".close").click(function(){
 			$("div#keyboard-pad").hide();
 			$(this).hide();
 		});
 	});
 
-	$("#icon-danxuan").prop("checked", true).css("color","#699aff");
-
+	//显示支付方式
+	function payMethod() {
+		if ($("#openId").text() != "") {	//微信支付
+			$("#icon-danxuan").prop("checked", true).css("color","#699aff");
+			$("#alipayMethod").hide();
+			$("#weixinMethod").show();
+			//绑定支付事件
+			$("#pay").click(function () {payOrder();});
+		} else {							//支付宝支付
+			$("#weixinMethod").hide();
+			$("#alipayMethod").show();
+			//绑定支付事件
+			$("#pay").click(function () {aliPayOrder();});
+		}
+	}
 	//检查车辆状态
 	function checkCost(carNumber) {
 		flag = 1 ;
@@ -183,8 +189,31 @@
 		$("div#keyboard-pad").show();
 		$(".close").show();
 	}
-
-
+	//支付宝支付
+	function aliPayOrder() {
+		recordId = $("#recordId").text() ;
+		money = $("#cost").text() ;
+		if (money == 0) {
+			alert("无需支付！")
+		}else {
+			if (recordId != "" && money != "") {
+				$.ajax({
+					url : '/mp/alipay/wap/gotoPayPage' ,
+					type: 'POST',
+					contentType: "application/json;charset=UTF-8",
+					data: JSON.stringify({recordId: recordId, money: money }),
+					success: function (data) {
+						console.log("[alipay jax请求成功 Data: ]" + JSON.stringify(data))
+						window.open('', '_self').document.write(data);
+						window.location
+					},
+					error: function (res) {
+						console.log("alipay ajax请求失败,res:" + res.toString());
+					}
+				}) ;
+			}
+		}
+	}
 	//微信支付：点击支付
 	function payOrder() {
 		openId = $("#openId").text() ;
@@ -194,7 +223,7 @@
 		if(money == 0 || typeof(openId) == "undefined") {
 			alert("无需支付！");
 		}else {
-			if(typeof(openId) != "undefined" && typeof(recordId) != "undefined" && typeof(money) != "undefined") {
+			if(openId != "" && recordId != "" && money != "") {
 				$.ajax({
 					url : '/mp/wx-pay/prepay' ,
 					type: 'POST',
@@ -202,11 +231,11 @@
 					contentType: "application/json;charset=UTF-8",
 					data: JSON.stringify({openId: openId, recordId: recordId, money: money }),
 					success: function (data) {
-						console.log("[Json payOrder Data: ]" + JSON.stringify(data))
+						console.log("[WX Json payOrder Data: ]" + JSON.stringify(data))
 						doBridgeReady(data);
 					},
 					error: function (res) {
-						console.log("ajax请求失败,res:" + res.toString());
+						console.log("WX ajax请求失败,res:" + res.toString());
 					}
 				}) ;
 			}

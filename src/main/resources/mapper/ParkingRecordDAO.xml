@@ -371,7 +371,7 @@
   <select id="findByOrderSnAliPay" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List" />
     FROM parking_record
-    WHERE alpay_order_sn= #{alPayOrderSn}
+    WHERE alpay_order_sn= #{orderSn}
     LIMIT 1
   </select>
 </mapper>
