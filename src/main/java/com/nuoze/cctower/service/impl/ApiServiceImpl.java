@@ -127,14 +127,28 @@ public class ApiServiceImpl implements ApiService {
             }
             record.setOutTime(new Date());
 
-            //如果已支付，paid设为1：已支付，status设为已出门
+            //提前支付，如果付款时间与当前时间的值，超过预留时间重新收费，否则出厂
             if (record.getPayStatus() == 1) {
+                if (billing.getPaidFreeTime() >= DateUtils.diffMin(record.getPayTime())) {
+                    return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? String.valueOf(EMPTY_MONEY) : String.valueOf(cost), String.valueOf(record.getServiceCharge()));
+                } else {
+                    //1. 将原来的记录出厂 2. 增加
+                    recordDAO.updateByPrimaryKeySelective(record.setStatus(1).setUuid(UUID.randomUUID().toString().replace("-", "")));
+                    int insert = recordDAO.insert(new ParkingRecord().setCarNumber(record.getCarNumber()).setParkingId(record.getParkingId()).setEntranceId(record.getEntranceId()).setPayStatus(0).setStatus(0).setInTime(record.getPayTime()).setExitId(record.getExitId()).setOutTime(new Date()).setAdvanceId(record.getId()));
+                    if (insert > 0) {
+                        record = recordDAO.findByParkingIdAndCarNumberAndStatus(parkingId, carNumber);
+                    }
+
+                }
+            }
+
+/*            if (record.getPayStatus() == 1) {
                 if (billing.getPaidFreeTime() >= DateUtils.diffMin(record.getPayTime())) {
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? String.valueOf(EMPTY_MONEY) : String.valueOf(cost), String.valueOf(record.getServiceCharge()));
                 } else {
                     record.setInTime(new Date(record.getPayTime().getTime() + (billing.getFreeTime() * 100000)));
                 }
-            }
+            }*/
             //停车时长（分钟）
             int costTime = DateUtils.diffMin(record.getInTime());
             //如果是月租车或VIP车或商户车辆免费时长未用完，同样paid=1，status：LEAVE_YET
@@ -174,7 +188,7 @@ public class ApiServiceImpl implements ApiService {
             }
             //免费停车时间
             Integer freeTime = billing.getFreeTime();
-            if (freeTime != null && freeTime >= costTime) {
+            if (freeTime != null && freeTime >= costTime && record.getAdvanceId() == null) {
                 if (car != null) {
                     if (BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
                         carDAO.deleteByPrimaryKey(car.getId());
@@ -186,7 +200,11 @@ public class ApiServiceImpl implements ApiService {
             }
 
             //计算车费
-            cost = billingComponent.cost(costTime, parkingId, null);
+            if (record.getAdvanceId() != null) {
+                cost = billingComponent.cost(costTime + billing.getFreeTime(), parkingId, null);
+            }else {
+                cost = billingComponent.cost(costTime, parkingId, null);
+            }
             record.setCostTime(costTime).setCost(cost).setCostTime(costTime);
             //计算服务费
             BigDecimal serviceCharge = EMPTY_MONEY;
@@ -265,6 +283,12 @@ public class ApiServiceImpl implements ApiService {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         if (record != null) {
             recordDAO.updateByPrimaryKeySelective(record.setStatus(status).setUuid(uuid).setServiceCharge(new BigDecimal(serviceCharge)));
+        }
+        if (record.getAdvanceId() != null) {
+            ParkingRecord advanceRecord = recordDAO.selectByPrimaryKey(record.getAdvanceId());
+            if (advanceRecord != null) {
+                apiVO.setAdvance(new ApiOutVO().setPaid(advanceRecord.getPayStatus()).setCarNumber(advanceRecord.getCarNumber()).setType(0).setCost(String.valueOf(advanceRecord.getCost())).setServiceCharge(String.valueOf(advanceRecord.getServiceCharge())).setUuid(advanceRecord.getUuid()));
+            }
         }
         return apiVO.setPaid(paid).setCarNumber(carNumber).setType(parkingType).setCost(cost).setServiceCharge(serviceCharge).setUuid(uuid);
     }

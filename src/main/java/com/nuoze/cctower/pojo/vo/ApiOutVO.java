@@ -40,4 +40,8 @@ public class ApiOutVO {
      * 服务费
      */
     private String serviceCharge;
+    /**
+     * 当前记录对应的提前支付信息（车主提起付款，如果出厂时间>预留时间，重新开始计费）
+     */
+    private ApiOutVO advance;
 }

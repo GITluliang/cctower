@@ -424,7 +424,6 @@ public class AlipayController {
             Account account = accountService.findByParkingId(parkingId);
             if (account != null) {
                 serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
-                money = money.subtract(serviceCharge);
             }
             //如果是待出门，通过mq发送出门指令
             if (status == READY_TO_LEAVE) {
@@ -454,8 +453,8 @@ public class AlipayController {
                 if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
             }
             parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(out_trade_no).setCost(money).setPayId(trade_no).setPayType(PAYMENT_ZHIFUBAO).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setPayTime(new Date()));
-            billingComponent.addTradingRecord(money, parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
-            billingComponent.addAccountBalance(money, parkingId, serviceCharge);
+            billingComponent.addTradingRecord(money.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
+            billingComponent.addAccountBalance(money.subtract(serviceCharge), parkingId, serviceCharge);
         }else {
             log.error("[AliPay] 订单不存在 alPayOrderSn: {}", out_trade_no);
         }

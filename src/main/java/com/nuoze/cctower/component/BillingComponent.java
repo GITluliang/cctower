@@ -101,7 +101,7 @@ public class BillingComponent {
      * @param carNumber 车牌号
      * @return BigDecimal 停车费
      */
-    public BigDecimal cost(int       costTime, Long parkingId, String carNumber) {
+    public BigDecimal cost(int costTime, Long parkingId, String carNumber) {
         if (carNumber != null) {
             Car car = carDAO.findByParkingIdAndCarNumber(parkingId, carNumber);
             if (car != null && BUSINESS_CAR == car.getParkingType() && BUSINESS_NORMAL_CAR == car.getStatus()) {
@@ -113,12 +113,12 @@ public class BillingComponent {
         if (detail == null) {
             return EMPTY_MONEY;
         }
+        if (billing.getFreeTime() != null) {
+            costTime = costTime - billing.getFreeTime();
+        }
         //1:分时计费 2：分段计费
         switch (detail.getType()) {
             case 1:
-                if (billing.getFreeTime() != null) {
-                    costTime = costTime - billing.getFreeTime();
-                }
                 //0：分钟 1：小时
                 if (detail.getUnitType() == 0) {
                     return detail.getUnitPrice().multiply(BigDecimal.valueOf(costTime));
@@ -134,9 +134,6 @@ public class BillingComponent {
                 BigDecimal hourCost = hourToCost(detail, hour);
                 return dayCost.add(hourCost);
             case 3:
-                if (billing.getFreeTime() != null) {
-                    costTime = costTime - billing.getFreeTime();
-                }
                 if (detail.getUnitType() == 0) {
                     return detail.getUnitPrice().multiply(BigDecimal.valueOf(costTime % detail.getTimeInterval() > 0 ? costTime / detail.getTimeInterval() + 1 : costTime / detail.getTimeInterval()));
                 } else {
