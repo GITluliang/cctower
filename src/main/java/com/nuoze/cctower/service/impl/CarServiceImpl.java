@@ -302,6 +302,8 @@ public class CarServiceImpl implements CarService {
             int remainingMin = (int) ChronoUnit.MINUTES.between(parkingRecord.getPayTime().toInstant(), Instant.now());
             if (remainingMin < min) {
                 return ResponseResult.fail(201, "已付款，你还有" + (min - remainingMin) + "分钟的时间离开停车场");
+            }else {
+                return ResponseResult.fail(201, "已付款，超过出厂预留时间请快速离场");
             }
         }
         return ResponseResult.success();

@@ -133,12 +133,11 @@ public class ApiServiceImpl implements ApiService {
                     return buildApiOutVO(apiVO, record, 1, LEAVE_YET, car != null ? car.getParkingType() : 0, carNumber, cost == null ? String.valueOf(EMPTY_MONEY) : String.valueOf(cost), String.valueOf(record.getServiceCharge()));
                 } else {
                     //1. 将原来的记录出厂 2. 增加
-                    recordDAO.updateByPrimaryKeySelective(record.setStatus(1).setUuid(UUID.randomUUID().toString().replace("-", "")));
+                    recordDAO.updateByPrimaryKeySelective(record.setStatus(1).setUuid(UUID.randomUUID().toString().replace("-", "")).setOutTime(record.getPayTime()));
                     int insert = recordDAO.insert(new ParkingRecord().setCarNumber(record.getCarNumber()).setParkingId(record.getParkingId()).setEntranceId(record.getEntranceId()).setPayStatus(0).setStatus(0).setInTime(record.getPayTime()).setExitId(record.getExitId()).setOutTime(new Date()).setAdvanceId(record.getId()));
                     if (insert > 0) {
                         record = recordDAO.findByParkingIdAndCarNumberAndStatus(parkingId, carNumber);
                     }
-
                 }
             }
 
@@ -287,7 +286,7 @@ public class ApiServiceImpl implements ApiService {
         if (record.getAdvanceId() != null) {
             ParkingRecord advanceRecord = recordDAO.selectByPrimaryKey(record.getAdvanceId());
             if (advanceRecord != null) {
-                apiVO.setAdvance(new ApiOutVO().setPaid(advanceRecord.getPayStatus()).setCarNumber(advanceRecord.getCarNumber()).setType(0).setCost(String.valueOf(advanceRecord.getCost())).setServiceCharge(String.valueOf(advanceRecord.getServiceCharge())).setUuid(advanceRecord.getUuid()));
+                apiVO.setAdvance(new ApiOutVO().setPaid(advanceRecord.getPayStatus()).setCarNumber(advanceRecord.getCarNumber()).setType(0).setCost(String.valueOf(advanceRecord.getCost())).setServiceCharge(String.valueOf(advanceRecord.getServiceCharge())).setUuid(advanceRecord.getUuid()).setPayTime(DateUtils.formatDateTime(advanceRecord.getPayTime())));
             }
         }
         return apiVO.setPaid(paid).setCarNumber(carNumber).setType(parkingType).setCost(cost).setServiceCharge(serviceCharge).setUuid(uuid);

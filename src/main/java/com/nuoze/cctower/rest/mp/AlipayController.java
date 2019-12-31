@@ -418,43 +418,45 @@ public class AlipayController {
         BigDecimal serviceCharge = new BigDecimal(0);
         if (parkingRecord != null) {
             log.info("[AliPay SUCCESS HANDLE] id: {}, alPayOrderSn: {},  pay_id: {}", parkingRecord.getId(), out_trade_no, trade_no);
-            int status = parkingRecord.getStatus();
-            Long parkingId = parkingRecord.getParkingId();
-            Car car = carDAO.findByParkingIdAndCarNumber(parkingId, parkingRecord.getCarNumber());
-            Account account = accountService.findByParkingId(parkingId);
-            if (account != null) {
-                serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
-            }
-            //如果是待出门，通过mq发送出门指令
-            if (status == READY_TO_LEAVE) {
-                GoOutVO goOutVO = new GoOutVO();
-                goOutVO.setParkingId(parkingId);
-                if (parkingRecord.getExitId() != null) {
-                    Passageway passageway = passagewayDAO.selectByPrimaryKey(parkingRecord.getExitId());
-                    if (passageway != null) {
-                        String ip = passageway.getIp();
-                        if (StringUtils.isNotBlank(ip)) {
-                            goOutVO.setIp(ip);
+            if (parkingRecord.getPayStatus() != 1) {
+                int status = parkingRecord.getStatus();
+                Long parkingId = parkingRecord.getParkingId();
+                Car car = carDAO.findByParkingIdAndCarNumber(parkingId, parkingRecord.getCarNumber());
+                Account account = accountService.findByParkingId(parkingId);
+                if (account != null) {
+                    serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
+                }
+                //如果是待出门，通过mq发送出门指令
+                if (status == READY_TO_LEAVE) {
+                    GoOutVO goOutVO = new GoOutVO();
+                    goOutVO.setParkingId(parkingId);
+                    if (parkingRecord.getExitId() != null) {
+                        Passageway passageway = passagewayDAO.selectByPrimaryKey(parkingRecord.getExitId());
+                        if (passageway != null) {
+                            String ip = passageway.getIp();
+                            if (StringUtils.isNotBlank(ip)) {
+                                goOutVO.setIp(ip);
+                            }
                         }
                     }
+                    goOutVO.setCarNumber(parkingRecord.getCarNumber());
+                    if (car != null) {
+                        goOutVO.setType(car.getParkingType());
+                    } else {
+                        goOutVO.setType(0);
+                    }
+                    //通过mq发送出厂消息
+                    mqSendComponent.sendGoOutCar(parkingId, goOutVO);
+                    parkingRecord.setStatus(LEAVE_YET);
                 }
-                goOutVO.setCarNumber(parkingRecord.getCarNumber());
+                //商户车辆状态修改
                 if (car != null) {
-                    goOutVO.setType(car.getParkingType());
-                } else {
-                    goOutVO.setType(0);
+                    if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
                 }
-                //通过mq发送出厂消息
-                mqSendComponent.sendGoOutCar(parkingId, goOutVO);
-                parkingRecord.setStatus(LEAVE_YET);
+                parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(out_trade_no).setCost(money).setPayId(trade_no).setPayType(PAYMENT_ZHIFUBAO).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setPayTime(new Date()));
+                billingComponent.addTradingRecord(money.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
+                billingComponent.addAccountBalance(money.subtract(serviceCharge), parkingId, serviceCharge);
             }
-            //商户车辆状态修改
-            if (car != null) {
-                if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
-            }
-            parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(out_trade_no).setCost(money).setPayId(trade_no).setPayType(PAYMENT_ZHIFUBAO).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setPayTime(new Date()));
-            billingComponent.addTradingRecord(money.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
-            billingComponent.addAccountBalance(money.subtract(serviceCharge), parkingId, serviceCharge);
         }else {
             log.error("[AliPay] 订单不存在 alPayOrderSn: {}", out_trade_no);
         }

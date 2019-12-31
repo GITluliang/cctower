@@ -156,11 +156,16 @@ public class AlipayWAPPayController {
             String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"), "UTF-8");
             //交易金额
             String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"), "UTF-8");
-            System.out.println("验证成功");
-            ParkingRecord byOrderSnAliPay = parkingRecordService.findByOrderSnAliPay(out_trade_no);
-            return "redirect:/mp/watchPay/forward?recordId=" + byOrderSnAliPay.getId();
+            ParkingRecord parkingRecord = parkingRecordService.findByOrderSnAliPay(out_trade_no);
+            if (parkingRecord == null) {
+                OrderNumber orderNumber = orderNumberDAO.findByorderSn(out_trade_no);
+                if (orderNumber != null) {
+                    parkingRecord = parkingRecordService.findById(orderNumber.getParkingRecordId());
+                }
+            }
+            return "redirect:/mp/watchPay/forward?recordId=" + parkingRecord.getId();
         } else {
-            System.out.println("验证失败");
+            log.info("[alipay returnUrl 校验失败] ");
             return "h5/sweepCodeRed/error";
         }
     }

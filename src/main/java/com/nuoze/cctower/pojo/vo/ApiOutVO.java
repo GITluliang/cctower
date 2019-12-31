@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author JiaShun
@@ -44,4 +45,8 @@ public class ApiOutVO {
      * 当前记录对应的提前支付信息（车主提起付款，如果出厂时间>预留时间，重新开始计费）
      */
     private ApiOutVO advance;
+    /**
+     * 付款时间
+     */
+    private String payTime;
 }
