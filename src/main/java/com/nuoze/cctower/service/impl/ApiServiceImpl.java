@@ -302,7 +302,7 @@ public class ApiServiceImpl implements ApiService {
     public boolean paid(ApiDTO apiDTO) {
         Car car = carDAO.findByParkingIdAndCarNumber(apiDTO.getParkingId(), apiDTO.getCarNumber());
         if (car != null) {
-            if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {
+            if (BUSINESS_CAR == car.getParkingType() || TIMECOUPON_CAR == car.getParkingType()) {
                 carDAO.deleteByPrimaryKey(car.getId());
             }
         }

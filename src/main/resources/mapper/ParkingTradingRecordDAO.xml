@@ -128,6 +128,7 @@
     from parking_trading_record
     <where>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="carNumber != null and carNumber != ''">and car_number LIKE #{carNumber}</if>
       <if test="parkingIds != null and parkingIds.size > 0 ">
         and parking_id in
         <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
@@ -145,6 +146,7 @@
     select count(id) from parking_trading_record
     <where>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
+      <if test="carNumber != null and carNumber != ''">and car_number LIKE #{carNumber}</if>
       <if test="parkingIds != null and parkingIds.size > 0 ">
         and parking_id in
         <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">

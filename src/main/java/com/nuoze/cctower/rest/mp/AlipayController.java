@@ -449,9 +449,9 @@ public class AlipayController {
                     mqSendComponent.sendGoOutCar(parkingId, goOutVO);
                     parkingRecord.setStatus(LEAVE_YET);
                 }
-                //商户车辆状态修改
+                //商户车辆
                 if (car != null) {
-                    if (BUSINESS_CAR == car.getParkingType() || BUSINESS_NORMAL_CAR == car.getStatus()) {carDAO.deleteByPrimaryKey(car.getId());}
+                    if (BUSINESS_CAR == car.getParkingType() || TIMECOUPON_CAR == car.getParkingType()) {carDAO.deleteByPrimaryKey(car.getId());}
                 }
                 parkingRecordService.update(parkingRecord.setServiceCharge(serviceCharge).setOrderSn(out_trade_no).setCost(money).setPayId(trade_no).setPayType(PAYMENT_ZHIFUBAO).setPayTime(new Date()).setPayStatus(PAY_STATUS_NORMAL).setPayTime(new Date()));
                 billingComponent.addTradingRecord(money.subtract(serviceCharge), parkingId, IncomeType.PARKING_CHARGE, parkingRecord.getCarNumber(),serviceCharge);
