@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>更新永久月租</title>
+    <title>单次VIP车辆</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
     <link rel="stylesheet" href="/css/h5/mobile/common.css" />
 </head>
@@ -34,7 +34,7 @@
                     <input name="corporateName" type="text" class="mui-input-clear mui-input" placeholder="请输入公司姓名" th:value="${carDTO.corporateName}">
                 </div>
                 <div class="mui-input-row">
-                    <label>月租分类</label>
+                    <label>VIP分类</label>
                     <input name="classification" type="text" class="mui-input-clear mui-input" placeholder="请输入分类" th:value="${carDTO.classification}">
                 </div>
                 <div class="mui-input-row">
@@ -69,7 +69,7 @@
 
                 </div>
         </div>
-            <input type="hidden" name="parkingType" value="2" >
+            <input type="hidden" name="parkingType" value="5" >
             <input type="hidden" name="id" th:value=${carDTO.id} >
             <input type="hidden" name="parkingId" th:value=${carDTO.parkingId} >
     </form>
@@ -87,10 +87,10 @@
         if ($("#number").val() == '') {
             toast("车牌号不能为空");
         }else {
-            $.post("/sys/car/vip/update",$('#signupForm').serialize(),function(data) {
+            $.post("/sys/car/singleVip/update",$('#signupForm').serialize(),function(data) {
                 toast(data.msg) ;
                 if(data.code == 0) {
-                    window.location.href='/mobile/car/vip';
+                    window.location.href='/mobile/car/singleVip';
                 }
             },"json");
         }

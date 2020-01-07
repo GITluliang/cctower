@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>添加月租</title>
+    <title>更新月租</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
     <link rel="stylesheet" href="/css/h5/mobile/common.css?v1.2" />
 </head>
@@ -70,11 +70,11 @@
                     <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
                         <div class="mui-radio mui-left">
                             <label>有</label>
-                            <input name="infieldPermission" type="radio" value="1" th:attr="checked=${carDTO.status == 1?true:false}">
+                            <input name="infieldPermission" type="radio" value="1" th:attr="checked=${carDTO.infieldPermission == 1?true:false}">
                         </div>
                         <div class="mui-radio mui-left">
                             <label>无</label>
-                            <input name="infieldPermission" value="0" type="radio" th:attr="checked=${carDTO.status == 0?true:false}">
+                            <input name="infieldPermission" value="0" type="radio" th:attr="checked=${carDTO.infieldPermission == 0?true:false}">
                         </div>
                     </div>
                     

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>永久月租管理</title>
+    <title>单次VIP车辆</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <link rel="stylesheet" href="/css/h5/mobile/common.css"/>
     <style type="text/css">
@@ -19,11 +19,11 @@
         </header>
          <div class="user bantop" style="background: linear-gradient(-320deg,#f3a425 40%,rgba(243, 164, 37,0.6));border-bottom:10px solid #f1980a;">
             <i class="iconfont icon-Vip"></i>
-            <h3>永久月租管理</h3>
+            <h3>单次VIP车辆</h3>
             <h5>VIP MANAGEMENT</h5>
         </div>
         <ul class="mui-table-view longlist" id="longList"></ul>
-        <a href="/mobile/car/vip/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
+        <a href="/mobile/car/singleVip/add" class="afix" id="consolt"><i class="iconfont icon-add"></i></a>
     </div>
     <p class="list-bot">加载更多内容</p>
      <!-- 自开发弹出层：选择内容过多，需要滚动 -->
@@ -61,7 +61,7 @@
     }
     function list(limit, offset) {
         $.ajax({
-            url: "/sys/car/vip/list",
+            url: "/sys/car/singleVip/list",
             dataType: "json",
             async: false,
             data: {limit: limit, offset: offset, sort: 'update_time', order: 'desc'},
@@ -76,14 +76,14 @@
                 for (i in data.rows) {
                     json += `
                     <li class="mui-table-view-cell">
-                        <a href="/mobile/car/vip/detail/${data.rows[i].id}">
+                        <a href="/mobile/car/singleVip/detail/${data.rows[i].id}">
                             <h3><span class="mui-ellipsis">车牌号：${data.rows[i].number}</span>
                 `
                     json +=`</h3>
                             <p><span>停车场：${data.rows[i].parkingName}</span><span>车主姓名：${data.rows[i].name}</span></p>
                         </a>
                          <div class="btn-bot">
-                            <a href="/mobile/car/vip/edit/${data.rows[i].id}" id="eidt"><i class="iconfont icon-edit"></i>编辑</a>
+                            <a href="/mobile/car/singleVip/edit/${data.rows[i].id}" id="eidt"><i class="iconfont icon-edit"></i>编辑</a>
                             <span id="delete"><i class="iconfont icon-shanchu delete" value=${data.rows[i].id}></i>删除</span>
                         </div>
                     </li>
@@ -105,7 +105,7 @@
 
     function remove() {
         $("#yes").click(function () {
-            $.post("/sys/car/vip/remove",{id:$(this).attr("value")},function (data) {
+            $.post("/sys/car/singleVip/remove",{id:$(this).attr("value")},function (data) {
                 if(data.code == 0){
                     window.location.reload();
                 }else {

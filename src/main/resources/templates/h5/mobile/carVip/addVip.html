@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>添加VIP</title>
+    <title>添加永久月租</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
     <link rel="stylesheet" href="/css/h5/mobile/common.css" />
 </head>
@@ -43,7 +43,7 @@
                     <input name="corporateName" type="text" class="mui-input-clear mui-input" placeholder="请输入公司姓名">
                 </div>
                 <div class="mui-input-row">
-                    <label>VIP分类</label>
+                    <label>月租分类</label>
                     <input name="classification" type="text" class="mui-input-clear mui-input" placeholder="请输入分类">
                 </div>
                 <div class="mui-input-row">
@@ -62,6 +62,20 @@
                             <input name="status" value="0" type="radio">
                         </div>
                     </div>
+                </div>
+                <div class="mui-input-row radio">
+                    <label>内场权限</label>
+                    <div style="width: 4rem;display: flex;justify-content: space-between;margin-right: 2rem;">
+                        <div class="mui-radio mui-left">
+                            <label>有</label>
+                            <input name="infieldPermission" type="radio" value="1" checked>
+                        </div>
+                        <div class="mui-radio mui-left">
+                            <label>无</label>
+                            <input name="infieldPermission" value="0" type="radio" >
+                        </div>
+                    </div>
+
                 </div>
         </div>
             <input type="hidden" name="parkingType" value="2" >

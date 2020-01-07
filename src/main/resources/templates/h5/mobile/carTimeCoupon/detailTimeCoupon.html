@@ -48,6 +48,8 @@
                     <p>联系方式<span>${data.data.phone}</span></p>
                     <p>免费时长<span>${data.data.freeTime}分钟</span></p>
                     <p>时长劵<span>${data.data.timeCoupon}</span></p>
+                    <p>状态<span>${data.data.status == 0 ? '禁用' : '正常'}</span></p>
+                    <p>内场权限<span>${data.data.infieldPermission ? '禁用' : '正常'}</span></p>
                 </div>
             `
             $("#detail").html(json);

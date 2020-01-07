@@ -101,6 +101,18 @@ function load() {
 										}
 									}
 								},
+								{
+									field : 'infieldPermission',
+									title : '权限',
+									align : 'center',
+									formatter : function(value, row, index) {
+										if (value == '0') {
+											return '<span class="label label-danger">无</span>';
+										} else if (value == '1') {
+											return '<span class="label label-primary">有</span>';
+										}
+									}
+								},
 																{
 									title : '操作',
 									field : 'id',

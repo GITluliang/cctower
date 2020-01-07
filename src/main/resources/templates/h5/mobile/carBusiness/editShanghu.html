@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>添加商户车辆</title>
+    <title>更新商户车辆</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
     <link rel="stylesheet" href="/css/h5/mobile/common.css" />
 </head>
@@ -49,6 +49,7 @@
             <input type="hidden" name="parkingType" value="3" >
             <input type="hidden" name="id" th:value=${carDTO.id} >
             <input type="hidden" name="parkingId" th:value=${carDTO.parkingId} >
+            <input name="infieldPermission" value="0" type="hidden">
         </form>
         <div class="mui-content-padded">
             <div class="btncont">
