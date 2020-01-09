@@ -6,6 +6,7 @@ import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.BaseWxPayResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import com.nuoze.cctower.common.enums.ApiDataEnum;
 import com.nuoze.cctower.common.enums.IncomeType;
 import com.nuoze.cctower.common.util.DateUtils;
 import com.nuoze.cctower.common.util.WxUtils;
@@ -193,7 +194,6 @@ public class WxOrderServiceImpl implements WxOrderService {
             //小程序长租续费
             if (renewRecord != null) {
                 log.info("[PAY NOTIFY Long rent renewals] id: {}, pay_id: {}", renewRecord.getId(), payId);
-
                 Account account = accountService.findByParkingId(renewRecord.getParkingId());
                 if (account != null) {
                     serviceCharge = paymentComponent.getServiceCharge(money, account.getServiceCharge());
@@ -203,6 +203,9 @@ public class WxOrderServiceImpl implements WxOrderService {
                 renewRecordDAO.updateByPrimaryKeySelective(renewRecord.setServiceCharge(serviceCharge).setCost(money).setPayId(payId).setPayStatus(PAY_STATUS_NORMAL));
                 billingComponent.addTradingRecord(money.subtract(serviceCharge), renewRecord.getParkingId(), IncomeType.RENT_RENEW, renewRecord.getCarNumber(),serviceCharge);
                 billingComponent.addAccountBalance(money.subtract(serviceCharge), renewRecord.getParkingId(),serviceCharge);
+                if (1 == car.getParkingType()) {
+                    mqSendComponent.sendRentCar(ApiDataEnum.UPDATE, carDAO.selectByPrimaryKey(car.getId()));
+                }
             }
             //小程序余额充值
             if (topUpRecord != null) {

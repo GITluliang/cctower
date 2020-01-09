@@ -76,14 +76,20 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public boolean in(ApiDTO apiDTO) {
-        log.info("[API CAR IN] carNumber: {}, entrance ip: {}, enter parking id: {} ", apiDTO.getCarNumber(), apiDTO.getIp(), apiDTO.getParkingId());
+        log.info("[API CAR IN]: " + apiDTO);
         ParkingRecord record = new ParkingRecord();
         Passageway passageway = passagewayDAO.findByParkingIdAndIp(apiDTO.getParkingId(), apiDTO.getIp());
         if (passageway != null) {
             Long entranceId = passageway.getId();
             record.setEntranceId(entranceId);
         }
-        recordDAO.insert(record.setParkingId(apiDTO.getParkingId()).setCarNumber(apiDTO.getCarNumber()).setStatus(NOT_LEAVE).setInTime(new Date()).setPayStatus(0));
+        try{
+            record.setInTime(DateUtils.toDateTime(apiDTO.getInTime()));
+        }catch (Exception e) {
+            log.info("[Exception]: \t车辆入场时间格式错误！{}",apiDTO.getInTime());
+            record.setInTime(new Date());
+        }
+        recordDAO.insert(record.setParkingId(apiDTO.getParkingId()).setCarNumber(apiDTO.getCarNumber()).setStatus(NOT_LEAVE).setPayStatus(0).setUuid(String.valueOf(UUID.randomUUID())));
         return true;
     }
 
@@ -279,9 +285,8 @@ public class ApiServiceImpl implements ApiService {
      * @return ApiOutVO
      */
     private ApiOutVO buildApiOutVO(ApiOutVO apiVO, ParkingRecord record, int paid, int status, int parkingType, String carNumber, String cost, String serviceCharge) {
-        String uuid = UUID.randomUUID().toString().replace("-", "");
         if (record != null) {
-            recordDAO.updateByPrimaryKeySelective(record.setStatus(status).setUuid(uuid).setServiceCharge(new BigDecimal(serviceCharge)));
+            recordDAO.updateByPrimaryKeySelective(record.setStatus(status).setServiceCharge(new BigDecimal(serviceCharge)));
         }
         if (record.getAdvanceId() != null) {
             ParkingRecord advanceRecord = recordDAO.selectByPrimaryKey(record.getAdvanceId());
@@ -289,7 +294,7 @@ public class ApiServiceImpl implements ApiService {
                 apiVO.setAdvance(new ApiOutVO().setPaid(advanceRecord.getPayStatus()).setCarNumber(advanceRecord.getCarNumber()).setType(0).setCost(String.valueOf(advanceRecord.getCost())).setServiceCharge(String.valueOf(advanceRecord.getServiceCharge())).setUuid(advanceRecord.getUuid()).setPayTime(DateUtils.formatDateTime(advanceRecord.getPayTime())));
             }
         }
-        return apiVO.setPaid(paid).setCarNumber(carNumber).setType(parkingType).setCost(cost).setServiceCharge(serviceCharge).setUuid(uuid);
+        return apiVO.setPaid(paid).setCarNumber(carNumber).setType(parkingType).setCost(cost).setServiceCharge(serviceCharge).setUuid(record.getUuid());
     }
 
     /**
@@ -425,7 +430,7 @@ public class ApiServiceImpl implements ApiService {
         BeanUtils.copyProperties(dto, car);
         car.setNumber(dto.getCarNumber()).setParkingType(1).setStatus(1).setInfieldPermission(1);
         try {
-            car.setMonthlyParkingStart(DateUtils.toDateTime(dto.getBeginDate())).setMonthlyParkingEnd(DateUtils.toDateTime(dto.getEndDate()));
+            car.setMonthlyParkingStart(DateUtils.toDate(dto.getBeginDate())).setMonthlyParkingEnd(DateUtils.toDate(dto.getEndDate()));
         } catch (Exception e) {
             log.error("Time format error: {}", e.getMessage());
         }

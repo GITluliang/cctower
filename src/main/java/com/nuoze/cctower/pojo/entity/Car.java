@@ -1,6 +1,7 @@
 package com.nuoze.cctower.pojo.entity;
 
 import java.math.BigDecimal;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 
 /**
  * long-long-car
+ *
  * @author JiaShun
  */
 @Data
@@ -97,17 +99,6 @@ public class Car implements Serializable {
     private String corporateName;
 
     /**
-     * 备注（新增）
-     */
-    private String remarks;
-
-    /**
-     * 月租车自定义分类（新增）:
-     *  起个标识作用，用户自已输入的，没什么实质性作用
-     */
-    private String classification;
-
-    /**
      * 商户剩余时长劵
      */
     private Integer timeCoupon;
@@ -116,6 +107,16 @@ public class Car implements Serializable {
      * 线下车牌唯一标识
      */
     private String uuid;
+
+    /**
+     * 替换车牌1
+     */
+    private String numberOne;
+
+    /**
+     * 替换车牌2
+     */
+    private String numberTow;
     private static final long serialVersionUID = 1L;
 
 }

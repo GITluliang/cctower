@@ -27,6 +27,10 @@ public class ApiDTO {
      * 老车牌号
      */
     private String oldCarNumber;
+    /**
+     * 入场时间
+     */
+    private String inTime;
 
     public boolean freeCarCheck() {
         return parkingId != null && StringUtils.isNotEmpty(carNumber);

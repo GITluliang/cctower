@@ -73,8 +73,6 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								sort: 'classification',
-								order: 'desc',
 								number: '%' + $.trim($('#number').val()) + '%',
 								monthlyParkingStart: '%' + $.trim($('#monthlyParkingStart').val())+ '%',
 								monthlyParkingEnd: '%' + $.trim($('#monthlyParkingEnd').val())+ '%'
@@ -98,6 +96,14 @@ function load() {
 									field : 'number', 
 									title : '车牌号'
 								},
+								{
+									field : 'numberOne',
+									title : '替换车牌1'
+								},
+								{
+									field : 'numberTow',
+									title : '替换车牌2'
+								},
 
 																{
 									field : 'beginDate',
@@ -118,21 +124,6 @@ function load() {
 								{
 									field : 'corporateName',
 									title : '公司名称'
-								},
-								{
-									field : 'remarks',
-									title : '备注'
-								},
-								{
-									field : 'classification',
-									title : '月租车分类',
-									align : 'center',
-									formatter : function(value, row, index) {
-										if(value == null) {
-											return '<span class="label label-danger">-</span>';
-										}
-										return '<span class="label label-danger">' + value + '</span>';
-									}
 								},
 								{
 									field : 'status',

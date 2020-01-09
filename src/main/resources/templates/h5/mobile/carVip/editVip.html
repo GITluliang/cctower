@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>更新永久月租</title>
+    <title>添加VIP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,ujob-scalable=no">
     <link rel="stylesheet" href="/css/h5/mobile/common.css" />
 </head>
@@ -21,6 +21,14 @@
                     <input id="number" name="number" type="text" class="mui-input-clear mui-input" placeholder="请输入车牌号" th:value="${carDTO.number}">
                 </div>
                 <div class="mui-input-row">
+                    <label>替换车牌1</label>
+                    <input name="numberOne" type="text" class="mui-input-clear mui-input" placeholder="请输入分类" th:value="${carDTO.numberOne}">
+                </div>
+                <div class="mui-input-row">
+                    <label>替换车牌2</label>
+                    <input name="numberTow" type="text" class="mui-input-clear mui-input" placeholder="请输入备注" th:value="${carDTO.numberTow}">
+                </div>
+                <div class="mui-input-row">
                     <label>车主姓名</label>
                     <input name="name" type="text" class="mui-input-clear mui-input" placeholder="请输入车主姓名" th:value="${carDTO.name}">
                 </div>
@@ -32,14 +40,6 @@
                 <div class="mui-input-row">
                     <label>公司姓名</label>
                     <input name="corporateName" type="text" class="mui-input-clear mui-input" placeholder="请输入公司姓名" th:value="${carDTO.corporateName}">
-                </div>
-                <div class="mui-input-row">
-                    <label>月租分类</label>
-                    <input name="classification" type="text" class="mui-input-clear mui-input" placeholder="请输入分类" th:value="${carDTO.classification}">
-                </div>
-                <div class="mui-input-row">
-                    <label>备注</label>
-                    <input name="remarks" type="text" class="mui-input-clear mui-input" placeholder="请输入备注" th:value="${carDTO.remarks}">
                 </div>
                 <div class="mui-input-row radio">
                     <label>状态</label>

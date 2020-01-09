@@ -13,6 +13,8 @@ public class RentCarApiEntity {
 
     private Long cloudId;
     private String number;
+    private String numberOne;
+    private String numberTow;
     private String rentCarStart;
     private String rentCarEnd;
     private Integer status;

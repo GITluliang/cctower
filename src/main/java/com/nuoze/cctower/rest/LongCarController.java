@@ -126,8 +126,21 @@ public class LongCarController {
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:edit")
     public R update(CarDTO dto) {
-        carService.update(dto);
-        return R.ok();
+        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+        if (car != null) {
+            if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
+                return ResponseResult.addCarCheck(car);
+            }
+            if (!dto.getNumberOne().equalsIgnoreCase(car.getNumberOne())) {
+                Car car1 = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+                if (car1 != null) {return ResponseResult.addCarCheck(car1);}
+            }
+            if (!dto.getNumberTow().equalsIgnoreCase(car.getNumberTow())) {
+                Car car2 = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+                if (car2 != null) {return ResponseResult.addCarCheck(car2);}
+            }
+        }
+        return carService.update(dto) > 0? R.ok() : R.error();
     }
 
     /**
@@ -162,7 +175,7 @@ public class LongCarController {
     @RequestMapping(value="/importExcel")
     public Map<String, Object> importExcel(HttpServletRequest request, HttpServletResponse response, String filePro){
         Map<String, Object> map = new HashMap<>(16);
-        String keys[] = {"parkingId","parkingName","number","beginDate","endDate","name","phone","corporateName","remarks","classification"};
+        String keys[] = {"parkingId","parkingName","number","beginDate","endDate","numberOne","numberTow","name","phone","corporateName"};
         try {
             List<Map<String,String>> listData = ExcelUtil.getExcelData(request, "file",keys);
             log.info("[月租车导入的数据]：" + listData);
@@ -185,9 +198,13 @@ public class LongCarController {
                     map.put("message","上传失败，日期格式错误");
                     return map;
                 }
-                dto.setParkingId(Long.valueOf(dataMap.get("parkingId"))).setNumber(dataMap.get("number")).setName(dataMap.get("name")).setPhone(dataMap.get("phone")).setCorporateName(dataMap.get("corporateName")).setRemarks(dataMap.get("remarks")).setClassification(dataMap.get("classification")).setParkingType(1).setStatus(1).setInfieldPermission(1);
+                dto.setParkingId(Long.valueOf(dataMap.get("parkingId"))).setNumber(dataMap.get("number")).setName(dataMap.get("name")).setPhone(dataMap.get("phone")).setCorporateName(dataMap.get("corporateName")).setNumberOne(dataMap.get("numberOne")).setNumberTow(dataMap.get("numberTow")).setParkingType(1).setStatus(1).setInfieldPermission(1);
                 Car car = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
-                if (car != null) {carService.remove(car.getId());}
+                Car carOne = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+                Car carTow = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+                if (car != null) { carService.remove(car.getId()); }
+                if (carOne != null) { carService.remove(car.getId()); }
+                if (carTow != null) { carService.remove(car.getId()); }
                 save += carService.save(dto);
             }
             map.put("code", 1);
@@ -211,8 +228,8 @@ public class LongCarController {
         Map<String,Object> data = new HashMap<>(16);
         String fileName = CommUtil.formatTime("yyyyMMddHHmmss", new Date()) +".xls";
 
-        String columnNames[] = {"停车场ID(必填)","停车场名称(必填)","车牌号(必填)","生效日期(必填)","失效日期(必填)","车主姓名(选填)","联系方式(选填)","公司名称(选填)","备注(选填)","月租车分类(选填)"};
-        String keys[] = {"parkingId","parkingName","number","beginDate","endDate","name","phone","corporateName","remarks","classification"};
+        String columnNames[] = {"停车场ID(必填)","停车场名称(必填)","车牌号(必填)","生效日期(必填)","失效日期(必填)","替换车牌1(选填)","替换车牌2(选填)","车主姓名(选填)","联系方式(选填)","公司名称(选填)"};
+        String keys[] = {"parkingId","parkingName","number","beginDate","endDate","numberOne","numberTow","name","phone","corporateName"};
 
         List<Map<String,Object>> listMap = new ArrayList<>();
         Map<String,Object> map = new HashMap<>(16);
@@ -222,11 +239,11 @@ public class LongCarController {
         map.put("number", "京A11111");
         map.put("beginDate", "2019-11-11");
         map.put("endDate", "2019-12-12");
+        map.put("numberOne", "京A11112");
+        map.put("numberTow", "京A11113");
         map.put("name", "张三");
         map.put("phone", "17155556666");
         map.put("corporateName", "XXX");
-        map.put("remarks", "XXX");
-        map.put("classification", "XXX");
         listMap.add(map);
         try {
             //创建Workbook

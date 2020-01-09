@@ -105,8 +105,21 @@ public class VipCarController {
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:vip:edit")
     public R update(CarDTO dto) {
-        carService.update(dto);
-        return R.ok();
+        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+        if (car != null) {
+            if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
+                return ResponseResult.addCarCheck(car);
+            }
+            if (!dto.getNumberOne().equalsIgnoreCase(car.getNumberOne())) {
+                Car car1 = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+                if (car1 != null) {return ResponseResult.addCarCheck(car1);}
+            }
+            if (!dto.getNumberTow().equalsIgnoreCase(car.getNumberTow())) {
+                Car car2 = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+                if (car2 != null) {return ResponseResult.addCarCheck(car2);}
+            }
+        }
+        return carService.update(dto) > 0? R.ok() : R.error();
     }
 
     /**

@@ -66,8 +66,12 @@ public class DateUtils {
         return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
+    public static Date toDate(String time) throws ParseException {
+        return new SimpleDateFormat(DATE_PATTERN).parse(time);
+    }
+
     public static Date toDateTime(String time) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd").parse(time);
+        return new SimpleDateFormat(DATE_TIME_PATTERN).parse(time);
     }
 
     /**

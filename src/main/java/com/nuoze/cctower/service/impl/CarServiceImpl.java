@@ -157,7 +157,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public int save(CarDTO dto) {
         Long userId = getUserId();
-        Car car = dtoToCar(dto).setCreateId(userId).setCreateTime(new Date()).setUpdateTime(new Date()).setUuid(UUID.randomUUID().toString().replace("-", ""));
+        Car car = dtoToCar(dto).setCreateId(userId).setCreateTime(new Date()).setUpdateTime(new Date()).setUuid(String.valueOf(UUID.randomUUID()));
         int i = carDAO.insert(car);
         if (1 == car.getParkingType()) {
             Car vo = carDAO.findByParkingIdAndCarNumber(car.getParkingId(), car.getNumber());
@@ -466,13 +466,15 @@ public class CarServiceImpl implements CarService {
 
     private Car dtoToCar(CarDTO dto) {
         dto.setNumber(dto.getNumber().toUpperCase());
+        dto.setNumberOne(dto.getNumberOne().toUpperCase());
+        dto.setNumberTow(dto.getNumberTow().toUpperCase());
         Car car = new Car();
         BeanUtils.copyProperties(dto, car);
         car.setNumber(dto.getNumber().toUpperCase().toUpperCase());
         if (dto.getParkingType() == MONTHLY_CAR && dto.getBeginDate() != null && dto.getEndDate() != null) {
             try {
-                Date monthlyParkingStart = DateUtils.toDateTime(dto.getBeginDate());
-                Date monthlyParkingEnd = DateUtils.toDateTime(dto.getEndDate());
+                Date monthlyParkingStart = DateUtils.toDate(dto.getBeginDate());
+                Date monthlyParkingEnd = DateUtils.toDate(dto.getEndDate());
                 car.setMonthlyParkingStart(monthlyParkingStart);
                 car.setMonthlyParkingEnd(monthlyParkingEnd);
             } catch (Exception e) {
