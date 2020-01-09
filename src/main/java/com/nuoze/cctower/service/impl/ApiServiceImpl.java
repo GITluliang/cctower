@@ -364,18 +364,18 @@ public class ApiServiceImpl implements ApiService {
         int status = 0;
         int type = 0;
         int infieldPermission = 0;
-        if (car != null && car.getParkingType() == MONTHLY_CAR && car.getStatus() == 1) {
+        if (car != null) {
             if (MONTHLY_CAR == car.getParkingType()) {
                 status = 1;
+                if (new Date().after(car.getMonthlyParkingEnd())) {
+                    type = 2;
+                }
             }
             if (1 == car.getStatus()) {
                 type = 1;
             }
             if (1 == car.getInfieldPermission()) {
                 infieldPermission = 1;
-            }
-            if (new Date().after(car.getMonthlyParkingEnd())) {
-                type = 2;
             }
         }
         return new ApiCheckCarVO(status, type, infieldPermission);

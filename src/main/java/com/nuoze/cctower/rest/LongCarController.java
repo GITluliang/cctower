@@ -175,7 +175,7 @@ public class LongCarController {
     @RequestMapping(value="/importExcel")
     public Map<String, Object> importExcel(HttpServletRequest request, HttpServletResponse response, String filePro){
         Map<String, Object> map = new HashMap<>(16);
-        String keys[] = {"parkingId","parkingName","number","beginDate","endDate","numberOne","numberTow","name","phone","corporateName"};
+        String keys[] = {"parkingId","parkingName","infieldPermission","number","beginDate","endDate","numberOne","numberTow","name","phone","corporateName"};
         try {
             List<Map<String,String>> listData = ExcelUtil.getExcelData(request, "file",keys);
             log.info("[月租车导入的数据]：" + listData);
@@ -187,9 +187,15 @@ public class LongCarController {
             int save = 0 ;
             for (Map<String, String> dataMap : listData) {
                 CarDTO dto = new CarDTO().setEndDate(dataMap.get("endDate")).setBeginDate(dataMap.get("beginDate")).setParkingName(dataMap.get("parkingName"));
-                if(StringUtils.isBlank(dataMap.get("number"))|| StringUtils.isBlank(dataMap.get("parkingId")) || StringUtils.isBlank(dto.getEndDate()) || StringUtils.isBlank(dto.getBeginDate())) {
+                String infieldPermission = dataMap.get("infieldPermission");
+                if(StringUtils.isBlank(dataMap.get("number"))|| StringUtils.isBlank(dataMap.get("parkingId")) || StringUtils.isBlank(dto.getEndDate()) || StringUtils.isBlank(dto.getBeginDate()) || StringUtils.isBlank(infieldPermission)) {
                     map.put("status",-1);
                     map.put("message","上传失败，上传数据必填字段不能为空");
+                    return map;
+                }
+                if (!(Integer.valueOf(infieldPermission) == 1 || Integer.valueOf(infieldPermission) == 0)) {
+                    map.put("status",-1);
+                    map.put("message","上传失败，上传数据字段错误");
                     return map;
                 }
                 String regex = "\\d{4}-\\d{2}-\\d{2}";
@@ -198,12 +204,13 @@ public class LongCarController {
                     map.put("message","上传失败，日期格式错误");
                     return map;
                 }
-                dto.setParkingId(Long.valueOf(dataMap.get("parkingId"))).setNumber(dataMap.get("number")).setName(dataMap.get("name")).setPhone(dataMap.get("phone")).setCorporateName(dataMap.get("corporateName")).setNumberOne(dataMap.get("numberOne")).setNumberTow(dataMap.get("numberTow")).setParkingType(1).setStatus(1).setInfieldPermission(1);
+                dto.setParkingId(Long.valueOf(dataMap.get("parkingId"))).setNumber(dataMap.get("number")).setName(dataMap.get("name")).setPhone(dataMap.get("phone")).setCorporateName(dataMap.get("corporateName"))
+                        .setNumberOne(dataMap.get("numberOne")).setNumberTow(dataMap.get("numberTow")).setParkingType(1).setStatus(1).setInfieldPermission(Integer.valueOf(dataMap.get("infieldPermission")));
                 Car car = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
-                Car carOne = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
-                Car carTow = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
                 if (car != null) { carService.remove(car.getId()); }
+                Car carOne = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
                 if (carOne != null) { carService.remove(car.getId()); }
+                Car carTow = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
                 if (carTow != null) { carService.remove(car.getId()); }
                 save += carService.save(dto);
             }
@@ -228,14 +235,15 @@ public class LongCarController {
         Map<String,Object> data = new HashMap<>(16);
         String fileName = CommUtil.formatTime("yyyyMMddHHmmss", new Date()) +".xls";
 
-        String columnNames[] = {"停车场ID(必填)","停车场名称(必填)","车牌号(必填)","生效日期(必填)","失效日期(必填)","替换车牌1(选填)","替换车牌2(选填)","车主姓名(选填)","联系方式(选填)","公司名称(选填)"};
-        String keys[] = {"parkingId","parkingName","number","beginDate","endDate","numberOne","numberTow","name","phone","corporateName"};
+        String columnNames[] = {"停车场ID(必填)","停车场名称(必填)","内场权限(必填,0:禁用 1:正常)","车牌号(必填)","生效日期(必填)","失效日期(必填)","替换车牌1(选填)","替换车牌2(选填)","车主姓名(选填)","联系方式(选填)","公司名称(选填)"};
+        String keys[] = {"parkingId","parkingName","infieldPermission","number","beginDate","endDate","numberOne","numberTow","name","phone","corporateName"};
 
         List<Map<String,Object>> listMap = new ArrayList<>();
         Map<String,Object> map = new HashMap<>(16);
         List<Parking> parkingByUser = parkingDAO.findParkingByUser(getUserId());
         map.put("parkingId", parkingByUser.get(0).getId());
         map.put("parkingName", parkingByUser.get(0).getName());
+        map.put("infieldPermission", 1);
         map.put("number", "京A11111");
         map.put("beginDate", "2019-11-11");
         map.put("endDate", "2019-12-12");

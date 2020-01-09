@@ -50,7 +50,6 @@ function load() {
 						url : prefix + "/list", // 服务器数据的加载地址
 						showRefresh : true,
 						showToggle : true,
-						showColumns : true,
 						showExport: true,
 						exportTypes: ['excel','xlsx'],
 						iconSize : 'outline',
