@@ -465,9 +465,9 @@ public class CarServiceImpl implements CarService {
     }
 
     private Car dtoToCar(CarDTO dto) {
-        dto.setNumber(dto.getNumber().toUpperCase());
-        dto.setNumberOne(dto.getNumberOne().toUpperCase());
-        dto.setNumberTow(dto.getNumberTow().toUpperCase());
+        if (dto.getNumber() != null) {dto.setNumber(dto.getNumber().toUpperCase());}
+        if (dto.getNumberOne() != null) {dto.setNumberOne(dto.getNumberOne().toUpperCase());}
+        if (dto.getNumberTow() != null) {dto.setNumberTow(dto.getNumberTow().toUpperCase());}
         Car car = new Car();
         BeanUtils.copyProperties(dto, car);
         car.setNumber(dto.getNumber().toUpperCase().toUpperCase());

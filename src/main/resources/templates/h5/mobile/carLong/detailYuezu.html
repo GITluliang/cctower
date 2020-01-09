@@ -50,10 +50,8 @@
                     <p>车主姓名<span>${data.data.name}</span></p>
                     <p>联系方式<span>${data.data.phone}</span></p>
                     <p>公司名称<span>${data.data.corporateName}</span></p>
-                    <p>月租车分类<span>${data.data.classification}</span></p>
                     <p>状态<span>${data.data.status == 0 ? '禁用' : '正常'}</span></p>
                     <p>内场权限<span>${data.data.infieldPermission ==0 ? '禁用' : '正常'}</span></p>
-                     <p>备注<span>${data.data.remarks}</span></p>
                 </div>
             `
             $("#detail").html(json);
