@@ -13,6 +13,13 @@
       "unicode_decimal": 58880
     },
     {
+      "icon_id": "260551",
+      "name": "优惠券",
+      "font_class": "youhuiquan",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
       "icon_id": "294315",
       "name": "add",
       "font_class": "add",
@@ -32,6 +39,13 @@
       "font_class": "chenggong",
       "unicode": "e602",
       "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "1941572",
+      "name": "VIP",
+      "font_class": "YJ-VIP",
+      "unicode": "e622",
+      "unicode_decimal": 58914
     },
     {
       "icon_id": "3050486",
@@ -95,6 +109,13 @@
       "font_class": "yuezu",
       "unicode": "e645",
       "unicode_decimal": 58949
+    },
+    {
+      "icon_id": "11465233",
+      "name": "标为永久",
+      "font_class": "biaoweiyongjiu",
+      "unicode": "e634",
+      "unicode_decimal": 58932
     }
   ]
 }
