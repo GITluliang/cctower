@@ -68,11 +68,9 @@
                 for (i in data.rows) {
                     json += `
                         <li class="mui-table-view-cell">
-                            <a href="detailYuezu.html">
-                                <h3><span class="mui-ellipsis">通道名称：${data.rows[i].name}</span></h3>
-                                <p class="parking">停车场：${data.rows[i].parkingName}</p>
-                                <p><span>类别：${data.rows[i].type == 0 ? '入口' : '出口'}</span><span>摄像头IP：${data.rows[i].ip}</span></p>
-                            </a>
+                            <h3><span class="mui-ellipsis">通道名称：${data.rows[i].name}</span></h3>
+                            <p class="parking">停车场：${data.rows[i].parkingName}</p>
+                            <p><span>类别：${data.rows[i].type == 0 ? '入口' : '出口'}</span><span>摄像头IP：${data.rows[i].ip}</span></p>
                             <div class="btn-bot">
                                 <span class="delete" value=${data.rows[i].id}>前去开闸</span>
                             </div>

@@ -218,12 +218,18 @@ public class VipCarController {
                 }
                 dto.setParkingId(Long.valueOf(dataMap.get("parkingId"))).setNumber(dataMap.get("number")).setName(dataMap.get("name")).setPhone(dataMap.get("phone")).setCorporateName(dataMap.get("corporateName"))
                         .setNumberOne(dataMap.get("numberOne")).setNumberTow(dataMap.get("numberTow")).setParkingType(2).setStatus(1).setInfieldPermission(Integer.valueOf(dataMap.get("infieldPermission")));
-                Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
-                Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
-                Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
-                if (car != null) { carService.remove(car.getId()); }
-                if (carOne != null) { carService.remove(car.getId()); }
-                if (carTow != null) { carService.remove(car.getId()); }
+                if (dto.getNumber() != null) {
+                    Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+                    if (car != null) { carService.remove(car.getId()); }
+                }
+                if (dto.getNumberOne() != null) {
+                    Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+                    if (carOne != null) { carService.remove(carOne.getId()); }
+                }
+                if (dto.getNumberTow() != null) {
+                    Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+                    if (carTow != null) { carService.remove(carTow.getId()); }
+                }
                 save += carService.save(dto);
             }
             map.put("code", 1);
