@@ -5,6 +5,7 @@ import com.nuoze.cctower.common.util.PageUtils;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
 import com.nuoze.cctower.component.IdComponent;
+import com.nuoze.cctower.dao.CarDAO;
 import com.nuoze.cctower.dao.ParkingDAO;
 import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
@@ -24,7 +25,7 @@ import static com.nuoze.cctower.common.constant.Constant.EMPTY_LIST;
 import static com.nuoze.cctower.common.constant.Constant.SPECIAL_CAR;
 
 /**
- * VIP车辆
+ * 特殊车辆
  *
  * @Authror luliang
  * @Date 2019-09-18 16:22
@@ -40,7 +41,7 @@ public class SpecialCarController {
     @Autowired
     private IdComponent idComponent;
     @Autowired
-    private ParkingDAO parkingDAO;
+    private CarDAO carDAO;
 
     @GetMapping()
     @RequiresPermissions("sys:car:special")
@@ -90,9 +91,11 @@ public class SpecialCarController {
     @PostMapping("/save")
     @RequiresPermissions("sys:car:special:add")
     public R save(CarDTO dto) {
-        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
-        if (car != null) {
-            return ResponseResult.addCarCheck(car);
+        if (dto.getNumber() != null) {
+            Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+            if (carNumber != null) {
+                carService.remove(carNumber.getId());
+            }
         }
         return carService.save(dto) > 0 ? R.ok() : R.error();
     }
@@ -104,8 +107,18 @@ public class SpecialCarController {
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:special:edit")
     public R update(CarDTO dto) {
-        carService.update(dto);
-        return R.ok();
+        Car car = carDAO.selectByPrimaryKey(dto.getId());
+        if (car != null) {
+            if (dto.getNumber() != null) {
+                if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
+                    Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+                    if (carNumber != null) {
+                        carService.remove(carNumber.getId());
+                    }
+                }
+            }
+        }
+        return carService.update(dto) > 0? R.ok() : R.error();
     }
 
     /**

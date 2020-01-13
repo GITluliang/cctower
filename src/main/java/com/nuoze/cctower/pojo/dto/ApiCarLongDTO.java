@@ -46,13 +46,12 @@ public class ApiCarLongDTO {
     private String corporateName;
 
     /**
-     * 备注（新增）
+     * 替换车牌1
      */
-    private String remarks;
-    /**
-     * 月租车自定义分类（新增）:
-     *  起个标识作用，用户自已输入的，没什么实质性作用
-     */
-    private String classification;
+    private String numberOne;
 
+    /**
+     * 替换车牌2
+     */
+    private String numberTow;
 }

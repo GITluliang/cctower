@@ -282,12 +282,26 @@ public class ApiController {
     public Result save(@RequestBody ApiCarLongDTO dto, @RequestHeader("authorization") String auth) {
         log.info("[API CONTROLLER] carLong/save auth: {} CarDTO:{}", auth, dto);
         Result result = checkParamLongCar(dto, auth);
-        Result carExist = isCarExist(dto);
         if (result != null) {
             return result;
         }
-        if (carExist != null) {
-            return carExist;
+        if (dto.getCarNumber() != null) {
+            Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
+            if (car != null) {
+                carService.remove(car.getId());
+            }
+        }
+        if (dto.getNumberOne() != null) {
+            Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+            if (carOne != null) {
+                carService.remove(carOne.getId());
+            }
+        }
+        if (dto.getNumberTow() != null) {
+            Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+            if (carTow != null) {
+                carService.remove(carTow.getId());
+            }
         }
         return apiService.saveCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车添加失败");
     }
@@ -307,14 +321,33 @@ public class ApiController {
             return result;
         }
         Car byUuid = apiService.findByUuid(dto.getUuid());
-        if (byUuid == null) {
-            return ResponseResult.fail(203, "月租车更新失败,不存在");
-        }
-        if (!dto.getCarNumber().equalsIgnoreCase(byUuid.getNumber())) {
-            Result carExist = isCarExist(dto);
-            if (carExist != null) {
-                return carExist;
+        if (byUuid != null) {
+            if (dto.getCarNumber() != null) {
+                if (!dto.getCarNumber().equalsIgnoreCase(byUuid.getNumber())) {
+                    Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
+                    if (car != null) {
+                        carService.remove(car.getId());
+                    }
+                }
             }
+            if (dto.getNumberOne() != null) {
+                if (!dto.getNumberOne().equalsIgnoreCase(byUuid.getNumberOne())) {
+                    Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+                    if (carOne != null) {
+                        carService.remove(carOne.getId());
+                    }
+                }
+            }
+            if (dto.getNumberTow() != null) {
+                if (!dto.getNumberTow().equalsIgnoreCase(byUuid.getNumberTow())) {
+                    Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+                    if (carTow != null) {
+                        carService.remove(carTow.getId());
+                    }
+                }
+            }
+        }else {
+            return ResponseResult.fail(203, "月租车更新失败,不存在");
         }
         return apiService.updateCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车更新失败");
     }
@@ -352,31 +385,5 @@ public class ApiController {
         }
         return null;
     }
-
-    private Result isCarExist(ApiCarLongDTO dto) {
-        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
-        if (car != null) {
-            String msg = "此停车场已有此车牌号，不能重复添加";
-            if (MONTHLY_CAR == car.getParkingType()) {
-                msg = "此车牌号月租车中已存在";
-            }
-            if (VIP_CAR == car.getParkingType()) {
-                msg = "此车牌号永久月租中已存在";
-            }
-            if (BUSINESS_CAR == car.getParkingType()) {
-                msg = "此车牌号商户车中已存在";
-            }
-            if (SPECIAL_CAR == car.getParkingType()) {
-                msg = "此车牌号特殊车俩中已存在";
-            }
-            if (SINGLEVIP_CAR == car.getParkingType()) {
-                msg = "此车牌号VIP车俩中已存在";
-            }
-            if (TIMECOUPON_CAR == car.getParkingType()) {
-                msg = "此车牌号时长劵商户车辆中已存在";
-            }
-            return ResponseResult.fail(203, msg);
-        }
-        return null;
-    }
+    
 }

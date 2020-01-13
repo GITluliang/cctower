@@ -1,6 +1,5 @@
 package com.nuoze.cctower.rest;
 
-import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.util.PageUtils;
 import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
@@ -51,6 +50,8 @@ public class VipCarController {
     private IdComponent idComponent;
     @Autowired
     private ParkingDAO parkingDAO;
+    @Autowired
+    private CarDAO carDAO;
 
     @GetMapping()
     @RequiresPermissions("sys:car:vip")
@@ -101,9 +102,24 @@ public class VipCarController {
     @PostMapping("/save")
     @RequiresPermissions("sys:car:vip:add")
     public R save(CarDTO dto) {
-        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
-        if (car != null) {
-            return ResponseResult.addCarCheck(car);
+        if (dto.getNumber() != null) {
+            Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+            if (carNumber != null) {
+                carService.remove(carNumber.getId());
+            }
+        }
+        if (dto.getNumberOne() != null) {
+            Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+            if (carOne != null) {
+                carService.remove(carOne.getId());
+            }
+
+        }
+        if (dto.getNumberTow() != null) {
+            Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+            if (carTow != null) {
+                carService.remove(carTow.getId());
+            }
         }
         return carService.save(dto) > 0 ? R.ok() : R.error();
     }
@@ -115,26 +131,29 @@ public class VipCarController {
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:vip:edit")
     public R update(CarDTO dto) {
-        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+        Car car = carDAO.selectByPrimaryKey(dto.getId());
         if (car != null) {
             if (dto.getNumber() != null) {
                 if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
-                    return ResponseResult.addCarCheck(car);
+                    Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+                    if (carNumber != null) {
+                        carService.remove(carNumber.getId());
+                    }
                 }
             }
             if (dto.getNumberOne() != null) {
                 if (!dto.getNumberOne().equalsIgnoreCase(car.getNumberOne())) {
-                    Car car1 = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
-                    if (car1 != null) {
-                        return ResponseResult.addCarCheck(car1);
+                    Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+                    if (carOne != null) {
+                        carService.remove(carOne.getId());
                     }
                 }
             }
             if (dto.getNumberTow() != null) {
                 if (!dto.getNumberTow().equalsIgnoreCase(car.getNumberTow())) {
-                    Car car2 = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
-                    if (car2 != null) {
-                        return ResponseResult.addCarCheck(car2);
+                    Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+                    if (carTow != null) {
+                        carService.remove(carTow.getId());
                     }
                 }
             }

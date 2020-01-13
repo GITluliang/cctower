@@ -9,6 +9,7 @@ import com.nuoze.cctower.common.util.Query;
 import com.nuoze.cctower.common.util.R;
 import com.nuoze.cctower.common.util.ShiroUtils;
 import com.nuoze.cctower.component.IdComponent;
+import com.nuoze.cctower.dao.CarDAO;
 import com.nuoze.cctower.dao.UserDAO;
 import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
@@ -49,6 +50,8 @@ public class BusinessCarController {
     private UserService userService;
     @Autowired
     private IdComponent idComponent;
+    @Autowired
+    private CarDAO carDAO;
 
     @GetMapping()
     @RequiresPermissions("sys:car:business")
@@ -100,9 +103,11 @@ public class BusinessCarController {
             return R.error(201, "账户余额" + user.getBalance() + "元 ,请充值");
         }
         dto.setParkingId(user.getParkingId());
-        Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
-        if (car != null) {
-            return ResponseResult.addCarCheck(car);
+        if (dto.getNumber() != null && dto.getParkingId() != null) {
+            Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+            if (carNumber != null) {
+                carService.remove(carNumber.getId());
+            }
         }
         return carService.saveBusinessCar(dto) > 0 ? R.ok() : R.error();
     }
@@ -114,8 +119,18 @@ public class BusinessCarController {
     @RequestMapping("/update")
     @RequiresPermissions("sys:car:business:edit")
     public R update(CarDTO dto) {
-        carService.update(dto);
-        return R.ok();
+        Car car = carDAO.selectByPrimaryKey(dto.getId());
+        if (car != null) {
+            if (dto.getNumber() != null) {
+                if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
+                    Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+                    if (carNumber != null) {
+                        carService.remove(carNumber.getId());
+                    }
+                }
+            }
+        }
+        return carService.update(dto) > 0? R.ok() : R.error();
     }
 
     /**

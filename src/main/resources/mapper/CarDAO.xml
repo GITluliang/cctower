@@ -279,7 +279,6 @@
     from car
     <where>
       <if test="id != null and id != ''">and id = #{id}</if>
-      <if test="number != null and number != ''">and number = #{number}</if>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
       <if test="parkingType != null and parkingType != ''">and parking_type = #{parkingType}</if>
       <if test="monthlyParkingStart != null and monthlyParkingStart != ''">and monthly_parking_start = #{monthlyParkingStart}</if>
@@ -292,10 +291,9 @@
       <if test="name != null and name != ''">and name = #{name}</if>
       <if test="phone != null and phone != ''">and phone = #{phone}</if>
       <if test="corporateName != null and corporateName != ''">and corporate_name = #{corporateName}</if>
-      <if test="numberOne != null and numberOne != ''">and number_one = #{numberOne}</if>
-      <if test="numberTow != null and numberTow != ''">and number_tow = #{numberTow}</if>
       <if test="timeCoupon != null and timeCoupon != ''">and time_coupon = #{timeCoupon}</if>
       <if test="uuid != null">and uuid = #{uuid,jdbcType=VARCHAR}</if>
+      <if test="number != null and number != ''">and (number = #{number} OR number_one = #{number} OR number_tow = #{number})</if>
       <if test="keyword != null and keyword != ''">
         AND (number LIKE CONCAT('%',#{keyword},'%'))
       </if>
@@ -323,7 +321,6 @@
     select count(id) from car
     <where>
       <if test="id != null and id != ''">and id = #{id}</if>
-      <if test="number != null and number != ''">and number = #{number}</if>
       <if test="parkingId != null and parkingId != ''">and parking_id = #{parkingId}</if>
       <if test="parkingType != null and parkingType != ''">and parking_type = #{parkingType}</if>
       <if test="monthlyParkingStart != null and monthlyParkingStart != ''">and monthly_parking_start = #{monthlyParkingStart}</if>
@@ -336,10 +333,9 @@
       <if test="name != null and name != ''">and name = #{name}</if>
       <if test="phone != null and phone != ''">and phone = #{phone}</if>
       <if test="corporateName != null and corporateName != ''">and corporate_name = #{corporateName}</if>
-      <if test="numberOne != null and numberOne != ''">and number_one = #{numberOne}</if>
-      <if test="numberTow != null and numberTow != ''">and number_tow = #{numberTow}</if>
       <if test="timeCoupon != null and timeCoupon != ''">and time_coupon = #{timeCoupon}</if>
       <if test="uuid != null">and uuid = #{uuid,jdbcType=VARCHAR}</if>
+      <if test="number != null and number != ''">and (number = #{number} OR number_one = #{number} OR number_tow = #{number})</if>
       <if test="keyword != null and keyword != ''">
         AND (number LIKE CONCAT('%',#{keyword},'%'))
       </if>
@@ -396,7 +392,6 @@
     select count(id) from car
     <where>
       <if test="id != null and id != ''">and id LIKE #{id}</if>
-      <if test="number != null and number != ''">and number LIKE #{number}</if>
       <if test="parkingId != null and parkingId != ''">and parking_id LIKE #{parkingId}</if>
       <if test="parkingType != null and parkingType != ''">and parking_type LIKE #{parkingType}</if>
       <if test="monthlyParkingStart != null and monthlyParkingStart != ''">and monthly_parking_start LIKE #{monthlyParkingStart}</if>
@@ -409,10 +404,9 @@
       <if test="name != null and name != ''">and name LIKE #{name}</if>
       <if test="phone != null and phone != ''">and phone LIKE #{phone}</if>
       <if test="corporateName != null and corporateName != ''">and corporate_name LIKE #{corporateName}</if>
-      <if test="numberOne != null and numberOne != ''">and number_one LIKE #{numberOne}</if>
-      <if test="numberTow != null and numberTow != ''">and number_tow LIKE #{numberTow}</if>
       <if test="timeCoupon != null and timeCoupon != ''">and time_coupon LIKE #{timeCoupon}</if>
       <if test="uuid != null">and uuid LIKE #{uuid,jdbcType=VARCHAR}</if>
+      <if test="number != null and number != ''">and (number LIKE #{number} OR number_one LIKE #{number} OR number_tow LIKE #{number})</if>
       <if test="parkingIds != null and parkingIds.size > 0 ">
         and parking_id in
         <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
@@ -428,7 +422,6 @@
     from car
     <where>
       <if test="id != null and id != ''">and id LIKE #{id}</if>
-      <if test="number != null and number != ''">and number LIKE #{number}</if>
       <if test="parkingId != null and parkingId != ''">and parking_id LIKE #{parkingId}</if>
       <if test="parkingType != null and parkingType != ''">and parking_type LIKE #{parkingType}</if>
       <if test="monthlyParkingStart != null and monthlyParkingStart != ''">and monthly_parking_start LIKE #{monthlyParkingStart}</if>
@@ -441,10 +434,9 @@
       <if test="name != null and name != ''">and name LIKE #{name}</if>
       <if test="phone != null and phone != ''">and phone LIKE #{phone}</if>
       <if test="corporateName != null and corporateName != ''">and corporate_name LIKE #{corporateName}</if>
-      <if test="numberOne != null and numberOne != ''">and number_one LIKE #{numberOne}</if>
-      <if test="numberTow != null and numberTow != ''">and number_tow LIKE #{numberTow}</if>
       <if test="timeCoupon != null and timeCoupon != ''">and time_coupon LIKE #{timeCoupon}</if>
       <if test="uuid != null">and uuid LIKE #{uuid,jdbcType=VARCHAR}</if>
+      <if test="number != null and number != ''">and (number LIKE #{number} OR number_one LIKE #{number} OR number_tow LIKE #{number})</if>
       <if test="parkingIds != null and parkingIds.size > 0 ">
         and parking_id in
         <foreach item="parkingId" collection="parkingIds" open="(" separator="," close=")">
