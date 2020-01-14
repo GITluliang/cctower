@@ -347,7 +347,25 @@ public class ApiController {
                 }
             }
         }else {
-            return ResponseResult.fail(203, "月租车更新失败,不存在");
+            if (dto.getCarNumber() != null) {
+                Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
+                if (car != null) {
+                    carService.remove(car.getId());
+                }
+            }
+            if (dto.getNumberOne() != null) {
+                Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+                if (carOne != null) {
+                    carService.remove(carOne.getId());
+                }
+            }
+            if (dto.getNumberTow() != null) {
+                Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+                if (carTow != null) {
+                    carService.remove(carTow.getId());
+                }
+            }
+            return apiService.saveCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车添加失败");
         }
         return apiService.updateCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车更新失败");
     }
