@@ -12,6 +12,7 @@ import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.Parking;
 import com.nuoze.cctower.service.CarService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -91,7 +92,7 @@ public class SpecialCarController {
     @PostMapping("/save")
     @RequiresPermissions("sys:car:special:add")
     public R save(CarDTO dto) {
-        if (dto.getNumber() != null) {
+        if (StringUtils.isNotBlank(dto.getNumber())) {
             Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
             if (carNumber != null) {
                 carService.remove(carNumber.getId());
@@ -109,7 +110,7 @@ public class SpecialCarController {
     public R update(CarDTO dto) {
         Car car = carDAO.selectByPrimaryKey(dto.getId());
         if (car != null) {
-            if (dto.getNumber() != null) {
+            if (StringUtils.isNotBlank(dto.getNumber())) {
                 if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
                     Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
                     if (carNumber != null) {

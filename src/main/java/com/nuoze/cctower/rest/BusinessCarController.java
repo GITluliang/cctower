@@ -15,6 +15,7 @@ import com.nuoze.cctower.pojo.dto.CarDTO;
 import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.User;
 import com.nuoze.cctower.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -103,7 +104,7 @@ public class BusinessCarController {
             return R.error(201, "账户余额" + user.getBalance() + "元 ,请充值");
         }
         dto.setParkingId(user.getParkingId());
-        if (dto.getNumber() != null && dto.getParkingId() != null) {
+        if (StringUtils.isNotBlank(dto.getNumber()) && dto.getParkingId() != null) {
             Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
             if (carNumber != null) {
                 carService.remove(carNumber.getId());
@@ -120,7 +121,7 @@ public class BusinessCarController {
     @RequiresPermissions("sys:car:business:edit")
     public R update(CarDTO dto) {
         Car car = carDAO.selectByPrimaryKey(dto.getId());
-        if (car != null) {
+        if (StringUtils.isNotBlank(dto.getNumber())) {
             if (dto.getNumber() != null) {
                 if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
                     Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());

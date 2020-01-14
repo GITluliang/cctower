@@ -102,20 +102,19 @@ public class VipCarController {
     @PostMapping("/save")
     @RequiresPermissions("sys:car:vip:add")
     public R save(CarDTO dto) {
-        if (dto.getNumber() != null) {
+        if (StringUtils.isNotBlank(dto.getNumber())) {
             Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
             if (carNumber != null) {
                 carService.remove(carNumber.getId());
             }
         }
-        if (dto.getNumberOne() != null) {
+        if (StringUtils.isNotBlank(dto.getNumberOne())) {
             Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
             if (carOne != null) {
                 carService.remove(carOne.getId());
             }
-
         }
-        if (dto.getNumberTow() != null) {
+        if (StringUtils.isNotBlank(dto.getNumberTow())) {
             Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
             if (carTow != null) {
                 carService.remove(carTow.getId());
@@ -133,15 +132,15 @@ public class VipCarController {
     public R update(CarDTO dto) {
         Car car = carDAO.selectByPrimaryKey(dto.getId());
         if (car != null) {
-            if (dto.getNumber() != null) {
+            if (StringUtils.isNotBlank(dto.getNumber())) {
                 if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
-                    Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
+                    Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
                     if (carNumber != null) {
                         carService.remove(carNumber.getId());
                     }
                 }
             }
-            if (dto.getNumberOne() != null) {
+            if (StringUtils.isNotBlank(dto.getNumberOne())) {
                 if (!dto.getNumberOne().equalsIgnoreCase(car.getNumberOne())) {
                     Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
                     if (carOne != null) {
@@ -149,7 +148,7 @@ public class VipCarController {
                     }
                 }
             }
-            if (dto.getNumberTow() != null) {
+            if (StringUtils.isNotBlank(dto.getNumberTow())) {
                 if (!dto.getNumberTow().equalsIgnoreCase(car.getNumberTow())) {
                     Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
                     if (carTow != null) {
@@ -218,15 +217,15 @@ public class VipCarController {
                 }
                 dto.setParkingId(Long.valueOf(dataMap.get("parkingId"))).setNumber(dataMap.get("number")).setName(dataMap.get("name")).setPhone(dataMap.get("phone")).setCorporateName(dataMap.get("corporateName"))
                         .setNumberOne(dataMap.get("numberOne")).setNumberTow(dataMap.get("numberTow")).setParkingType(2).setStatus(1).setInfieldPermission(Integer.valueOf(dataMap.get("infieldPermission")));
-                if (dto.getNumber() != null) {
+                if (StringUtils.isNotBlank(dto.getNumber())) {
                     Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
                     if (car != null) { carService.remove(car.getId()); }
                 }
-                if (dto.getNumberOne() != null) {
+                if (StringUtils.isNotBlank(dto.getNumberOne())) {
                     Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
                     if (carOne != null) { carService.remove(carOne.getId()); }
                 }
-                if (dto.getNumberTow() != null) {
+                if ( StringUtils.isNotBlank(dto.getNumberTow())) {
                     Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
                     if (carTow != null) { carService.remove(carTow.getId()); }
                 }

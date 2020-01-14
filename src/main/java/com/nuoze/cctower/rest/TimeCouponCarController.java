@@ -12,6 +12,7 @@ import com.nuoze.cctower.pojo.entity.Car;
 import com.nuoze.cctower.pojo.entity.User;
 import com.nuoze.cctower.service.CarService;
 import com.nuoze.cctower.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -101,7 +102,7 @@ public class TimeCouponCarController {
             return R.error(201, "时长劵还剩" + user.getTimeCoupon() + "张 ,请重新输入");
         }
         dto.setParkingId(user.getParkingId());
-        if (dto.getNumber() != null && dto.getParkingId() != null) {
+        if (StringUtils.isNotBlank(dto.getNumber()) && dto.getParkingId() != null) {
             Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
             if (carNumber != null) {
                 carService.remove(carNumber.getId());
@@ -119,7 +120,7 @@ public class TimeCouponCarController {
     public R update(CarDTO dto) {
         Car car = carDAO.selectByPrimaryKey(dto.getId());
         if (car != null) {
-            if (dto.getNumber() != null) {
+            if (StringUtils.isNotBlank(dto.getNumber())) {
                 if (!dto.getNumber().equalsIgnoreCase(car.getNumber())) {
                     Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumber());
                     if (carNumber != null) {

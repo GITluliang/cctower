@@ -17,12 +17,10 @@ import com.nuoze.cctower.service.ApiService;
 import com.nuoze.cctower.service.CarService;
 import com.nuoze.cctower.service.ParkingService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import static com.nuoze.cctower.common.constant.Constant.*;
 
 /**
  * @author JiaShun
@@ -285,19 +283,19 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        if (dto.getCarNumber() != null) {
-            Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
-            if (car != null) {
-                carService.remove(car.getId());
+        if (StringUtils.isNotBlank(dto.getCarNumber())) {
+            Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
+            if (carNumber != null) {
+                carService.remove(carNumber.getId());
             }
         }
-        if (dto.getNumberOne() != null) {
+        if (StringUtils.isNotBlank(dto.getNumberOne())) {
             Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
             if (carOne != null) {
                 carService.remove(carOne.getId());
             }
         }
-        if (dto.getNumberTow() != null) {
+        if (StringUtils.isNotBlank(dto.getNumberTow())) {
             Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
             if (carTow != null) {
                 carService.remove(carTow.getId());
@@ -322,7 +320,7 @@ public class ApiController {
         }
         Car byUuid = apiService.findByUuid(dto.getUuid());
         if (byUuid != null) {
-            if (dto.getCarNumber() != null) {
+            if (StringUtils.isNotBlank(dto.getCarNumber())) {
                 if (!dto.getCarNumber().equalsIgnoreCase(byUuid.getNumber())) {
                     Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
                     if (car != null) {
@@ -330,7 +328,7 @@ public class ApiController {
                     }
                 }
             }
-            if (dto.getNumberOne() != null) {
+            if (StringUtils.isNotBlank(dto.getNumberOne())) {
                 if (!dto.getNumberOne().equalsIgnoreCase(byUuid.getNumberOne())) {
                     Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
                     if (carOne != null) {
@@ -338,7 +336,7 @@ public class ApiController {
                     }
                 }
             }
-            if (dto.getNumberTow() != null) {
+            if (StringUtils.isNotBlank(dto.getNumberTow())) {
                 if (!dto.getNumberTow().equalsIgnoreCase(byUuid.getNumberTow())) {
                     Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
                     if (carTow != null) {
@@ -347,19 +345,19 @@ public class ApiController {
                 }
             }
         }else {
-            if (dto.getCarNumber() != null) {
-                Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
-                if (car != null) {
-                    carService.remove(car.getId());
+            if (StringUtils.isNotBlank(dto.getCarNumber())) {
+                Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
+                if (carNumber != null) {
+                    carService.remove(carNumber.getId());
                 }
             }
-            if (dto.getNumberOne() != null) {
+            if (StringUtils.isNotBlank(dto.getNumberOne())) {
                 Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
                 if (carOne != null) {
                     carService.remove(carOne.getId());
                 }
             }
-            if (dto.getNumberTow() != null) {
+            if (StringUtils.isNotBlank(dto.getNumberTow())) {
                 Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
                 if (carTow != null) {
                     carService.remove(carTow.getId());
