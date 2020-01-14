@@ -76,7 +76,8 @@ public class MqSendComponent {
     public void sendRentCar(ApiDataEnum dataEnum, Car vo) {
         RentCarVO rentCarVO = new RentCarVO();
         rentCarVO.setRentCarApiEntity(new RentCarApiEntity().setCloudId(vo.getId()).setNumber(vo.getNumber()).setRentCarStart(DateUtils.formatDateTime(vo.getMonthlyParkingStart()))
-                .setRentCarEnd(DateUtils.formatDateTime(vo.getMonthlyParkingEnd())).setStatus(vo.getStatus()).setInfieldPermission(vo.getInfieldPermission()).setUuid(vo.getUuid()).setNumberOne(vo.getNumberOne()).setNumberTow(vo.getNumberTow()));
+                .setRentCarEnd(DateUtils.formatDateTime(vo.getMonthlyParkingEnd())).setStatus(vo.getStatus()).setInfieldPermission(vo.getInfieldPermission()).setUuid(vo.getUuid())
+                .setNumberOne(vo.getNumberOne()).setNumberTow(vo.getNumberTow()).setName(vo.getName()).setPhone(vo.getPhone()).setCorporateName(vo.getCorporateName()));
         rentCarVO.setType(dataEnum.name());
         ApiMqVO mqVO = new ApiMqVO().setType(RENT_CAR_TYPE).setRentCarVO(rentCarVO);
         sendMq(mqVO, vo.getParkingId());

@@ -20,4 +20,8 @@ public class RentCarApiEntity {
     private Integer status;
     private Integer infieldPermission;
     private String uuid;
+
+    private String name;
+    private String phone;
+    private String corporateName;
 }
