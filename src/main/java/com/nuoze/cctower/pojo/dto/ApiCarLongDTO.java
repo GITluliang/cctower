@@ -54,4 +54,14 @@ public class ApiCarLongDTO {
      * 替换车牌2
      */
     private String numberTow;
+
+    /**
+     * 状态: 0:禁用 1:正常
+     */
+    private Integer status;
+
+    /**
+     * 内场权限 1：有 0：无
+     */
+    private Integer infieldPermission;
 }

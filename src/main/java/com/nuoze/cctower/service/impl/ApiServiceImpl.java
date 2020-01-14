@@ -438,7 +438,7 @@ public class ApiServiceImpl implements ApiService {
         dto.setCarNumber(dto.getCarNumber().toUpperCase());
         Car car = new Car();
         BeanUtils.copyProperties(dto, car);
-        car.setNumber(dto.getCarNumber()).setParkingType(1).setStatus(1).setInfieldPermission(1);
+        car.setNumber(dto.getCarNumber()).setParkingType(1).setStatus(dto.getStatus() != null ? dto.getStatus() : 1).setInfieldPermission(dto.getInfieldPermission() != null ? dto.getInfieldPermission() : 1);
         try {
             car.setMonthlyParkingStart(DateUtils.toDate(dto.getBeginDate())).setMonthlyParkingEnd(DateUtils.toDate(dto.getEndDate()));
         } catch (Exception e) {
