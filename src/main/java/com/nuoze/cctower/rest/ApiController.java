@@ -4,6 +4,7 @@ import com.nuoze.cctower.common.constant.Constant;
 import com.nuoze.cctower.common.result.ResponseResult;
 import com.nuoze.cctower.common.result.Result;
 import com.nuoze.cctower.common.result.ResultEnum;
+import com.nuoze.cctower.dao.CarDAO;
 import com.nuoze.cctower.dao.ParkingRecordDAO;
 import com.nuoze.cctower.dao.PassagewayDAO;
 import com.nuoze.cctower.pojo.dto.ApiCarLongDTO;
@@ -49,7 +50,7 @@ public class ApiController {
     @Autowired
     private CarService carService;
     @Autowired
-    private ParkingService parkingService;
+    private CarDAO carDAO;
 
     /**
      * 车辆入场
@@ -283,24 +284,24 @@ public class ApiController {
         if (result != null) {
             return result;
         }
-        Car byUuid = apiService.findByUuid(dto.getUuid());
-        if (byUuid != null) { carService.remove(byUuid.getId());}
+        Car byUuid = carDAO.findByUuid(dto.getUuid());
+        if (byUuid != null) { carDAO.deleteByPrimaryKey(byUuid.getId());}
         if (StringUtils.isNotBlank(dto.getCarNumber())) {
-            Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
+            Car carNumber = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
             if (carNumber != null) {
-                carService.remove(carNumber.getId());
+                carDAO.deleteByPrimaryKey(carNumber.getId());
             }
         }
         if (StringUtils.isNotBlank(dto.getNumberOne())) {
-            Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
+            Car carOne = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
             if (carOne != null) {
-                carService.remove(carOne.getId());
+                carDAO.deleteByPrimaryKey(carOne.getId());
             }
         }
         if (StringUtils.isNotBlank(dto.getNumberTow())) {
-            Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
+            Car carTow = carDAO.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
             if (carTow != null) {
-                carService.remove(carTow.getId());
+                carDAO.deleteByPrimaryKey(carTow.getId());
             }
         }
         return apiService.saveCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车更新失败");

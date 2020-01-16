@@ -40,18 +40,11 @@ public interface ApiService {
     ApiPayStatusVO checkPayStatus(String uuid);
 
     /**
-     * 线下：月租车录入
+     * 线下：月租车更新
      * @param dto
      * @return
      */
     int saveCarLong(ApiCarLongDTO dto);
-
-    /**
-     * 线下：根据UUID进行修改,月租车
-     * @param dto
-     * @return
-     */
-    int updateCarLong(ApiCarLongDTO dto);
 
     /**
      * 线下：根据UUID进行删除月租车

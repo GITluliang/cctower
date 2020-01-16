@@ -347,13 +347,6 @@ public class ApiServiceImpl implements ApiService {
         return carDAO.insert(dtoToCar(dto).setCreateId(0L).setCreateTime(new Date()).setUpdateTime(new Date()));
     }
 
-    @Override
-    public int updateCarLong(ApiCarLongDTO dto) {
-        if (dto.getCarNumber() != null) {dto.setCarNumber(dto.getCarNumber().toUpperCase());}
-        if (dto.getNumberOne() != null) {dto.setNumberOne(dto.getNumberOne().toUpperCase());}
-        if (dto.getNumberTow() != null) {dto.setNumberTow(dto.getNumberTow().toUpperCase());}
-        return carDAO.updateByUuid(dtoToCar(dto).setUpdateTime(new Date()));
-    }
 
     @Override
     public int batchRemoveCarLong(String[] uuids) {
