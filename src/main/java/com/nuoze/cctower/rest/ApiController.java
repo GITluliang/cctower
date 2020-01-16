@@ -270,19 +270,21 @@ public class ApiController {
     }
 
     /**
-     * 线下月租车录入
+     * 线下月租车更新
      *
      * @param dto
      * @param auth
      * @return
      */
-    @PostMapping("carLong/save")
-    public Result save(@RequestBody ApiCarLongDTO dto, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] carLong/save auth: {} CarDTO:{}", auth, dto);
+    @PostMapping("carLong/update")
+    public Result update(@RequestBody ApiCarLongDTO dto, @RequestHeader("authorization") String auth) {
+        log.info("[API CONTROLLER] carLong/update auth: {} CarDTO:{}", auth, dto);
         Result result = checkParamLongCar(dto, auth);
         if (result != null) {
             return result;
         }
+        Car byUuid = apiService.findByUuid(dto.getUuid());
+        if (byUuid != null) { carService.remove(byUuid.getId());}
         if (StringUtils.isNotBlank(dto.getCarNumber())) {
             Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
             if (carNumber != null) {
@@ -301,71 +303,7 @@ public class ApiController {
                 carService.remove(carTow.getId());
             }
         }
-        return apiService.saveCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车添加失败");
-    }
-
-    /**
-     * 线下月租车更新
-     *
-     * @param dto
-     * @param auth
-     * @return
-     */
-    @PostMapping("carLong/update")
-    public Result update(@RequestBody ApiCarLongDTO dto, @RequestHeader("authorization") String auth) {
-        log.info("[API CONTROLLER] carLong/update auth: {} CarDTO:{}", auth, dto);
-        Result result = checkParamLongCar(dto, auth);
-        if (result != null) {
-            return result;
-        }
-        Car byUuid = apiService.findByUuid(dto.getUuid());
-        if (byUuid != null) {
-            if (StringUtils.isNotBlank(dto.getCarNumber())) {
-                if (!dto.getCarNumber().equalsIgnoreCase(byUuid.getNumber())) {
-                    Car car = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
-                    if (car != null) {
-                        carService.remove(car.getId());
-                    }
-                }
-            }
-            if (StringUtils.isNotBlank(dto.getNumberOne())) {
-                if (!dto.getNumberOne().equalsIgnoreCase(byUuid.getNumberOne())) {
-                    Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
-                    if (carOne != null) {
-                        carService.remove(carOne.getId());
-                    }
-                }
-            }
-            if (StringUtils.isNotBlank(dto.getNumberTow())) {
-                if (!dto.getNumberTow().equalsIgnoreCase(byUuid.getNumberTow())) {
-                    Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
-                    if (carTow != null) {
-                        carService.remove(carTow.getId());
-                    }
-                }
-            }
-        }else {
-            if (StringUtils.isNotBlank(dto.getCarNumber())) {
-                Car carNumber = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getCarNumber());
-                if (carNumber != null) {
-                    carService.remove(carNumber.getId());
-                }
-            }
-            if (StringUtils.isNotBlank(dto.getNumberOne())) {
-                Car carOne = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberOne());
-                if (carOne != null) {
-                    carService.remove(carOne.getId());
-                }
-            }
-            if (StringUtils.isNotBlank(dto.getNumberTow())) {
-                Car carTow = carService.findByParkingIdAndCarNumber(dto.getParkingId(), dto.getNumberTow());
-                if (carTow != null) {
-                    carService.remove(carTow.getId());
-                }
-            }
-            return apiService.saveCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车添加失败");
-        }
-        return apiService.updateCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车更新失败");
+        return apiService.saveCarLong(dto) > 0 ? ResponseResult.success() : ResponseResult.fail(203, "月租车更新失败");
     }
 
     /**
@@ -391,8 +329,8 @@ public class ApiController {
         if (!token.equals(auth)) {
             return ResponseResult.fail(ResultEnum.PERMISSION_DENIED);
         }
-        if (StringUtils.isEmpty(dto.getUuid()) || dto.getParkingId() == null || StringUtils.isEmpty(dto.getCarNumber()) ||
-                StringUtils.isEmpty(dto.getBeginDate()) || StringUtils.isEmpty(dto.getEndDate())) {
+        if (StringUtils.isBlank(dto.getUuid()) || dto.getParkingId() == null || StringUtils.isBlank(dto.getCarNumber()) ||
+                StringUtils.isBlank(dto.getBeginDate()) || StringUtils.isBlank(dto.getEndDate())) {
             return ResponseResult.fail(ResultEnum.INVALID_PARAM);
         }
         String regex = "\\d{4}-\\d{2}-\\d{2}";
