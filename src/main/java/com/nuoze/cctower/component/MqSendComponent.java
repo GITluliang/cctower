@@ -96,7 +96,7 @@ public class MqSendComponent {
     private void sendMq(ApiMqVO mqVO, Long parkingId) {
         String queue = mqConfigDAO.selectQueueByParkingId(parkingId);
         log.info("[Mq Send Component] mq send to type: {} queue: {} , parkingId: {}, message: {}", mqVO.getType(),queue, parkingId, JSON.toJSONString(mqVO));
-        this.rabbitTemplate.convertAndSend(queue, JSON.toJSONString(mqVO));
+        //this.rabbitTemplate.convertAndSend(queue, JSON.toJSONString(mqVO));
         this.jmsMessagingTemplate.convertAndSend(queue == null ? "ceshi" : queue, JSON.toJSONString(mqVO));
     }
 
